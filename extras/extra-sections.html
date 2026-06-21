@@ -1,0 +1,161 @@
+<!-- Vorbraut 14 — extra sections, removed from index.html to keep the live site
+     to 2 sections (Hero + interactive facade). All content strings remain in
+     js/content.js. To restore any section, paste its block back into index.html
+     inside <main class="snap">, and re-add its nav link if wanted. -->
+
+    <!-- ====================== STAÐSETNING / BÍLASTÆÐI ====================== -->
+    <section class="panel split" id="stadsetning">
+      <div class="split__media reveal">
+        <img src="assets/renders/birdseye.jpg" alt="Vorbraut 14 — yfirlitsmynd" />
+      </div>
+      <div class="split__text reveal">
+        <p class="kicker" data-i18n="loc.kicker">01 — Staðsetning</p>
+        <h2 data-i18n="loc.title">Næg bílastæði og frábær staðsetning</h2>
+        <p class="lead" data-i18n="loc.body"></p>
+        <ul class="points">
+          <li><b data-i18n="loc.p1.t"></b><span data-i18n="loc.p1.b"></span></li>
+          <li><b data-i18n="loc.p2.t"></b><span data-i18n="loc.p2.b"></span></li>
+          <li><b data-i18n="loc.p3.t"></b><span data-i18n="loc.p3.b"></span></li>
+          <li><b data-i18n="loc.p4.t"></b><span data-i18n="loc.p4.b"></span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ====================== ÍBÚÐIR INTRO ====================== -->
+    <section class="panel ibudir" id="ibudir">
+      <div class="section-head reveal">
+        <p class="kicker" data-i18n="apt.kicker">02 — Íbúðir</p>
+        <h2 data-i18n="apt.title">Bjartar íbúðir, hannaðar til að lifa í</h2>
+        <p class="lead center" data-i18n="apt.body"></p>
+      </div>
+      <div class="types reveal">
+        <article class="type">
+          <span class="type__count">6×</span>
+          <h3 data-i18n="type.two.name">2ja herbergja</h3>
+          <p class="type__size" data-i18n="type.two.size">69–70 m²</p>
+          <p data-i18n="type.two.desc"></p>
+        </article>
+        <article class="type">
+          <span class="type__count">6×</span>
+          <h3 data-i18n="type.fam.name">3ja–4ra herbergja</h3>
+          <p class="type__size" data-i18n="type.fam.size">102–118 m²</p>
+          <p data-i18n="type.fam.desc"></p>
+        </article>
+        <article class="type type--feature">
+          <span class="type__count">2×</span>
+          <h3 data-i18n="type.pent.name">Efsta hæð</h3>
+          <p class="type__size" data-i18n="type.pent.size">156–158 m²</p>
+          <p data-i18n="type.pent.desc"></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ====================== ÍBÚÐAYFIRLIT ====================== -->
+    <section class="panel list" id="yfirlit">
+      <div class="list__head reveal">
+        <div>
+          <p class="kicker" data-i18n="list.kicker">04 — Íbúðayfirlit</p>
+          <h2 data-i18n="list.title">Allar íbúðir</h2>
+        </div>
+        <div class="filters" id="filters">
+          <div class="filter">
+            <label data-i18n="filter.floor">Hæð</label>
+            <div class="chips" data-filter="floor">
+              <button class="chip is-active" data-val="all" data-i18n="filter.all">Allar</button>
+              <button class="chip" data-val="1">1</button>
+              <button class="chip" data-val="2">2</button>
+              <button class="chip" data-val="3">3</button>
+              <button class="chip" data-val="4">4</button>
+            </div>
+          </div>
+          <div class="filter">
+            <label data-i18n="filter.rooms">Herbergi</label>
+            <div class="chips" data-filter="rooms">
+              <button class="chip is-active" data-val="all" data-i18n="filter.all">Allar</button>
+              <button class="chip" data-val="2">2</button>
+              <button class="chip" data-val="3">3</button>
+              <button class="chip" data-val="4">4</button>
+            </div>
+          </div>
+          <button class="reset" id="resetBtn" data-i18n="filter.reset">Hreinsa</button>
+        </div>
+      </div>
+      <div class="grid" id="aptGrid"></div>
+      <p class="grid__empty" id="gridEmpty" hidden data-i18n="list.empty"></p>
+    </section>
+
+    <!-- ====================== HÖNNUN ====================== -->
+    <section class="panel split split--rev" id="honnun">
+      <div class="split__media reveal">
+        <img src="assets/renders/front.jpg" alt="Vorbraut 14 — framhlið og efnisval" />
+      </div>
+      <div class="split__text reveal">
+        <p class="kicker" data-i18n="des.kicker">05 — Hönnun</p>
+        <h2 data-i18n="des.title">Hreint og tímalaust</h2>
+        <p class="lead" data-i18n="des.body"></p>
+        <div class="swatches">
+          <span style="--c:#FFFFFF"></span>
+          <span style="--c:#F4F2EC"></span>
+          <span style="--c:#A8855C"></span>
+          <span style="--c:#6E5A41"></span>
+          <span style="--c:#3A3D40"></span>
+          <span style="--c:#8FA6AE"></span>
+        </div>
+        <p class="byline" data-i18n="des.architect">ARCHUS arkitektar — Guðmundur Gunnlaugsson</p>
+      </div>
+    </section>
+
+    <!-- ====================== GÆÐI ====================== -->
+    <section class="panel quality" id="gaedi">
+      <div class="section-head reveal">
+        <p class="kicker" data-i18n="q.kicker">06 — Gæði</p>
+        <h2 data-i18n="q.title">Gæði samkvæmt aðaluppdráttum</h2>
+        <p class="lead center" data-i18n="q.body"></p>
+      </div>
+      <ul class="qgrid reveal">
+        <li><i></i><span data-i18n="q.1"></span></li>
+        <li><i></i><span data-i18n="q.2"></span></li>
+        <li><i></i><span data-i18n="q.3"></span></li>
+        <li><i></i><span data-i18n="q.4"></span></li>
+        <li><i></i><span data-i18n="q.5"></span></li>
+        <li><i></i><span data-i18n="q.6"></span></li>
+        <li><i></i><span data-i18n="q.7"></span></li>
+        <li><i></i><span data-i18n="q.8"></span></li>
+      </ul>
+    </section>
+
+    <!-- ====================== HVERFI ====================== -->
+    <section class="panel split" id="hverfi">
+      <div class="split__media reveal">
+        <img src="assets/renders/aerial.png" alt="Hnoðraholt — umhverfi Vorbrautar 14" />
+      </div>
+      <div class="split__text reveal">
+        <p class="kicker" data-i18n="nb.kicker">07 — Hverfi</p>
+        <h2 data-i18n="nb.title">Hnoðraholt</h2>
+        <p class="lead" data-i18n="nb.body"></p>
+        <p class="note" data-i18n="nb.note"></p>
+      </div>
+    </section>
+
+    <!-- ====================== HAFA SAMBAND ====================== -->
+    <section class="panel contact" id="hafa-samband">
+      <div class="contact__inner reveal">
+        <p class="kicker" data-i18n="ct.kicker">08 — Hafa samband</p>
+        <h2 data-i18n="ct.title">Næstu skref</h2>
+        <p class="lead center" data-i18n="ct.body"></p>
+        <div class="contact__cta">
+          <a href="#yfirlit" class="btn btn--solid" data-scroll data-i18n="cta.ibudir">Skoða íbúðir</a>
+          <a href="#" class="btn btn--ghost" data-i18n="cta.book">Bóka skoðun</a>
+        </div>
+        <dl class="contact__facts">
+          <div><dt data-i18n="ct.locLabel">Staðsetning</dt><dd data-i18n="ct.loc"></dd></div>
+          <div><dt data-i18n="ct.devLabel">Byggingaraðili</dt><dd data-i18n="ct.dev"></dd></div>
+          <div><dt data-i18n="ct.archLabel">Arkitekt</dt><dd data-i18n="ct.arch"></dd></div>
+          <div><dt data-i18n="ct.landLabel">Landeignarnúmer</dt><dd data-i18n="ct.land"></dd></div>
+        </dl>
+      </div>
+      <footer class="foot">
+        <span>VORBRAUT 14</span>
+        <span data-i18n="foot.rights"></span>
+      </footer>
+    </section>
