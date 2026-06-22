@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=122" />
+  <link rel="stylesheet" href="css/styles.css?v=123" />
   <style>
     body.is-admin{background:#0b0c0d;color:#f3f1ec;min-height:100vh;font-family:var(--font)}
     .ad__top{display:flex;align-items:center;justify-content:space-between;padding:1.3rem clamp(20px,5vw,60px);
@@ -56,8 +56,8 @@
       color:rgba(244,242,236,.75);line-height:1.6;font-size:.92rem}
     .ad__note code{color:#9fc06a;font-size:.85rem}
     .ad__toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;
-      background:#5fa83c;color:#0b0c0d;font-weight:500;padding:.7rem 1.2rem;border-radius:4px;
-      transition:.3s var(--ease);pointer-events:none;z-index:50;font-size:.92rem}
+      background:#5fa83c;color:#0b0c0d;font-weight:600;padding:.8rem 1.4rem;border-radius:999px;
+      transition:.3s var(--ease);pointer-events:none;z-index:2147483647;font-size:1rem;box-shadow:0 8px 28px rgba(0,0,0,.4)}
     .ad__toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
     .ad__toast.err{background:#cf4036;color:#fff}
     /* tabs */
@@ -226,10 +226,10 @@ create policy "img update" on storage.objects for update to anon using (bucket_i
 
   <div class="ad__toast" id="toast"></div>
 
-  <script src="js/data.js?v=122"></script>
-  <script src="js/content.js?v=122"></script>
-  <script src="js/supabase-config.js?v=122"></script>
+  <script src="js/data.js?v=123"></script>
+  <script src="js/content.js?v=123"></script>
+  <script src="js/supabase-config.js?v=123"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/admin.js?v=122"></script>
+  <script src="js/admin.js?v=123"></script>
 </body>
 </html>

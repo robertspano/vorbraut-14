@@ -278,7 +278,7 @@
       .upsert({ key, lang, value: val, updated_at: new Date().toISOString() }, { onConflict: 'key,lang' });
     if (error) { toast('Villa: ' + error.message, true); return false; }
     overrides[lang][key] = val;
-    toast('Vistað');
+    toast('✓ Vistað — birtist á vefnum');
     return true;
   }
 
