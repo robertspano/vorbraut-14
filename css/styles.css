@@ -755,3 +755,10 @@ body.is-page{background:#0e0f10}
   *{animation:none!important}
   .reveal{opacity:1;transform:none;transition:none}
 }
+
+/* Sími: forsíðu-hausinn ógegnsær svo cinematic hero-textinn sjáist EKKI í gegnum
+   navið þegar hann skrunar upp undir það (z-index 60 > hero 3; vandinn var bara
+   hálfgegnsær bakgrunnur). Tryggir engin skörun óháð render-tímasetningu. */
+@media (max-width:860px){
+  body:not(.is-page):not(.is-contact) .nav{background:#0b0c0d}
+}
