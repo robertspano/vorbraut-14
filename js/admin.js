@@ -186,6 +186,8 @@
   const groupUrl = (gk) => (SECMAP[gk] ? SECMAP[gk].url : '');
   const groupOrder = (gk) => (SECMAP[gk] ? SECMAP[gk].order : 900 + gk.charCodeAt(0) / 1000);
 
+  const debounce = (fn, ms) => { let t; return function () { const a = arguments, c = this; clearTimeout(t); t = setTimeout(() => fn.apply(c, a), ms); }; };
+
   async function buildContentEditor() {
     const list = $('#contentList'); if (!list) return;
     list.innerHTML = '<p class="ad__sub">Sæki texta…</p>';
@@ -231,7 +233,11 @@
       h.setAttribute('aria-expanded', open ? 'false' : 'true');
       h.nextElementSibling.hidden = open;
     }));
-    $$('#contentList textarea', list).forEach((ta) => ta.addEventListener('change', () => saveContent(ta)));
+    $$('#contentList textarea', list).forEach((ta) => {
+      const deb = debounce(() => saveContent(ta), 700);
+      ta.addEventListener('input', deb);     // vistast sjálfkrafa á meðan þú skrifar
+      ta.addEventListener('change', () => saveContent(ta));
+    });
   }
 
   async function ensureOverrides() {
@@ -453,9 +459,16 @@
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); }
       else if (e.key === 'Escape') { e.preventDefault(); finish(false); }
     };
+    const autoSave = debounce(async () => {        // vistast sjálfkrafa á meðan þú skrifar
+      if (done) return;
+      const v = el.textContent.trim();
+      if (v === '' || v === orig.trim()) return;
+      const ok = await saveValue(key, lang, v, def);
+      if (ok === true && win.VB && win.VB.STR && win.VB.STR[lang]) win.VB.STR[lang][key] = v;
+    }, 700);
     async function finish(commit) {
       if (done) return; done = true;
-      el.removeEventListener('blur', onBlur); el.removeEventListener('keydown', onKey);
+      el.removeEventListener('blur', onBlur); el.removeEventListener('keydown', onKey); el.removeEventListener('input', autoSave);
       el.contentEditable = 'false'; el.classList.remove('ve-on');
       const val = el.textContent.trim();
       if (!commit) { el.textContent = orig; return; }
@@ -472,6 +485,7 @@
     }
     el.addEventListener('blur', onBlur);
     el.addEventListener('keydown', onKey);
+    el.addEventListener('input', autoSave);
   }
 
   // tabs
