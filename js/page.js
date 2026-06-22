@@ -49,6 +49,7 @@
   if (window.VB && window.VB.getContent) window.VB.getContent().then((ov) => {
     if (!ov) return;
     if (window.VB.applyImageOverrides) window.VB.applyImageOverrides(ov.img);
+    if (window.VB.applyLayoutOverrides) window.VB.applyLayoutOverrides(ov.layout);
     if (window.VB.applyContentOverrides(ov)) applyLang();
   }).catch(() => {});
 })();

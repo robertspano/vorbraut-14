@@ -33,14 +33,40 @@ window.VB.getContent = async function () {
     });
     if (!r.ok) return null;
     const rows = await r.json();
-    const ov = { is: {}, en: {}, img: {} };
+    const ov = { is: {}, en: {}, img: {}, apt: {}, layout: {} };
     (rows || []).forEach((x) => {
       if (!x || !x.key || x.value == null || !String(x.value).length) return;
       if (x.lang === 'is' || x.lang === 'en') ov[x.lang][x.key] = x.value;
       else if (x.lang === 'img') ov.img[x.key] = x.value;
+      else if (x.lang === 'apt') ov.apt[x.key] = x.value;
+      else if (x.lang === 'layout') ov.layout[x.key] = x.value;
     });
     return ov;
   } catch (e) { return null; }
+};
+
+/* Útlit: fela/færa hluti sem merktir eru data-block="..." (úr lang='layout').
+   value='hidden' -> falinn.  key sem endar á ':order', value=JSON listi af lyklum -> röð barna. */
+window.VB.applyLayoutOverrides = function (map) {
+  if (!map) return;
+  var find = function (k) { try { return document.querySelector('[data-block="' + (window.CSS && CSS.escape ? CSS.escape(k) : k) + '"]'); } catch (e) { return null; } };
+  Object.keys(map).forEach(function (k) {
+    if (/:order$/.test(k)) return;
+    if (map[k] === 'hidden') { var el = find(k); if (el) el.style.display = 'none'; }
+  });
+  Object.keys(map).forEach(function (k) {
+    if (!/:order$/.test(k)) return;
+    var parent = find(k.replace(/:order$/, '')); if (!parent) return;
+    var order; try { order = JSON.parse(map[k]); } catch (e) { return; }
+    if (!Array.isArray(order)) return;
+    var els = order.map(find).filter(function (e) { return e && e.parentNode === parent; });
+    if (els.length < 2) return;
+    // akkeri = hnúturinn á eftir síðasta merkta barni (heldur ómerktum systkinum á sínum stað)
+    var last = els[0];
+    els.forEach(function (e) { if (last.compareDocumentPosition(e) & 4) last = e; });
+    var anchor = last.nextSibling;
+    els.forEach(function (e) { parent.insertBefore(e, anchor); });
+  });
 };
 
 /* Setur uppfærðar myndir á <img data-img="..."> (úr lang='img' í content-töflunni). */
@@ -50,6 +76,23 @@ window.VB.applyImageOverrides = function (map) {
     var k = im.getAttribute('data-img');
     if (map[k]) im.setAttribute('src', map[k]);
   });
+};
+
+/* Uppfærir íbúðagögn (stærð/herbergi/verð…) úr lang='apt' (lyklar: "<id>.<reitur>").
+   Breytir window.VB.APARTMENTS á staðnum -> tafla, smá-gluggi og íbúða-gluggi sýna nýju gildin. */
+window.VB.applyAptOverrides = function (map) {
+  if (!map || !window.VB.APARTMENTS) return false;
+  var n = 0;
+  Object.keys(map).forEach(function (k) {
+    var dot = k.indexOf('.'); if (dot < 0) return;
+    var id = k.slice(0, dot), field = k.slice(dot + 1), raw = map[k];
+    var a = window.VB.APARTMENTS.find(function (x) { return x.id === id; });
+    if (!a) return;
+    if (field === 'area' || field === 'balcony') { var f = parseFloat(String(raw).replace(',', '.')); if (!isNaN(f)) { a[field] = f; n++; } }
+    else if (field === 'rooms' || field === 'beds' || field === 'price') { var i = parseInt(String(raw).replace(/[^\d]/g, ''), 10); if (!isNaN(i)) { a[field] = i; n++; } }
+    else { a[field] = raw; n++; }
+  });
+  return n > 0;
 };
 
 /* Bræðir yfirskriftir inn í window.VB.STR (sama hlut -> t() sér breytingarnar). */

@@ -53,18 +53,40 @@
   async function showPanel() {
     elLogin.hidden = true; elNot.hidden = true; elPanel.hidden = false; elLogout.hidden = false;
     if (elWho) elWho.textContent = 'Stjórnandi';
+    await ensureOverrides();
+    const sn = $('#setupNote'); if (sn) sn.hidden = !contentTableMissing;
+    const cb = $('#copySql');
+    if (cb && !cb._w) { cb._w = 1; cb.addEventListener('click', () => { const t = ($('#setupSql') || {}).textContent || ''; if (navigator.clipboard) navigator.clipboard.writeText(t).then(() => toast('SQL afritað'), () => toast('Gat ekki afritað', true)); }); }
     const { data } = await supa.from('apartments').select('id,status');
     const cur = {}; (data || []).forEach((r) => { cur[r.id] = r.status; });
     const apts = (window.VB && window.VB.APARTMENTS) || [];
+    const fv = (id, f, d) => { const v = aptOv[id + '.' + f]; return (v != null && v !== '') ? v : (d != null ? d : ''); };
     elList.innerHTML = apts.map((a) => {
       const st = cur[a.id] || a.status || 'available';
       const segs = STATUSES.map(([v, l]) =>
         `<button class="ad__seg ${v}${st === v ? ' on' : ''}" data-id="${a.id}" data-st="${v}">${l}</button>`).join('');
-      return `<div class="ad__row"><div class="ad__rowid">Íbúð ${a.id}</div>` +
-             `<div class="ad__rowmeta">${a.area} m² · ${a.rooms} herb. · ${a.floor}. hæð</div>` +
-             `<div class="ad__segs">${segs}</div></div>`;
+      return `<div class="ad__row ad__row--apt">
+        <div class="ad__rowid">Íbúð ${a.id}<span class="ad__rowsub">${a.floor}. hæð</span></div>
+        <div class="ad__aptf">
+          <label>Stærð (m²)<input type="text" inputmode="decimal" data-apt="${a.id}" data-field="area" value="${fv(a.id, 'area', a.area)}"></label>
+          <label>Herb.<input type="text" inputmode="numeric" data-apt="${a.id}" data-field="rooms" value="${fv(a.id, 'rooms', a.rooms)}"></label>
+          <label>Verð (kr)<input type="text" inputmode="numeric" data-apt="${a.id}" data-field="price" value="${fv(a.id, 'price', a.price != null ? a.price : '')}"></label>
+        </div>
+        <div class="ad__segs">${segs}</div>
+      </div>`;
     }).join('');
     $$('.ad__seg', elList).forEach((b) => b.addEventListener('click', () => setStatus(b)));
+    $$('.ad__aptf input', elList).forEach((inp) => inp.addEventListener('change', () => saveAptField(inp)));
+  }
+
+  async function saveAptField(inp) {
+    const id = inp.dataset.apt, field = inp.dataset.field;
+    const apt = ((window.VB && window.VB.APARTMENTS) || []).find((x) => x.id === id);
+    const def = apt && apt[field] != null ? String(apt[field]) : '';
+    const val = (inp.value || '').trim();
+    const res = await saveValue(id + '.' + field, 'apt', val, def);
+    if (res === 'reverted') { inp.value = def; delete aptOv[id + '.' + field]; }
+    else if (res === true) aptOv[id + '.' + field] = val;
   }
 
   async function setStatus(btn) {
@@ -85,7 +107,7 @@
   /* ---------- texta-ritill (CMS): breyta öllum texta á vefnum ---------- */
   const STR = (window.VB && window.VB.STR) || { is: {}, en: {} };
   let overrides = { is: {}, en: {} };
-  let contentBuilt = false, veBuilt = false, contentTabInit = false, overridesLoaded = false, pendingImg = null;
+  let contentBuilt = false, veBuilt = false, contentTabInit = false, overridesLoaded = false, pendingImg = null, aptOv = {}, layoutOv = {}, undoStack = [], contentTableMissing = false;
   const esc = (s) => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
   // Kaflar í sömu röð og á vefnum: [lykilforskeyti, heiti, hvar það er, tengill]
@@ -215,13 +237,36 @@
   async function ensureOverrides() {
     if (overridesLoaded) return;
     overridesLoaded = true;
-    const { data } = await supa.from('content').select('key,lang,value');
-    overrides = { is: {}, en: {} };
-    (data || []).forEach((r) => { if (r && (r.lang === 'is' || r.lang === 'en')) overrides[r.lang][r.key] = r.value; });
+    const { data, error } = await supa.from('content').select('key,lang,value');
+    contentTableMissing = !!error;
+    overrides = { is: {}, en: {} }; aptOv = {}; layoutOv = {};
+    (data || []).forEach((r) => {
+      if (!r) return;
+      if (r.lang === 'is' || r.lang === 'en') overrides[r.lang][r.key] = r.value;
+      else if (r.lang === 'apt') aptOv[r.key] = r.value;
+      else if (r.lang === 'layout') layoutOv[r.key] = r.value;
+    });
+  }
+
+  // útlits-yfirskrift (fela/röð) -> content lang='layout'
+  async function saveLayout(key, val) {
+    const res = await saveValue(key, 'layout', val, '');
+    if (res === 'reverted') delete layoutOv[key]; else if (res === true) layoutOv[key] = val;
+    return res;
+  }
+
+  /* ---------- afturkalla (undo) ---------- */
+  function pushUndo(label, fn) { undoStack.push({ label: label, fn: fn }); updateUndo(); }
+  function updateUndo() { const b = $('#veUndo'); if (b) { b.disabled = undoStack.length === 0; b.textContent = '↩ Afturkalla' + (undoStack.length ? ' (' + undoStack.length + ')' : ''); } }
+  async function doUndo() {
+    const a = undoStack.pop(); if (!a) { updateUndo(); return; }
+    try { await a.fn(); } catch (e) {}
+    updateUndo(); toast('Afturkallað' + (a.label ? ': ' + a.label : ''));
   }
 
   // kjarni: vista (eða eyða ef tómt/sjálfgefið) -> Supabase. Skilar 'reverted' | true | false.
   async function saveValue(key, lang, val, def) {
+    if (!overrides[lang]) overrides[lang] = {};
     if (val.trim() === '' || val === def) {
       const { error } = await supa.from('content').delete().eq('key', key).eq('lang', lang);
       if (error) { toast('Villa: ' + error.message, true); return false; }
@@ -267,6 +312,13 @@
     if (closeBtn) closeBtn.addEventListener('click', () => { const lb = $('.cedit__mode[data-mode="list"]'); if (lb) lb.click(); });
     const fileInput = $('#veFile');
     if (fileInput) fileInput.addEventListener('change', () => uploadImage(fileInput));
+    const undoBtn = $('#veUndo');
+    if (undoBtn) undoBtn.addEventListener('click', doUndo);
+    document.addEventListener('keydown', (e) => {
+      const ve = $('#visualEditor');
+      if (ve && !ve.hidden && (e.metaKey || e.ctrlKey) && (e.key === 'z' || e.key === 'Z')) { e.preventDefault(); doUndo(); }
+    });
+    updateUndo();
     frame.addEventListener('load', () => attachEditor(frame));
     load();
   }
@@ -276,6 +328,8 @@
     if (!file || !pendingImg) return;
     const img = pendingImg; pendingImg = null;
     const key = img.getAttribute('data-img');
+    const prevSrc = img.getAttribute('src');
+    const prevOv = (overrides.img && overrides.img[key] != null) ? overrides.img[key] : null;
     toast('Hleð upp mynd…');
     const ext = ((file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '')) || 'jpg';
     const path = key.replace(/[^a-z0-9]/gi, '_') + '_' + Date.now() + '.' + ext;
@@ -285,7 +339,13 @@
     const url = pub && pub.data && pub.data.publicUrl;
     if (!url) { toast('Villa: vantar slóð á mynd', true); return; }
     const res = await saveValue(key, 'img', url, '');
-    if (res === true) { img.src = url; toast('Mynd uppfærð'); }
+    if (res === true) {
+      img.src = url; toast('Mynd uppfærð');
+      pushUndo('mynd', async () => {
+        if (prevOv != null) { await saveValue(key, 'img', prevOv, ''); img.src = prevOv; }
+        else { await saveValue(key, 'img', '', ''); img.src = prevSrc; }
+      });
+    }
   }
   function attachEditor(frame) {
     let doc, win;
@@ -297,16 +357,78 @@
       '[data-i18n]:hover{outline:1.5px dashed rgba(95,168,60,.9)!important;outline-offset:2px;background:rgba(95,168,60,.07)!important}' +
       '[data-i18n].ve-on{outline:2px solid #5fa83c!important;outline-offset:2px;background:rgba(95,168,60,.14)!important;border-radius:2px}' +
       'img[data-img]{cursor:pointer!important}' +
-      'img[data-img]:hover{outline:2px dashed rgba(95,168,60,.95)!important;outline-offset:3px}';
+      'img[data-img]:hover{outline:2px dashed rgba(95,168,60,.95)!important;outline-offset:3px}' +
+      '[data-block]:hover{outline:1.5px dashed rgba(95,168,60,.45);outline-offset:-2px}' +
+      '#ve-blockbar{position:fixed;z-index:2147483646;display:none;gap:.25rem;background:#0b0c0d;border:1px solid rgba(255,255,255,.28);border-radius:8px;padding:.28rem;box-shadow:0 6px 22px rgba(0,0,0,.45)}' +
+      '#ve-blockbar button{background:rgba(255,255,255,.12);border:0;color:#fff;font:inherit;font-size:.82rem;padding:.32rem .55rem;border-radius:5px;cursor:pointer}' +
+      '#ve-blockbar button:hover{background:#5fa83c}';
     doc.head.appendChild(st);
+
     // breytingaham: smellur breytir texta/mynd í stað þess að navigera/triggera
     doc.addEventListener('click', (e) => {
+      if (e.target.closest('#ve-blockbar')) return;   // blokk-stikan sér um sína eigin smelli
       const img = e.target.closest('img[data-img]');
       if (img) { e.preventDefault(); e.stopPropagation(); pendingImg = img; const fi = $('#veFile'); if (fi) { fi.value = ''; fi.click(); } return; }
       const el = e.target.closest('[data-i18n]');
       if (el) { e.preventDefault(); e.stopPropagation(); startEdit(el, doc, win); return; }
       const a = e.target.closest('a,button'); if (a) { e.preventDefault(); e.stopPropagation(); }
     }, true);
+
+    // blokk-stjórntæki: fela / færa hluti merkta data-block
+    const bar = doc.createElement('div'); bar.id = 've-blockbar';
+    bar.innerHTML = '<button data-act="up" title="Færa upp">↑</button><button data-act="down" title="Færa niður">↓</button><button data-act="hide">Fela</button>';
+    doc.body.appendChild(bar);
+    let curBlock = null, hideT = null;
+    const showBar = (b) => {
+      curBlock = b; const r = b.getBoundingClientRect(); bar.style.display = 'flex';
+      bar.style.top = Math.max(6, r.top + 6) + 'px';
+      bar.style.left = Math.max(6, Math.min(win.innerWidth - bar.offsetWidth - 6, r.right - bar.offsetWidth - 6)) + 'px';
+      bar.querySelector('[data-act="hide"]').textContent = b.dataset.veHidden ? 'Sýna' : 'Fela';
+      clearTimeout(hideT);
+    };
+    const hideSoon = () => { hideT = setTimeout(() => { bar.style.display = 'none'; }, 450); };
+    doc.querySelectorAll('[data-block]').forEach((b) => {
+      b.addEventListener('mouseenter', () => showBar(b));
+      b.addEventListener('mouseleave', hideSoon);
+    });
+    bar.addEventListener('mouseenter', () => clearTimeout(hideT));
+    bar.addEventListener('mouseleave', hideSoon);
+
+    const esc1 = (k) => (win.CSS && win.CSS.escape ? win.CSS.escape(k) : k);
+    const blockKeys = (parent) => [...parent.children].filter((c) => c.hasAttribute && c.hasAttribute('data-block')).map((c) => c.getAttribute('data-block'));
+    const reorderDom = (parent, keys) => {
+      const els = keys.map((k) => parent.querySelector(':scope > [data-block="' + esc1(k) + '"]')).filter(Boolean);
+      if (els.length < 2) return;
+      let last = els[0]; els.forEach((e) => { if (last.compareDocumentPosition(e) & 4) last = e; });
+      const anchor = last.nextSibling;
+      els.forEach((e) => parent.insertBefore(e, anchor));
+    };
+    const blockHide = (el) => {
+      const key = el.dataset.block;
+      const on = () => { el.style.opacity = '.32'; el.style.outline = '2px dashed rgba(207,64,54,.85)'; el.dataset.veHidden = '1'; };
+      const off = () => { el.style.opacity = ''; el.style.outline = ''; delete el.dataset.veHidden; };
+      if (el.dataset.veHidden) { saveLayout(key, ''); off(); toast('Sýnt aftur'); pushUndo('sýna', async () => { await saveLayout(key, 'hidden'); on(); }); }
+      else { saveLayout(key, 'hidden'); on(); toast('Falið (sést ekki á vefnum)'); pushUndo('fela', async () => { await saveLayout(key, ''); off(); }); }
+      showBar(el);
+    };
+    const blockMove = (el, dir) => {
+      const parent = el.parentNode, pk = parent && parent.getAttribute && parent.getAttribute('data-block');
+      if (!pk) { toast('Ekki hægt að færa þennan hlut', true); return; }
+      const before = blockKeys(parent);
+      let sib = dir < 0 ? el.previousElementSibling : el.nextElementSibling;
+      while (sib && !(sib.hasAttribute && sib.hasAttribute('data-block'))) sib = dir < 0 ? sib.previousElementSibling : sib.nextElementSibling;
+      if (!sib) return;
+      if (dir < 0) parent.insertBefore(el, sib); else parent.insertBefore(sib, el);
+      const after = blockKeys(parent);
+      saveLayout(pk + ':order', JSON.stringify(after));
+      showBar(el);
+      pushUndo('færa', async () => { reorderDom(parent, before); await saveLayout(pk + ':order', JSON.stringify(before)); });
+    };
+    bar.querySelectorAll('button').forEach((btn) => btn.addEventListener('click', (e) => {
+      e.preventDefault(); e.stopPropagation(); if (!curBlock) return;
+      const act = btn.dataset.act;
+      if (act === 'hide') blockHide(curBlock); else blockMove(curBlock, act === 'up' ? -1 : 1);
+    }));
   }
   function startEdit(el, doc, win) {
     if (el.isContentEditable) return;
@@ -329,10 +451,15 @@
       const val = el.textContent.trim();
       if (!commit) { el.textContent = orig; return; }
       if (val === orig.trim()) return;
+      const setSTR = (v) => { if (win.VB && win.VB.STR && win.VB.STR[lang]) win.VB.STR[lang][key] = v; };
       const res = await saveValue(key, lang, val, def);
-      const set = (v) => { if (win.VB && win.VB.STR && win.VB.STR[lang]) win.VB.STR[lang][key] = v; };
-      if (res === 'reverted') { el.textContent = def; set(def); }
-      else if (res === true) { set(val); }
+      if (res === 'reverted') { el.textContent = def; setSTR(def); }
+      else if (res === true) setSTR(val);
+      if (res) pushUndo('texti', async () => {
+        const r2 = await saveValue(key, lang, orig, def);
+        el.textContent = (r2 === 'reverted') ? def : orig;
+        setSTR(el.textContent);
+      });
     }
     el.addEventListener('blur', onBlur);
     el.addEventListener('keydown', onKey);

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=114" />
+  <link rel="stylesheet" href="css/styles.css?v=118" />
   <style>
     body.is-admin{background:#0b0c0d;color:#f3f1ec;min-height:100vh;font-family:var(--font)}
     .ad__top{display:flex;align-items:center;justify-content:space-between;padding:1.3rem clamp(20px,5vw,60px);
@@ -46,6 +46,12 @@
     .ad__seg.on.available{background:#5fa83c;color:#fff}
     .ad__seg.on.reserved{background:#d8a72c;color:#1a1a1a}
     .ad__seg.on.sold{background:#cf4036;color:#fff}
+    .ad__row--apt{flex-direction:column;align-items:flex-start;gap:.7rem}
+    .ad__rowsub{font-size:.7rem;color:rgba(244,242,236,.45);font-family:var(--font);letter-spacing:.04em;margin-left:.6rem;font-weight:400}
+    .ad__aptf{display:flex;gap:.55rem;flex-wrap:wrap}
+    .ad__aptf label{display:flex;flex-direction:column;gap:.2rem;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,242,236,.42)}
+    .ad__aptf input{width:6.4rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);color:#fff;font:inherit;font-size:.9rem;padding:.38rem .5rem;border-radius:5px;outline:none}
+    .ad__aptf input:focus{border-color:var(--green);background:rgba(255,255,255,.07)}
     .ad__note{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);padding:1.2rem 1.3rem;
       color:rgba(244,242,236,.75);line-height:1.6;font-size:.92rem}
     .ad__note code{color:#9fc06a;font-size:.85rem}
@@ -109,6 +115,11 @@
     .cedit__hint{color:rgba(244,242,236,.5);font-size:.85rem;margin-left:auto}
     .cedit__frame{flex:1;min-height:0;overflow:hidden;background:#fff}
     .cedit__frame iframe{display:block;width:100%;height:100%;border:0;background:#fff}
+    .ad__setup{background:rgba(216,167,44,.1);border:1px solid rgba(216,167,44,.5);border-radius:8px;padding:1.2rem 1.3rem;margin-bottom:1.8rem;color:#f3ecda;line-height:1.55;font-size:.92rem}
+    .ad__setup b{color:#e8c45a}
+    .ad__setup p{margin:.6rem 0}
+    .ad__setup summary{cursor:pointer;color:#9fc06a;font-size:.85rem;margin-bottom:.4rem}
+    .ad__setup pre{background:#0b0c0d;border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:.8rem;overflow:auto;font-size:.72rem;line-height:1.45;color:#cfe0bf;white-space:pre;max-height:240px}
     [hidden]{display:none!important}
     @media(max-width:560px){ .ad__row{gap:.6rem} .ad__rowid{min-width:auto;font-size:1.1rem} .ad__rowmeta{flex-basis:100%} .crow__fields{grid-template-columns:1fr} .cgrp__where{display:none} .cedit__hint{display:none} .cedit__visual{width:100vw} .cedit__frame iframe{height:70vh} }
   </style>
@@ -148,6 +159,30 @@
         <span class="ad__who" id="who"></span>
       </div>
 
+      <!-- uppsetningar-aðvörun: gagnagrunnstaflan vantar -> breytingar vistast ekki -->
+      <div id="setupNote" class="ad__setup" hidden>
+        <b>⚠️ Uppsetning vantar — breytingar vistast EKKI enn á vefinn.</b>
+        <p>Til að breytingar (texti, myndir, staða, fela/færa) vistist og birtist á lifandi vefnum þarf að keyra eftirfarandi <u>einu sinni</u> í Supabase. Opnaðu Supabase → verkefnið þitt → <b>SQL Editor</b> → <b>New query</b> → límdu allt hér að neðan inn → <b>Run</b>. Endurhlaðaðu svo þessa síðu.</p>
+        <details open><summary>SQL (afritaðu allt)</summary><pre id="setupSql">create table if not exists public.content (
+  key text not null, lang text not null, value text,
+  updated_at timestamptz not null default now(), primary key (key, lang));
+alter table public.content enable row level security;
+drop policy if exists "content read" on public.content;
+create policy "content read" on public.content for select using (true);
+drop policy if exists "content write" on public.content;
+create policy "content write" on public.content for all to anon using (true) with check (true);
+drop policy if exists "apartments write" on public.apartments;
+create policy "apartments write" on public.apartments for update to anon using (true) with check (true);
+insert into storage.buckets (id,name,public) values ('site-images','site-images',true) on conflict (id) do nothing;
+drop policy if exists "img read" on storage.objects;
+create policy "img read" on storage.objects for select using (bucket_id='site-images');
+drop policy if exists "img write" on storage.objects;
+create policy "img write" on storage.objects for insert to anon with check (bucket_id='site-images');
+drop policy if exists "img update" on storage.objects;
+create policy "img update" on storage.objects for update to anon using (bucket_id='site-images') with check (bucket_id='site-images');</pre></details>
+        <button type="button" class="ad__btn" id="copySql" style="margin-top:.7rem">Afrita SQL</button>
+      </div>
+
       <!-- íbúðir: staða -->
       <div id="view-apts">
         <h1 class="ad__h1">Stöðustjórnun íbúða</h1>
@@ -173,7 +208,8 @@
               <button type="button" data-velang="is" class="on">Íslenska</button>
               <button type="button" data-velang="en">English</button>
             </span>
-            <span class="cedit__hint">Smelltu á texta eða mynd til að breyta · Enter vistar · Esc hættir við</span>
+            <button type="button" class="cedit__close" id="veUndo" disabled>↩ Afturkalla</button>
+            <span class="cedit__hint">Smelltu á texta/mynd til að breyta · veldu hluti til að fela eða færa (↑↓)</span>
           </div>
           <div class="cedit__frame"><iframe id="veFrame" title="Forskoðun vefsíðu"></iframe></div>
           <input type="file" id="veFile" accept="image/*" hidden />
@@ -190,10 +226,10 @@
 
   <div class="ad__toast" id="toast"></div>
 
-  <script src="js/data.js?v=114"></script>
-  <script src="js/content.js?v=114"></script>
-  <script src="js/supabase-config.js?v=114"></script>
+  <script src="js/data.js?v=118"></script>
+  <script src="js/content.js?v=118"></script>
+  <script src="js/supabase-config.js?v=118"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/admin.js?v=114"></script>
+  <script src="js/admin.js?v=118"></script>
 </body>
 </html>

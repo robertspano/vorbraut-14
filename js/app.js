@@ -492,6 +492,11 @@
   if (window.VB.getContent) window.VB.getContent().then((ov) => {
     if (!ov) return;
     if (window.VB.applyImageOverrides) window.VB.applyImageOverrides(ov.img);
-    if (window.VB.applyContentOverrides(ov)) applyLang();
+    if (window.VB.applyLayoutOverrides) window.VB.applyLayoutOverrides(ov.layout);
+    const aptChanged = window.VB.applyAptOverrides && window.VB.applyAptOverrides(ov.apt);
+    const txtChanged = window.VB.applyContentOverrides(ov);
+    if (txtChanged) applyLang();          // applyLang endurteiknar töfluna líka
+    else if (aptChanged) buildGrid();
+    if (aptChanged) { syncFacade(); if (currentApt && modal && !modal.hidden) openModal(currentApt); }
   }).catch(() => {});
 })();

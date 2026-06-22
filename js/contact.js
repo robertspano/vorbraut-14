@@ -31,14 +31,12 @@
     cform.addEventListener('submit', (e) => {
       e.preventDefault();
       const val = (n) => (cform.elements[n] ? cform.elements[n].value.trim() : '');
-      const name = val('name'), email = val('email'), phone = val('phone'),
-            subject = val('subject'), message = val('message');
-      const subj = `Fyrirspurn – Vorbraut 14 (${subject})`;
+      const name = val('name'), email = val('email'), phone = val('phone'), message = val('message');
+      const subj = 'Fyrirspurn – Vorbraut 14';
       const body = [
         `Nafn: ${name}`,
         `Netfang: ${email}`,
         phone ? `Símanúmer: ${phone}` : null,
-        `Viðfangsefni: ${subject}`,
         '',
         message,
       ].filter((x) => x !== null).join('\n');
@@ -66,6 +64,7 @@
   if (window.VB && window.VB.getContent) window.VB.getContent().then((ov) => {
     if (!ov) return;
     if (window.VB.applyImageOverrides) window.VB.applyImageOverrides(ov.img);
+    if (window.VB.applyLayoutOverrides) window.VB.applyLayoutOverrides(ov.layout);
     if (window.VB.applyContentOverrides(ov)) applyLang();
   }).catch(() => {});
 })();
