@@ -4,6 +4,19 @@
    ========================================================================== */
 const STR = {
   is: {
+    /* ---- nav + pager (undirsíður) ---- */
+    'nav.verkefnid': 'Verkefnið',
+    'nav.arkitektur': 'Arkitektúr',
+    'nav.husid': 'Húsið',
+    'nav.utsyni': 'Útsýni',
+    'nav.utirymi': 'Útirými',
+    'nav.adgengi': 'Aðgengi',
+    'nav.hverfid': 'Hverfið',
+    'nav.menu': 'Valmynd',
+    'pager.prev': 'Fyrra',
+    'pager.next': 'Næsta',
+    'pager.home': 'Forsíða',
+    'pager.ibudir': 'Skoða íbúðir',
     /* ---- story sections ---- */
     'st.intro.kick': '01 · Vorbraut 14',
     'st.intro.title': 'Heillandi búseta í Garðabæ',
@@ -238,6 +251,19 @@ const STR = {
   },
 
   en: {
+    /* ---- nav + pager (undirsíður) ---- */
+    'nav.verkefnid': 'The project',
+    'nav.arkitektur': 'Architecture',
+    'nav.husid': 'The building',
+    'nav.utsyni': 'View',
+    'nav.utirymi': 'Outdoor',
+    'nav.adgengi': 'Access',
+    'nav.hverfid': 'Neighbourhood',
+    'nav.menu': 'Menu',
+    'pager.prev': 'Previous',
+    'pager.next': 'Next',
+    'pager.home': 'Home',
+    'pager.ibudir': 'View apartments',
     /* ---- story sections ---- */
     'st.intro.kick': '01 · Vorbraut 14',
     'st.intro.title': 'Captivating Living in Garðabær',

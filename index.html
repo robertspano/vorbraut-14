@@ -7,28 +7,46 @@
   <meta name="description" content="Vorbraut 14 — fjórtán vandaðar íbúðir í Hnoðraholti í Garðabæ. Bjartar íbúðir, læstur bílakjallari og fjölskylduvænt umhverfi." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=89" />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="assets/cine/f001.webp" fetchpriority="high" />
+  <link rel="stylesheet" href="css/styles.css?v=103" />
 </head>
 <body>
 
   <!-- ============================ NAV ============================ -->
   <header class="nav" id="nav">
     <div class="nav__left">
-      <a href="#" class="nav__logo" data-totop>VORBRAUT&nbsp;14</a>
+      <a href="index.html" class="nav__logo">VORBRAUT&nbsp;14</a>
       <nav class="nav__links" aria-label="Aðalvalmynd">
-        <a href="#cine" data-cinedown data-i18n="nav.house">Húsið</a>
-        <a href="#ibudir" data-scroll data-i18n="nav.ibudir">Íbúðir</a>
+        <a href="verkefnid.html" data-i18n="nav.verkefnid">Verkefnið</a>
+        <a href="arkitektur.html" data-i18n="nav.arkitektur">Arkitektúr</a>
+        <a href="husid.html" data-i18n="nav.husid">Húsið</a>
+        <a href="utsyni.html" data-i18n="nav.utsyni">Útsýni</a>
+        <a href="utirymi.html" data-i18n="nav.utirymi">Útirými</a>
+        <a href="adgengi.html" data-i18n="nav.adgengi">Aðgengi</a>
+        <a href="hverfid.html" data-i18n="nav.hverfid">Hverfið</a>
+        <a href="index.html#ibudir" data-i18n="nav.ibudir">Íbúðir</a>
       </nav>
     </div>
     <div class="nav__right">
-      <a href="#soluadilar" class="nav__link" data-scroll data-i18n="sellers.title">Söluaðilar</a>
-      <button class="nav__contact" data-contact data-i18n="nav.contact">Hafa samband</button>
-      <button class="lang" id="langBtn" aria-label="Language">
-        <svg class="lang__globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 2.6 15.5 0 18M12 3c-2.6 2.5-2.6 15.5 0 18"/></svg>
-        <span id="langLabel">English</span>
-      </button>
+      <a href="index.html#soluadilar" class="nav__link" data-i18n="sellers.title">Söluaðilar</a>
+      <a href="hafa-samband.html" class="nav__contact" data-i18n="nav.contact">Hafa samband</a>
+      <button class="lang" id="langBtn" aria-label="Language"><svg class="lang__globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 2.6 15.5 0 18M12 3c-2.6 2.5-2.6 15.5 0 18"/></svg><span id="langLabel">English</span></button>
+      <button class="burger" id="burger" aria-label="Valmynd" aria-controls="navmenu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
+    <nav class="navmenu" id="navmenu" aria-label="Valmynd">
+      <a href="verkefnid.html" data-i18n="nav.verkefnid">Verkefnið</a>
+      <a href="arkitektur.html" data-i18n="nav.arkitektur">Arkitektúr</a>
+      <a href="husid.html" data-i18n="nav.husid">Húsið</a>
+      <a href="utsyni.html" data-i18n="nav.utsyni">Útsýni</a>
+      <a href="utirymi.html" data-i18n="nav.utirymi">Útirými</a>
+      <a href="adgengi.html" data-i18n="nav.adgengi">Aðgengi</a>
+      <a href="hverfid.html" data-i18n="nav.hverfid">Hverfið</a>
+      <a href="index.html#ibudir" data-i18n="nav.ibudir">Íbúðir</a>
+      <hr/>
+      <a class="navmenu__action" href="index.html#soluadilar" data-i18n="sellers.title">Söluaðilar</a>
+      <a class="navmenu__action" href="hafa-samband.html" data-i18n="nav.contact">Hafa samband</a>
+    </nav>
   </header>
 
   <main class="snap" id="scroller">
@@ -40,7 +58,7 @@
 
         <!-- interactive facade — overlay sem zoom-ar út í borða í lok niðurflugs -->
         <figure class="facade" id="facade">
-          <img class="facade__front" id="facadeFront" src="assets/renders/entrance.jpg?v=89" alt="Vorbraut 14 — framhlið með aðkomu" />
+          <img class="facade__front" id="facadeFront" src="assets/renders/entrance.webp?v=103" alt="Vorbraut 14 — framhlið með aðkomu" />
           <div class="facade__shine" id="facadeShine" aria-hidden="true"></div>
           <svg class="facade__svg" id="facadeSvg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
           <div class="facade__tip" id="facadeTip" hidden></div>
@@ -74,7 +92,7 @@
             <div><b>14</b><span data-i18n="stat.ibudir">íbúðir</span></div>
             <div><b>4</b><span data-i18n="stat.haedir">hæðir</span></div>
             <div><b>16</b><span data-i18n="stat.bilastaedi">bílastæði</span></div>
-            <div><b>64,5</b><span data-i18n="stat.fra">m² frá</span></div>
+            <div><b>68,6</b><span data-i18n="stat.fra">m² frá</span></div>
           </div>
         </div>
       </div>
@@ -91,7 +109,7 @@
 
         <div class="apts__filters">
           <div class="apts__sliders">
-            <div class="rng" data-key="area" data-min="64" data-max="158" data-step="1" data-unit="m²">
+            <div class="rng" data-key="area" data-min="64" data-max="168" data-step="1" data-unit="m²">
               <span class="rng__label" data-i18n="spec.area">Birt stærð</span>
               <div class="rng__track"><div class="rng__fill"></div><button type="button" class="rng__h rng__h--lo" aria-label="lágmark"></button><button type="button" class="rng__h rng__h--hi" aria-label="hámark"></button></div>
               <div class="rng__vals"><span class="rng__lo"></span><span class="rng__hi"></span></div>
@@ -133,6 +151,7 @@
                 <th data-i18n="spec.balcony">Svalir / verönd</th>
                 <th data-i18n="spec.parking">Bílastæði</th>
                 <th data-i18n="spec.storage">Sérgeymsla</th>
+                <th data-i18n="spec.price">Verð</th>
                 <th data-i18n="col.status">Staða</th>
                 <th aria-hidden="true"></th>
               </tr>
@@ -140,122 +159,6 @@
             <tbody id="aptRows"></tbody>
           </table>
           <p class="apts__empty" id="gridEmpty" hidden data-i18n="list.empty">Engin íbúð passar við valið. Hreinsaðu síur.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================== SÖGUKAFLAR (story sections) ===================== -->
-
-    <!-- STORY: intro (immersive) -->
-    <section class="story story--immersive reveal" id="st-intro" aria-labelledby="st-intro-h">
-      <div class="story__inner">
-        <div class="story__hero" style="background-image:url('assets/renders/aerial.png?v=89')" role="img" aria-label="Heillandi búseta í Garðabæ — Vorbraut 14">
-          <div class="story__heroinner reveal">
-            <p class="kicker kicker--light" data-i18n="st.intro.kick">01 · Vorbraut 14</p>
-            <h2 class="story__title" id="st-intro-h" data-i18n="st.intro.title">Heillandi búseta í Garðabæ</h2>
-            <p class="story__pull" data-i18n="st.intro.pull">Birta, víðsýni og náttúra í Garðabæ</p>
-          </div>
-        </div>
-        <div class="story__below reveal">
-          <div class="story__body"><p data-i18n="st.intro.b1">Við Vorbraut 14 í Hnoðraholti í Garðabæ rís vandað fjögurra hæða fjölbýlishús sem hýsir 14 fjölbreyttar íbúðir ásamt bílakjallara og ríkulegum stoðrýmum. Verkefnið leggur ríka áherslu á dagsbirtu, útsýni, fyrirmyndar aðgengi og heilsteypta hönnun, enda nýtur byggingin einstakrar staðsetningar ofarlega í landslaginu. Húsið stendur á friðsælum og eftirsóknarverðum stað þar sem nálægð við ósnortna náttúru, fjölbreytta þjónustu og helstu samgönguæðar rennur saman í eina heild. Hér gefst tækifæri á framtíðarheimili þar sem ríkidæmi hversdagsins endurspeglast í hugvitsamlegu skipulagi, vönduðum útirýmum og nútímaþægindum. Vorbraut 14 er kjörinn kostur fyrir þá sem gera miklar kröfur til búsetu í Garðabæ, þar sem víðsýni og birta eru í fyrirrúmi, en þjónusta og útivist aldrei langt undan.</p></div>
-          <ul class="story__chips"><li data-i18n="st.intro.c1">14 íbúðir</li><li data-i18n="st.intro.c2">Fjórar hæðir</li><li data-i18n="st.intro.c3">Hnoðraholt, Garðabær</li><li data-i18n="st.intro.c4">Dagsbirta og útsýni</li></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- STORY: arch (split-rev) -->
-    <section class="story story--split story--rev story--alt reveal" id="st-arch" aria-labelledby="st-arch-h">
-      <div class="story__inner">
-        <figure class="story__media reveal" data-d="1">
-          <img src="assets/renders/front.jpg?v=89" alt="Arkitektúr — Vorbraut 14" loading="lazy" decoding="async" />
-        </figure>
-        <div class="story__text reveal" data-d="2">
-          <p class="kicker kicker--light" data-i18n="st.arch.kick">02 · Hönnun</p>
-          <h2 class="story__title" id="st-arch-h" data-i18n="st.arch.title">Arkitektúr</h2>
-          <p class="story__pull" data-i18n="st.arch.pull">Fágað form í samhljómi við Hnoðraholt</p>
-          <div class="story__body"><p data-i18n="st.arch.b1">Arkitektúr Vorbrautar 14 er yfirvegaður og stílhreinn, þar sem skýr áhersla er lögð á fágað yfirbragð og samhljóm við nærumhverfið. Byggingin, sem er verk Guðmundar Gunnlaugssonar arkitekts hjá Archus, er nátengd landslagi Hnoðraholts, dregur dám af útsýninu og fellur vel að þeirri uppbyggingu sem á sér stað á svæðinu. Húsið skartar fáguðu, kröftugu og nútímalegu útliti þar sem formrænn hreinleiki, efnisval og áferð mynda sannfærandi heild. Ytra byrði byggingarinnar er varið vandaðri álklæðningu þar sem flötum er brotið upp með mismunandi áferð til að gefa ásýndinni aukna dýpt. Inndregin efsta hæð gefur húsinu léttara yfirbragð á sama tíma og hún skapar svigrúm fyrir einkar glæsilegar þaksvalir. Á þennan hátt er víðáttumikið útsýnið nýtt til fulls og gert að óaðskiljanlegum hluta af híbýlum íbúanna. Hönnunin byggir á því að draga fram kosti staðhátta, en niðurstaðan er mannvirki sem einkennist af efnislegum gæðum, fágun og yfirvegandi virðuleika.</p></div>
-          <ul class="story__chips"><li data-i18n="st.arch.c1">Álklæðning</li><li data-i18n="st.arch.c2">Inndregin efsta hæð</li><li data-i18n="st.arch.c3">Archus</li><li data-i18n="st.arch.c4">Guðmundur Gunnlaugsson</li></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- STORY: house (split) -->
-    <section class="story story--split reveal" id="st-house" aria-labelledby="st-house-h">
-      <div class="story__inner">
-        <figure class="story__media reveal" data-d="1">
-          <img src="assets/cine2/f001.jpg?v=89" alt="Húsið — Vorbraut 14" loading="lazy" decoding="async" />
-        </figure>
-        <div class="story__text reveal" data-d="2">
-          <p class="kicker kicker--light" data-i18n="st.house.kick">03 · Heimilin</p>
-          <h2 class="story__title" id="st-house-h" data-i18n="st.house.title">Húsið</h2>
-          <p class="story__pull" data-i18n="st.house.pull">Fjórtán íbúðir, ótal leiðir til að búa</p>
-          <div class="story__body"><p data-i18n="st.house.b1">Húsið að Vorbraut 14 er fjögurra hæða lyftuhús með 14 íbúðum sem svara fjölbreyttum kröfum til stærðar og skipulags. Þar má finna allt frá hagkvæmum stúdíóíbúðum upp í rúmgóðar fjölskylduíbúðir og víðáttumikil rými þar sem útsýni og sameiginlegar vistverur fá virkilega að njóta sín.</p><p data-i18n="st.house.b2">Allar íbúðir bera merki um metnaðarfulla hönnun þar sem lagt er upp með opið flæði, björt alrými og hnökralaus tengsl við svalir eða önnur útirými. Stórir gluggar fanga ljósið og draga umhverfið djúpt inn í rýmin.</p><p data-i18n="st.house.b3">Jarðhæðaríbúðir fela í sér veglega sérafnotareiti sem opnast mót garði. Á efri hæðum taka við svalir og þaksvalir sem bjóða upp á notalega útiveru og fallegt sjónarhorn yfir byggðina.</p><p data-i18n="st.house.b4">Undir húsinu er lokaður bílakjallari þar sem einnig er að finna sérgeymslu fyrir hverja íbúð. Til viðbótar er búið vel að virkum lífsstíl íbúa með aðgengilegri hjóla- og vagnageymslu sem hentar daglegu lífi fjölskyldufólks afburðavel.</p></div>
-          <ul class="story__chips"><li data-i18n="st.house.c1">Lyftuhús</li><li data-i18n="st.house.c2">Stúdíó til fjölskylduíbúða</li><li data-i18n="st.house.c3">Sérafnotareitir á jarðhæð</li><li data-i18n="st.house.c4">Stórir gluggar</li></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- STORY: view (immersive) -->
-    <section class="story story--immersive reveal" id="st-view" aria-labelledby="st-view-h">
-      <div class="story__inner">
-        <div class="story__hero" style="background-image:url('assets/cine2/f060.jpg?v=89')" role="img" aria-label="Útsýni — Vorbraut 14">
-          <div class="story__heroinner reveal">
-            <p class="kicker kicker--light" data-i18n="st.view.kick">04 · Sjónarhorn</p>
-            <h2 class="story__title" id="st-view-h" data-i18n="st.view.title">Útsýni</h2>
-            <p class="story__pull" data-i18n="st.view.pull">Útsýnið opnast eftir því sem ofar dregur</p>
-          </div>
-        </div>
-        <div class="story__below reveal">
-          <div class="story__body"><p data-i18n="st.view.b1">Hæðótt og opin staðsetning Vorbrautar 14 er ótvíræður kostur verksins. Húsið býður upp á víðáttumikla og fagra sjón yfir bæinn og aðliggjandi náttúru, og sýnin opnast enn frekar eftir því sem ofar dregur. Arkitektúr hússins tekur djúpt mið af þessum sérstöku gæðum. Stórir gluggar og svalir ramma inn umhverfið þannig að samband við náttúruna, birtuna og útsýnið fléttast inn í tilveru dagsins í dag. Víðsýnið færir híbýlunum ómetanlegan fjársjóð og undirstrikar þá tilfinningu að rými heimilanna takmarkist ekki einungis af veggjum þeirra.</p></div>
-          <ul class="story__chips"><li data-i18n="st.view.c1">Víðáttumikið útsýni</li><li data-i18n="st.view.c2">Útsýni yfir bæinn</li><li data-i18n="st.view.c3">Svalir</li><li data-i18n="st.view.c4">Hæðótt landslag</li></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- STORY: outdoor (split-rev) -->
-    <section class="story story--split story--rev reveal" id="st-outdoor" aria-labelledby="st-outdoor-h">
-      <div class="story__inner">
-        <figure class="story__media reveal" data-d="1">
-          <img src="assets/renders/birdseye.jpg?v=89" alt="Útirými — Vorbraut 14" loading="lazy" decoding="async" />
-        </figure>
-        <div class="story__text reveal" data-d="2">
-          <p class="kicker kicker--light" data-i18n="st.outdoor.kick">05 · Náttúran</p>
-          <h2 class="story__title" id="st-outdoor-h" data-i18n="st.outdoor.title">Útirými</h2>
-          <p class="story__pull" data-i18n="st.outdoor.pull">Útirýmin stækka heimilið og færa náttúruna nær</p>
-          <div class="story__body"><p data-i18n="st.outdoor.b1">Útirými eignarinnar gegna lykilhlutverki í búsetugæðum Vorbrautar 14. Þeir sem búa á jarðhæð eiga þess kost að njóta dvalar á sérafnotareitum sem skapa nálægð og góð tengsl við gróskumikið umhverfið. Sömuleiðis skapa svalir og þaksvalir efri hæða tækifæri til að njóta bæði fersks lofts og óviðjafnanlegs útsýnis. Á hluta þaksins er komið fyrir gróðurþekju sem mildar yfirbragð mannvirkisins og tónar fallega við náttúruleg einkenni holtsins. Lóðin nýtir jafnframt blágrænar lausnir til ofanvatnsmeðhöndlunar sem fellur afar vel að snyrtilegri ásýnd svæðisins. Þannig stækka útirýmin heimilið og styrkja lífsgæðin með því að færa umhverfið nær íbúum.</p></div>
-          <ul class="story__chips"><li data-i18n="st.outdoor.c1">Sérafnotareitir</li><li data-i18n="st.outdoor.c2">Gróðurþekja</li><li data-i18n="st.outdoor.c3">Blágrænar lausnir</li><li data-i18n="st.outdoor.c4">Ofanvatnsmeðhöndlun</li></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- STORY: access (split) -->
-    <section class="story story--split story--alt reveal" id="st-access" aria-labelledby="st-access-h">
-      <div class="story__inner">
-        <figure class="story__media reveal" data-d="1">
-          <img src="assets/renders/entrance.jpg?v=89" alt="Aðgengi og stoðrými — Vorbraut 14" loading="lazy" decoding="async" />
-        </figure>
-        <div class="story__text reveal" data-d="2">
-          <p class="kicker kicker--light" data-i18n="st.access.kick">06 · Þægindi</p>
-          <h2 class="story__title" id="st-access-h" data-i18n="st.access.title">Aðgengi og stoðrými</h2>
-          <p class="story__pull" data-i18n="st.access.pull">Hugsað fyrir hverjum degi, frá kjallara upp á þak</p>
-          <div class="story__body"><p data-i18n="st.access.b1">Óaðfinnanleg dagsdagleg þægindi eru rauður þráður í verkinu. Rúmgóð lyfta gengur milli allra hæða og bílakjallara, sem tryggir algilt og greitt aðgengi. Í lokuðum bílakjallaranum er gert ráð fyrir sérstæðum og einkageymslu fyrir hverja íbúð. Íbúum stendur jafnframt til boða rúmgóð hjóla- og vagnageymsla sem styður sérlega vel við fólk á ferðinni og barnafjölskyldur. Öll þessi rými miða að því að skapa umgjörð fyrir skipulagt og einfalt heimilislíf þar sem dagleg notkun hússins er áreynslulaus. Sorpmálum er komið haganlega fyrir með niðurgröfnum djúpgámum sem auka bæði hreinlæti og fagurfræði nærumhverfisins.</p></div>
-          <ul class="story__chips"><li data-i18n="st.access.c1">Rúmgóð lyfta</li><li data-i18n="st.access.c2">Lokaður bílakjallari</li><li data-i18n="st.access.c3">Einkageymsla</li><li data-i18n="st.access.c4">Hjóla- og vagnageymsla</li><li data-i18n="st.access.c5">Niðurgrafnir djúpgámar</li></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- STORY: hood (split-rev) -->
-    <section class="story story--split story--rev reveal" id="st-hood" aria-labelledby="st-hood-h">
-      <div class="story__inner">
-        <figure class="story__media reveal" data-d="1">
-          <img src="assets/cine/f001.jpg?v=89" alt="Hverfið — Vorbraut 14" loading="lazy" decoding="async" />
-        </figure>
-        <div class="story__text reveal" data-d="2">
-          <p class="kicker kicker--light" data-i18n="st.hood.kick">07 · Staðsetning</p>
-          <h2 class="story__title" id="st-hood-h" data-i18n="st.hood.title">Hverfið</h2>
-          <p class="story__pull" data-i18n="st.hood.pull">Þar sem náttúran og bærinn mætast</p>
-          <div class="story__body"><p data-i18n="st.hood.b1">Hnoðraholt er spennandi og blómlegt íbúðahverfi sem býður upp á samruna ósnortinnar náttúru og stuttra leiða að samgöngum og þjónustu. Hverfið situr nærri helstu slagæðum svæðisins en varðveitir samt rólega og fjölskylduvæna eiginleika þar sem útivistarskilyrði eru ákjósanleg. Greið og þægileg leið er í vinsæl útivistarsvæði á borð við Vífilsstaðavatn, göngu- og hjólaleiðir Heiðmerkur sem og golfvöllinn hjá GKG. Búseta hér hentar því einkar vel þeim sem kjósa að sækja beint í útivist og ferskt loft með lítilli fyrirhöfn. Samhliða náttúrunni skartar Garðabær ríkulegu framboði af afþreyingu og þjónustu. Vandaðar verslanir, frambærilegir veitingastaðir, íþróttamiðstöðvar og sterkir innviðir skapa í senn lífleg og örugg búsetu fyrir borgara á öllum aldri.</p></div>
-          <ul class="story__chips"><li data-i18n="st.hood.c1">Vífilsstaðavatn</li><li data-i18n="st.hood.c2">Heiðmörk</li><li data-i18n="st.hood.c3">GKG golfvöllur</li><li data-i18n="st.hood.c4">Fjölskylduvænt</li></ul>
         </div>
       </div>
     </section>
@@ -274,28 +177,28 @@
           </div>
           <div class="sellers__grid">
             <article class="agent">
-              <div class="agent__avatar"><img src="assets/agents/steinn.jpg?v=89" alt="Steinn Andri Viðarsson" /></div>
+              <div class="agent__avatar"><img src="assets/agents/steinn.webp?v=103" alt="Steinn Andri Viðarsson" /></div>
               <h3 class="agent__name">Steinn Andri Viðarsson</h3>
               <p class="agent__title">Löggiltur fasteigna- og skipasali</p>
               <a class="agent__line" href="tel:+3547751477">775‑1477</a>
               <a class="agent__line" href="mailto:steinn@miklaborg.is">steinn@miklaborg.is</a>
             </article>
             <article class="agent">
-              <div class="agent__avatar"><img src="assets/agents/gudrun.jpg?v=89" alt="Guðrún Gonnigan Daníelsdóttir" /></div>
+              <div class="agent__avatar"><img src="assets/agents/gudrun.webp?v=103" alt="Guðrún Gonnigan Daníelsdóttir" /></div>
               <h3 class="agent__name">Guðrún Gonnigan Daníelsdóttir</h3>
               <p class="agent__title">Löggiltur fasteignasali</p>
               <a class="agent__line" href="tel:+3548971161">897‑1161</a>
               <a class="agent__line" href="mailto:gudrun@miklaborg.is">gudrun@miklaborg.is</a>
             </article>
             <article class="agent">
-              <div class="agent__avatar"><img src="assets/agents/kjartan.jpg?v=89" alt="Kjartan Ísak Guðmundsson" /></div>
+              <div class="agent__avatar"><img src="assets/agents/kjartan.webp?v=103" alt="Kjartan Ísak Guðmundsson" /></div>
               <h3 class="agent__name">Kjartan Ísak Guðmundsson</h3>
               <p class="agent__title">Löggiltur fasteignasali</p>
               <a class="agent__line" href="tel:+3546634392">663‑4392</a>
               <a class="agent__line" href="mailto:kjartan@miklaborg.is">kjartan@miklaborg.is</a>
             </article>
             <article class="agent">
-              <div class="agent__avatar"><img src="assets/agents/kristin.jpg?v=89" alt="Kristín Pétursdóttir" /></div>
+              <div class="agent__avatar"><img src="assets/agents/kristin.webp?v=103" alt="Kristín Pétursdóttir" /></div>
               <h3 class="agent__name">Kristín Pétursdóttir</h3>
               <p class="agent__title">Löggiltur fasteigna- og skipasali</p>
               <a class="agent__line" href="tel:+3548241965">824‑1965</a>
@@ -395,12 +298,14 @@
     <img id="planZoomImg" src="" alt="" />
   </div>
 
-  <script src="js/data.js?v=89"></script>
-  <script src="js/content.js?v=89"></script>
-  <script src="js/app.js?v=89"></script>
-  <script src="js/cine.js?v=89"></script>
-  <script src="js/calibrate.js?v=89"></script>
-  <script src="js/planedit.js?v=89"></script>
-  <script src="js/maskedit.js?v=89"></script>
+  <script src="js/data.js?v=103"></script>
+  <script src="js/content.js?v=103"></script>
+  <script src="js/supabase-config.js?v=103"></script>
+  <script src="js/vbsupa.js?v=103"></script>
+  <script src="js/app.js?v=103"></script>
+  <script src="js/cine.js?v=103"></script>
+  <script src="js/calibrate.js?v=103"></script>
+  <script src="js/planedit.js?v=103"></script>
+  <script src="js/maskedit.js?v=103"></script>
 </body>
 </html>

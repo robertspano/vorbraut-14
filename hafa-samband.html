@@ -7,28 +7,45 @@
   <meta name="description" content="Hafðu samband við söluaðila Vorbraut 14 — sendu fyrirspurn um íbúðir, framkvæmdir eða annað." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css?v=79" />
 </head>
 <body class="is-contact">
 
   <!-- ============================ NAV ============================ -->
-  <header class="nav nav--solid" id="nav">
+  <header class="nav" id="nav">
     <div class="nav__left">
       <a href="index.html" class="nav__logo">VORBRAUT&nbsp;14</a>
       <nav class="nav__links" aria-label="Aðalvalmynd">
-        <a href="index.html" data-i18n="nav.house">Húsið</a>
+        <a href="verkefnid.html" data-i18n="nav.verkefnid">Verkefnið</a>
+        <a href="arkitektur.html" data-i18n="nav.arkitektur">Arkitektúr</a>
+        <a href="husid.html" data-i18n="nav.husid">Húsið</a>
+        <a href="utsyni.html" data-i18n="nav.utsyni">Útsýni</a>
+        <a href="utirymi.html" data-i18n="nav.utirymi">Útirými</a>
+        <a href="adgengi.html" data-i18n="nav.adgengi">Aðgengi</a>
+        <a href="hverfid.html" data-i18n="nav.hverfid">Hverfið</a>
         <a href="index.html#ibudir" data-i18n="nav.ibudir">Íbúðir</a>
       </nav>
     </div>
     <div class="nav__right">
       <a href="index.html#soluadilar" class="nav__link" data-i18n="sellers.title">Söluaðilar</a>
       <a href="hafa-samband.html" class="nav__contact" data-i18n="nav.contact">Hafa samband</a>
-      <button class="lang" id="langBtn" aria-label="Language">
-        <svg class="lang__globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 2.6 15.5 0 18M12 3c-2.6 2.5-2.6 15.5 0 18"/></svg>
-        <span id="langLabel">English</span>
-      </button>
+      <button class="lang" id="langBtn" aria-label="Language"><svg class="lang__globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 2.6 15.5 0 18M12 3c-2.6 2.5-2.6 15.5 0 18"/></svg><span id="langLabel">English</span></button>
+      <button class="burger" id="burger" aria-label="Valmynd" aria-controls="navmenu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
+    <nav class="navmenu" id="navmenu" aria-label="Valmynd">
+      <a href="verkefnid.html" data-i18n="nav.verkefnid">Verkefnið</a>
+      <a href="arkitektur.html" data-i18n="nav.arkitektur">Arkitektúr</a>
+      <a href="husid.html" data-i18n="nav.husid">Húsið</a>
+      <a href="utsyni.html" data-i18n="nav.utsyni">Útsýni</a>
+      <a href="utirymi.html" data-i18n="nav.utirymi">Útirými</a>
+      <a href="adgengi.html" data-i18n="nav.adgengi">Aðgengi</a>
+      <a href="hverfid.html" data-i18n="nav.hverfid">Hverfið</a>
+      <a href="index.html#ibudir" data-i18n="nav.ibudir">Íbúðir</a>
+      <hr/>
+      <a class="navmenu__action" href="index.html#soluadilar" data-i18n="sellers.title">Söluaðilar</a>
+      <a class="navmenu__action" href="hafa-samband.html" data-i18n="nav.contact">Hafa samband</a>
+    </nav>
   </header>
 
   <!-- ====================== HAFA SAMBAND (sér síða) ====================== -->

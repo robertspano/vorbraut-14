@@ -48,5 +48,17 @@
     });
   }
 
+  /* farsíma-valmynd (burger) + nav-solid við skrun */
+  const nav = $('#nav'), burger = $('#burger');
+  const closeMenu = () => { if (nav) nav.classList.remove('open'); document.body.classList.remove('navopen'); };
+  if (burger) burger.addEventListener('click', () => {
+    nav.classList.toggle('open'); document.body.classList.toggle('navopen', nav.classList.contains('open'));
+  });
+  $$('#navmenu a').forEach((a) => a.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+  const onNavScroll = () => { if (nav) nav.classList.toggle('nav--solid', (window.scrollY || document.documentElement.scrollTop) > 60); };
+  window.addEventListener('scroll', onNavScroll, { passive: true });
+  onNavScroll();
+
   applyLang();
 })();

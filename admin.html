@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Stöðustjórnun — Vorbraut 14</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=103" />
+  <style>
+    body.is-admin{background:#0b0c0d;color:#f3f1ec;min-height:100vh;font-family:var(--font)}
+    .ad__top{display:flex;align-items:center;justify-content:space-between;padding:1.3rem clamp(20px,5vw,60px);
+      border-bottom:1px solid rgba(255,255,255,.08)}
+    .ad__brand{font-family:var(--font);font-weight:600;letter-spacing:.16em;font-size:1rem}
+    .ad__wrap{max-width:760px;margin:0 auto;padding:clamp(34px,7vh,72px) clamp(20px,5vw,40px) 80px}
+    .ad__h1{font-family:var(--display);font-weight:300;font-size:clamp(2rem,4vw,3rem);margin:0 0 .4rem;color:#fff}
+    .ad__sub{color:rgba(244,242,236,.6);font-size:.98rem;margin:0 0 2.4rem}
+    /* login */
+    .ad__login{max-width:380px;margin:6vh auto 0;display:flex;flex-direction:column;gap:1rem}
+    .ad__field label{display:block;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;
+      color:rgba(244,242,236,.55);margin-bottom:.5rem}
+    .ad__field input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.16);
+      color:#fff;font:inherit;font-size:1rem;padding:.85rem 1rem;border-radius:0;outline:none}
+    .ad__field input:focus{border-color:var(--green)}
+    .ad__btn{background:#f4f2ec;color:#161616;border:0;font:inherit;font-weight:500;font-size:1rem;
+      padding:.95rem 1rem;cursor:pointer;border-radius:0;transition:.2s}
+    .ad__btn:hover{background:#fff}
+    .ad__ghost{background:none;border:1px solid rgba(255,255,255,.22);color:#fff;cursor:pointer;
+      font:inherit;font-size:.9rem;padding:.55rem 1rem;border-radius:0}
+    .ad__ghost:hover{background:rgba(255,255,255,.08)}
+    .ad__msg{color:#e0655a;font-size:.9rem;min-height:1.2em;line-height:1.5}
+    .ad__msg.info{color:#9fc06a}
+    .ad__who{color:rgba(244,242,236,.6);font-size:.9rem;margin-right:1rem}
+    /* apt rows */
+    .ad__row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+      padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    .ad__rowid{font-family:var(--display);font-size:1.3rem;color:#fff;min-width:5.5rem}
+    .ad__rowmeta{color:rgba(244,242,236,.55);font-size:.86rem;flex:1;min-width:8rem}
+    .ad__segs{display:inline-flex;border:1px solid rgba(255,255,255,.16);border-radius:999px;overflow:hidden}
+    .ad__seg{appearance:none;background:none;border:0;color:rgba(255,255,255,.7);font:inherit;font-size:.82rem;
+      padding:.5rem .95rem;cursor:pointer;transition:.18s;white-space:nowrap}
+    .ad__seg+.ad__seg{border-left:1px solid rgba(255,255,255,.14)}
+    .ad__seg:hover{color:#fff}
+    .ad__seg.on.available{background:#5fa83c;color:#fff}
+    .ad__seg.on.reserved{background:#d8a72c;color:#1a1a1a}
+    .ad__seg.on.sold{background:#cf4036;color:#fff}
+    .ad__note{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);padding:1.2rem 1.3rem;
+      color:rgba(244,242,236,.75);line-height:1.6;font-size:.92rem}
+    .ad__note code{color:#9fc06a;font-size:.85rem}
+    .ad__toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;
+      background:#5fa83c;color:#0b0c0d;font-weight:500;padding:.7rem 1.2rem;border-radius:4px;
+      transition:.3s var(--ease);pointer-events:none;z-index:50;font-size:.92rem}
+    .ad__toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    .ad__toast.err{background:#cf4036;color:#fff}
+    [hidden]{display:none!important}
+    @media(max-width:560px){ .ad__row{gap:.6rem} .ad__rowid{min-width:auto;font-size:1.1rem} .ad__rowmeta{flex-basis:100%} }
+  </style>
+</head>
+<body class="is-admin">
+  <header class="ad__top">
+    <a href="index.html" class="ad__brand" style="color:#fff;text-decoration:none">VORBRAUT&nbsp;14</a>
+    <button class="ad__ghost" id="logout" hidden>Skrá út</button>
+  </header>
+
+  <main class="ad__wrap">
+    <!-- Supabase óstillt -->
+    <div id="notconf" hidden>
+      <h1 class="ad__h1">Stöðustjórnun</h1>
+      <div class="ad__note">
+        Supabase er ekki stillt enn. Settu <code>SUPABASE_URL</code> og <code>SUPABASE_ANON_KEY</code>
+        inn í skrána <code>js/supabase-config.js</code> til að virkja innskráningu og stöðustjórnun.
+      </div>
+    </div>
+
+    <!-- innskráning (domain-aðgangur: kóði sendur á @miklaborg.is netfang) -->
+    <div class="ad__login" id="login" hidden>
+      <div>
+        <h1 class="ad__h1">Innskráning</h1>
+        <p class="ad__sub">Aðeins netföng sem enda á <b style="color:#9fc06a">@miklaborg.is</b>. Þú færð kóða sendan í tölvupóst.</p>
+      </div>
+      <!-- netfang + háttur -->
+      <div id="step-email">
+        <div class="ad__field"><label for="email">Miklaborg netfang</label><input type="email" id="email" placeholder="nafn@miklaborg.is" autocomplete="email" /></div>
+        <!-- háttur: kóði í tölvupóst -->
+        <div id="mode-code">
+          <button type="button" class="ad__btn" id="sendCode">Senda kóða í tölvupóst</button>
+          <button type="button" class="ad__ghost" id="usePw" style="margin-top:.6rem">Ég er með lykilorð</button>
+        </div>
+        <!-- háttur: lykilorð (engin tölvupóstur) -->
+        <div id="mode-pw" hidden>
+          <div class="ad__field"><label for="pw">Lykilorð</label><input type="password" id="pw" autocomplete="current-password" /></div>
+          <button type="button" class="ad__btn" id="pwLogin">Skrá inn</button>
+          <button type="button" class="ad__ghost" id="useCode" style="margin-top:.6rem">← Nota kóða í tölvupósti í staðinn</button>
+        </div>
+      </div>
+      <!-- kóða-innsláttur -->
+      <div id="step-code" hidden>
+        <div class="ad__field"><label for="code">Kóði úr tölvupósti</label><input type="text" id="code" inputmode="numeric" autocomplete="one-time-code" placeholder="6 stafa kóði" /></div>
+        <button type="button" class="ad__btn" id="verifyCode">Staðfesta og skrá inn</button>
+        <button type="button" class="ad__ghost" id="backEmail" style="margin-top:.6rem">← Til baka</button>
+      </div>
+      <p class="ad__msg" id="msg"></p>
+    </div>
+
+    <!-- stjórnborð -->
+    <section id="panel" hidden>
+      <h1 class="ad__h1">Stöðustjórnun íbúða</h1>
+      <p class="ad__sub">Veldu stöðu hverrar íbúðar — hún uppfærist strax á vefnum. Innskráð(ur) sem <span class="ad__who" id="who"></span></p>
+      <div id="aptlist"></div>
+    </section>
+  </main>
+
+  <div class="ad__toast" id="toast"></div>
+
+  <script src="js/data.js?v=103"></script>
+  <script src="js/supabase-config.js?v=103"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/admin.js?v=103"></script>
+</body>
+</html>

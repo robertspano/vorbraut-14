@@ -20,15 +20,22 @@
   const ctx = canvas.getContext('2d');
   const N1 = 96;
   const down = [];
-  const load = (arr, dir, n) => {
-    for (let i = 1; i <= n; i++) {
-      const img = new Image();
-      img.src = dir + 'f' + String(i).padStart(3, '0') + '.jpg';
-      img.onload = () => { if (i <= 2) render(); };
-      arr.push(img);
-    }
+  const DIR = 'assets/cine/';
+  const frameSrc = (i) => DIR + 'f' + String(i).padStart(3, '0') + '.webp';
+  const loadFrame = (i) => {
+    const img = new Image();
+    img.decoding = 'async';
+    img.onload = () => { if (i <= 2) render(); };
+    img.src = frameSrc(i);
+    down[i - 1] = img;
   };
-  load(down, 'assets/cine/', N1);
+  // Hraði: sækjum HERO-rammann (f001) strax svo forsíðan birtist nánast samstundis;
+  // hinir 95 streyma í bakgrunni eftir að síðan er komin upp (frestað).
+  loadFrame(1);
+  loadFrame(2);
+  const loadRest = () => { for (let i = 3; i <= N1; i++) loadFrame(i); };
+  if ('requestIdleCallback' in window) requestIdleCallback(loadRest, { timeout: 1800 });
+  else setTimeout(loadRest, 250);
 
   // timeline breakpoint (fraction of total scroll)
   const D = 0.62;   // fly-down ends / hold (interactive facade) begins and stays til footer

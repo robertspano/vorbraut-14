@@ -76,9 +76,33 @@
     });
   });
 
-  // burger (only present on layouts with a nav menu)
+  // burger + farsíma-yfirlagsvalmynd
   const burger = $('#burger');
-  if (burger) burger.addEventListener('click', () => nav.classList.toggle('open'));
+  const closeMenu = () => { nav.classList.remove('open'); document.body.classList.remove('navopen'); };
+  if (burger) burger.addEventListener('click', () => {
+    nav.classList.toggle('open');
+    document.body.classList.toggle('navopen', nav.classList.contains('open'));
+  });
+  $$('#navmenu a').forEach((a) => a.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+  // hlekkir á kafla forsíðunnar (index.html#… eða #…) -> mjúkt skrun, engin endurhleðsla
+  $$('a[href*="#"]:not([data-scroll]):not([data-cinedown])').forEach((a) => {
+    const href = a.getAttribute('href') || '';
+    if (!/^(index\.html)?#/.test(href)) return;
+    a.addEventListener('click', (e) => {
+      const hash = href.split('#')[1]; const target = hash && $('#' + hash);
+      if (!target) return;
+      e.preventDefault(); closeMenu(); goToSection(target.offsetTop);
+    });
+  });
+  // vörumerki á forsíðu -> efst (ekki endurhlaða)
+  const navLogo = $('.nav__logo');
+  if (navLogo) navLogo.addEventListener('click', (e) => { e.preventDefault(); closeMenu(); goToSection(0); });
+  // lentum á forsíðu með #hash frá undirsíðu
+  if (location.hash && $(location.hash)) {
+    setTimeout(() => { const tgt = $(location.hash); if (tgt) goToSection(tgt.offsetTop); }, 120);
+  }
 
   // active nav link
   const navMap = {};
@@ -102,6 +126,7 @@
 
   /* --------------------------- helpers ---------------------------------- */
   const fmtArea = (n) => n.toLocaleString('is-IS', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const fmtKr = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' kr.';
   const roomsLabel = (r) => t('unit.rooms' + r) || (r + ' herb.');
   const outLabel = (o) => t('out.' + o);
   const statusLabel = (s) => t('st.' + s);
@@ -136,9 +161,9 @@
   });
 
   function statusFill(s) {
-    if (s === 'sold') return 'rgba(58,61,64,.42)';
-    if (s === 'reserved') return 'rgba(143,166,174,.5)';
-    return 'rgba(126,154,82,.46)';
+    if (s === 'sold') return '#cf4036';        // selt -> rautt
+    if (s === 'reserved') return '#d8a72c';    // selt með fyrirvara -> gult
+    return '#5fa83c';                          // til sölu -> grænt (CSS-sjálfgildi)
   }
   function showTip(id) {
     const a = aptById[id]; if (!a) return;
@@ -157,8 +182,8 @@
   /* ===================== APARTMENT GRID + FILTERS ====================== */
   const grid = $('#aptRows');
   const gridEmpty = $('#gridEmpty');
-  const FRANGE = { area: [64, 158], floor: [1, 4], rooms: [2, 4] };
-  const state = { area: [64, 158], floor: [1, 4], rooms: [2, 4], laundry: false, pottur: false, parking: false, available: false };
+  const FRANGE = { area: [64, 168], floor: [1, 4], rooms: [2, 4] };
+  const state = { area: [64, 168], floor: [1, 4], rooms: [2, 4], laundry: false, pottur: false, parking: false, available: false };
 
   function matches(a) {
     return a.area >= state.area[0] && a.area <= state.area[1]
@@ -173,7 +198,7 @@
     if (!grid) return;
     const list = APARTMENTS.filter(matches);
     grid.innerHTML = list.map((a) => {
-      const out = outLabel(a.outdoor) + (a.balcony ? ' · ' + fmtArea(a.balcony) + ' m²' : '');
+      const out = outLabel(a.outdoor).split(' / ')[0] + (a.balcony ? ' · ' + fmtArea(a.balcony) + ' m²' : '');
       return `<tr class="aptrow aptrow--${a.status}" data-id="${a.id}">
         <td class="aptrow__id" data-label="${t('col.id')}">${a.id}</td>
         <td data-label="${t('col.floor')}">${floorLabel(a.floor)}</td>
@@ -182,6 +207,7 @@
         <td data-label="${t('spec.balcony')}">${out}</td>
         <td data-label="${t('spec.parking')}">1</td>
         <td data-label="${t('spec.storage')}">${t('spec.basement')}</td>
+        <td class="aptrow__price" data-label="${t('spec.price')}">${a.price ? fmtKr(a.price) : '—'}</td>
         <td data-label="${t('col.status')}"><span class="aptrow__status">${statusLabel(a.status)}</span></td>
         <td class="aptrow__viewcell"><span class="aptrow__view">${t('apts.view')}</span></td>
       </tr>`;
@@ -295,12 +321,18 @@
     list.filter((a) => a.id !== selId).forEach((a) => { html += draw(a); });  // ekki-valdar fyrst
     const selA = list.find((a) => a.id === selId);
     if (selA) html += draw(selA);                                             // valda íbúðin efst
-    // áttaviti — raunstefna norðurs úr líkaninu (tvílita nál, sbr. kortastíl)
-    const nd = FLOOR_SHAPES.northDeg, nx = 288, ny = 16;
-    html += `<g class="dg-north" transform="translate(${nx},${ny}) rotate(${(nd + 90).toFixed(1)})">
-      <path class="dg-north-l" d="M0,-16 L-3.7,7 L0,2.2 Z"/>
-      <path class="dg-north-r" d="M0,-16 L0,2.2 L3.7,7 Z"/></g>
-      <text class="dg-northlbl" x="${nx + 2}" y="${ny + 15}">N</text>`;
+    // áttaviti — hreinn áttavísir í lausa plássinu neðst t.h. (snertir ekki teikninguna)
+    const nd = FLOOR_SHAPES.northDeg, cx = 281, cy = 168, nlen = 13.5;
+    const nth = (nd + 90) * Math.PI / 180;
+    const nlx = (cx + nlen * Math.sin(nth)).toFixed(1);
+    const nly = (cy - nlen * Math.cos(nth)).toFixed(1);
+    html += `<g class="dg-north" transform="translate(${cx},${cy})">
+      <circle class="dg-north-ring" r="9.6"/>
+      <g transform="rotate(${(nd + 90).toFixed(1)})">
+        <path class="dg-north-l" d="M0,-8 L-2.7,4.4 L0,1.8 Z"/>
+        <path class="dg-north-r" d="M0,-8 L0,1.8 L2.7,4.4 Z"/>
+      </g></g>
+      <text class="dg-northlbl" x="${nlx}" y="${nly}">N</text>`;
     svg.innerHTML = html;
     $$('.dg-apt', svg).forEach((g) => g.addEventListener('click', () => openModal(aptById[g.dataset.id])));
   }
@@ -339,7 +371,7 @@
 
     // upplýsingagrid (sama uppsetning og vesturvin, okkar gögn)
     const outVal = outLabel(a.outdoor) + (a.balcony ? ' · ' + fmtArea(a.balcony) + ' m²' : '');
-    const kr = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' kr';
+    const kr = fmtKr;
     const specs = [
       [t('col.floor'), floorLabel(a.floor)],
       [t('col.rooms'), roomsLabel(a.rooms)],
@@ -439,6 +471,19 @@
     if (!planZoom.hidden) closeZoom();
     else if (!modal.hidden) closeModal();
   });
+
+  /* ----- staða íbúða úr Supabase (lifandi: grænt/gult/rautt) ----------- */
+  if (window.VB && typeof VB.getStatuses === 'function') {
+    VB.getStatuses().then((m) => {
+      if (!m || !Object.keys(m).length) return;
+      APARTMENTS.forEach((a) => { if (m[a.id]) a.status = m[a.id]; });
+      $$('polygon', svg).forEach((p) => {
+        const a = aptById[p.dataset.id];
+        p.style.fill = (a && a.status !== 'available') ? statusFill(a.status) : '';
+      });
+      buildGrid(); syncFacade();
+    }).catch(() => {});
+  }
 
   /* ------------------------------ init ---------------------------------- */
   applyLang();   // also builds grid
