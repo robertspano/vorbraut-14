@@ -353,10 +353,10 @@
     if (!doc || !doc.body || doc.getElementById('ve-style')) return;
     const st = doc.createElement('style'); st.id = 've-style';
     st.textContent =
-      '[data-i18n]{cursor:text!important}' +
+      '[data-i18n]{cursor:text!important;pointer-events:auto!important}' +
       '[data-i18n]:hover{outline:1.5px dashed rgba(95,168,60,.9)!important;outline-offset:2px;background:rgba(95,168,60,.07)!important}' +
-      '[data-i18n].ve-on{outline:2px solid #5fa83c!important;outline-offset:2px;background:rgba(95,168,60,.14)!important;border-radius:2px}' +
-      'img[data-img]{cursor:pointer!important}' +
+      '[data-i18n].ve-on{outline:2px solid #5fa83c!important;outline-offset:2px;background:rgba(95,168,60,.14)!important;border-radius:2px;position:relative;z-index:2147483600}' +
+      'img[data-img]{cursor:pointer!important;pointer-events:auto!important}' +
       'img[data-img]:hover{outline:2px dashed rgba(95,168,60,.95)!important;outline-offset:3px}' +
       '[data-block]:hover{outline:1.5px dashed rgba(95,168,60,.45);outline-offset:-2px}' +
       '#ve-blockbar{position:fixed;z-index:2147483646;display:none;gap:.25rem;background:#0b0c0d;border:1px solid rgba(255,255,255,.28);border-radius:8px;padding:.28rem;box-shadow:0 6px 22px rgba(0,0,0,.45)}' +
@@ -368,9 +368,17 @@
     doc.addEventListener('click', (e) => {
       if (e.target.closest('#ve-blockbar')) return;   // blokk-stikan sér um sína eigin smelli
       if (e.target.closest('#modal, #planZoom')) return;   // íbúða-glugginn virkar eðlilega (loka-X, hæðir o.fl.)
-      const img = e.target.closest('img[data-img]');
+      let img = e.target.closest('img[data-img]');
+      let el = e.target.closest('[data-i18n]');
+      if (!img && !el && doc.elementsFromPoint) {   // leita undir bendli ef yfirlag (bygging/áttavísir) hylur textann
+        const stack = doc.elementsFromPoint(e.clientX, e.clientY);
+        for (let i = 0; i < stack.length; i++) {
+          if (!img) { const ci = stack[i].closest && stack[i].closest('img[data-img]'); if (ci) img = ci; }
+          if (!el) { const ct = stack[i].closest && stack[i].closest('[data-i18n]'); if (ct) el = ct; }
+          if (img || el) break;
+        }
+      }
       if (img) { e.preventDefault(); e.stopPropagation(); pendingImg = img; const fi = $('#veFile'); if (fi) { fi.value = ''; fi.click(); } return; }
-      const el = e.target.closest('[data-i18n]');
       if (el) { e.preventDefault(); e.stopPropagation(); startEdit(el, doc, win); return; }
       const a = e.target.closest('a,button'); if (a) { e.preventDefault(); e.stopPropagation(); }
     }, true);
