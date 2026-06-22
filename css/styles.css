@@ -829,15 +829,17 @@ body.is-page{background:#0e0f10}
    þar sem byggingin minnkar í 16:9 borða og íbúðalistinn rís upp undir hann
    (cine.js stýrir hæð .cine__stick á síma). Engin tvöföld mynd. ===== */
 @media (max-width:860px){
-  .cine{height:250vh}                     /* niðurflug + zoom-out svigrúm */
+  .cine{height:210vh}                     /* niðurflug + zoom-out svigrúm (styttra -> lýkur fyrr) */
   .facade__sides{top:auto}                /* cine.js setur bottom — takkinn fer UNDIR myndina */
-  /* „Skoðaðu íbúðirnar“ caption-ið birtist líka á síma — þétt útgáfa neðst á borðanum */
-  .select__head{display:block;padding:46px var(--pad) 12px;
-    background:linear-gradient(0deg,rgba(14,16,18,.84) 0%,rgba(14,16,18,.3) 56%,transparent 100%)}
-  .select__head h2{font-size:clamp(1.45rem,6.6vw,2rem);line-height:1.08}
-  .select__head .kicker{font-size:.64rem}
-  .select__sub{font-size:.85rem;margin-top:.4rem;max-width:42ch;
+  /* „Skoðaðu íbúðirnar“ caption-ið birtist líka á síma — þétt, minni útgáfa neðst á borðanum */
+  .select__head{display:block;padding:30px var(--pad) 10px;
+    background:linear-gradient(0deg,rgba(14,16,18,.86) 0%,rgba(14,16,18,.32) 58%,transparent 100%)}
+  .select__head .kicker{font-size:.56rem;letter-spacing:.22em}
+  .select__head h2{font-size:clamp(1.1rem,5vw,1.5rem);line-height:1.1;margin-top:.1rem}
+  .select__sub{font-size:.74rem;line-height:1.4;margin-top:.32rem;max-width:38ch;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  /* íbúðirnar sitja þétt undir borðanum þegar hreyfingin læsist (minna dökkt bil) */
+  .apts{padding-top:clamp(26px,3.4vh,34px)}
 }
 /* ===== Story-sections á síma: stafla mynd yfir texta, styttri immersive hetjur ===== */
 @media (max-width:860px){
