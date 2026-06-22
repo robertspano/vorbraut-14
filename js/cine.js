@@ -65,9 +65,11 @@
 
   const facadeSides = document.getElementById('facadeSides');
   const isMobile = () => vpW <= 860;
-  const bannerH = () => Math.round(vpW * 9 / 16);    // 16:9 borða-hæð
-  const GAP = () => Math.round(vpH * 0.045) + 44;    // dökkt svigrúm undir navinu (mynd neðar)
-  const STRIP = 66;                                  // dökk röð undir myndinni fyrir Aftan/Framan
+  // Hærri borði en 16:9 -> cover sníður landslagið af hliðunum og byggingin (aðalatriðið)
+  // verður stærri á síma. Zoom-out endar því á stærri mynd (fer ekki of langt upp).
+  const bannerH = () => Math.round(vpW * 0.72);      // borða-hæð (stærri bygging á síma)
+  const GAP = () => Math.round(vpH * 0.04) + 26;     // dökkt svigrúm undir navinu (minna -> mynd ofar)
+  const STRIP = 64;                                  // dökk röð undir myndinni fyrir Aftan/Framan
   const cardH = () => GAP() + bannerH() + STRIP;     // sett-hæð borðans á síma
 
   function resizeCanvas() {
