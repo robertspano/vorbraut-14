@@ -95,14 +95,22 @@
   // t=0 -> cover (fyllir skjá); t=1 -> contain (öll byggingin sést, letterbox).
   // Á lóðréttum síma "drögum við til baka" í heila byggingu þegar facade birtist,
   // svo allar íbúðir séu sýnilegar/smellanlegar (annars klippast hliðarnar af).
-  function drawFrame(img, t) {
+  function drawFrame(img, t, zoom) {
     if (!img || !img.complete || !img.naturalWidth) return;
     const a = fitRect(img, false), b = fitRect(img, true);
-    const dx = a.dx + (b.dx - a.dx) * t, dy = a.dy + (b.dy - a.dy) * t;
-    const dw = a.dw + (b.dw - a.dw) * t, dh = a.dh + (b.dh - a.dh) * t;
+    let dx = a.dx + (b.dx - a.dx) * t, dy = a.dy + (b.dy - a.dy) * t;
+    let dw = a.dw + (b.dw - a.dw) * t, dh = a.dh + (b.dh - a.dh) * t;
+    if (zoom && zoom !== 1) {                 // stafrænn zoom um miðju -> stærri startrammi
+      const cx = canvas.width / 2, cy = canvas.height / 2;
+      dx = cx - (cx - dx) * zoom; dy = cy - (cy - dy) * zoom;
+      dw *= zoom; dh *= zoom;
+    }
     ctx.globalAlpha = 1;
     ctx.drawImage(img, dx, dy, dw, dh);
   }
+  // Startrammi stækkaður (byggingin meira áberandi á hero) og zoom-ið fjarar út
+  // snemma í niðurfluginu svo flugið taki mjúkt við. 1.0 = enginn auka-zoom.
+  const startZoom = (p) => 1 + 0.22 * (1 - smooth(p, 0, 0.20));
 
   function progAt(sTop) {
     const total = cineH - vpH;
@@ -150,7 +158,7 @@
       stick.style.height = h + 'px';
       const m = (vh - CARD) > 0 ? clamp((vh - h) / (vh - CARD), 0, 1) : 0;   // 0 í niðurflugi → 1 fullzoom-að
       const canvasOp = clamp(1 - m * 2.2, 0, 1);                 // canvas fade-ast út → GAP/STRIP verða dökk
-      if (canvasOp > 0) drawFrame(pickFrame(p), 0);             // sleppa teikningu þegar canvas er ósýnilegt
+      if (canvasOp > 0) drawFrame(pickFrame(p), 0, startZoom(p)); // sleppa teikningu þegar canvas er ósýnilegt
       // myndin færist neðar (GAP eykst) og skilur eftir STRIP fyrir takkann — zoom-out með cover.
       // height:auto svo top+bottom ráði boxinu (CSS height:100% myndi annars ráða).
       facade.style.height = 'auto';
@@ -167,7 +175,7 @@
         facadeSides.style.bottom = Math.max(2, Math.round((STRIP * m - 38) / 2)) + 'px';
       }
     } else {
-      drawFrame(pickFrame(p), 0);              // tölva: alltaf cover — engin letterbox
+      drawFrame(pickFrame(p), 0, startZoom(p)); // tölva: cover + stærri startrammi
       // tölva: facade-yfirlag (+ Aftan/Framan) fade-ast inn við HOLD og helst
       facade.style.top = ''; facade.style.bottom = ''; facade.style.height = '';
       canvas.style.opacity = '';
