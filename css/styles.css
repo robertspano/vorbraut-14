@@ -762,3 +762,11 @@ body.is-page{background:#0e0f10}
 @media (max-width:860px){
   body:not(.is-page):not(.is-contact) .nav{background:#0b0c0d}
 }
+
+/* Sími: snerti-orðalag ("Ýttu eða smelltu") í stað "Færðu músina yfir" (engin mús á síma).
+   Tvö afbrigði af caption-textanum; CSS velur eftir skjástærð. Bæði ritstýranleg í CMS. */
+.select__sub--touch{display:none}
+@media (max-width:860px){
+  .select__head .select__sub:not(.select__sub--touch){display:none}
+  .select__head .select__sub--touch{display:block}
+}
