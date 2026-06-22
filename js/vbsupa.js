@@ -33,13 +33,23 @@ window.VB.getContent = async function () {
     });
     if (!r.ok) return null;
     const rows = await r.json();
-    const ov = { is: {}, en: {} };
+    const ov = { is: {}, en: {}, img: {} };
     (rows || []).forEach((x) => {
-      if (x && x.key && (x.lang === 'is' || x.lang === 'en') && x.value != null && String(x.value).length)
-        ov[x.lang][x.key] = x.value;
+      if (!x || !x.key || x.value == null || !String(x.value).length) return;
+      if (x.lang === 'is' || x.lang === 'en') ov[x.lang][x.key] = x.value;
+      else if (x.lang === 'img') ov.img[x.key] = x.value;
     });
     return ov;
   } catch (e) { return null; }
+};
+
+/* Setur uppfærðar myndir á <img data-img="..."> (úr lang='img' í content-töflunni). */
+window.VB.applyImageOverrides = function (map) {
+  if (!map) return;
+  document.querySelectorAll('img[data-img]').forEach(function (im) {
+    var k = im.getAttribute('data-img');
+    if (map[k]) im.setAttribute('src', map[k]);
+  });
 };
 
 /* Bræðir yfirskriftir inn í window.VB.STR (sama hlut -> t() sér breytingarnar). */

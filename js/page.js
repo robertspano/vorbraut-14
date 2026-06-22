@@ -47,6 +47,8 @@
   applyLang();
   // texta-yfirskriftir úr Supabase (CMS)
   if (window.VB && window.VB.getContent) window.VB.getContent().then((ov) => {
-    if (ov && window.VB.applyContentOverrides(ov)) applyLang();
+    if (!ov) return;
+    if (window.VB.applyImageOverrides) window.VB.applyImageOverrides(ov.img);
+    if (window.VB.applyContentOverrides(ov)) applyLang();
   }).catch(() => {});
 })();

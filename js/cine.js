@@ -33,9 +33,24 @@
   // hinir 95 streyma í bakgrunni eftir að síðan er komin upp (frestað).
   loadFrame(1);
   loadFrame(2);
-  const loadRest = () => { for (let i = 3; i <= N1; i++) loadFrame(i); };
-  if ('requestIdleCallback' in window) requestIdleCallback(loadRest, { timeout: 1800 });
-  else setTimeout(loadRest, 250);
+  // Hversu þétt sækjum við ramma? Færri beiðnir á hægri tengingu / í gagnasparnaði.
+  // Fyrst gróf þekja yfir allt niðurflugið (annar/fjórði hver rammi) -> nothæft strax,
+  // svo fyllt upp í alla ramma fyrir fulla mýkt á góðri tengingu (frestað).
+  const conn = navigator.connection || {};
+  const slow = conn.saveData || /2g/.test(conn.effectiveType || '');
+  const good = !conn.effectiveType || conn.effectiveType === '4g';   // wifi/4g eða óþekkt
+  const step = slow ? 4 : (conn.effectiveType === '3g' ? 3 : 2);
+  const loadStepped = () => {
+    for (let i = 3; i <= N1; i += step) loadFrame(i);
+    if (!down[N1 - 1]) loadFrame(N1);             // loka-ramminn (borðinn) alltaf
+    if (step > 1 && good) {                         // önnur umferð (aðeins á góðri tengingu): full mýkt
+      const fill = () => { for (let i = 3; i < N1; i++) if (!down[i - 1]) loadFrame(i); };
+      if ('requestIdleCallback' in window) requestIdleCallback(fill, { timeout: 6000 });
+      else setTimeout(fill, 2500);
+    }
+  };
+  if ('requestIdleCallback' in window) requestIdleCallback(loadStepped, { timeout: 1800 });
+  else setTimeout(loadStepped, 250);
 
   // timeline breakpoint (fraction of total scroll)
   const D = 0.62;   // fly-down ends / hold (interactive facade) begins and stays til footer

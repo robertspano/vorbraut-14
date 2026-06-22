@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=110" />
+  <link rel="stylesheet" href="css/styles.css?v=113" />
   <style>
     body.is-admin{background:#0b0c0d;color:#f3f1ec;min-height:100vh;font-family:var(--font)}
     .ad__top{display:flex;align-items:center;justify-content:space-between;padding:1.3rem clamp(20px,5vw,60px);
@@ -88,8 +88,29 @@
       font:inherit;font-size:.92rem;line-height:1.5;padding:.6rem .75rem;border-radius:0;outline:none;resize:vertical;min-height:2.7em}
     .cfield textarea:focus{border-color:var(--green);background:rgba(255,255,255,.06)}
     .cfield.is-override textarea{border-left:2px solid var(--green)}
+    /* sjónrænn ritill */
+    .cedit__modes{display:flex;gap:.5rem;margin-bottom:1.3rem}
+    .cedit__mode{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:rgba(244,242,236,.7);
+      font:inherit;font-size:.92rem;padding:.5rem 1.1rem;border-radius:999px;cursor:pointer;transition:.15s}
+    .cedit__mode:hover{color:#fff}
+    .cedit__mode.on{background:var(--green);border-color:var(--green);color:#fff}
+    /* heilskjár: ritillinn er sjálf vefsíðan, ekki kassi */
+    .cedit__visual{position:fixed;inset:0;z-index:60;background:#0b0c0d;display:flex;flex-direction:column}
+    .cedit__bar{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;flex:none;
+      padding:.6rem clamp(12px,2vw,22px);border-bottom:1px solid rgba(255,255,255,.1)}
+    .cedit__close{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#fff;font:inherit;
+      font-size:.9rem;padding:.45rem .95rem;border-radius:999px;cursor:pointer;flex:none}
+    .cedit__close:hover{background:rgba(255,255,255,.15)}
+    .cedit__sel{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:#fff;font:inherit;
+      font-size:.95rem;padding:.5rem .8rem;border-radius:6px;outline:none}
+    .cedit__lang{display:inline-flex;border:1px solid rgba(255,255,255,.16);border-radius:999px;overflow:hidden}
+    .cedit__lang button{background:none;border:0;color:rgba(255,255,255,.7);font:inherit;font-size:.86rem;padding:.45rem .9rem;cursor:pointer}
+    .cedit__lang button.on{background:rgba(255,255,255,.12);color:#fff}
+    .cedit__hint{color:rgba(244,242,236,.5);font-size:.85rem;margin-left:auto}
+    .cedit__frame{flex:1;min-height:0;overflow:hidden;background:#fff}
+    .cedit__frame iframe{display:block;width:100%;height:100%;border:0;background:#fff}
     [hidden]{display:none!important}
-    @media(max-width:560px){ .ad__row{gap:.6rem} .ad__rowid{min-width:auto;font-size:1.1rem} .ad__rowmeta{flex-basis:100%} .crow__fields{grid-template-columns:1fr} .cgrp__where{display:none} }
+    @media(max-width:560px){ .ad__row{gap:.6rem} .ad__rowid{min-width:auto;font-size:1.1rem} .ad__rowmeta{flex-basis:100%} .crow__fields{grid-template-columns:1fr} .cgrp__where{display:none} .cedit__hint{display:none} .cedit__visual{width:100vw} .cedit__frame iframe{height:70vh} }
   </style>
 </head>
 <body class="is-admin">
@@ -156,19 +177,42 @@
       <!-- texti: CMS -->
       <div id="view-content" hidden>
         <h1 class="ad__h1">Texti á vefnum</h1>
-        <p class="ad__sub">Breyttu hvaða texta sem er — vistast sjálfkrafa og birtist strax á vefnum. Tómt reit fer aftur í sjálfgefinn texta.</p>
-        <div class="ad__csearch"><input type="search" id="cSearch" placeholder="Leita í texta eða lykli…" /></div>
-        <div id="contentList"></div>
+        <p class="ad__sub">Smelltu á hvaða texta sem er beint á síðunni og breyttu honum. Vistast sjálfkrafa og birtist strax. Tómt fer aftur í sjálfgefið.</p>
+        <div class="cedit__modes">
+          <button type="button" class="cedit__mode on" data-mode="visual">Sjónrænt</button>
+          <button type="button" class="cedit__mode" data-mode="list">Listi</button>
+        </div>
+
+        <!-- sjónrænn ritill: sjálf vefsíðan, smelltu á texta -->
+        <div id="visualEditor" class="cedit__visual">
+          <div class="cedit__bar">
+            <button type="button" class="cedit__close" id="veClose" title="Loka ritli">✕ Loka</button>
+            <select id="vePage" class="cedit__sel" aria-label="Síða"></select>
+            <span class="cedit__lang" role="group" aria-label="Tungumál">
+              <button type="button" data-velang="is" class="on">Íslenska</button>
+              <button type="button" data-velang="en">English</button>
+            </span>
+            <span class="cedit__hint">Smelltu á texta eða mynd til að breyta · Enter vistar · Esc hættir við</span>
+          </div>
+          <div class="cedit__frame"><iframe id="veFrame" title="Forskoðun vefsíðu"></iframe></div>
+          <input type="file" id="veFile" accept="image/*" hidden />
+        </div>
+
+        <!-- listi (allt í einu) -->
+        <div id="listEditor" hidden>
+          <div class="ad__csearch"><input type="search" id="cSearch" placeholder="Leita í texta eða lykli…" /></div>
+          <div id="contentList"></div>
+        </div>
       </div>
     </section>
   </main>
 
   <div class="ad__toast" id="toast"></div>
 
-  <script src="js/data.js?v=110"></script>
-  <script src="js/content.js?v=110"></script>
-  <script src="js/supabase-config.js?v=110"></script>
+  <script src="js/data.js?v=113"></script>
+  <script src="js/content.js?v=113"></script>
+  <script src="js/supabase-config.js?v=113"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/admin.js?v=110"></script>
+  <script src="js/admin.js?v=113"></script>
 </body>
 </html>

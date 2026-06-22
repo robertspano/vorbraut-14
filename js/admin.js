@@ -121,7 +121,7 @@
   /* ---------- texta-ritill (CMS): breyta öllum texta á vefnum ---------- */
   const STR = (window.VB && window.VB.STR) || { is: {}, en: {} };
   let overrides = { is: {}, en: {} };
-  let contentBuilt = false;
+  let contentBuilt = false, veBuilt = false, contentTabInit = false, overridesLoaded = false, pendingImg = null;
   const esc = (s) => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
   // Kaflar í sömu röð og á vefnum: [lykilforskeyti, heiti, hvar það er, tengill]
@@ -203,9 +203,7 @@
   async function buildContentEditor() {
     const list = $('#contentList'); if (!list) return;
     list.innerHTML = '<p class="ad__sub">Sæki texta…</p>';
-    overrides = { is: {}, en: {} };
-    const { data } = await supa.from('content').select('key,lang,value');
-    (data || []).forEach((r) => { if (r && (r.lang === 'is' || r.lang === 'en')) overrides[r.lang][r.key] = r.value; });
+    await ensureOverrides();
 
     const keys = [...new Set([...Object.keys(STR.is || {}), ...Object.keys(STR.en || {})])];
     const groups = {};
@@ -250,26 +248,130 @@
     $$('#contentList textarea', list).forEach((ta) => ta.addEventListener('change', () => saveContent(ta)));
   }
 
+  async function ensureOverrides() {
+    if (overridesLoaded) return;
+    overridesLoaded = true;
+    const { data } = await supa.from('content').select('key,lang,value');
+    overrides = { is: {}, en: {} };
+    (data || []).forEach((r) => { if (r && (r.lang === 'is' || r.lang === 'en')) overrides[r.lang][r.key] = r.value; });
+  }
+
+  // kjarni: vista (eða eyða ef tómt/sjálfgefið) -> Supabase. Skilar 'reverted' | true | false.
+  async function saveValue(key, lang, val, def) {
+    if (val.trim() === '' || val === def) {
+      const { error } = await supa.from('content').delete().eq('key', key).eq('lang', lang);
+      if (error) { toast('Villa: ' + error.message, true); return false; }
+      delete overrides[lang][key];
+      toast('Sett aftur í sjálfgefið');
+      return 'reverted';
+    }
+    const { error } = await supa.from('content')
+      .upsert({ key, lang, value: val, updated_at: new Date().toISOString() }, { onConflict: 'key,lang' });
+    if (error) { toast('Villa: ' + error.message, true); return false; }
+    overrides[lang][key] = val;
+    toast('Vistað');
+    return true;
+  }
+
   async function saveContent(ta) {
     const key = ta.dataset.key, l = ta.dataset.lang;
     const def = (STR[l] && STR[l][key]) || '';
-    const val = ta.value;
     const field = ta.closest('.cfield');
-    if (val.trim() === '' || val === def) {
-      const { error } = await supa.from('content').delete().eq('key', key).eq('lang', l);
-      if (error) { toast('Villa: ' + error.message, true); return; }
-      delete overrides[l][key];
-      if (val !== def) ta.value = def;            // tæmt -> sýna sjálfgefið
-      if (field) field.classList.remove('is-override');
-      toast('Sett aftur í sjálfgefið');
-    } else {
-      const { error } = await supa.from('content')
-        .upsert({ key, lang: l, value: val, updated_at: new Date().toISOString() }, { onConflict: 'key,lang' });
-      if (error) { toast('Villa: ' + error.message, true); return; }
-      overrides[l][key] = val;
-      if (field) field.classList.add('is-override');
-      toast('Vistað');
+    const res = await saveValue(key, l, ta.value, def);
+    if (res === 'reverted') { ta.value = def; if (field) field.classList.remove('is-override'); }
+    else if (res === true) { if (field) field.classList.add('is-override'); }
+  }
+
+  /* ---------- sjónrænn ritill: smelltu á texta beint á síðunni (iframe, sama lén) ---------- */
+  const VE_PAGES = [
+    ['index.html', 'Forsíða'], ['verkefnid.html', 'Verkefnið'], ['arkitektur.html', 'Arkitektúr'],
+    ['husid.html', 'Húsið'], ['utsyni.html', 'Útsýni'], ['utirymi.html', 'Útirými'],
+    ['adgengi.html', 'Aðgengi'], ['hverfid.html', 'Hverfið'], ['hafa-samband.html', 'Hafa samband'],
+  ];
+  function buildVisualEditor() {
+    const sel = $('#vePage'), frame = $('#veFrame');
+    if (!sel || !frame) return;
+    sel.innerHTML = VE_PAGES.map((p) => `<option value="${p[0]}">${esc(p[1])}</option>`).join('');
+    const load = () => { frame.src = sel.value + '?ve=' + Date.now(); };
+    sel.addEventListener('change', load);
+    $$('.cedit__lang [data-velang]').forEach((b) => b.addEventListener('click', () => {
+      $$('.cedit__lang [data-velang]').forEach((x) => x.classList.toggle('on', x === b));
+      try { localStorage.setItem('vb-lang', b.dataset.velang); } catch (e) {}
+      load();
+    }));
+    const closeBtn = $('#veClose');
+    if (closeBtn) closeBtn.addEventListener('click', () => { const lb = $('.cedit__mode[data-mode="list"]'); if (lb) lb.click(); });
+    const fileInput = $('#veFile');
+    if (fileInput) fileInput.addEventListener('change', () => uploadImage(fileInput));
+    frame.addEventListener('load', () => attachEditor(frame));
+    load();
+  }
+
+  async function uploadImage(fi) {
+    const file = fi.files && fi.files[0];
+    if (!file || !pendingImg) return;
+    const img = pendingImg; pendingImg = null;
+    const key = img.getAttribute('data-img');
+    toast('Hleð upp mynd…');
+    const ext = ((file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '')) || 'jpg';
+    const path = key.replace(/[^a-z0-9]/gi, '_') + '_' + Date.now() + '.' + ext;
+    const up = await supa.storage.from('site-images').upload(path, file, { upsert: true, cacheControl: '604800' });
+    if (up.error) { toast('Villa við upphleðslu: ' + up.error.message, true); return; }
+    const pub = supa.storage.from('site-images').getPublicUrl(path);
+    const url = pub && pub.data && pub.data.publicUrl;
+    if (!url) { toast('Villa: vantar slóð á mynd', true); return; }
+    const res = await saveValue(key, 'img', url, '');
+    if (res === true) { img.src = url; toast('Mynd uppfærð'); }
+  }
+  function attachEditor(frame) {
+    let doc, win;
+    try { doc = frame.contentDocument; win = frame.contentWindow; } catch (e) { return; }
+    if (!doc || !doc.body || doc.getElementById('ve-style')) return;
+    const st = doc.createElement('style'); st.id = 've-style';
+    st.textContent =
+      '[data-i18n]{cursor:text!important}' +
+      '[data-i18n]:hover{outline:1.5px dashed rgba(95,168,60,.9)!important;outline-offset:2px;background:rgba(95,168,60,.07)!important}' +
+      '[data-i18n].ve-on{outline:2px solid #5fa83c!important;outline-offset:2px;background:rgba(95,168,60,.14)!important;border-radius:2px}' +
+      'img[data-img]{cursor:pointer!important}' +
+      'img[data-img]:hover{outline:2px dashed rgba(95,168,60,.95)!important;outline-offset:3px}';
+    doc.head.appendChild(st);
+    // breytingaham: smellur breytir texta/mynd í stað þess að navigera/triggera
+    doc.addEventListener('click', (e) => {
+      const img = e.target.closest('img[data-img]');
+      if (img) { e.preventDefault(); e.stopPropagation(); pendingImg = img; const fi = $('#veFile'); if (fi) { fi.value = ''; fi.click(); } return; }
+      const el = e.target.closest('[data-i18n]');
+      if (el) { e.preventDefault(); e.stopPropagation(); startEdit(el, doc, win); return; }
+      const a = e.target.closest('a,button'); if (a) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+  }
+  function startEdit(el, doc, win) {
+    if (el.isContentEditable) return;
+    const key = el.dataset.i18n;
+    let lang = 'is'; try { lang = win.localStorage.getItem('vb-lang') || 'is'; } catch (e) {}
+    const def = (STR[lang] && STR[lang][key]) || '';
+    const orig = el.textContent;
+    el.contentEditable = 'true'; el.classList.add('ve-on'); el.focus();
+    try { const r = doc.createRange(); r.selectNodeContents(el); const s = win.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+    let done = false;
+    const onBlur = () => finish(true);
+    const onKey = (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); el.blur(); }
+      else if (e.key === 'Escape') { e.preventDefault(); finish(false); }
+    };
+    async function finish(commit) {
+      if (done) return; done = true;
+      el.removeEventListener('blur', onBlur); el.removeEventListener('keydown', onKey);
+      el.contentEditable = 'false'; el.classList.remove('ve-on');
+      const val = el.textContent.trim();
+      if (!commit) { el.textContent = orig; return; }
+      if (val === orig.trim()) return;
+      const res = await saveValue(key, lang, val, def);
+      const set = (v) => { if (win.VB && win.VB.STR && win.VB.STR[lang]) win.VB.STR[lang][key] = v; };
+      if (res === 'reverted') { el.textContent = def; set(def); }
+      else if (res === true) { set(val); }
     }
+    el.addEventListener('blur', onBlur);
+    el.addEventListener('keydown', onKey);
   }
 
   // tabs
@@ -279,7 +381,21 @@
     const va = $('#view-apts'), vc = $('#view-content');
     if (va) va.hidden = tab !== 'apts';
     if (vc) vc.hidden = tab !== 'content';
-    if (tab === 'content' && !contentBuilt) { contentBuilt = true; buildContentEditor(); }
+    if (tab === 'content' && !contentTabInit) {
+      contentTabInit = true;
+      ensureOverrides().then(() => { if (!veBuilt) { veBuilt = true; buildVisualEditor(); } });
+    }
+  }));
+
+  // skipta milli sjónræns ritils og lista
+  $$('.cedit__mode').forEach((b) => b.addEventListener('click', () => {
+    const mode = b.dataset.mode;
+    $$('.cedit__mode').forEach((x) => x.classList.toggle('on', x === b));
+    const ve = $('#visualEditor'), le = $('#listEditor');
+    if (ve) ve.hidden = mode !== 'visual';
+    if (le) le.hidden = mode !== 'list';
+    if (mode === 'visual' && !veBuilt) { veBuilt = true; buildVisualEditor(); }
+    if (mode === 'list' && !contentBuilt) { contentBuilt = true; buildContentEditor(); }
   }));
 
   // leit
