@@ -58,17 +58,23 @@
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const smooth = (p, a, b) => { const t = clamp((p - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
 
+  // Skyndiminni á útlits-málum (uppfært við resize) — kemur í veg fyrir layout-lestur
+  // í hverjum skrun-ramma, sem var helsta orsök hökts á síma.
+  let vpW = window.innerWidth, vpH = window.innerHeight, cineTop = 0, cineH = 0;
+  function measure() { vpW = window.innerWidth; vpH = window.innerHeight; cineTop = cine.offsetTop; cineH = cine.offsetHeight; }
+
   const facadeSides = document.getElementById('facadeSides');
-  const isMobile = () => window.innerWidth <= 860;
-  const bannerH = () => Math.round(window.innerWidth * 9 / 16);   // 16:9 borða-hæð
-  const GAP = () => Math.round(window.innerHeight * 0.045) + 44;  // dökkt svigrúm undir navinu (mynd neðar)
-  const STRIP = 66;                                               // dökk röð undir myndinni fyrir Aftan/Framan
-  const cardH = () => GAP() + bannerH() + STRIP;                  // sett-hæð borðans á síma
+  const isMobile = () => vpW <= 860;
+  const bannerH = () => Math.round(vpW * 9 / 16);    // 16:9 borða-hæð
+  const GAP = () => Math.round(vpH * 0.045) + 44;    // dökkt svigrúm undir navinu (mynd neðar)
+  const STRIP = 66;                                  // dökk röð undir myndinni fyrir Aftan/Framan
+  const cardH = () => GAP() + bannerH() + STRIP;     // sett-hæð borðans á síma
 
   function resizeCanvas() {
+    measure();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.round(window.innerWidth * dpr);
-    canvas.height = Math.round(window.innerHeight * dpr);
+    canvas.width = Math.round(vpW * dpr);
+    canvas.height = Math.round(vpH * dpr);
     // byggingin er alltaf teiknuð COVER (zoom-out borðinn notar líka cover) → slice
     const fsvg = document.getElementById('facadeSvg');
     if (fsvg) fsvg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
@@ -96,11 +102,12 @@
     ctx.drawImage(img, dx, dy, dw, dh);
   }
 
-  function progress() {
-    const total = cine.offsetHeight - window.innerHeight;
+  function progAt(sTop) {
+    const total = cineH - vpH;
     if (total <= 0) return 0;
-    return clamp((scroller.scrollTop - cine.offsetTop) / total, 0, 1);
+    return clamp((sTop - cineTop) / total, 0, 1);
   }
+  function progress() { return progAt(scroller.scrollTop); }
 
   function nearestLoaded(arr, idx) {
     if (arr[idx] && arr[idx].complete && arr[idx].naturalWidth) return arr[idx];
@@ -120,10 +127,10 @@
   }
 
   function render() {
-    const p = progress();
+    const sTop = scroller.scrollTop;
+    const p = progAt(sTop);
     ctx.fillStyle = '#0b0c0d';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    drawFrame(pickFrame(p), 0);              // alltaf cover — engin letterbox
 
     // hero text fade-ast snemma í niðurfluginu
     const heroOp = 1 - smooth(p, 0.0, isMobile() ? 0.16 : 0.06);
@@ -134,12 +141,14 @@
       // EITT samfellt skot: þegar niðurflugi lýkur ZOOM-AR byggingin út — .cine__stick
       // minnkar úr 100vh í borða-kort (svigrúm efst + 16:9 mynd + takkaröð) og íbúðalistinn
       // rís upp undir. height = fjarlægð að botni .cine ⇒ ekkert bil við íbúðirnar.
-      const vh = window.innerHeight;
+      const vh = vpH;
       const CARD = cardH();
-      const cineBottom = cine.offsetTop + cine.offsetHeight;
-      const h = clamp(cineBottom - scroller.scrollTop, CARD, vh);
+      const cineBottom = cineTop + cineH;
+      const h = clamp(cineBottom - sTop, CARD, vh);
       stick.style.height = h + 'px';
       const m = (vh - CARD) > 0 ? clamp((vh - h) / (vh - CARD), 0, 1) : 0;   // 0 í niðurflugi → 1 fullzoom-að
+      const canvasOp = clamp(1 - m * 2.2, 0, 1);                 // canvas fade-ast út → GAP/STRIP verða dökk
+      if (canvasOp > 0) drawFrame(pickFrame(p), 0);             // sleppa teikningu þegar canvas er ósýnilegt
       // myndin færist neðar (GAP eykst) og skilur eftir STRIP fyrir takkann — zoom-out með cover.
       // height:auto svo top+bottom ráði boxinu (CSS height:100% myndi annars ráða).
       facade.style.height = 'auto';
@@ -148,7 +157,7 @@
       const fo = smooth(h, vh, vh - 0.12 * vh);                 // facade fade-ast inn um leið og zoom-out hefst
       facade.style.opacity = fo;
       facade.style.pointerEvents = fo > 0.9 ? 'auto' : 'none';
-      canvas.style.opacity = String(clamp(1 - m * 2.2, 0, 1));  // canvas fade-ast út → GAP/STRIP verða dökk
+      canvas.style.opacity = String(canvasOp);
       if (facadeSides) {                                        // Aftan/Framan UNDIR myndinni í STRIP-inu
         const so = smooth(m, 0.62, 0.96);
         facadeSides.style.opacity = so;
@@ -156,6 +165,7 @@
         facadeSides.style.bottom = Math.max(2, Math.round((STRIP * m - 38) / 2)) + 'px';
       }
     } else {
+      drawFrame(pickFrame(p), 0);              // tölva: alltaf cover — engin letterbox
       // tölva: facade-yfirlag (+ Aftan/Framan) fade-ast inn við HOLD og helst
       facade.style.top = ''; facade.style.bottom = ''; facade.style.height = '';
       canvas.style.opacity = '';
@@ -172,7 +182,14 @@
 
   window.__cine = { render, progress, D };
 
-  scroller.addEventListener('scroll', render, { passive: true });
+  // Þröttlun: eitt render per skjá-ramma þó skrun-event komi mun oftar -> minna hökt.
+  let rafPending = false;
+  function onScroll() {
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(() => { rafPending = false; render(); });
+  }
+  scroller.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', resizeCanvas);
 
   /* ---- animated jump for [data-cinedown] (to the facade) and [data-totop] ---- */
@@ -198,8 +215,8 @@
   // skruna að interactive byggingunni: tölva = HOLD-ið; sími = þar sem borðinn hefur
   // zoom-ast út og íbúðalistinn er kominn undir hann.
   const cinedownTarget = () => isMobile()
-    ? cine.offsetTop + cine.offsetHeight - cardH()
-    : cine.offsetTop + (cine.offsetHeight - window.innerHeight) * Math.min(D + 0.10, 0.96);
+    ? cineTop + cineH - cardH()
+    : cineTop + (cineH - vpH) * Math.min(D + 0.10, 0.96);
   document.querySelectorAll('[data-cinedown]').forEach((el) => el.addEventListener('click', (e) => { if (e.cancelable) e.preventDefault(); scrollTo(cinedownTarget()); }));
   document.querySelectorAll('[data-totop]').forEach((el) => el.addEventListener('click', (e) => { e.preventDefault(); scrollTo(0); }));
 
