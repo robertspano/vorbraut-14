@@ -106,6 +106,7 @@
 
   /* ---------- texta-ritill (CMS): breyta öllum texta á vefnum ---------- */
   const STR = (window.VB && window.VB.STR) || { is: {}, en: {} };
+  const BLANK = (window.VB && window.VB.BLANK) || '__VB_BLANK__';   // vísvitandi tómur texti
   let overrides = { is: {}, en: {} };
   let contentBuilt = false, veBuilt = false, contentTabInit = false, overridesLoaded = false, pendingImg = null, aptOv = {}, layoutOv = {}, undoStack = [], contentTableMissing = false;
   const esc = (s) => (s == null ? '' : String(s)).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -248,7 +249,7 @@
     overrides = { is: {}, en: {} }; aptOv = {}; layoutOv = {};
     (data || []).forEach((r) => {
       if (!r) return;
-      if (r.lang === 'is' || r.lang === 'en') overrides[r.lang][r.key] = r.value;
+      if (r.lang === 'is' || r.lang === 'en') overrides[r.lang][r.key] = (r.value === BLANK ? '' : r.value);
       else if (r.lang === 'apt') aptOv[r.key] = r.value;
       else if (r.lang === 'layout') layoutOv[r.key] = r.value;
     });
@@ -270,9 +271,20 @@
     updateUndo(); toast('Afturkallað' + (a.label ? ': ' + a.label : ''));
   }
 
-  // kjarni: vista (eða eyða ef tómt/sjálfgefið) -> Supabase. Skilar 'reverted' | true | false.
+  // kjarni: vista -> Supabase. Skilar 'blanked' | 'reverted' | true | false.
   async function saveValue(key, lang, val, def) {
     if (!overrides[lang]) overrides[lang] = {};
+    const isText = (lang === 'is' || lang === 'en');
+    // Texti tæmdur vísvitandi (sjálfgildið er ekki sjálft tómt) -> vista sem „tómt"
+    // svo hann komi EKKI sjálfkrafa aftur. Afturkalla skilar honum.
+    if (isText && val.trim() === '' && (def == null ? '' : String(def)).trim() !== '') {
+      const { error } = await supa.from('content')
+        .upsert({ key, lang, value: BLANK, updated_at: new Date().toISOString() }, { onConflict: 'key,lang' });
+      if (error) { toast('Villa: ' + error.message, true); return false; }
+      overrides[lang][key] = '';
+      toast('✓ Tómt — sést ekki á vefnum');
+      return 'blanked';
+    }
     if (val.trim() === '' || val === def) {
       const { error } = await supa.from('content').delete().eq('key', key).eq('lang', lang);
       if (error) { toast('Villa: ' + error.message, true); return false; }
@@ -294,7 +306,7 @@
     const field = ta.closest('.cfield');
     const res = await saveValue(key, l, ta.value, def);
     if (res === 'reverted') { ta.value = def; if (field) field.classList.remove('is-override'); }
-    else if (res === true) { if (field) field.classList.add('is-override'); }
+    else if (res === true || res === 'blanked') { if (field) field.classList.add('is-override'); }
   }
 
   /* ---------- sjónrænn ritill: smelltu á texta beint á síðunni (iframe, sama lén) ---------- */
@@ -361,6 +373,8 @@
     st.textContent =
       '[data-i18n]{cursor:text!important;pointer-events:auto!important}' +
       '[data-i18n]:hover{outline:1.5px dashed rgba(95,168,60,.9)!important;outline-offset:2px;background:rgba(95,168,60,.07)!important}' +
+      // tæmd svæði haldast smellanleg í ritlinum (sést ekki á vefnum sjálfum)
+      '[data-i18n]:empty{display:inline-block;min-width:2.4em;min-height:1em;outline:1.5px dashed rgba(95,168,60,.55)!important;outline-offset:2px;background:rgba(95,168,60,.06)!important}' +
       '[data-i18n].ve-on{outline:2px solid #5fa83c!important;outline-offset:2px;background:rgba(95,168,60,.14)!important;border-radius:2px;position:relative;z-index:2147483600}' +
       'img[data-img]{cursor:pointer!important;pointer-events:auto!important}' +
       'img[data-img]:hover{outline:2px dashed rgba(95,168,60,.95)!important;outline-offset:3px}' +
@@ -461,10 +475,12 @@
     };
     const autoSave = debounce(async () => {        // vistast sjálfkrafa á meðan þú skrifar
       if (done) return;
-      const v = el.textContent.trim();
-      if (v === '' || v === orig.trim()) return;
+      const v = el.textContent;
+      if (v.trim() === orig.trim()) return;        // óbreytt (tómt telst breyting -> vistast)
       const ok = await saveValue(key, lang, v, def);
-      if (ok === true && win.VB && win.VB.STR && win.VB.STR[lang]) win.VB.STR[lang][key] = v;
+      if ((ok === true || ok === 'blanked') && win.VB && win.VB.STR && win.VB.STR[lang]) {
+        win.VB.STR[lang][key] = (ok === 'blanked' ? '' : v.trim());
+      }
     }, 700);
     async function finish(commit) {
       if (done) return; done = true;
@@ -476,6 +492,7 @@
       const setSTR = (v) => { if (win.VB && win.VB.STR && win.VB.STR[lang]) win.VB.STR[lang][key] = v; };
       const res = await saveValue(key, lang, val, def);
       if (res === 'reverted') { el.textContent = def; setSTR(def); }
+      else if (res === 'blanked') { el.textContent = ''; setSTR(''); }   // tæmt vísvitandi -> stendur tómt
       else if (res === true) setSTR(val);
       if (res) pushUndo('texti', async () => {
         const r2 = await saveValue(key, lang, orig, def);

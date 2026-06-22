@@ -33,13 +33,20 @@ window.VB.getContent = async function () {
     });
     if (!r.ok) return null;
     const rows = await r.json();
+    const BLANK = window.VB.BLANK || '__VB_BLANK__';
     const ov = { is: {}, en: {}, img: {}, apt: {}, layout: {} };
     (rows || []).forEach((x) => {
-      if (!x || !x.key || x.value == null || !String(x.value).length) return;
-      if (x.lang === 'is' || x.lang === 'en') ov[x.lang][x.key] = x.value;
-      else if (x.lang === 'img') ov.img[x.key] = x.value;
-      else if (x.lang === 'apt') ov.apt[x.key] = x.value;
-      else if (x.lang === 'layout') ov.layout[x.key] = x.value;
+      if (!x || !x.key || x.value == null) return;
+      var v = String(x.value);
+      if (x.lang === 'is' || x.lang === 'en') {
+        if (v === BLANK) v = '';          // vísvitandi tómt -> sýna ekkert á vefnum
+        else if (!v.length) return;        // óvart tómt -> nota sjálfgildi
+        ov[x.lang][x.key] = v;
+      } else if (!v.length) {
+        return;                            // tölur/myndir/útlit: tóm gildi hunsuð
+      } else if (x.lang === 'img') ov.img[x.key] = v;
+      else if (x.lang === 'apt') ov.apt[x.key] = v;
+      else if (x.lang === 'layout') ov.layout[x.key] = v;
     });
     return ov;
   } catch (e) { return null; }

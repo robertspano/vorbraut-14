@@ -528,3 +528,6 @@ const STR = {
 };
 window.VB = window.VB || {};
 window.VB.STR = STR;
+// Vísvitandi tómur texti (notandi eyddi honum) — geymt sem þetta tákn í gagnagrunni
+// svo það ruglist ekki saman við „óvart tómt“ (sem fellur aftur í sjálfgildi).
+window.VB.BLANK = '__VB_BLANK__';
