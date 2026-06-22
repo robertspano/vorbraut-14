@@ -367,6 +367,7 @@
     // breytingaham: smellur breytir texta/mynd í stað þess að navigera/triggera
     doc.addEventListener('click', (e) => {
       if (e.target.closest('#ve-blockbar')) return;   // blokk-stikan sér um sína eigin smelli
+      if (e.target.closest('#modal, #planZoom')) return;   // íbúða-glugginn virkar eðlilega (loka-X, hæðir o.fl.)
       const img = e.target.closest('img[data-img]');
       if (img) { e.preventDefault(); e.stopPropagation(); pendingImg = img; const fi = $('#veFile'); if (fi) { fi.value = ''; fi.click(); } return; }
       const el = e.target.closest('[data-i18n]');
