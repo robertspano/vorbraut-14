@@ -37,58 +37,22 @@
     clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 2600);
   }
 
-  /* ---------- innskráning: email-OTP ---------- */
-  let pendingEmail = '';
-  function showLogin() { elLogin.hidden = false; elPanel.hidden = true; elLogout.hidden = true; }
-
-  $('#sendCode').addEventListener('click', async () => {
-    const email = ($('#email').value || '').trim().toLowerCase();
-    if (!isAllowed(email)) { msg('Aðeins netföng sem enda á @' + DOMAIN + ' hafa aðgang.'); return; }
-    const btn = $('#sendCode'); btn.disabled = true; btn.textContent = 'Sendi…';
-    const { error } = await supa.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
-    btn.disabled = false; btn.textContent = 'Senda kóða';
-    if (error) { msg('Villa við sendingu: ' + error.message); return; }
-    pendingEmail = email;
-    $('#step-email').hidden = true; $('#step-code').hidden = false; $('#code').focus();
-    msg('Kóði sendur á ' + email + '. Sláðu hann inn hér (athugaðu ruslpóst ef hann birtist ekki).', false, true);
-  });
-
-  $('#verifyCode').addEventListener('click', async () => {
-    const token = ($('#code').value || '').trim();
-    if (!token) { msg('Sláðu inn kóðann úr tölvupóstinum.'); return; }
-    const btn = $('#verifyCode'); btn.disabled = true; btn.textContent = 'Skrái inn…';
-    const { data, error } = await supa.auth.verifyOtp({ email: pendingEmail, token, type: 'email' });
-    btn.disabled = false; btn.textContent = 'Staðfesta og skrá inn';
-    if (error) { msg('Rangur eða útrunninn kóði — reyndu aftur.'); return; }
-    if (!isAllowed(data.user && data.user.email)) { await supa.auth.signOut(); msg('Aðeins @' + DOMAIN + ' hefur aðgang.'); return; }
-    showPanel(data.session);
-  });
-
-  $('#code').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('#verifyCode').click(); });
-  $('#email').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('#sendCode').click(); });
-  $('#backEmail').addEventListener('click', () => { $('#step-code').hidden = true; $('#step-email').hidden = false; msg(''); });
-
-  /* ---------- innskráning: lykilorð (engin tölvupóstur — fyrir prófun/eiganda) ---------- */
-  $('#usePw').addEventListener('click', () => { $('#mode-code').hidden = true; $('#mode-pw').hidden = false; msg(''); $('#pw').focus(); });
-  $('#useCode').addEventListener('click', () => { $('#mode-pw').hidden = true; $('#mode-code').hidden = false; msg(''); });
-  $('#pw').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('#pwLogin').click(); });
-  $('#pwLogin').addEventListener('click', async () => {
-    const email = ($('#email').value || '').trim().toLowerCase();
-    const password = $('#pw').value;
-    if (!isAllowed(email)) { msg('Aðeins netföng sem enda á @' + DOMAIN + ' hafa aðgang.'); return; }
-    if (!password) { msg('Sláðu inn lykilorðið.'); return; }
-    const btn = $('#pwLogin'); btn.disabled = true; btn.textContent = 'Skrái inn…';
-    const { data, error } = await supa.auth.signInWithPassword({ email, password });
-    btn.disabled = false; btn.textContent = 'Skrá inn';
-    if (error) { msg('Innskráning mistókst: ' + error.message); return; }
-    showPanel(data.session);
-  });
-  elLogout.addEventListener('click', async () => { await supa.auth.signOut(); location.reload(); });
+  /* ---------- innskráning: einfaldur aðgangskóði ---------- */
+  const CODE = '1111';
+  function showLogin() { elLogin.hidden = false; elPanel.hidden = true; elLogout.hidden = true; const c = $('#code'); if (c) c.focus(); }
+  function tryEnter() {
+    const v = ($('#code').value || '').trim();
+    if (v === CODE) { try { localStorage.setItem('vb-admin', '1'); } catch (e) {} msg(''); showPanel(); }
+    else { msg('Rangur kóði.'); }
+  }
+  if ($('#enter')) $('#enter').addEventListener('click', tryEnter);
+  if ($('#code')) $('#code').addEventListener('keydown', (e) => { if (e.key === 'Enter') tryEnter(); });
+  elLogout.addEventListener('click', () => { try { localStorage.removeItem('vb-admin'); } catch (e) {} location.reload(); });
 
   /* ---------- stjórnborð ---------- */
-  async function showPanel(session) {
+  async function showPanel() {
     elLogin.hidden = true; elNot.hidden = true; elPanel.hidden = false; elLogout.hidden = false;
-    if (elWho) elWho.textContent = session.user.email;
+    if (elWho) elWho.textContent = 'Stjórnandi';
     const { data } = await supa.from('apartments').select('id,status');
     const cur = {}; (data || []).forEach((r) => { cur[r.id] = r.status; });
     const apts = (window.VB && window.VB.APARTMENTS) || [];
@@ -415,11 +379,7 @@
     });
   });
 
-  /* ---------- núverandi seta? ---------- */
-  supa.auth.getSession().then(({ data }) => {
-    const s = data && data.session;
-    if (s && isAllowed(s.user && s.user.email)) showPanel(s);
-    else if (s) { supa.auth.signOut().then(showLogin); }
-    else showLogin();
-  });
+  /* ---------- muna að notandi er kominn inn (þar til hann skráir sig út) ---------- */
+  try { if (localStorage.getItem('vb-admin') === '1') showPanel(); else showLogin(); }
+  catch (e) { showLogin(); }
 })();

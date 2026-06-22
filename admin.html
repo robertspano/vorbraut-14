@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=113" />
+  <link rel="stylesheet" href="css/styles.css?v=114" />
   <style>
     body.is-admin{background:#0b0c0d;color:#f3f1ec;min-height:100vh;font-family:var(--font)}
     .ad__top{display:flex;align-items:center;justify-content:space-between;padding:1.3rem clamp(20px,5vw,60px);
@@ -129,33 +129,14 @@
       </div>
     </div>
 
-    <!-- innskráning (domain-aðgangur: kóði sendur á @miklaborg.is netfang) -->
+    <!-- innskráning: einfaldur aðgangskóði -->
     <div class="ad__login" id="login" hidden>
       <div>
         <h1 class="ad__h1">Innskráning</h1>
-        <p class="ad__sub">Aðeins netföng sem enda á <b style="color:#9fc06a">@miklaborg.is</b>. Þú færð kóða sendan í tölvupóst.</p>
+        <p class="ad__sub">Sláðu inn aðgangskóða.</p>
       </div>
-      <!-- netfang + háttur -->
-      <div id="step-email">
-        <div class="ad__field"><label for="email">Miklaborg netfang</label><input type="email" id="email" placeholder="nafn@miklaborg.is" autocomplete="email" /></div>
-        <!-- háttur: kóði í tölvupóst -->
-        <div id="mode-code">
-          <button type="button" class="ad__btn" id="sendCode">Senda kóða í tölvupóst</button>
-          <button type="button" class="ad__ghost" id="usePw" style="margin-top:.6rem">Ég er með lykilorð</button>
-        </div>
-        <!-- háttur: lykilorð (engin tölvupóstur) -->
-        <div id="mode-pw" hidden>
-          <div class="ad__field"><label for="pw">Lykilorð</label><input type="password" id="pw" autocomplete="current-password" /></div>
-          <button type="button" class="ad__btn" id="pwLogin">Skrá inn</button>
-          <button type="button" class="ad__ghost" id="useCode" style="margin-top:.6rem">← Nota kóða í tölvupósti í staðinn</button>
-        </div>
-      </div>
-      <!-- kóða-innsláttur -->
-      <div id="step-code" hidden>
-        <div class="ad__field"><label for="code">Kóði úr tölvupósti</label><input type="text" id="code" inputmode="numeric" autocomplete="one-time-code" placeholder="6 stafa kóði" /></div>
-        <button type="button" class="ad__btn" id="verifyCode">Staðfesta og skrá inn</button>
-        <button type="button" class="ad__ghost" id="backEmail" style="margin-top:.6rem">← Til baka</button>
-      </div>
+      <div class="ad__field"><label for="code">Aðgangskóði</label><input type="password" id="code" inputmode="numeric" autocomplete="off" placeholder="••••" /></div>
+      <button type="button" class="ad__btn" id="enter">Opna</button>
       <p class="ad__msg" id="msg"></p>
     </div>
 
@@ -209,10 +190,10 @@
 
   <div class="ad__toast" id="toast"></div>
 
-  <script src="js/data.js?v=113"></script>
-  <script src="js/content.js?v=113"></script>
-  <script src="js/supabase-config.js?v=113"></script>
+  <script src="js/data.js?v=114"></script>
+  <script src="js/content.js?v=114"></script>
+  <script src="js/supabase-config.js?v=114"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/admin.js?v=113"></script>
+  <script src="js/admin.js?v=114"></script>
 </body>
 </html>
