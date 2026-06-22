@@ -218,8 +218,6 @@ const STR = {
     'spec.theme': 'Hönnunarþema',
     'spec.price': 'Verð',
     'spec.no': 'Nei',
-    'modal.skilalysing': 'Skilalýsing',
-    'modal.walk3d': 'Ganga um í 3D',
     'spec.yes': 'Já',
     'spec.basement': 'Í kjallara',
 
@@ -480,8 +478,6 @@ const STR = {
     'spec.theme': 'Design theme',
     'spec.price': 'Price',
     'spec.no': 'No',
-    'modal.skilalysing': 'Specification',
-    'modal.walk3d': 'Walk through in 3D',
     'spec.yes': 'Yes',
     'spec.basement': 'In the basement',
 

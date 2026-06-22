@@ -355,7 +355,6 @@
     applyPlanView();
     $('#mPlan').alt = (lang === 'is' ? 'Grunnmynd íbúðar ' : 'Floor plan of apartment ') + a.id;
     $('#mPlanHint').textContent = a.planExact ? t('modal.planHint') : t('modal.planSoon');
-    const w3d = $('#mWalk3d'); if (w3d) w3d.hidden = !a.walk3d;
 
     // titill + staða
     $('#mTitle').textContent = (lang === 'is' ? 'Íbúð ' : 'Apartment ') + a.id;
@@ -366,9 +365,6 @@
     // hæðarval + hæðarkort (hægri)
     renderFloorSel(a.floor);
     renderDiagram(a.floor, a.id);
-    $('#mFloorPlanBtn span').textContent = (lang === 'is' ? 'Heildarmynd ' + a.floor + '. hæðar' : 'Floor ' + a.floor + ' — full plan');
-    const specBtn = $('#mSpecBtn');
-    if (specBtn) specBtn.hidden = !window.VB.SKILALYSING;   // sýnt þegar skilalýsing-PDF er sett í data.js
 
     // upplýsingagrid (sama uppsetning og vesturvin, okkar gögn)
     const outVal = outLabel(a.outdoor) + (a.balcony ? ' · ' + fmtArea(a.balcony) + ' m²' : '');
@@ -431,23 +427,6 @@
     $('#planZoomImg').src = $('#mPlan').src;
     planZoom.hidden = false;
     document.body.style.overflow = 'hidden';
-  });
-  // heildar-hæðarmynd (úr BIM) — sýnir ganginn/stigann og öll rými hæðarinnar
-  $('#mFloorPlanBtn').addEventListener('click', () => {
-    if (!currentApt) return;
-    $('#planZoomImg').src = 'assets/floorplans/floor' + currentApt.floor + '.png?r=1';
-    planZoom.hidden = false;
-    document.body.style.overflow = 'hidden';
-  });
-  // 3D-ganga — opnar sér síðu þar sem maður gengur um íbúðina (Three.js)
-  const mWalk3d = $('#mWalk3d');
-  if (mWalk3d) mWalk3d.addEventListener('click', () => {
-    if (currentApt) window.location.href = 'ibud-3d.html?id=' + currentApt.id;
-  });
-  // skilalýsing (PDF) — opnast í nýjum flipa þegar slóð er sett í data.js (VB.SKILALYSING)
-  const mSpecBtn = $('#mSpecBtn');
-  if (mSpecBtn) mSpecBtn.addEventListener('click', () => {
-    if (window.VB.SKILALYSING) window.open(window.VB.SKILALYSING, '_blank', 'noopener');
   });
   function closeZoom() { planZoom.hidden = true; if (modal.hidden) document.body.style.overflow = ''; }
   planZoom.addEventListener('click', closeZoom);
