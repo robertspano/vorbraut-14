@@ -115,7 +115,6 @@ const STR = {
     'nav.contact': 'Hafa samband',
     'cta.ibudir': 'Skoða íbúðir',
     'cta.contact': 'Hafa samband',
-    'cta.book': 'Bóka skoðun',
     'cta.plan': 'Skoða grunnmynd',
     'scroll': 'Skruna',
 
@@ -381,7 +380,6 @@ const STR = {
     'nav.contact': 'Contact',
     'cta.ibudir': 'View apartments',
     'cta.contact': 'Get in touch',
-    'cta.book': 'Book a viewing',
     'cta.plan': 'View floor plan',
     'scroll': 'Scroll',
 
