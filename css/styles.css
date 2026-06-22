@@ -136,12 +136,6 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .section-head{max-width:var(--maxw);margin:0 auto 3rem;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center}
 
 /* ================================ HERO =============================== */
-.hero{justify-content:flex-end;align-items:flex-start;color:#fff;overflow:hidden;padding-bottom:clamp(70px,11vh,120px)}
-.hero__bg{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.06);animation:heroZoom 16s var(--ease) forwards}
-@keyframes heroZoom{to{transform:scale(1)}}
-.hero__scrim{position:absolute;inset:0;background:
-  linear-gradient(180deg,rgba(20,22,24,.42) 0%,rgba(20,22,24,.04) 30%,rgba(20,22,24,.30) 72%,rgba(20,22,24,.72) 100%)}
-.hero__inner{position:relative;max-width:var(--maxw);width:100%;margin:0 auto}
 .hero__title{font-family:var(--display);font-weight:300;font-size:clamp(3.6rem,12vw,9rem);line-height:.92;color:#fff;letter-spacing:-.02em}
 .hero__title .hero__no{font-style:italic;color:var(--bone)}
 .hero__tag{font-size:clamp(1.1rem,2.2vw,1.7rem);margin-top:1.1rem;font-weight:300;max-width:30ch}
@@ -150,11 +144,6 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .hero__cta .btn--ghost{color:#fff;border-color:rgba(255,255,255,.9);background:rgba(14,14,16,.42);
   -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
 .hero__cta .btn--ghost:hover{background:#fff;color:var(--charcoal);border-color:#fff}
-.hero__stats{position:relative;max-width:var(--maxw);width:100%;margin:2.4rem auto 0;
-  display:flex;gap:clamp(1.6rem,5vw,4rem);border-top:1px solid rgba(255,255,255,.22);padding-top:1.2rem}
-.hero__stats div{display:flex;flex-direction:column}
-.hero__stats b{font-family:var(--display);font-weight:400;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1}
-.hero__stats span{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:.4rem}
 
 /* ===================== CINEMATIC SCROLL INTRO ====================== */
 /* holds the timeline — fly down · hold (interactive) · continuation journey */
@@ -174,38 +163,6 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .cine__stats b{font-family:var(--display);font-weight:400;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1}
 .cine__stats span{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:.4rem}
 
-/* ============================== SPLIT ================================ */
-.split{flex-direction:row;align-items:stretch;padding:0;gap:0;height:100vh;overflow:hidden}
-.split__media{flex:1.15;position:relative;overflow:hidden;min-height:46vh}
-.split__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.split__text{flex:1;display:flex;flex-direction:column;justify-content:center;
-  padding:clamp(84px,12vh,116px) clamp(28px,5vw,84px) clamp(64px,9vh,90px);background:var(--snow);max-width:760px}
-.split--rev{flex-direction:row-reverse}
-.split__text h2{margin-bottom:.2rem}
-.points{list-style:none;margin-top:1.7rem;display:flex;flex-direction:column;gap:1.05rem}
-.points li{display:flex;flex-direction:column;gap:.25rem;padding-left:1.3rem;position:relative}
-.points li::before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border-radius:50%;background:var(--timber)}
-.points b{font-weight:600;color:var(--charcoal);font-size:.98rem}
-.points span{font-size:.92rem;color:var(--muted)}
-.byline{margin-top:2rem;font-size:.82rem;letter-spacing:.06em;color:var(--timber-dk);text-transform:uppercase}
-.swatches{display:flex;gap:.5rem;margin-top:2rem}
-.swatches span{width:34px;height:34px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 1px var(--line)}
-
-/* ============================ ÍBÚÐIR TYPES =========================== */
-.ibudir{background:var(--bone)}
-.types{max-width:var(--maxw);margin:0 auto;width:100%;
-  display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
-.type{background:var(--snow);border-radius:var(--r);padding:2.4rem 2rem;border:1px solid var(--line);
-  display:flex;flex-direction:column;transition:.4s var(--ease)}
-.type:hover{transform:translateY(-6px);box-shadow:0 24px 50px -28px rgba(58,61,64,.4)}
-.type__count{font-family:var(--display);font-size:2.4rem;color:var(--timber);line-height:1}
-.type h3{margin:.9rem 0 .2rem}
-.type__size{font-size:.95rem;color:var(--charcoal);font-weight:500;letter-spacing:.04em;margin-bottom:.9rem}
-.type p:last-child{font-size:.92rem;color:var(--muted)}
-.type--feature{background:var(--charcoal);border-color:var(--charcoal)}
-.type--feature h3,.type--feature .type__size{color:#fff}
-.type--feature .type__count{color:var(--glacier)}
-.type--feature p:last-child{color:rgba(255,255,255,.72)}
 
 /* ===================== GAGNVIRKT VAL (full-screen) =================== */
 .select{padding:0;height:100vh;overflow:hidden;background:#0c0d0e}
@@ -311,29 +268,6 @@ body.maskedit .facade__sides,body.maskedit .select__head{display:none!important}
   padding:.5rem 1rem;border-radius:100px;backdrop-filter:blur(6px);transition:.3s}
 .facade:hover .facade__hint{opacity:0}
 
-/* ============================ ÍBÚÐAYFIRLIT ========================== */
-.list{background:var(--bone);justify-content:flex-start;padding-top:104px;padding-bottom:48px}
-.list__head{max-width:var(--maxw);margin:0 auto 1.8rem;width:100%;
-  display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap}
-.filters{display:flex;align-items:flex-end;gap:1.6rem;flex-wrap:wrap}
-.filter{display:flex;flex-direction:column;gap:.5rem}
-.filter>label{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.chips{display:flex;gap:.4rem}
-.chip{min-width:38px;height:38px;padding:0 .8rem;border-radius:100px;border:1px solid var(--line);
-  background:var(--snow);font-size:.85rem;color:var(--charcoal);transition:.25s var(--ease)}
-.chip:hover{border-color:var(--charcoal)}
-.chip.is-active{background:var(--charcoal);color:#fff;border-color:var(--charcoal)}
-.reset{font-size:.8rem;color:var(--muted);text-decoration:underline;text-underline-offset:3px;height:38px}
-.reset:hover{color:var(--charcoal)}
-
-.grid{max-width:var(--maxw);margin:0 auto;width:100%;
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:1rem}
-.card{background:var(--snow);border:1px solid var(--line);border-radius:var(--r);padding:1.5rem;
-  display:flex;flex-direction:column;gap:.15rem;transition:.32s var(--ease);cursor:pointer;text-align:left}
-.card:hover{transform:translateY(-5px);box-shadow:0 22px 44px -26px rgba(58,61,64,.45);border-color:transparent}
-.card__top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
-.card__id{font-family:var(--display);font-size:1.9rem;color:var(--charcoal);line-height:1}
-.card__floor{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.3rem}
 .tag{font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
   padding:.28rem .6rem;border-radius:100px;white-space:nowrap}
 .tag--available{background:rgba(126,154,82,.16);color:#5d7a36}
@@ -414,35 +348,6 @@ body.maskedit .facade__sides,body.maskedit .select__head{display:none!important}
   .sellers__inner{grid-template-columns:1fr;gap:2.4rem}
   .sellers__brand{text-align:left}
 }
-.card__area{font-family:var(--display);font-size:2.1rem;color:var(--charcoal);font-weight:400;line-height:1}
-.card__area i{font-size:1rem;font-family:var(--font);color:var(--muted);font-style:normal}
-.card__meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.9rem;border-top:1px solid var(--line);padding-top:.9rem}
-.card__meta span{font-size:.78rem;color:var(--muted)}
-.card__meta span+span::before{content:"·";margin-right:.5rem;color:var(--line)}
-.grid__empty{max-width:var(--maxw);margin:3rem auto;text-align:center;color:var(--muted)}
-
-/* ============================== GÆÐI ================================ */
-.quality{background:var(--charcoal);color:#fff}
-.quality h2,.quality .kicker{color:#fff}
-.quality .kicker{color:var(--glacier)}
-.quality .lead{color:rgba(255,255,255,.7)}
-.qgrid{list-style:none;max-width:var(--maxw);margin:0 auto;width:100%;
-  display:grid;grid-template-columns:repeat(4,1fr);gap:1.6rem 1.4rem}
-.qgrid li{display:flex;flex-direction:column;gap:.9rem;padding-top:1.4rem;border-top:1px solid rgba(255,255,255,.16)}
-.qgrid i{width:30px;height:30px;border-radius:50%;border:1px solid var(--glacier);position:relative;flex:none}
-.qgrid i::after{content:"";position:absolute;left:9px;top:13px;width:6px;height:11px;border:solid var(--glacier);border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
-.qgrid span{font-size:.95rem;color:rgba(255,255,255,.9)}
-
-/* ============================= CONTACT ============================== */
-.contact{background:var(--bone);justify-content:space-between;padding-bottom:0}
-.contact__inner{max-width:760px;margin:auto;text-align:center;width:100%;display:flex;flex-direction:column;align-items:center}
-.contact__cta{display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;justify-content:center}
-.contact__facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem;margin-top:3.4rem;width:100%;text-align:left}
-.contact__facts dt{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
-.contact__facts dd{font-size:.92rem;color:var(--charcoal)}
-.foot{max-width:var(--maxw);margin:0 auto;width:100%;display:flex;justify-content:space-between;
-  padding:1.6rem 0;border-top:1px solid var(--line);font-size:.76rem;color:var(--muted);letter-spacing:.04em}
-.foot span:first-child{font-weight:600;letter-spacing:.16em;color:var(--charcoal)}
 
 /* ===================== FOOTER (after the scroll film) ============== */
 /* mjór, hreinn footer — eins og vesturvin: heimilisfang vinstri · tengiliður miðja · tenglar hægri */
@@ -528,13 +433,6 @@ body.planimg .aptm__plan img{pointer-events:none}
 #piPanel .pi__hint{font-size:.7rem;color:var(--muted);line-height:1.4;margin:.4rem 0}
 .pi__toast{position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%);background:var(--charcoal);color:#fff;
   padding:.6rem 1.1rem;border-radius:8px;font-size:.84rem;z-index:10001}
-.aptm__walk3d{margin-top:1.2rem;width:100%;display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
-  background:var(--green);color:#fff;border:0;border-radius:0;cursor:pointer;font-family:inherit;
-  font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;padding:.98rem 1.2rem;
-  transition:background .2s var(--ease),transform .2s var(--ease)}
-.aptm__walk3d:hover{background:#6d8746;transform:translateY(-1px)}
-.aptm__walk3d[hidden]{display:none}
-.aptm__walk3dicon{width:19px;height:19px;flex:none;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linejoin:round;stroke-linecap:round}
 .aptm__planhint{margin-top:1.1rem;font-size:.85rem;color:var(--ink)}
 .aptm__disc{margin-top:.65rem;font-size:.74rem;color:var(--muted);line-height:1.6;max-width:46ch}
 /* hægri — hæðarval + kort + tölur */
@@ -604,12 +502,6 @@ body.planimg .aptm__plan img{pointer-events:none}
 .dg-northlbl{fill:var(--charcoal);font-size:9px;font-weight:600;font-family:var(--font);text-anchor:middle;dominant-baseline:central;letter-spacing:.03em}
 /* tengill á heildar-hæðarmynd */
 /* skjala-tenglar (Heildarmynd hæðar / Skilalýsing) — eins og vesturvin */
-.aptm__docs{margin-top:1.5rem;display:flex;flex-direction:column;gap:.55rem;align-items:flex-start}
-.aptm__doclink{display:inline-flex;align-items:center;gap:.55rem;background:none;border:0;cursor:pointer;
-  padding:.12rem 0;font:inherit;font-family:var(--font);font-size:.84rem;letter-spacing:.02em;color:var(--charcoal);transition:.18s}
-.aptm__doclink span{text-decoration:underline;text-underline-offset:3px}
-.aptm__doclink:hover{color:var(--green)}
-.aptm__docicon{width:17px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.25;stroke-linejoin:round;stroke-linecap:round}
 /* staða + tölur */
 .aptm__status{align-self:flex-start;margin-top:1.1rem;font-size:.62rem;font-weight:600;letter-spacing:.1em;
   text-transform:uppercase;padding:.32rem .72rem;border-radius:100px}
@@ -693,9 +585,6 @@ body.is-contact{background:#0b0c0d}
 .story:hover .story__media img{transform:scale(1.04)}
 
 /* SPLIT — image beside text, alternating */
-.story--split .story__inner{display:grid;grid-template-columns:1.04fr .96fr;
-  gap:clamp(32px,5vw,84px);align-items:center}
-.story--split.story--rev .story__media{order:2}
 
 /* IMMERSIVE — full-bleed image, heading overlaid, body below */
 .story--immersive .story__inner{padding:0;max-width:none}
@@ -843,9 +732,6 @@ body.is-page{background:#0e0f10}
 }
 /* ===== Story-sections á síma: stafla mynd yfir texta, styttri immersive hetjur ===== */
 @media (max-width:860px){
-  .story--split .story__inner{grid-template-columns:1fr;gap:clamp(20px,4.5vw,34px);
-    padding:clamp(54px,8vh,92px) var(--pad)}
-  .story--split .story__media,.story--split.story--rev .story__media{order:0}
   .story__media{aspect-ratio:16/11}
   .story__hero{min-height:clamp(400px,66vh,600px)}
   .story__below{padding:clamp(34px,6vh,62px) var(--pad) clamp(54px,9vh,92px)}
