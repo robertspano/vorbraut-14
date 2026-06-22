@@ -267,6 +267,13 @@ body.maskedit .facade__sides,body.maskedit .select__head{display:none!important}
   background:rgba(255,255,255,.92);color:var(--charcoal);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;
   padding:.5rem 1rem;border-radius:100px;backdrop-filter:blur(6px);transition:.3s}
 .facade:hover .facade__hint{opacity:0}
+/* síma: minna tooltip þegar smellt er á íbúð (var of stórt á litlum skjá) */
+@media (max-width:860px){
+  .facade__tip{font-size:.64rem;min-width:0;max-width:60vw;padding:.42rem .58rem;border-radius:8px}
+  .facade__tip b{font-size:.78rem;margin-bottom:.1rem}
+  .facade__tip small{font-size:.6rem;margin-top:.1rem}
+  .facade__tip::after{border-width:5px}
+}
 
 .tag{font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
   padding:.28rem .6rem;border-radius:100px;white-space:nowrap}
