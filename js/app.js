@@ -14,6 +14,7 @@
   function applyLang() {
     document.documentElement.lang = lang;
     $$('[data-i18n]').forEach((el) => { const v = t(el.dataset.i18n); if (v !== undefined) el.textContent = v; });
+    if (window.VB.syncContactLinks) window.VB.syncContactLinks();
     $('#langLabel').textContent = lang === 'is' ? 'English' : 'Íslenska';
     buildGrid();                 // labels inside cards depend on language
     if (currentApt && !modal.hidden) openModal(currentApt); // refresh modal if open
@@ -311,7 +312,7 @@
       const poly = F.apts[a.id];
       if (!poly) return '';
       const [cx, cy] = polyCentroid(poly);
-      const cls = 'dg-apt' + (a.id === selId ? ' is-sel' : '') + (a.status === 'sold' ? ' is-sold' : '');
+      const cls = 'dg-apt dg-apt--' + a.status + (a.id === selId ? ' is-sel' : '');
       return `<g class="${cls}" data-id="${a.id}">
         <polygon points="${polyPts(poly)}"/>
         <text x="${cx.toFixed(1)}" y="${cy.toFixed(1)}" dy=".34em">${a.id}</text>
@@ -487,4 +488,8 @@
 
   /* ------------------------------ init ---------------------------------- */
   applyLang();   // also builds grid
+  // texta-yfirskriftir úr Supabase (CMS) — bræða inn og endurteikna
+  if (window.VB.getContent) window.VB.getContent().then((ov) => {
+    if (ov && window.VB.applyContentOverrides(ov)) applyLang();
+  }).catch(() => {});
 })();

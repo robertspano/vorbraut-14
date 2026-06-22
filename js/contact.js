@@ -14,6 +14,7 @@
   function applyLang() {
     document.documentElement.lang = lang;
     $$('[data-i18n]').forEach((el) => { const v = t(el.dataset.i18n); if (v !== undefined) el.textContent = v; });
+    if (window.VB && window.VB.syncContactLinks) window.VB.syncContactLinks();
     const label = $('#langLabel'); if (label) label.textContent = lang === 'is' ? 'English' : 'Íslenska';
   }
 
@@ -61,4 +62,8 @@
   onNavScroll();
 
   applyLang();
+  // texta-yfirskriftir úr Supabase (CMS)
+  if (window.VB && window.VB.getContent) window.VB.getContent().then((ov) => {
+    if (ov && window.VB.applyContentOverrides(ov)) applyLang();
+  }).catch(() => {});
 })();

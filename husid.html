@@ -8,19 +8,24 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=103" />
+  <link rel="stylesheet" href="css/styles.css?v=110" />
 </head>
 <body class="is-page">
   <header class="nav" id="nav">
     <div class="nav__left">
-      <a href="index.html" class="nav__logo">VORBRAUT&nbsp;14</a>
+      <a href="index.html" class="nav__logo" data-i18n="brand.logo">VORBRAUT&nbsp;14</a>
       <nav class="nav__links" aria-label="Aðalvalmynd">
         <a href="verkefnid.html" data-i18n="nav.verkefnid">Verkefnið</a>
         <a href="arkitektur.html" data-i18n="nav.arkitektur">Arkitektúr</a>
-        <a href="husid.html" class="is-current" aria-current="page" data-i18n="nav.husid">Húsið</a>
-        <a href="utsyni.html" data-i18n="nav.utsyni">Útsýni</a>
-        <a href="utirymi.html" data-i18n="nav.utirymi">Útirými</a>
-        <a href="adgengi.html" data-i18n="nav.adgengi">Aðgengi</a>
+        <span class="navdrop">
+          <a href="husid.html" class="navdrop__trigger is-current" aria-current="page" data-i18n="nav.husid">Húsið</a>
+          <span class="navdrop__caret" aria-hidden="true"></span>
+          <span class="navdrop__menu" role="group" aria-label="Húsið">
+            <a href="utsyni.html" class="navdrop__item" data-i18n="nav.utsyni">Útsýni</a>
+            <a href="utirymi.html" class="navdrop__item" data-i18n="nav.utirymi">Útirými</a>
+            <a href="adgengi.html" class="navdrop__item" data-i18n="nav.adgengi">Aðgengi</a>
+          </span>
+        </span>
         <a href="hverfid.html" data-i18n="nav.hverfid">Hverfið</a>
         <a href="index.html#ibudir" data-i18n="nav.ibudir">Íbúðir</a>
       </nav>
@@ -34,10 +39,10 @@
     <nav class="navmenu" id="navmenu" aria-label="Valmynd">
       <a href="verkefnid.html" data-i18n="nav.verkefnid">Verkefnið</a>
       <a href="arkitektur.html" data-i18n="nav.arkitektur">Arkitektúr</a>
-      <a href="husid.html" class="is-current" data-i18n="nav.husid">Húsið</a>
-      <a href="utsyni.html" data-i18n="nav.utsyni">Útsýni</a>
-      <a href="utirymi.html" data-i18n="nav.utirymi">Útirými</a>
-      <a href="adgengi.html" data-i18n="nav.adgengi">Aðgengi</a>
+      <a href="husid.html" class="is-current" aria-current="page" data-i18n="nav.husid">Húsið</a>
+      <a href="utsyni.html" class="navmenu__sub" data-i18n="nav.utsyni">Útsýni</a>
+      <a href="utirymi.html" class="navmenu__sub" data-i18n="nav.utirymi">Útirými</a>
+      <a href="adgengi.html" class="navmenu__sub" data-i18n="nav.adgengi">Aðgengi</a>
       <a href="hverfid.html" data-i18n="nav.hverfid">Hverfið</a>
       <a href="index.html#ibudir" data-i18n="nav.ibudir">Íbúðir</a>
       <hr/>
@@ -48,7 +53,7 @@
   <main>
     <article class="story story--immersive story--page reveal" id="st-house" aria-labelledby="st-house-h">
       <div class="story__inner">
-        <div class="story__hero" style="background-image:url('assets/cine2/f001.webp?v=103')" role="img" aria-label="Húsið — Vorbraut 14">
+        <div class="story__hero" style="background-image:url('assets/cine2/f001.webp?v=110')" role="img" aria-label="Húsið — Vorbraut 14">
           <div class="story__heroinner reveal">
             <p class="kicker kicker--light" data-i18n="st.house.kick">03 · Heimilin</p>
             <h1 class="story__title" id="st-house-h" data-i18n="st.house.title">Húsið</h1>
@@ -68,14 +73,14 @@
       <div class="sitefoot__left">
         <a href="index.html" class="sitefoot__logo">VORBRAUT&nbsp;14</a>
         <div class="sitefoot__col">
-          <span>Vorbraut 14, Hnoðraholt</span>
-          <span>210 Garðabær</span>
-          <span class="sitefoot__muted"><span data-i18n="ct.landLabel">Landeignarnúmer</span> L232219</span>
+          <span data-i18n="foot.addr1">Vorbraut 14, Hnoðraholt</span>
+          <span data-i18n="foot.addr2">210 Garðabær</span>
+          <span class="sitefoot__muted"><span data-i18n="ct.landLabel">Landeignarnúmer</span> <span data-i18n="foot.landnr">L232219</span></span>
         </div>
       </div>
       <div class="sitefoot__mid">
-        <a href="mailto:miklaborg@miklaborg.is">miklaborg@miklaborg.is</a>
-        <a href="tel:+3545697000">S: 569 7000</a>
+        <a href="mailto:miklaborg@miklaborg.is" data-i18n="foot.email">miklaborg@miklaborg.is</a>
+        <a href="tel:+3545697000" data-i18n="foot.phone">S: 569 7000</a>
       </div>
       <nav class="sitefoot__links">
         <a href="index.html#ibudir" data-i18n="cta.ibudir">Skoða íbúðir</a>
@@ -84,7 +89,9 @@
       </nav>
     </div>
   </footer>
-  <script src="js/content.js?v=103"></script>
-  <script src="js/page.js?v=103"></script>
+  <script src="js/content.js?v=110"></script>
+  <script src="js/supabase-config.js?v=110"></script>
+  <script src="js/vbsupa.js?v=110"></script>
+  <script src="js/page.js?v=110"></script>
 </body>
 </html>

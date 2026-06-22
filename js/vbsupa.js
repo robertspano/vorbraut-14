@@ -19,3 +19,47 @@ window.VB.getStatuses = async function () {
     return m;
   } catch (e) { return {}; }
 };
+
+/* ----- texta-yfirskriftir (CMS) — opinber lestur úr töflunni public.content -----
+   Skilar {is:{lykill:gildi}, en:{...}} eða null ef óstillt/villa. Tóm gildi hunsuð
+   svo sjálfgildið í content.js gildi áfram. */
+window.VB.getContent = async function () {
+  const url = (window.VB.SUPABASE_URL || '').replace(/\/$/, '');
+  const key = window.VB.SUPABASE_ANON_KEY || '';
+  if (!url || !key) return null;
+  try {
+    const r = await fetch(url + '/rest/v1/content?select=key,lang,value', {
+      headers: { apikey: key, Authorization: 'Bearer ' + key },
+    });
+    if (!r.ok) return null;
+    const rows = await r.json();
+    const ov = { is: {}, en: {} };
+    (rows || []).forEach((x) => {
+      if (x && x.key && (x.lang === 'is' || x.lang === 'en') && x.value != null && String(x.value).length)
+        ov[x.lang][x.key] = x.value;
+    });
+    return ov;
+  } catch (e) { return null; }
+};
+
+/* Bræðir yfirskriftir inn í window.VB.STR (sama hlut -> t() sér breytingarnar). */
+window.VB.applyContentOverrides = function (ov) {
+  if (!ov || !window.VB.STR) return false;
+  let n = 0;
+  ['is', 'en'].forEach((L) => {
+    if (!ov[L] || !window.VB.STR[L]) return;
+    Object.keys(ov[L]).forEach((k) => { window.VB.STR[L][k] = ov[L][k]; n++; });
+  });
+  return n > 0;
+};
+
+/* Heldur tel:/mailto: tenglum í takt við ritstýranlegan texta (data-i18n).
+   Kallað eftir applyLang svo breytt símanúmer/netfang virki líka sem tenglar. */
+window.VB.syncContactLinks = function (root) {
+  (root || document).querySelectorAll('a[data-i18n][href^="mailto:"], a[data-i18n][href^="tel:"]').forEach(function (a) {
+    var txt = (a.textContent || '').trim();
+    if (!txt) return;
+    if (txt.indexOf('@') >= 0) a.setAttribute('href', 'mailto:' + txt);
+    else { var d = txt.replace(/\D/g, '').replace(/^354/, ''); if (d) a.setAttribute('href', 'tel:+354' + d); }
+  });
+};
