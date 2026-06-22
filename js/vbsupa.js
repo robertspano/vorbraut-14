@@ -10,7 +10,7 @@ window.VB.getStatuses = async function () {
   if (!url || !key) return {};
   try {
     const r = await fetch(url + '/rest/v1/apartments?select=id,status', {
-      headers: { apikey: key, Authorization: 'Bearer ' + key },
+      headers: { apikey: key, Authorization: 'Bearer ' + key }, cache: 'no-store',
     });
     if (!r.ok) return {};
     const rows = await r.json();
@@ -29,7 +29,7 @@ window.VB.getContent = async function () {
   if (!url || !key) return null;
   try {
     const r = await fetch(url + '/rest/v1/content?select=key,lang,value', {
-      headers: { apikey: key, Authorization: 'Bearer ' + key },
+      headers: { apikey: key, Authorization: 'Bearer ' + key }, cache: 'no-store',
     });
     if (!r.ok) return null;
     const rows = await r.json();
