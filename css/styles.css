@@ -405,7 +405,7 @@ body.maskedit .facade__sides,body.maskedit .select__head{display:none!important}
 .agent__avatar{width:clamp(120px,11vw,158px);aspect-ratio:1;border-radius:50%;overflow:hidden;
   display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.5);font-family:var(--display);font-size:2.1rem;margin-bottom:1.4rem}
-.agent__avatar img{width:100%;height:100%;object-fit:cover}
+.agent__avatar img{width:100%;height:100%;object-fit:cover;object-position:center top}
 .agent__name{font-weight:500;font-size:1.1rem;color:#fff;margin-bottom:.35rem}
 .agent__title{font-size:.84rem;color:rgba(255,255,255,.55);margin-bottom:1rem;line-height:1.45;max-width:24ch}
 .agent__line{color:rgba(255,255,255,.82);font-size:.96rem;text-decoration:none;margin-top:.2rem;transition:.15s}
