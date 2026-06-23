@@ -186,12 +186,16 @@
   const FRANGE = { area: [64, 168], floor: [1, 4], rooms: [2, 4] };
   const state = { area: [64, 168], floor: [1, 4], rooms: [2, 4], laundry: false, pottur: false, parking: false, available: false };
 
+  // bílastæði per íbúð (sjálfgefið 1; 0 = ekkert bílastæði)
+  const parkOf = (a) => (a.parking != null ? a.parking : 1);
+
   function matches(a) {
     return a.area >= state.area[0] && a.area <= state.area[1]
         && a.floor >= state.floor[0] && a.floor <= state.floor[1]
         && a.rooms >= state.rooms[0] && a.rooms <= state.rooms[1]
         && (!state.laundry || a.type !== 'two')
         && (!state.pottur || a.type === 'pent')
+        && (!state.parking || parkOf(a) > 0)
         && (!state.available || a.status === 'available');
   }
 
@@ -206,7 +210,7 @@
         <td data-label="${t('spec.area')}">${fmtArea(a.area)} m²</td>
         <td data-label="${t('col.rooms')}">${roomsLabel(a.rooms)}</td>
         <td data-label="${t('spec.balcony')}">${out}</td>
-        <td data-label="${t('spec.parking')}">1</td>
+        <td data-label="${t('spec.parking')}">${parkOf(a) || '—'}</td>
         <td data-label="${t('spec.storage')}">${t('spec.basement')}</td>
         <td class="aptrow__price" data-label="${t('spec.price')}">${a.price ? fmtKr(a.price) : '—'}</td>
         <td data-label="${t('col.status')}"><span class="aptrow__status">${statusLabel(a.status)}</span></td>
@@ -374,7 +378,7 @@
       [t('col.rooms'), roomsLabel(a.rooms)],
       [t('spec.area'), fmtArea(a.area) + ' m²'],
       [t('spec.storage'), t('spec.basement')],
-      [t('spec.parking'), '1'],
+      [t('spec.parking'), parkOf(a) ? String(parkOf(a)) : '—'],
       [t('spec.balcony'), outVal],
       [t('spec.laundry'), a.type === 'two' ? t('spec.no') : t('spec.yes')],
     ];

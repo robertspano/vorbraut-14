@@ -30,13 +30,13 @@ const APARTMENTS = [
   { id: '0104', floor: 1, area: 115.6, rooms: 3, beds: 2, type: 'fam', outdoor: 'verond', status: 'available', price: 104900000, plan: '0104.png', planExact: true },
   // ---- 2. hæð — svalir ----
   { id: '0201', floor: 2, area: 130.3, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', plan: '0201.png', planExact: true },
-  { id: '0202', floor: 2, area: 69.5,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 71900000,  plan: '0202.png', planExact: true },
-  { id: '0203', floor: 2, area: 69.6,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 71900000,  plan: '0203.png', planExact: true },
+  { id: '0202', floor: 2, area: 69.5,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 71900000,  plan: '0202.png', planExact: true, parking: 0 },
+  { id: '0203', floor: 2, area: 69.6,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 71900000,  plan: '0203.png', planExact: true, parking: 0 },
   { id: '0204', floor: 2, area: 131.6, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'available', price: 119900000, plan: '0204.png', planExact: true },
   // ---- 3. hæð — svalir ----
   { id: '0301', floor: 3, area: 130.3, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'available', price: 122900000, plan: '0301.png', planExact: true },
-  { id: '0302', floor: 3, area: 70.1,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 73900000,  plan: '0302.png', planExact: true },
-  { id: '0303', floor: 3, area: 68.6,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 73900000,  plan: '0303.png', planExact: true },
+  { id: '0302', floor: 3, area: 70.1,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 73900000,  plan: '0302.png', planExact: true, parking: 0 },
+  { id: '0303', floor: 3, area: 68.6,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 73900000,  plan: '0303.png', planExact: true, parking: 0 },
   { id: '0304', floor: 3, area: 131.6, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', plan: '0304.png', planExact: true },
   // ---- 4. hæð (efsta hæð) — þaksvalir, aukin lofthæð ----
   // 0401 = vinstri þakíbúð, 0402 = hægri. Grunnmyndir víxlaðar (0401.png = hægri íbúðin).
