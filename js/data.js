@@ -26,7 +26,7 @@ const APARTMENTS = [
   // ---- 1. hæð (jarðhæð) — sérafnotareitir / verönd ----
   { id: '0101', floor: 1, area: 115.0, rooms: 4, beds: 3, type: 'fam', outdoor: 'verond', status: 'sold', plan: '0101.png', planExact: true },
   { id: '0102', floor: 1, area: 70.2,  rooms: 2, beds: 1, type: 'two', outdoor: 'verond', status: 'available', price: 69900000,  plan: '0102.png', planExact: true },
-  { id: '0103', floor: 1, area: 64.5,  rooms: 2, beds: 1, type: 'two', outdoor: 'verond', status: 'sold', plan: '0103.png', planExact: true },
+  { id: '0103', floor: 1, area: 64.5,  rooms: 2, beds: 1, type: 'two', outdoor: 'verond', status: 'sold', plan: '0103.png', planExact: true, parking: 0 },
   { id: '0104', floor: 1, area: 115.6, rooms: 3, beds: 2, type: 'fam', outdoor: 'verond', status: 'available', price: 104900000, plan: '0104.png', planExact: true },
   // ---- 2. hæð — svalir ----
   { id: '0201', floor: 2, area: 130.3, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', price: 119900000, plan: '0201.png', planExact: true },
