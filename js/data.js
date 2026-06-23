@@ -29,7 +29,7 @@ const APARTMENTS = [
   { id: '0103', floor: 1, area: 64.5,  rooms: 2, beds: 1, type: 'two', outdoor: 'verond', status: 'sold', plan: '0103.png', planExact: true },
   { id: '0104', floor: 1, area: 115.6, rooms: 3, beds: 2, type: 'fam', outdoor: 'verond', status: 'available', price: 104900000, plan: '0104.png', planExact: true },
   // ---- 2. hæð — svalir ----
-  { id: '0201', floor: 2, area: 130.3, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', plan: '0201.png', planExact: true },
+  { id: '0201', floor: 2, area: 130.3, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', price: 119900000, plan: '0201.png', planExact: true },
   { id: '0202', floor: 2, area: 69.5,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 71900000,  plan: '0202.png', planExact: true, parking: 0 },
   { id: '0203', floor: 2, area: 69.6,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 71900000,  plan: '0203.png', planExact: true, parking: 0 },
   { id: '0204', floor: 2, area: 131.6, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'available', price: 119900000, plan: '0204.png', planExact: true },
@@ -39,9 +39,10 @@ const APARTMENTS = [
   { id: '0303', floor: 3, area: 68.6,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 73900000,  plan: '0303.png', planExact: true, parking: 0 },
   { id: '0304', floor: 3, area: 131.6, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', plan: '0304.png', planExact: true },
   // ---- 4. hæð (efsta hæð) — þaksvalir, aukin lofthæð ----
-  // 0401 = vinstri þakíbúð, 0402 = hægri. Grunnmyndir víxlaðar (0401.png = hægri íbúðin).
-  { id: '0401', floor: 4, area: 155.7, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'sold', plan: '0402.png', planExact: true, tex: '0401.png', walk3d: true },
-  { id: '0402', floor: 4, area: 167.5, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'available', price: 219900000, plan: '0401.png', planExact: true, walk3d: true },
+  // Númer víxluð (4. hæð var rangt merkt): 0401 = hægri þakíbúð (til sölu, 167,5 m²),
+  // 0402 = vinstri þakíbúð (selt, 155,7 m²). plan/tex/3D-líkan fylgja réttri íbúð.
+  { id: '0401', floor: 4, area: 167.5, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'available', price: 219900000, plan: '0401.png', planExact: true, walk3d: true },
+  { id: '0402', floor: 4, area: 155.7, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'sold', plan: '0402.png', planExact: true, tex: '0401.png', walk3d: true, parking: 2 },
 ];
 
 /* Gagnvirkir hover-fletir á lokaramma kvikmyndarinnar (f096, 1280×720).
@@ -61,8 +62,8 @@ const FACADE = {
     '0302': [[637,289],[826,289],[826,376],[637,376]],
     '0303': [[453,289],[639,289],[639,375],[446,375],[446,330],[446,289],[453,289]],
     '0304': [[256,289],[446,289],[446,375],[233,375],[233,330],[253,330],[253,328],[263,328],[263,300],[256,300]],
-    '0401': [[279,177],[450,174],[450,144],[459,144],[459,175],[528,175],[528,162],[634,162],[635,288],[251,288],[251,270],[257,270],[257,239],[300,239],[300,207],[280,199]],
-    '0402': [[637,162],[745,162],[745,175],[817,175],[817,144],[826,144],[826,175],[912,174],[912,176],[996,177],[996,200],[977,209],[977,239],[1020,239],[1019,269],[1026,269],[1026,288],[637,288]],
+    '0401': [[637,162],[745,162],[745,175],[817,175],[817,144],[826,144],[826,175],[912,174],[912,176],[996,177],[996,200],[977,209],[977,239],[1020,239],[1019,269],[1026,269],[1026,288],[637,288]],
+    '0402': [[279,177],[450,174],[450,144],[459,144],[459,175],[528,175],[528,162],[634,162],[635,288],[251,288],[251,270],[257,270],[257,239],[300,239],[300,207],[280,199]],
   }
 };
 
@@ -76,7 +77,7 @@ try {
    nákvæmlega eins og þær raðast í aðaluppdráttunum. Hnitin eru reiknuð beint
    úr BIM-líkani hússins (IFC) og íbúðirnar eru LÍMDAR SAMAN að veggjamiðju —
    þær snertast og mynda eina samfellda byggingu (eins og hjá vesturvin). Snúið
-   svo langhliðin liggi lárétt (0x04 vinstra, 0x01 hægra; á 4. hæð 0401 vinstra).
+   svo langhliðin liggi lárétt (0x04 vinstra, 0x01 hægra; á 4. hæð 0402 vinstra).
    Stigahús/lyfta = 'core' (sýnt sem ljóst skarð). northDeg = norður á skjánum.
    northDeg=-144 mælt af norðurpílu á SAMÞYKKTUM aðaluppdrætti ARCHUS (A02 grunnmynd,
    norður ~54° rangsælis frá uppstefnu blaðs); grunnmyndarstefna mín = stefna uppdráttar. */
@@ -113,8 +114,8 @@ const FLOOR_SHAPES = {
     4: {
       footprint: [[14.4,133.1],[21.9,133.1],[21.9,146.9],[182.9,147.0],[184.4,145.5],[185.8,147.0],[278.3,146.9],[278.3,133.1],[285.3,133.1],[285.3,113.1],[278.3,112.8],[278.3,11.9],[188.9,11.9],[188.9,36.4],[168.0,36.4],[168.0,56.0],[127.4,55.8],[127.4,41.6],[113.3,41.6],[113.3,11.9],[21.9,11.9],[21.9,113.1],[14.4,113.1]],
       apts: {
-        '0401': [[14.4,113.1],[14.4,133.1],[21.9,133.1],[21.9,146.9],[150.4,146.9],[150.4,56],[127.4,55.8],[127.4,41.6],[113.3,41.6],[113.3,11.9],[21.9,11.9],[21.9,113.1]],  // = vinstri þakíbúð
-        '0402': [[150.2,146.9],[182.9,147],[184.4,145.5],[185.8,147],[278.3,146.9],[278.3,133.1],[285.3,133.1],[285.3,113.1],[278.3,112.8],[278.3,11.9],[188.9,11.9],[188.9,36.4],[168,36.4],[168,56],[150.4,56]],
+        '0401': [[150.2,146.9],[182.9,147],[184.4,145.5],[185.8,147],[278.3,146.9],[278.3,133.1],[285.3,133.1],[285.3,113.1],[278.3,112.8],[278.3,11.9],[188.9,11.9],[188.9,36.4],[168,36.4],[168,56],[150.4,56]],  // = hægri þakíbúð
+        '0402': [[14.4,113.1],[14.4,133.1],[21.9,133.1],[21.9,146.9],[150.4,146.9],[150.4,56],[127.4,55.8],[127.4,41.6],[113.3,41.6],[113.3,11.9],[21.9,11.9],[21.9,113.1]],  // = vinstri þakíbúð
       },
     },
   },
@@ -123,7 +124,7 @@ const FLOOR_SHAPES = {
 /* Handvirk breyting á hæðarkorti (úr ?planedit tólinu) hefur forgang — en aðeins ef hún
    er með núverandi útgáfumerki. Þegar nýjar útlínur eru vistaðar varanlega hér er FS_VERSION
    hækkað, og þá hreinsast gamall (úreltur) draft sjálfkrafa svo vefútgáfan birtist. */
-const FS_VERSION = 'v5-2026-06-17';
+const FS_VERSION = 'v6-2026-06-23';
 try {
   const savedFS = JSON.parse(localStorage.getItem('vb-floorshapes') || 'null');
   if (savedFS && savedFS.floors && savedFS._v === FS_VERSION) {
@@ -157,8 +158,8 @@ const PLAN_ADJ = {
   '0302': { x: 20.3,  y: -8.4, w: 109.1, h: 102.6 },
   '0303': { x: 12.3,  y: 3.8,  w: 66.7,  h: 90.3 },
   '0304': { x: 11.9,  y: 1.8,  w: 68.4,  h: 92.7 },
-  '0401': { x: 1.8,   y: 1.4,  w: 91.6,  h: 83   },
-  '0402': { x: 4.6,   y: -1,   w: 90.2,  h: 87.6 },
+  '0401': { x: 4.6,   y: -1,   w: 90.2,  h: 87.6 },
+  '0402': { x: 1.8,   y: 1.4,  w: 91.6,  h: 83   },
 };
 try {
   const savedPA = JSON.parse(localStorage.getItem('vb-planimg') || 'null');

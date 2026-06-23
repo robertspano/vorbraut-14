@@ -142,7 +142,7 @@ function loadGLB(url) {
 
 // BIM-geómetría úr IFC (assets/models/<id>.json) með vefefnum
 async function loadJSON() {
-  const res = await fetch(`assets/models/${ID}.json?v=82`);
+  const res = await fetch(`assets/models/${ID}.json?v=83`);
   if (!res.ok) throw new Error('model ' + res.status);
   const data = await res.json();
   META = data.meta || META;
