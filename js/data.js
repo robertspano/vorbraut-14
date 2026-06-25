@@ -40,9 +40,9 @@ const APARTMENTS = [
   { id: '0304', floor: 3, area: 131.6, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', plan: '0304.png', planExact: true },
   // ---- 4. hæð (efsta hæð) — þaksvalir, aukin lofthæð ----
   // Númer víxluð (4. hæð var rangt merkt): 0401 = hægri þakíbúð (til sölu, 167,5 m²),
-  // 0402 = vinstri þakíbúð (selt, 155,7 m²). plan/tex/3D-líkan fylgja réttri íbúð.
-  { id: '0401', floor: 4, area: 167.5, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'available', price: 219900000, plan: '0401.png', planExact: true, walk3d: true },
-  { id: '0402', floor: 4, area: 155.7, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'sold', plan: '0402.png', planExact: true, tex: '0401.png', walk3d: true, parking: 2 },
+  // Víxlað skv. fasteignasala (2026-06): 0401 = hægri þakíbúð SELD (155,7 m²); 0402 = vinstri þakíbúð TIL SÖLU (167,5 m² / 219,9 m.kr., 2 bílastæði).
+  { id: '0401', floor: 4, area: 155.7, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'sold', plan: '0401.png', planExact: true, tex: '0401.png', walk3d: true },
+  { id: '0402', floor: 4, area: 167.5, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'available', price: 219900000, plan: '0402.png', planExact: true, walk3d: true, parking: 2 },
 ];
 
 /* Gagnvirkir hover-fletir á lokaramma kvikmyndarinnar (f096, 1280×720).
