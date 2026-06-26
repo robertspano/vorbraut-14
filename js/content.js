@@ -157,9 +157,9 @@ const STR = {
 
     /* gagnvirkt val */
     'sel.kicker': 'Íbúðir í Vorbraut 14',
-    'sel.title': 'Smelltu þig inn í húsið',
+    'sel.title': 'Veldu íbúð í húsinu',
     'sel.body': 'Færðu músina yfir framhlið hússins. Hver íbúð lýsist upp — smelltu til að sjá stærð, hæð, herbergi og grunnmynd.',
-    'sel.bodyTouch': 'Smelltu á framhlið hússins til að velja íbúð og sjá teikningar, stærðir og nánari upplýsingar.',
+    'sel.bodyTouch': 'Smelltu eða ýttu á íbúð til að sjá teikningar, stærðir og nánari upplýsingar.',
     'facade.front': 'Framan',
     'facade.back': 'Aftan',
     'sel.hint': 'Veldu íbúð á myndinni',
@@ -419,9 +419,9 @@ const STR = {
     'type.pent.desc': 'Larger homes with raised ceilings and generous roof terraces.',
 
     'sel.kicker': 'Apartments at Vorbraut 14',
-    'sel.title': 'Step into the building',
+    'sel.title': 'Choose an apartment in the building',
     'sel.body': 'Move your cursor over the building. Each apartment lights up — click to see size, floor, rooms and floor plan.',
-    'sel.bodyTouch': 'Click the building to choose an apartment and see floor plans, sizes and more.',
+    'sel.bodyTouch': 'Click or tap an apartment to see floor plans, sizes and more details.',
     'facade.front': 'Front',
     'facade.back': 'Rear',
     'sel.hint': 'Select an apartment on the image',

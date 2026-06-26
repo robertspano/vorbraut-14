@@ -205,20 +205,22 @@
   /* ---- animated jump for [data-cinedown] (to the facade) and [data-totop] ---- */
   let anim;
   const easeInOut = (p) => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2);
-  function scrollTo(top) {
+  const easeOut = (p) => 1 - Math.pow(1 - p, 3);   // decelerar inn í stoppið → segul-tilfinning
+  function scrollTo(top, durOverride, easeFn) {
     if (anim) cancelAnimationFrame(anim);
     const start = scroller.scrollTop, dist = top - start;
     if (Math.abs(dist) < 2) return;
     if (matchMedia('(prefers-reduced-motion:reduce)').matches) { scroller.scrollTo({ top, behavior: 'instant' }); render(); return; }
-    const dur = clamp(Math.abs(dist) * 0.45, 600, 1500);
+    const ease = easeFn || easeInOut;
+    const dur = durOverride != null ? durOverride : clamp(Math.abs(dist) * 0.45, 600, 1500);
     let t0 = null;
-    const safety = setTimeout(() => { scroller.scrollTo({ top, behavior: 'instant' }); render(); }, dur + 300);
+    const safety = setTimeout(() => { scroller.scrollTo({ top, behavior: 'instant' }); render(); anim = null; }, dur + 300);
     const step = (ts) => {
       if (t0 == null) t0 = ts;
       const k = Math.min(1, (ts - t0) / dur);
-      scroller.scrollTo({ top: start + dist * easeInOut(k), behavior: 'instant' });
+      scroller.scrollTo({ top: start + dist * ease(k), behavior: 'instant' });
       render();
-      if (k < 1) anim = requestAnimationFrame(step); else clearTimeout(safety);
+      if (k < 1) anim = requestAnimationFrame(step); else { anim = null; clearTimeout(safety); }
     };
     anim = requestAnimationFrame(step);
   }
@@ -229,6 +231,34 @@
     : cineTop + (cineH - vpH) * Math.min(D + 0.10, 0.96);
   document.querySelectorAll('[data-cinedown]').forEach((el) => el.addEventListener('click', (e) => { if (e.cancelable) e.preventDefault(); scrollTo(cinedownTarget()); }));
   document.querySelectorAll('[data-totop]').forEach((el) => el.addEventListener('click', (e) => { e.preventDefault(); scrollTo(0); }));
+
+  /* ---- sími: segul-snap á interactive byggingar-stoppið --------------------
+     Á síma er erfitt að nema staðar nákvæmlega þar sem byggingin hefur zoom-ast
+     fullt út (þar sem framhliðin verður smellanleg). Þegar skrun stöðvast nálægt
+     þeim púnkti rennum við mjúklega á hann — eins og scroll-snap — svo notandinn
+     lendir alltaf á hreinu byggingar-stoppi í stað þess að stöðvast í miðju zoom-i.
+     Aðeins á síma; sleppt ef notandi kýs minni hreyfingu (prefers-reduced-motion). */
+  let touching = false, settleTimer = 0;
+  const reduceMo = matchMedia('(prefers-reduced-motion:reduce)');
+  function snapSettle() {
+    if (!isMobile() || touching || reduceMo.matches || anim) return;
+    const st = scroller.scrollTop;
+    const target = cineTop + cineH - cardH();         // interactive framhliðin (fullzoom-uð út)
+    const bandTop = cineTop + cineH - vpH;            // þar sem zoom-out hefst
+    const lo = bandTop - Math.round(vpH * 0.30);      // sterkt grip á niðurfluginu (þar sem maður þarf hjálp)
+    const hi = target + Math.round(vpH * 0.07);       // létt að neðan: bara smá-overshoot, treður ekki á listanum
+    if (st >= lo && st <= hi && Math.abs(st - target) > 4) {
+      scrollTo(target, clamp(Math.abs(st - target) * 0.42, 220, 460), easeOut);   // snöggt, decelerar inn
+    }
+  }
+  const queueSettle = () => { clearTimeout(settleTimer); settleTimer = setTimeout(snapSettle, 70); };
+  scroller.addEventListener('touchstart', () => { touching = true; }, { passive: true });
+  scroller.addEventListener('touchend', () => { touching = false; queueSettle(); }, { passive: true });
+  scroller.addEventListener('touchcancel', () => { touching = false; queueSettle(); }, { passive: true });
+  scroller.addEventListener('scroll', queueSettle, { passive: true });
+  // Nákvæmari kveiking þar sem hann er studdur: 'scrollend' skýtur þegar skrun raunverulega
+  // stöðvast (líka eftir momentum), svo snöpin grípur strax án þess að bíða eftir debounce.
+  if ('onscrollend' in window) scroller.addEventListener('scrollend', () => { if (!touching) snapSettle(); });
 
   resizeCanvas();
   render();
