@@ -245,8 +245,8 @@
     const st = scroller.scrollTop;
     const target = cineTop + cineH - cardH();         // interactive framhliðin (fullzoom-uð út)
     const bandTop = cineTop + cineH - vpH;            // þar sem zoom-out hefst
-    const lo = bandTop - Math.round(vpH * 0.45);      // sterkt grip: nær langt upp í niðurflugið
-    const hi = target + Math.round(vpH * 0.18);       // grípur líka momentum-overshoot niður í listann
+    const lo = bandTop - Math.round(vpH * 0.30);      // sterkt grip á niðurfluginu (þar sem maður þarf hjálp)
+    const hi = target + Math.round(vpH * 0.07);       // létt að neðan: bara smá-overshoot, treður ekki á listanum
     if (st >= lo && st <= hi && Math.abs(st - target) > 4) {
       scrollTo(target, clamp(Math.abs(st - target) * 0.42, 220, 460), easeOut);   // snöggt, decelerar inn
     }
