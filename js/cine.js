@@ -205,20 +205,20 @@
   /* ---- animated jump for [data-cinedown] (to the facade) and [data-totop] ---- */
   let anim;
   const easeInOut = (p) => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2);
-  function scrollTo(top) {
+  function scrollTo(top, durOverride) {
     if (anim) cancelAnimationFrame(anim);
     const start = scroller.scrollTop, dist = top - start;
     if (Math.abs(dist) < 2) return;
     if (matchMedia('(prefers-reduced-motion:reduce)').matches) { scroller.scrollTo({ top, behavior: 'instant' }); render(); return; }
-    const dur = clamp(Math.abs(dist) * 0.45, 600, 1500);
+    const dur = durOverride != null ? durOverride : clamp(Math.abs(dist) * 0.45, 600, 1500);
     let t0 = null;
-    const safety = setTimeout(() => { scroller.scrollTo({ top, behavior: 'instant' }); render(); }, dur + 300);
+    const safety = setTimeout(() => { scroller.scrollTo({ top, behavior: 'instant' }); render(); anim = null; }, dur + 300);
     const step = (ts) => {
       if (t0 == null) t0 = ts;
       const k = Math.min(1, (ts - t0) / dur);
       scroller.scrollTo({ top: start + dist * easeInOut(k), behavior: 'instant' });
       render();
-      if (k < 1) anim = requestAnimationFrame(step); else clearTimeout(safety);
+      if (k < 1) anim = requestAnimationFrame(step); else { anim = null; clearTimeout(safety); }
     };
     anim = requestAnimationFrame(step);
   }
@@ -243,11 +243,13 @@
     const st = scroller.scrollTop;
     const target = cineTop + cineH - cardH();         // interactive framhliðin (fullzoom-uð út)
     const bandTop = cineTop + cineH - vpH;            // þar sem zoom-out hefst
-    const lo = bandTop - Math.round(vpH * 0.10);      // grípur líka síðasta hluta niðurflugs
-    const hi = target + Math.round(vpH * 0.08);       // lítið svigrúm niður í íbúðalistann
-    if (st >= lo && st <= hi && Math.abs(st - target) > 4) scrollTo(target);
+    const lo = bandTop - Math.round(vpH * 0.45);      // sterkt grip: nær langt upp í niðurflugið
+    const hi = target + Math.round(vpH * 0.18);       // grípur líka momentum-overshoot niður í listann
+    if (st >= lo && st <= hi && Math.abs(st - target) > 4) {
+      scrollTo(target, clamp(Math.abs(st - target) * 0.4, 240, 480));   // snöggt, ákveðið renn
+    }
   }
-  const queueSettle = () => { clearTimeout(settleTimer); settleTimer = setTimeout(snapSettle, 110); };
+  const queueSettle = () => { clearTimeout(settleTimer); settleTimer = setTimeout(snapSettle, 70); };
   scroller.addEventListener('touchstart', () => { touching = true; }, { passive: true });
   scroller.addEventListener('touchend', () => { touching = false; queueSettle(); }, { passive: true });
   scroller.addEventListener('touchcancel', () => { touching = false; queueSettle(); }, { passive: true });
