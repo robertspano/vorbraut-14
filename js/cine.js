@@ -230,6 +230,29 @@
   document.querySelectorAll('[data-cinedown]').forEach((el) => el.addEventListener('click', (e) => { if (e.cancelable) e.preventDefault(); scrollTo(cinedownTarget()); }));
   document.querySelectorAll('[data-totop]').forEach((el) => el.addEventListener('click', (e) => { e.preventDefault(); scrollTo(0); }));
 
+  /* ---- sími: segul-snap á interactive byggingar-stoppið --------------------
+     Á síma er erfitt að nema staðar nákvæmlega þar sem byggingin hefur zoom-ast
+     fullt út (þar sem framhliðin verður smellanleg). Þegar skrun stöðvast nálægt
+     þeim púnkti rennum við mjúklega á hann — eins og scroll-snap — svo notandinn
+     lendir alltaf á hreinu byggingar-stoppi í stað þess að stöðvast í miðju zoom-i.
+     Aðeins á síma; sleppt ef notandi kýs minni hreyfingu (prefers-reduced-motion). */
+  let touching = false, settleTimer = 0;
+  const reduceMo = matchMedia('(prefers-reduced-motion:reduce)');
+  function snapSettle() {
+    if (!isMobile() || touching || reduceMo.matches || anim) return;
+    const st = scroller.scrollTop;
+    const target = cineTop + cineH - cardH();         // interactive framhliðin (fullzoom-uð út)
+    const bandTop = cineTop + cineH - vpH;            // þar sem zoom-out hefst
+    const lo = bandTop - Math.round(vpH * 0.10);      // grípur líka síðasta hluta niðurflugs
+    const hi = target + Math.round(vpH * 0.08);       // lítið svigrúm niður í íbúðalistann
+    if (st >= lo && st <= hi && Math.abs(st - target) > 4) scrollTo(target);
+  }
+  const queueSettle = () => { clearTimeout(settleTimer); settleTimer = setTimeout(snapSettle, 110); };
+  scroller.addEventListener('touchstart', () => { touching = true; }, { passive: true });
+  scroller.addEventListener('touchend', () => { touching = false; queueSettle(); }, { passive: true });
+  scroller.addEventListener('touchcancel', () => { touching = false; queueSettle(); }, { passive: true });
+  scroller.addEventListener('scroll', queueSettle, { passive: true });
+
   resizeCanvas();
   render();
 })();
