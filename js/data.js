@@ -146,9 +146,7 @@ try {
    x/y = staðsetning efra-vinstra horns, w/h = stærð ramma — allt í % af reit.
    localStorage ('vb-planimg') yfirskrifar þetta á meðan verið er að fínstilla. */
 const PLAN_ADJ = {
-  // 1.–3. hæð (0101–0104, 0201–0204, 0301–0304): nýjar grunnmyndir (með titilreit) eru þétt-skornar → sjálfgefið "contain" passar best (engin handstilling).
-  '0401': { x: 4.6,   y: -1,   w: 90.2,  h: 87.6 },
-  '0402': { x: 1.8,   y: 1.4,  w: 91.6,  h: 83   },
+  // Allar nýjar grunnmyndir (1.–4. hæð, með titilreit) eru þétt-skornar að íbúðinni → sjálfgefið "contain" rammar þær rétt (engin handstilling).
 };
 try {
   const savedPA = JSON.parse(localStorage.getItem('vb-planimg') || 'null');
