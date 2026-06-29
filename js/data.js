@@ -146,11 +146,7 @@ try {
    x/y = staðsetning efra-vinstra horns, w/h = stærð ramma — allt í % af reit.
    localStorage ('vb-planimg') yfirskrifar þetta á meðan verið er að fínstilla. */
 const PLAN_ADJ = {
-  // 1.–2. hæð (0101–0104, 0201–0204): nýjar grunnmyndir (með titilreit) eru þétt-skornar → sjálfgefið "contain" passar best (engin handstilling).
-  '0301': { x: -37.2, y: -3.7, w: 113.5, h: 95   },
-  '0302': { x: 20.3,  y: -8.4, w: 109.1, h: 102.6 },
-  '0303': { x: 12.3,  y: 3.8,  w: 66.7,  h: 90.3 },
-  '0304': { x: 11.9,  y: 1.8,  w: 68.4,  h: 92.7 },
+  // 1.–3. hæð (0101–0104, 0201–0204, 0301–0304): nýjar grunnmyndir (með titilreit) eru þétt-skornar → sjálfgefið "contain" passar best (engin handstilling).
   '0401': { x: 4.6,   y: -1,   w: 90.2,  h: 87.6 },
   '0402': { x: 1.8,   y: 1.4,  w: 91.6,  h: 83   },
 };
