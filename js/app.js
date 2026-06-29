@@ -399,7 +399,7 @@
   function applyPlanView() {
     const a = currentApt; if (!a) return;
     if (planView === 'tex' && a.tex) planImg.src = 'assets/plans_tex/' + a.tex + '?r=2';
-    else { planView = 'line'; planImg.src = 'assets/plans/' + a.plan + '?r=4'; }
+    else { planView = 'line'; planImg.src = 'assets/plans/' + a.plan + '?r=5'; }
     if (planView_el) $$('.aptm__pvbtn', planView_el).forEach((b) => b.classList.toggle('is-on', b.dataset.view === planView));
     requestAnimationFrame(() => setPlanFrame(a.id));
   }
