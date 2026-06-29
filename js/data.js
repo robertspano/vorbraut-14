@@ -146,10 +146,7 @@ try {
    x/y = staðsetning efra-vinstra horns, w/h = stærð ramma — allt í % af reit.
    localStorage ('vb-planimg') yfirskrifar þetta á meðan verið er að fínstilla. */
 const PLAN_ADJ = {
-  '0101': { x: -30.9, y: 2,    w: 112.9, h: 91.8 },
-  '0102': { x: 24.5,  y: -1.3, w: 54.9,  h: 100  },
-  '0103': { x: -16.8, y: -1.8, w: 100,   h: 99.7 },
-  '0104': { x: 20.7,  y: -0.4, w: 117.5, h: 90.3 },
+  // 1. hæð (0101–0104): nýjar grunnmyndir eru þétt-skornar að íbúðinni → sjálfgefið "contain" passar best (engin handstilling).
   '0201': { x: -35.9, y: -8.2, w: 121.3, h: 101.5 },
   '0202': { x: 23.4,  y: -6.3, w: 107.3, h: 100.9 },
   '0203': { x: 21.4,  y: 0,    w: 57.1,  h: 95.2 },

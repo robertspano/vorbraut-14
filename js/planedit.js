@@ -69,7 +69,7 @@
     const lbl = root.querySelector('.pe__planlbl');
     const file = selId && aptPlan[selId];
     if (file) {
-      const src = 'assets/plans/' + file + '?r=3';
+      const src = 'assets/plans/' + file + '?r=4';
       if (img.getAttribute('src') !== src) img.src = src;
       img.hidden = false; empty.hidden = true; lbl.textContent = 'Grunnmynd · íbúð ' + selId;
     } else {
