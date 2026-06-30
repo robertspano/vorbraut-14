@@ -183,8 +183,8 @@
   /* ===================== APARTMENT GRID + FILTERS ====================== */
   const grid = $('#aptRows');
   const gridEmpty = $('#gridEmpty');
-  const FRANGE = { area: [64, 168], floor: [1, 4], rooms: [2, 4] };
-  const state = { area: [64, 168], floor: [1, 4], rooms: [2, 4], laundry: false, pottur: false, parking: false, available: false };
+  const FRANGE = { area: [64, 172], floor: [1, 4], rooms: [2, 4] };
+  const state = { area: [64, 172], floor: [1, 4], rooms: [2, 4], laundry: false, pottur: false, parking: false, available: false };
 
   // bílastæði per íbúð (sjálfgefið 1; 0 = ekkert bílastæði)
   const parkOf = (a) => (a.parking != null ? a.parking : 1);
