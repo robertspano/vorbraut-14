@@ -19,8 +19,8 @@
 */
 const APARTMENTS = [
   // Stærðir/verð/herbergi staðfest gegn söluskrá Miklaborgar (miklaborg.is, 2026-06-22):
-  //   til sölu (8): 0102,0104,0202,0203,0204,0301,0302,0303  — verð skráð.
-  //   selt (6): 0101,0103,0201,0304,0401,0402  — báðar þakíbúðir seldar.
+  //   til sölu (9): 0102,0104,0202,0203,0204,0301,0302,0303,0402  — verð skráð.
+  //   selt (5): 0101,0103,0201,0304,0401.
   //   area = BIRT STÆRÐ = birt flatarmál (heildarstærð íbúðar MEÐ sérgeymslu), skv. skráningartöflu.
   //   beds = svefnherbergi.  price = ISK (heiltala).
   // ---- 1. hæð (jarðhæð) — sérafnotareitir / verönd ----
@@ -42,7 +42,7 @@ const APARTMENTS = [
   // Númer víxluð (4. hæð var rangt merkt): 0401 = hægri þakíbúð (til sölu, 167,5 m²),
   // 0402 = vinstri þakíbúð (selt, 155,7 m²). plan/tex/3D-líkan fylgja réttri íbúð.
   { id: '0401', floor: 4, area: 171.0, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'sold', plan: '0401.png', planExact: true, walk3d: true, parking: 2 },
-  { id: '0402', floor: 4, area: 167.5, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'sold', plan: '0402.png', planExact: true, tex: '0401.png', walk3d: true, parking: 2 },
+  { id: '0402', floor: 4, area: 167.5, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'available', price: 219900000, plan: '0402.png', planExact: true, tex: '0401.png', walk3d: true, parking: 2 },
 ];
 
 /* Gagnvirkir hover-fletir á lokaramma kvikmyndarinnar (f096, 1280×720).
