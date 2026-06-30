@@ -21,15 +21,15 @@ const APARTMENTS = [
   // Stærðir/verð/herbergi staðfest gegn söluskrá Miklaborgar (miklaborg.is, 2026-06-22):
   //   til sölu (9): 0102,0104,0202,0203,0204,0301,0302,0303,0402  — verð skráð.
   //   ekki á söluskrá -> merkt SELT (5): 0101,0103,0201,0304,0401.
-  //   0201/0304 stærð leiðrétt eftir spegluðum tvíbura (2.=3. hæð). 0101/0103/0401 = óstaðfest.
+  //   area = BIRT STÆRÐ = birt flatarmál (heildarstærð íbúðar MEÐ sérgeymslu), skv. skráningartöflu.
   //   beds = svefnherbergi.  price = ISK (heiltala).
   // ---- 1. hæð (jarðhæð) — sérafnotareitir / verönd ----
-  { id: '0101', floor: 1, area: 115.0, rooms: 4, beds: 3, type: 'fam', outdoor: 'verond', status: 'sold', plan: '0101.png', planExact: true },
-  { id: '0102', floor: 1, area: 70.2,  rooms: 2, beds: 1, type: 'two', outdoor: 'verond', status: 'available', price: 69900000,  plan: '0102.png', planExact: true },
-  { id: '0103', floor: 1, area: 64.5,  rooms: 2, beds: 1, type: 'two', outdoor: 'verond', status: 'sold', plan: '0103.png', planExact: true, parking: 0 },
+  { id: '0101', floor: 1, area: 127.2, rooms: 4, beds: 3, type: 'fam', outdoor: 'verond', status: 'sold', plan: '0101.png', planExact: true },
+  { id: '0102', floor: 1, area: 70.2,  rooms: 2, beds: 1, type: 'two', outdoor: 'verond', status: 'available', price: 69900000,  plan: '0102.png', planExact: true, parking: 0 },
+  { id: '0103', floor: 1, area: 69.5,  rooms: 2, beds: 1, type: 'two', outdoor: 'verond', status: 'sold', plan: '0103.png', planExact: true, parking: 0 },
   { id: '0104', floor: 1, area: 115.6, rooms: 3, beds: 2, type: 'fam', outdoor: 'verond', status: 'available', price: 104900000, plan: '0104.png', planExact: true },
   // ---- 2. hæð — svalir ----
-  { id: '0201', floor: 2, area: 130.3, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', price: 119900000, plan: '0201.png', planExact: true },
+  { id: '0201', floor: 2, area: 128.8, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', price: 119900000, plan: '0201.png', planExact: true },
   { id: '0202', floor: 2, area: 69.5,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 71900000,  plan: '0202.png', planExact: true, parking: 0 },
   { id: '0203', floor: 2, area: 69.6,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 71900000,  plan: '0203.png', planExact: true, parking: 0 },
   { id: '0204', floor: 2, area: 131.6, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'available', price: 119900000, plan: '0204.png', planExact: true },
@@ -37,12 +37,12 @@ const APARTMENTS = [
   { id: '0301', floor: 3, area: 130.3, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'available', price: 122900000, plan: '0301.png', planExact: true },
   { id: '0302', floor: 3, area: 70.1,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 73900000,  plan: '0302.png', planExact: true, parking: 0 },
   { id: '0303', floor: 3, area: 68.6,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 73900000,  plan: '0303.png', planExact: true, parking: 0 },
-  { id: '0304', floor: 3, area: 131.6, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', plan: '0304.png', planExact: true },
+  { id: '0304', floor: 3, area: 130.1, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', plan: '0304.png', planExact: true },
   // ---- 4. hæð (efsta hæð) — þaksvalir, aukin lofthæð ----
   // Númer víxluð (4. hæð var rangt merkt): 0401 = hægri þakíbúð (til sölu, 167,5 m²),
   // 0402 = vinstri þakíbúð (selt, 155,7 m²). plan/tex/3D-líkan fylgja réttri íbúð.
-  { id: '0401', floor: 4, area: 167.5, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'available', price: 219900000, plan: '0401.png', planExact: true, walk3d: true },
-  { id: '0402', floor: 4, area: 155.7, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'sold', plan: '0402.png', planExact: true, tex: '0401.png', walk3d: true, parking: 2 },
+  { id: '0401', floor: 4, area: 171.0, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'available', price: 219900000, plan: '0401.png', planExact: true, walk3d: true, parking: 2 },
+  { id: '0402', floor: 4, area: 167.5, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'sold', plan: '0402.png', planExact: true, tex: '0401.png', walk3d: true, parking: 2 },
 ];
 
 /* Gagnvirkir hover-fletir á lokaramma kvikmyndarinnar (f096, 1280×720).
