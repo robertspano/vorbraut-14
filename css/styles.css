@@ -1,0 +1,772 @@
+/* ==========================================================================
+   Vorbraut 14 — styles
+   Palette: Snjóhvítt #FFFFFF · Beinhvítt #F4F2EC · Timburbrúnt #A8855C
+            Dökkt timbur #6E5A41 · Kolsgrátt #3A3D40 · Jökulblátt #8FA6AE
+   ========================================================================== */
+
+:root{
+  --snow:#FFFFFF;
+  --bone:#F4F2EC;
+  --bone-2:#EDEAE0;
+  --timber:#A8855C;
+  --timber-dk:#6E5A41;
+  --charcoal:#3A3D40;
+  --glacier:#8FA6AE;
+  --green:#7E9A52;            /* hover-grænt — vísar í grænt þak */
+  --green-soft:rgba(126,154,82,.46);
+  --line:rgba(58,61,64,.14);
+  --ink:#2C2E30;
+  --muted:#7A7B76;
+
+  --maxw:1280px;
+  --pad:clamp(20px,5vw,68px);
+  --r:14px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --display:'Hanken Grotesk','Inter',-apple-system,sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font);
+  color:var(--ink);
+  background:var(--snow);
+  line-height:1.6;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+::selection{background:var(--green);color:#fff}
+
+/* ----------------------------- typography ----------------------------- */
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.05;letter-spacing:-.01em;color:var(--charcoal)}
+h2{font-size:clamp(1.9rem,4.2vw,3.4rem)}
+h3{font-size:1.35rem}
+.kicker{
+  font-size:.72rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--timber);margin-bottom:1.1rem;
+}
+.kicker--light{color:rgba(255,255,255,.8)}
+.lead{font-size:clamp(1rem,1.5vw,1.18rem);color:var(--muted);max-width:46ch;margin-top:.4rem}
+.lead.center{margin-left:auto;margin-right:auto;text-align:center}
+.note{font-size:.85rem;color:var(--muted);margin-top:1.2rem;font-style:italic}
+
+/* ------------------------------- buttons ------------------------------ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:.85rem 1.7rem;border-radius:100px;font-size:.9rem;font-weight:500;
+  letter-spacing:.02em;transition:.35s var(--ease);white-space:nowrap;
+}
+.btn--solid{background:var(--charcoal);color:#fff}
+.btn--solid:hover{background:var(--timber-dk);transform:translateY(-2px)}
+.btn--ghost{border:1px solid currentColor;color:var(--charcoal)}
+.btn--ghost:hover{background:var(--charcoal);color:#fff;border-color:var(--charcoal)}
+
+/* ================================ NAV ================================= */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--pad);height:84px;
+  background:linear-gradient(180deg,rgba(0,0,0,.34) 0%,rgba(0,0,0,0) 100%);
+  transition:.4s var(--ease);
+  color:#fff;
+}
+.nav--solid{height:74px}
+/* undirsíður: dekkri haus þegar skrunað er (forsíðan helst gegnsæ) */
+body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.86);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.07)}
+.nav__left{display:flex;align-items:center;gap:clamp(1.8rem,3.2vw,3rem)}
+.nav__logo{font-weight:600;letter-spacing:.15em;font-size:1.32rem;white-space:nowrap}
+.nav__links{display:flex;gap:clamp(.85rem,1.5vw,1.55rem)}
+.nav__right{display:flex;align-items:center;gap:clamp(1.3rem,1.9vw,1.9rem)}
+.nav__links a,.nav__link,.nav__contact{font-size:1.12rem;letter-spacing:.01em;position:relative;opacity:.92;transition:.25s;white-space:nowrap}
+.nav__links a.is-current{opacity:1}
+.nav__links a.is-current::after{width:100%;background:var(--green)}
+.nav__links a::after,.nav__link::after,.nav__contact::after{content:"";position:absolute;left:0;bottom:-6px;height:1px;width:0;background:currentColor;transition:.3s var(--ease)}
+.nav__links a:hover,.nav__link:hover,.nav__contact:hover{opacity:1}
+.nav__links a:hover::after,.nav__links a.active::after,.nav__link:hover::after,.nav__contact:hover::after{width:100%}
+/* ---- "Húsið" fellivalmynd (Útsýni / Útirými / Aðgengi) — tölva ---- */
+.navdrop{position:relative;display:inline-flex;align-items:center;gap:.32rem}
+.navdrop__caret{width:0;height:0;border-left:3.3px solid transparent;border-right:3.3px solid transparent;
+  border-top:4px solid currentColor;opacity:.55;transition:transform .25s var(--ease),opacity .25s}
+.navdrop:hover .navdrop__caret,.navdrop:focus-within .navdrop__caret{opacity:1;transform:rotate(180deg)}
+.navdrop__menu{position:absolute;top:100%;left:50%;margin-top:13px;transform:translateX(-50%) translateY(8px);
+  display:flex;flex-direction:column;gap:.1rem;min-width:180px;padding:.5rem;
+  background:rgba(14,15,16,.97);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.1);border-radius:13px;box-shadow:0 20px 44px rgba(0,0,0,.42);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .2s var(--ease),transform .2s var(--ease),visibility .2s}
+.navdrop__menu::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px}  /* hover-brú yfir bilið */
+.navdrop:hover .navdrop__menu,.navdrop:focus-within .navdrop__menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.navdrop__menu a.navdrop__item{display:block;padding:.52rem .85rem;border-radius:9px;font-size:.95rem;opacity:.82;letter-spacing:.01em;transition:.16s}
+.navdrop__menu a.navdrop__item::after{display:none}
+.navdrop__menu a.navdrop__item:hover{opacity:1;background:rgba(255,255,255,.07)}
+.navdrop__menu a.navdrop__item.is-current{opacity:1;color:var(--green)}
+.lang{display:inline-flex;align-items:center;gap:.46rem;font-size:1.12rem;letter-spacing:.01em;font-weight:400;
+  border:0;border-radius:0;padding:0;background:none;opacity:.9;transition:.25s}
+.lang:hover{opacity:1}
+.lang__globe{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.5;display:block;flex:none}
+.burger{display:none;flex-direction:column;gap:5px;padding:6px}
+.burger span{width:22px;height:1.5px;background:currentColor;transition:.3s var(--ease)}
+
+/* ============================== LAYOUT ================================ */
+/* Full-screen "PowerPoint" snapping: every scroll lands on a whole section,
+   never resting between two. Panels are exactly one viewport tall; any panel
+   whose content is taller (e.g. the apartment list) scrolls inside itself and
+   then chains to the next section. */
+.snap{height:100vh;overflow-y:auto;scroll-snap-type:none;scrollbar-width:none}
+.snap::-webkit-scrollbar{display:none}
+.panel{
+  position:relative;height:100vh;overflow-y:auto;
+  scroll-snap-align:start;scroll-snap-stop:always;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:120px var(--pad) 90px;
+}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.12s}
+.reveal[data-d="2"]{transition-delay:.24s}
+
+.section-head{max-width:var(--maxw);margin:0 auto 3rem;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center}
+
+/* ================================ HERO =============================== */
+.hero__title{font-family:var(--display);font-weight:300;font-size:clamp(3.6rem,12vw,9rem);line-height:.92;color:#fff;letter-spacing:-.02em}
+.hero__title .hero__no{font-style:italic;color:var(--bone)}
+.hero__tag{font-size:clamp(1.1rem,2.2vw,1.7rem);margin-top:1.1rem;font-weight:300;max-width:30ch}
+.hero__sub{margin-top:1.1rem;max-width:54ch;color:rgba(255,255,255,.85);font-size:1rem}
+.hero__cta{display:flex;gap:1rem;margin-top:2.1rem;flex-wrap:wrap}
+.hero__cta .btn--ghost{color:#fff;border-color:rgba(255,255,255,.9);background:rgba(14,14,16,.42);
+  -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+.hero__cta .btn--ghost:hover{background:#fff;color:var(--charcoal);border-color:#fff}
+
+/* ===================== CINEMATIC SCROLL INTRO ====================== */
+/* holds the timeline — fly down · hold (interactive) · continuation journey */
+.cine{position:relative;height:360vh}
+.cine__stick{position:sticky;top:0;height:100vh;overflow:hidden;background:#0b0c0d}
+#cineCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cine .facade{position:absolute;inset:0;opacity:0;z-index:2;will-change:opacity}
+/* hero overlay (opacity driven by scroll in cine.js) */
+.cine__hero{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;justify-content:flex-end;
+  align-items:flex-start;color:#fff;padding:120px var(--pad) clamp(70px,11vh,118px);overflow:hidden;will-change:opacity}
+.cine__scrim{position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(18,20,22,.5) 0%,rgba(18,20,22,.04) 30%,rgba(18,20,22,.30) 72%,rgba(18,20,22,.72) 100%)}
+.cine__heroinner{position:relative;max-width:var(--maxw);width:100%;margin:0 auto}
+.cine__stats{position:relative;max-width:var(--maxw);width:100%;margin:2.4rem auto 0;
+  display:flex;gap:clamp(1.6rem,5vw,4rem);border-top:1px solid rgba(255,255,255,.22);padding-top:1.2rem}
+.cine__stats div{display:flex;flex-direction:column}
+.cine__stats b{font-family:var(--display);font-weight:400;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1}
+.cine__stats span{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:.4rem}
+
+
+/* ===================== GAGNVIRKT VAL (full-screen) =================== */
+.select{padding:0;height:100vh;overflow:hidden;background:#0c0d0e}
+/* overlay yfir canvas-ið; eigin bakgrunnur (byggingin/aftan) svo zoom-out borðinn
+   sýni heila bygginguna með cover (engin letterbox) */
+.facade{position:absolute;inset:0;width:100%;height:100%;margin:0;overflow:hidden;
+  background:#0b0c0d url('../assets/cine/f096.webp') center/cover no-repeat}
+.facade>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.facade__svg{position:absolute;inset:0;width:100%;height:100%;transition:opacity .6s ease}
+/* Framan/Aftan — mjúkt skáreveal: myndin "myndast" frá efra-vinstra horni að neðra-hægra
+   með ljós-sópi (shine). Gradient-mask rennur skáhallt yfir → mjúk brún, ekki hörð. */
+.facade__front,.facade__shine{position:absolute;inset:0;
+  -webkit-mask-image:linear-gradient(135deg,#000 0%,#000 44%,rgba(0,0,0,0) 56%,rgba(0,0,0,0) 100%);
+          mask-image:linear-gradient(135deg,#000 0%,#000 44%,rgba(0,0,0,0) 56%,rgba(0,0,0,0) 100%);
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-size:235% 235%;mask-size:235% 235%;
+  -webkit-mask-position:100% 100%;mask-position:100% 100%;
+  transition:-webkit-mask-position 1.2s cubic-bezier(.6,.01,.24,1),mask-position 1.2s cubic-bezier(.6,.01,.24,1),visibility 0s 1.2s;
+  will-change:mask-position}
+.facade__front{visibility:hidden}
+.facade__shine{z-index:5;pointer-events:none;opacity:0;mix-blend-mode:screen;
+  background:linear-gradient(122deg,transparent 32%,rgba(255,255,255,.9) 50%,transparent 68%);
+  background-size:320% 320%;background-position:0% 0%}
+.facade.is-front .facade__front{visibility:visible;
+  -webkit-mask-position:0% 0%;mask-position:0% 0%;
+  transition:-webkit-mask-position 1.2s cubic-bezier(.6,.01,.24,1),mask-position 1.2s cubic-bezier(.6,.01,.24,1),visibility 0s 0s}
+.facade.is-front .facade__shine{-webkit-mask-position:0% 0%;mask-position:0% 0%;
+  animation:facadeShine 1.2s cubic-bezier(.6,.01,.24,1)}
+@keyframes facadeShine{
+  0%{opacity:0;background-position:0% 0%}
+  18%{opacity:1}
+  80%{opacity:.95}
+  100%{opacity:0;background-position:100% 100%}
+}
+.facade.is-front .facade__svg{opacity:0;pointer-events:none}
+.facade.is-front .select__head{opacity:0;pointer-events:none;transition:opacity .55s ease}
+@media (prefers-reduced-motion:reduce){
+  .facade__front,.facade__shine{-webkit-mask-image:none;mask-image:none;transition:opacity .35s ease, visibility 0s .35s}
+  .facade__front{opacity:0}
+  .facade.is-front .facade__front{opacity:1;visibility:visible;transition:opacity .35s ease, visibility 0s 0s}
+  .facade.is-front .facade__shine{animation:none;opacity:0}
+}
+.facade__sides{position:absolute;top:5.4rem;left:50%;transform:translateX(-50%);z-index:6;display:inline-flex;
+  background:rgba(18,20,18,.42);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.3);border-radius:999px;overflow:hidden;opacity:0}
+.facade__sidebtn{border:0;background:none;color:rgba(255,255,255,.86);font:inherit;font-size:.82rem;
+  letter-spacing:.04em;padding:.5rem 1.3rem;cursor:pointer;transition:.18s;white-space:nowrap}
+.facade__sidebtn+.facade__sidebtn{border-left:1px solid rgba(255,255,255,.24)}
+.facade__sidebtn:hover{color:#fff}
+.facade__sidebtn.is-on{background:var(--green);color:#fff}
+/* text overlay at the bottom over a soft scrim */
+.select__head{position:absolute;left:0;right:0;bottom:0;z-index:4;pointer-events:none;
+  text-align:center;color:#fff;padding:96px var(--pad) clamp(34px,6vh,66px);
+  background:linear-gradient(0deg,rgba(14,16,18,.7) 0%,rgba(14,16,18,.18) 50%,transparent 100%);
+  transition:opacity .5s ease, transform .8s cubic-bezier(.62,.04,.3,1)}
+.select__head h2{color:#fff;margin-top:.15rem}
+.select__head .kicker{color:rgba(255,255,255,.82)}
+.select__sub{color:rgba(255,255,255,.82);max-width:54ch;margin:.7rem auto 0;font-size:1rem}
+/* gegnsætt highlight — ferskur grasgrænn (ekki multiply -> ekkert mosa-grænt) */
+.facade__svg polygon{
+  fill:#5fa83c;stroke:rgba(95,168,60,.95);stroke-width:1.2;
+  opacity:0;cursor:pointer;transition:opacity .3s var(--ease);paint-order:stroke;
+}
+.facade__svg polygon:hover,.facade__svg polygon.on{opacity:.58}
+.facade.dim .facade__svg polygon.match{opacity:.34}
+.facade.dim .facade__svg polygon.match:hover{opacity:1}
+/* ?mask — handvirkur útlínu-ritill fyrir framhlið */
+body.maskedit .facade__sides,body.maskedit .select__head{display:none!important}
+.mask__svg{position:fixed;inset:0;width:100vw;height:100vh;z-index:9000;touch-action:none}
+.mk-z{fill:rgba(126,154,82,.16);stroke:rgba(255,255,255,.45);stroke-width:1.1;vector-effect:non-scaling-stroke;cursor:pointer}
+.mk-z.sel{fill:rgba(126,154,82,.42);stroke:#fff;stroke-width:1.6}
+.mk-h{fill:#fff;stroke:var(--green);stroke-width:2;vector-effect:non-scaling-stroke;cursor:grab}
+.mk-lbl{fill:#fff;font:600 13px var(--font);text-anchor:middle;paint-order:stroke;stroke:rgba(0,0,0,.5);stroke-width:3px;pointer-events:none}
+#maskPanel{position:fixed;left:0;right:0;bottom:0;z-index:9001;background:rgba(15,16,17,.93);color:#fff;
+  padding:.7rem 1rem .9rem;font:13px/1.4 var(--font);box-shadow:0 -10px 40px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
+.mk__row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.mk__row strong{font-size:.82rem;letter-spacing:.04em;margin-right:.3rem}
+.mk__sp{flex:1}
+.mk__modes{display:inline-flex;gap:.35rem}
+.mk__zoom{display:inline-flex;align-items:center;gap:.3rem;margin-left:.5rem;padding-left:.5rem;border-left:1px solid rgba(255,255,255,.18)}
+.mk__zoom #mkZlbl{font-size:.74rem;min-width:46px;text-align:center;color:rgba(255,255,255,.85)}
+.mk__zoom button{padding:.2rem .55rem;font-size:.9rem;line-height:1}
+.mask__svg image{image-rendering:auto}
+#maskPanel button{border:1px solid rgba(255,255,255,.26);background:transparent;color:#fff;font:inherit;
+  padding:.32rem .68rem;border-radius:6px;cursor:pointer;transition:.15s}
+#maskPanel button:hover{border-color:#fff}
+#maskPanel .mk__modes button.on,#maskPanel .mk__legend button.on{background:var(--green);border-color:var(--green)}
+.mk__hint{margin:.5rem 0 .55rem;color:rgba(255,255,255,.62);font-size:.75rem}
+.mk__legend{display:flex;flex-wrap:wrap;gap:.3rem}
+.mk__legend button{padding:.24rem .48rem;font-size:.73rem;border-radius:5px}
+.mk__toast{position:fixed;left:50%;bottom:135px;transform:translateX(-50%);background:var(--green);color:#fff;
+  padding:.6rem 1.05rem;border-radius:8px;font-size:.82rem;z-index:9002}
+.facade__tip{position:absolute;z-index:5;pointer-events:none;
+  background:rgba(44,46,48,.94);color:#fff;border-radius:10px;padding:.7rem .9rem;
+  font-size:.8rem;min-width:140px;transform:translate(-50%,-118%);transition:opacity .18s;
+  box-shadow:0 14px 30px -12px rgba(0,0,0,.5)}
+.facade__tip b{display:block;font-size:.98rem;font-weight:600;margin-bottom:.2rem;letter-spacing:.02em}
+.facade__tip small{display:block;color:rgba(255,255,255,.7);font-size:.74rem;margin-top:.25rem}
+.facade__tip::after{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:rgba(44,46,48,.94);border-bottom:0}
+.facade__hint{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);
+  background:rgba(255,255,255,.92);color:var(--charcoal);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.5rem 1rem;border-radius:100px;backdrop-filter:blur(6px);transition:.3s}
+.facade:hover .facade__hint{opacity:0}
+/* síma: minna tooltip þegar smellt er á íbúð (var of stórt á litlum skjá) */
+@media (max-width:860px){
+  .facade__tip{font-size:.64rem;min-width:0;max-width:60vw;padding:.42rem .58rem;border-radius:8px}
+  .facade__tip b{font-size:.78rem;margin-bottom:.1rem}
+  .facade__tip small{font-size:.6rem;margin-top:.1rem}
+  .facade__tip::after{border-width:5px}
+}
+
+.tag{font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  padding:.28rem .6rem;border-radius:100px;white-space:nowrap}
+.tag--available{background:rgba(126,154,82,.16);color:#5d7a36}
+.tag--reserved{background:rgba(143,166,174,.2);color:#5d7480}
+.tag--sold{background:rgba(58,61,64,.1);color:var(--muted)}
+
+/* ===================== ÍBÚÐALISTI (dökk tafla, vesturvin-stíll) ===================== */
+.apts{background:#0e0f10;color:#f3f1ec;padding:clamp(64px,9vh,118px) 0}
+.apts__inner{max-width:1840px;width:100%;margin:0 auto;padding:0 clamp(24px,6vw,120px)}
+.apts__head{text-align:center;margin-bottom:clamp(2.4rem,5vh,3.6rem)}
+.apts__title{font-family:var(--display);font-weight:400;color:#fff;font-size:clamp(2rem,4vw,3rem);margin-top:.3rem}
+.apts__filters{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:center;gap:2.6rem 4.5rem;margin-bottom:3.2rem}
+.apts__sliders{display:grid;grid-template-columns:repeat(2,minmax(210px,320px));gap:1.8rem 3.4rem;align-items:start}
+.rng{display:flex;flex-direction:column}
+.rng__label{text-align:center;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:1.2rem}
+.rng__track{position:relative;height:2px;background:rgba(255,255,255,.22);margin:0 7px}
+.rng__fill{position:absolute;top:0;bottom:0;background:#fff}
+.rng__h{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:#fff;border:0;padding:0;
+  transform:translate(-50%,-50%);cursor:grab;touch-action:none;box-shadow:0 1px 5px rgba(0,0,0,.45)}
+.rng__h:active{cursor:grabbing}
+.rng__vals{display:flex;justify-content:space-between;margin-top:1rem;font-size:.96rem;color:rgba(255,255,255,.9)}
+.apts__reset{grid-column:1/-1;justify-self:center;border:0;background:none;color:rgba(255,255,255,.5);font:inherit;
+  font-size:.82rem;letter-spacing:.04em;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:.3rem;margin-top:.3rem;transition:.18s}
+.apts__reset:hover{color:#fff}
+.apts__features{display:flex;flex-direction:column;gap:1.7rem;padding-left:3.4rem;border-left:1px solid rgba(255,255,255,.16)}
+.feat__title{font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:500;margin:0 0 1rem}
+.feat{display:flex;align-items:center;gap:.7rem;background:none;border:0;color:rgba(255,255,255,.82);font:inherit;
+  font-size:.98rem;cursor:pointer;padding:.34rem 0;width:100%;text-align:left;transition:.15s}
+.feat i{width:15px;height:15px;border:1px solid rgba(255,255,255,.45);border-radius:50%;flex:none;transition:.15s;position:relative}
+.feat.on i{background:var(--green);border-color:var(--green)}
+.feat.on i::after{content:"";position:absolute;inset:4px;border-radius:50%;background:#0e0f10}
+.feat:hover{color:#fff}
+.apts__tablewrap{overflow-x:auto}
+.apts__table{width:100%;border-collapse:collapse;min-width:760px}
+.apts__table th{text-align:left;font-weight:500;font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);padding:0 .85rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.22);white-space:nowrap}
+.apts__table th:last-child,.apts__table td:last-child{text-align:right}
+.apts__table td{padding:1.3rem .85rem;border-bottom:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.92);font-size:1.06rem;white-space:nowrap}
+.aptrow{cursor:pointer}
+.aptrow__id{font-weight:600;color:#fff;letter-spacing:.02em;font-size:1.2rem}
+.aptrow--sold,.aptrow--reserved{cursor:pointer}
+.aptrow--sold td,.aptrow--reserved td{color:rgba(255,255,255,.4)}
+.aptrow--sold .aptrow__id,.aptrow--reserved .aptrow__id{color:rgba(255,255,255,.5)}
+.aptrow__status{font-size:1rem;letter-spacing:.02em}
+.aptrow--available .aptrow__status{color:#7cc04a}   /* til sölu -> grænt */
+.aptrow--reserved .aptrow__status{color:#e0b23e}    /* með fyrirvara -> gult */
+.aptrow--sold .aptrow__status{color:#e0655a}        /* selt -> rautt */
+.aptrow__view{text-decoration:underline;text-underline-offset:3px;color:#fff;white-space:nowrap}
+.apts__empty{text-align:center;color:rgba(255,255,255,.6);padding:2.4rem 0}
+@media(max-width:640px){
+  .apts__filters{gap:1.2rem 1.4rem}
+  .apts__table td,.apts__table th{padding-left:.7rem;padding-right:.7rem}
+}
+/* ===================== SÖLUAÐILAR (dökk, vesturvin-stíll) ===================== */
+.sellers{background:#0b0c0d;color:#f3f1ec;padding:clamp(64px,9vh,120px) 0;border-top:1px solid rgba(255,255,255,.08)}
+.sellers__inner{max-width:1840px;width:100%;margin:0 auto;padding:0 clamp(24px,6vw,120px);
+  display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:clamp(2.4rem,5vw,5rem);align-items:start}
+.sellers__title{font-family:var(--display);font-weight:400;color:#fff;font-size:clamp(2rem,3.6vw,2.9rem);margin-bottom:1.4rem;letter-spacing:.04em}
+.sellers__lead{color:rgba(255,255,255,.72);font-size:1.02rem;line-height:1.75;max-width:42ch}
+.sellers__brand{text-align:center;margin-bottom:2.8rem}
+.sellers__logo{display:block;width:clamp(180px,18vw,250px);height:auto;margin:0 auto}
+.sellers__brandtxt{display:none}
+.sellers__brand.no-logo .sellers__brandtxt{display:block}
+.sellers__brandtxt span{display:block;font-size:.6rem;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:.35rem}
+.sellers__brandtxt b{font-weight:600;letter-spacing:.16em;font-size:1.55rem;color:#fff}
+.sellers__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:3.2rem 2rem}
+.agent{display:flex;flex-direction:column;align-items:center;text-align:center}
+.agent__avatar{width:clamp(120px,11vw,158px);aspect-ratio:1;border-radius:50%;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.13);color:rgba(255,255,255,.5);font-family:var(--display);font-size:2.1rem;margin-bottom:1.4rem}
+.agent__avatar img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.agent__name{font-weight:500;font-size:1.1rem;color:#fff;margin-bottom:.35rem}
+.agent__title{font-size:.84rem;color:rgba(255,255,255,.55);margin-bottom:1rem;line-height:1.45;max-width:24ch}
+.agent__line{color:rgba(255,255,255,.82);font-size:.96rem;text-decoration:none;margin-top:.2rem;transition:.15s}
+.agent__line:hover{color:var(--green)}
+@media(max-width:760px){
+  .sellers__inner{grid-template-columns:1fr;gap:2.4rem}
+  .sellers__brand{text-align:left}
+}
+
+/* ===================== FOOTER (after the scroll film) ============== */
+/* mjór, hreinn footer — eins og vesturvin: heimilisfang vinstri · tengiliður miðja · tenglar hægri */
+.sitefoot{background:#0b0c0d;color:#fff;
+  padding:clamp(1rem,2.4vh,1.5rem) clamp(20px,3vw,56px) 0}
+.sitefoot__inner{max-width:1840px;margin:0 auto;
+  border-top:1px solid rgba(255,255,255,.14);
+  padding:clamp(1.3rem,3vh,1.9rem) 0;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:1.1rem 3rem}
+.sitefoot__left{display:flex;flex-direction:column;gap:.72rem}
+.sitefoot__logo{font-weight:600;letter-spacing:.2em;font-size:.92rem;color:#fff;white-space:nowrap}
+.sitefoot__col{display:flex;flex-direction:column;gap:.32rem;font-size:.92rem;color:rgba(255,255,255,.74);line-height:1.45}
+.sitefoot__muted{font-size:.72rem;letter-spacing:.03em;color:rgba(255,255,255,.4);margin-top:.45rem}
+.sitefoot__mid{justify-self:center;text-align:center;display:flex;flex-direction:column;gap:.34rem}
+.sitefoot__mid a{font-size:.92rem;color:rgba(255,255,255,.74);text-decoration:none;transition:.2s}
+.sitefoot__mid a:hover{color:#fff}
+.sitefoot__links{justify-self:end;display:flex;flex-direction:column;gap:.5rem;text-align:right}
+.sitefoot__links a,.sitefoot__contact{font-size:.92rem;color:rgba(255,255,255,.74);transition:.2s;
+  background:none;border:0;cursor:pointer;font-family:inherit;text-align:right;padding:0;text-decoration:none}
+.sitefoot__links a:hover,.sitefoot__contact:hover{color:#fff}
+@media (max-width:760px){
+  .sitefoot__inner{grid-template-columns:1fr;gap:1.4rem}
+  .sitefoot__mid{justify-self:start;text-align:left}
+  .sitefoot__links{justify-self:start;text-align:left;align-items:flex-start}
+}
+
+/* ============================== MODAL =============================== */
+.modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px}
+.modal[hidden]{display:none}
+.modal__backdrop{position:absolute;inset:0;background:rgba(30,32,34,.55);backdrop-filter:blur(4px);animation:fade .3s}
+.modal__card{position:relative;display:flex;background:var(--snow);border-radius:0;overflow:hidden;
+  max-width:980px;width:100%;max-height:88vh;box-shadow:0 50px 90px -40px rgba(0,0,0,.6);animation:pop .4s var(--ease)}
+@keyframes fade{from{opacity:0}}
+@keyframes pop{from{opacity:0;transform:translateY(20px) scale(.98)}}
+.modal__x{position:absolute;top:14px;right:16px;z-index:4;width:38px;height:38px;border-radius:50%;
+  background:rgba(255,255,255,.85);font-size:1.4rem;line-height:1;color:var(--charcoal);transition:.25s}
+.modal__x:hover{background:#fff;transform:rotate(90deg)}
+/* ---- íbúðar-popup (vesturvin-stíll): grunnmynd vinstra, hæðarkort + tölur hægra ---- */
+.modal--apt{padding:clamp(10px,3vw,38px)}
+.aptm{position:relative;display:flex;flex-direction:column;width:min(1140px,96vw);max-height:92vh;
+  background:#fff;border-radius:0;overflow:hidden;box-shadow:0 50px 90px -40px rgba(0,0,0,.6);animation:pop .4s var(--ease)}
+.aptm__bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem;
+  padding:1.1rem 1.4rem;border-bottom:1px solid var(--line)}
+.aptm__logo{font-weight:600;letter-spacing:.2em;font-size:.72rem;color:var(--charcoal)}
+.aptm__title{grid-column:2;font-family:var(--display);font-weight:400;letter-spacing:.05em;
+  font-size:clamp(1.3rem,2.4vw,1.95rem);text-align:center;white-space:nowrap}
+.aptm__x{grid-column:3;justify-self:end;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);
+  background:#fff;font-size:1.35rem;line-height:1;color:var(--charcoal);cursor:pointer;transition:.25s}
+.aptm__x:hover{background:var(--bone);transform:rotate(90deg)}
+.aptm__body{display:grid;grid-template-columns:1.18fr 1fr;gap:clamp(1.4rem,3.4vw,3.2rem);
+  padding:clamp(1.4rem,3vw,2.6rem);overflow-y:auto}
+/* vinstri — grunnmynd */
+.aptm__left{display:flex;flex-direction:column;min-width:0}
+.aptm__plan{border:0;background:none;padding:0;margin:0;cursor:zoom-in;flex:1;min-height:0;position:relative;overflow:hidden}
+.aptm__planinner{position:absolute;left:0;top:0;width:100%;height:100%}
+.aptm__plan img{width:100%;height:100%;object-fit:contain;display:block}
+/* skipta milli teikningar og áferðar (textured render) */
+.aptm__pview{align-self:center;display:inline-flex;margin:0 0 1rem;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:#fff}
+.aptm__pview[hidden]{display:none}
+.aptm__pvbtn{border:0;background:none;padding:.44rem 1.05rem;font:inherit;font-size:.78rem;letter-spacing:.02em;color:var(--charcoal);cursor:pointer;transition:.18s;white-space:nowrap}
+.aptm__pvbtn+.aptm__pvbtn{border-left:1px solid var(--line)}
+.aptm__pvbtn:hover{color:var(--green)}
+.aptm__pvbtn.is-on{background:var(--green);color:#fff}
+/* ?planimg tól — rammi með hornum */
+body.planimg .aptm__plan{cursor:default}
+body.planimg .aptm__planinner{outline:1.6px dashed rgba(126,154,82,.9);outline-offset:-1px;cursor:move;touch-action:none}
+body.planimg .aptm__plan img{pointer-events:none}
+.pi-h{position:absolute;width:16px;height:16px;background:#fff;border:2px solid var(--green);border-radius:50%;z-index:6;touch-action:none}
+.pi-h.tl{left:-9px;top:-9px;cursor:nwse-resize}
+.pi-h.tr{right:-9px;top:-9px;cursor:nesw-resize}
+.pi-h.bl{left:-9px;bottom:-9px;cursor:nesw-resize}
+.pi-h.br{right:-9px;bottom:-9px;cursor:nwse-resize}
+/* stillingar-spjald fyrir grunnmynd (?planimg) */
+#piPanel{position:fixed;right:18px;bottom:18px;z-index:9998;background:#fff;border:1px solid var(--line);
+  border-radius:12px;box-shadow:0 16px 40px rgba(0,0,0,.18);padding:.8rem .9rem;width:280px;font-family:var(--font);display:none}
+#piPanel .pi__row{display:flex;align-items:center;gap:.5rem;margin:.3rem 0;font-size:.82rem}
+#piPanel strong{font-size:.86rem}
+#piPanel #piApt{color:var(--green);font-weight:600}
+#piPanel input[type=range]{flex:1}
+#piPanel label{min-width:3.2em;color:var(--muted);font-size:.78rem}
+#piPanel button{padding:.3rem .6rem;border:1px solid var(--line);border-radius:7px;background:#fff;cursor:pointer;font-size:.78rem}
+#piPanel button:hover{border-color:var(--green)}
+#piPanel .pi__hint{font-size:.7rem;color:var(--muted);line-height:1.4;margin:.4rem 0}
+.pi__toast{position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%);background:var(--charcoal);color:#fff;
+  padding:.6rem 1.1rem;border-radius:8px;font-size:.84rem;z-index:10001}
+.aptm__planhint{margin-top:1.1rem;font-size:.85rem;color:var(--ink)}
+.aptm__disc{margin-top:.65rem;font-size:.74rem;color:var(--muted);line-height:1.6;max-width:46ch}
+/* hægri — hæðarval + kort + tölur */
+.aptm__right{display:flex;flex-direction:column;min-width:0}
+.aptm__floors{display:flex;flex-direction:column;align-items:center;gap:.75rem}
+.aptm__floorslbl{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.aptm__floorsel{display:flex;gap:.5rem}
+.aptm__fbtn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#fff;
+  font-size:.92rem;color:var(--charcoal);cursor:pointer;transition:.2s}
+.aptm__fbtn:hover{border-color:var(--green);color:var(--green)}
+.aptm__fbtn.is-on{background:var(--green);border-color:var(--green);color:#fff}
+.aptm__diagram{position:relative;margin:1.6rem 0 .2rem;padding:0 2px}
+.aptm__diagram svg{width:100%;height:auto;display:block;margin:0 auto;overflow:visible}
+/* heil grunnplata: byggingin er samfelld — engin hvít bil milli íbúða */
+.dg-foot{fill:#E7E1D2;stroke:rgba(58,61,64,.28);stroke-width:1;stroke-linejoin:round}
+.dg-apt{cursor:pointer}
+/* íbúðir teiknaðar yfir plötuna: beige (sama og platan) með þunnri skiptilínu */
+.dg-apt polygon{fill:#E7E1D2;stroke:rgba(58,61,64,.28);stroke-width:1;stroke-linejoin:round;transition:fill .2s}
+.dg-apt text{fill:var(--charcoal);font-size:11px;font-weight:500;text-anchor:middle;font-family:var(--font);pointer-events:none}
+/* staða hverrar íbúðar á hæðinni — daufir tónar: grænt=til sölu, gult=frátekin, rautt=selt */
+.dg-apt--available polygon{fill:#a9cf8a}
+.dg-apt--reserved polygon{fill:#e7cd83}
+.dg-apt--sold polygon{fill:#e0a59c}
+.dg-apt:not(.is-sel):hover polygon{stroke:#3a3d40;stroke-width:1.5}
+/* valda íbúðin — sterkur staðu-litur + hvítur texti + dökk útlína */
+.dg-apt.is-sel polygon{stroke:#2f3133;stroke-width:1.7}
+.dg-apt.is-sel.dg-apt--available polygon{fill:#5fa83c}
+.dg-apt.is-sel.dg-apt--reserved polygon{fill:#d8a72c}
+.dg-apt.is-sel.dg-apt--sold polygon{fill:#cf4036}
+.dg-apt.is-sel text{fill:#fff}
+/* ---- handvirkur hæðarkorts-ritill (?planedit) ---- */
+#peRoot{position:fixed;inset:0;z-index:9999;background:#f4f2ec;display:flex;flex-direction:column;font-family:var(--font);color:var(--ink)}
+.pe__bar{display:flex;align-items:center;gap:.5rem;padding:.55rem .9rem;background:#fff;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.pe__bar strong{font-size:.88rem;margin-right:.4rem}
+.pe__bar button,.pe__floors button,.pe__modes button,.pe__legend button{padding:.3rem .7rem;border:1px solid var(--line);border-radius:7px;background:#fff;cursor:pointer;font-size:.78rem;color:var(--ink)}
+.pe__bar button:hover,.pe__floors button:hover,.pe__modes button:hover,.pe__legend button:hover{border-color:var(--green)}
+.pe__floors button.on,.pe__modes button.on,.pe__legend button.on{background:var(--green);border-color:var(--green);color:#fff}
+.pe__floors,.pe__modes{display:flex;gap:.3rem}
+.pe__sp{flex:1}
+.pe__hint{padding:.4rem .9rem;font-size:.72rem;color:var(--muted);background:#fff;border-bottom:1px solid var(--line)}
+.pe__stage{flex:1;display:flex;gap:1rem;padding:1.1rem;min-height:0}
+.pe__plan{width:clamp(240px,28%,400px);background:#fff;border:1px solid var(--line);border-radius:10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem;min-height:0}
+.pe__planlbl{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;min-height:1em}
+.pe__planimg{max-width:100%;max-height:calc(100% - 1.6rem);object-fit:contain;margin:auto}
+.pe__planempty{color:var(--muted);font-size:.84rem;text-align:center;margin:auto}
+.pe__canvas{flex:1;display:flex;align-items:center;justify-content:center;min-height:0}
+.pe__svg{width:100%;height:100%;max-height:100%;background:#fff;border:1px solid var(--line);border-radius:10px}
+.pe-foot{fill:#E7E1D2;stroke:none}
+.pe-apt{fill:#E7E1D2;stroke:rgba(58,61,64,.32);stroke-width:.7;cursor:pointer}
+.pe-apt:hover{fill:#dcd6c7}
+.pe-apt.sel{fill:rgba(126,154,82,.5);stroke:var(--green);stroke-width:1.1}
+.pe-lbl{fill:var(--charcoal);font-size:6px;text-anchor:middle;font-family:var(--font);pointer-events:none}
+.pe-grid{pointer-events:none}
+.pe-grid line{stroke:rgba(58,61,64,.07);stroke-width:.35}
+.pe-h{fill:#fff;stroke:var(--green);stroke-width:1.1;cursor:grab;transition:fill .12s}
+.pe-h:hover{fill:var(--green)}
+.pe-snap{fill:none;stroke:var(--green);stroke-width:1.4;pointer-events:none}
+.pe-guide{stroke:var(--green);stroke-width:.7;stroke-dasharray:3 2.5;opacity:.75;pointer-events:none}
+#peRoot.dragging .pe__svg,#peRoot.dragging .pe-h{cursor:grabbing}
+.pe__readout{font-size:.74rem;color:var(--charcoal);font-variant-numeric:tabular-nums;letter-spacing:.02em;min-width:11ch;text-align:right;margin-right:.3rem}
+.pe__legend{display:flex;gap:.3rem;padding:.5rem .9rem;background:#fff;border-top:1px solid var(--line);flex-wrap:wrap}
+.pe__toast{position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%);background:var(--charcoal);color:#fff;padding:.6rem 1.1rem;border-radius:8px;font-size:.84rem;z-index:10001;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.dg-north-ring{fill:#fff;stroke:rgba(58,61,64,.38);stroke-width:.8}
+.dg-north-l{fill:#fff;stroke:#3a3d40;stroke-width:.5;stroke-linejoin:round;stroke-linecap:round}
+.dg-north-r{fill:#3a3d40;stroke:#3a3d40;stroke-width:.5;stroke-linejoin:round;stroke-linecap:round}
+.dg-northlbl{fill:var(--charcoal);font-size:9px;font-weight:600;font-family:var(--font);text-anchor:middle;dominant-baseline:central;letter-spacing:.03em}
+/* tengill á heildar-hæðarmynd */
+/* skjala-tenglar (Heildarmynd hæðar / Skilalýsing) — eins og vesturvin */
+/* staða + tölur */
+.aptm__status{align-self:flex-start;margin-top:1.1rem;font-size:.62rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;padding:.32rem .72rem;border-radius:100px}
+.aptm__specs{margin-top:1.1rem;display:grid;grid-template-columns:repeat(3,1fr);gap:0 1.4rem}
+.aptm__specs div{padding:.7rem 0;border-bottom:1px solid var(--line)}
+.aptm__specs dt{font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+.aptm__specs dd{font-weight:500;color:var(--charcoal);font-size:.94rem}
+.aptm__cta{display:flex;gap:.8rem;margin-top:auto;padding-top:1.7rem}
+.aptm__cta .btn{flex:1;padding:.8rem 1rem}
+/* grunnmynd í fullri stærð */
+.planzoom{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;
+  background:rgba(16,17,18,.93);cursor:zoom-out;padding:3vw;animation:fade .25s}
+.planzoom[hidden]{display:none}
+.planzoom img{max-width:96vw;max-height:94vh;object-fit:contain;background:#fff;border-radius:0;
+  box-shadow:0 30px 80px rgba(0,0,0,.5)}
+
+/* ===== Hafa samband — sér síða (hafa-samband.html), dökkt þema, ferkantað form ===== */
+body.is-contact{background:#0b0c0d}
+.kontakt{min-height:100svh;display:flex;align-items:center;background:#0b0c0d;color:#fff;
+  padding:clamp(4rem,10vh,7rem) clamp(24px,6vw,120px)}
+.kontakt__inner{max-width:1180px;width:100%;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;
+  gap:clamp(2.4rem,5vw,6rem);align-items:center;animation:kontaktIn .8s var(--ease) both}
+@keyframes kontaktIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.kontakt__title{font-family:var(--display);font-weight:300;color:#fff;
+  font-size:clamp(2.2rem,4.4vw,3.4rem);line-height:1.04;margin:.6rem 0 1.1rem;letter-spacing:-.01em}
+.kontakt__lead{color:rgba(255,255,255,.72);font-size:1.14rem;line-height:1.7;max-width:40ch}
+.kontakt__direct{margin-top:2.2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.14);
+  display:flex;flex-direction:column;gap:.5rem;font-size:1.04rem}
+.kontakt__directlabel{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.kontakt__direct a{color:#fff;text-decoration:none;width:fit-content;border-bottom:1px solid transparent;transition:border-color .25s var(--ease)}
+.kontakt__direct a:hover{border-bottom-color:rgba(255,255,255,.6)}
+.cform{display:flex;flex-direction:column;gap:1.15rem}
+.cform__row{display:grid;grid-template-columns:1fr 1fr;gap:1.15rem}
+.cform__field{display:flex;flex-direction:column;gap:.5rem}
+.cform__field label{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.cform input,.cform select,.cform textarea{width:100%;font-family:inherit;font-size:1.06rem;color:#fff;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.16);border-radius:0;padding:.92rem 1rem;
+  -webkit-appearance:none;appearance:none;transition:border-color .3s var(--ease),background .3s var(--ease)}
+.cform input::placeholder,.cform textarea::placeholder{color:rgba(255,255,255,.32)}
+.cform textarea{resize:vertical;min-height:124px;line-height:1.55}
+.cform input:focus,.cform select:focus,.cform textarea:focus{outline:none;
+  border-color:rgba(255,255,255,.72);background:rgba(255,255,255,.07)}
+.cform select{color:#fff;padding-right:2.4rem;cursor:pointer}
+.cform select option{color:#111}
+.cform__select{position:relative}
+.cform__select::after{content:"";position:absolute;right:1.05rem;top:50%;width:8px;height:8px;
+  border-right:1.5px solid rgba(255,255,255,.55);border-bottom:1.5px solid rgba(255,255,255,.55);
+  transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.cform__submit{margin-top:.7rem;width:100%;border:0;border-radius:0;cursor:pointer;background:#fff;
+  color:#111;font-family:inherit;font-size:.88rem;letter-spacing:.18em;text-transform:uppercase;
+  padding:1.15rem 1.2rem;transition:background .3s var(--ease),transform .3s var(--ease)}
+.cform__submit:hover{background:rgba(255,255,255,.86);transform:translateY(-2px)}
+.cform__submit:active{transform:translateY(0)}
+.cform__note{margin:.1rem 0 0;font-size:.88rem;color:rgba(255,255,255,.85)}
+
+/* ======================= STORY SECTIONS (editorial) ======================= */
+.story{position:relative;background:#0e0f10;color:var(--bone);overflow:hidden}
+.story--alt{background:#0b0c0d}
+.story__inner{max-width:var(--maxw);margin:0 auto;padding:clamp(72px,12vh,156px) var(--pad)}
+.story__num{font-family:var(--display);font-size:.82rem;letter-spacing:.16em;color:var(--green);
+  opacity:.9;margin-bottom:1rem}
+.story__title{font-family:var(--display);font-weight:300;font-size:clamp(2.3rem,4.6vw,4.1rem);
+  line-height:1.03;letter-spacing:-.02em;color:#fff;margin:0 0 1.5rem;max-width:18ch}
+.story__body p{font-size:clamp(1.01rem,1.15vw,1.15rem);line-height:1.78;color:rgba(244,242,236,.76);
+  margin:0;max-width:62ch}
+.story__body p+p{margin-top:1.05rem}
+.story__pull{font-family:var(--display);font-weight:300;font-style:italic;
+  font-size:clamp(1.35rem,2.1vw,1.95rem);line-height:1.32;color:#fff;margin:0 0 1.7rem;max-width:22ch}
+.story__pull::before{content:"";display:block;width:46px;height:2px;background:var(--green);margin-bottom:1.2rem}
+.story__chips{display:flex;flex-wrap:wrap;gap:.55rem;margin:2rem 0 0;padding:0;list-style:none}
+.story__chips li{font-size:.78rem;letter-spacing:.04em;color:rgba(244,242,236,.84);
+  border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:.46rem .95rem;
+  background:rgba(255,255,255,.03);white-space:nowrap}
+
+/* media frame */
+.story__media{position:relative;overflow:hidden;border-radius:3px;margin:0;aspect-ratio:4/3}
+.story__media img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform 1.6s var(--ease)}
+.story__media::after{content:"";position:absolute;inset:0;pointer-events:none;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.09)}
+.story:hover .story__media img{transform:scale(1.04)}
+
+/* SPLIT — image beside text, alternating */
+
+/* IMMERSIVE — full-bleed image, heading overlaid, body below */
+.story--immersive .story__inner{padding:0;max-width:none}
+.story__hero{position:relative;min-height:clamp(440px,82vh,880px);display:flex;align-items:flex-end;
+  background-size:cover;background-position:center}
+.story__hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(8,9,10,.34) 0%,rgba(8,9,10,0) 30%,rgba(8,9,10,.12) 58%,rgba(8,9,10,.9) 100%)}
+.story__heroinner{position:relative;z-index:2;max-width:var(--maxw);width:100%;margin:0 auto;
+  padding:0 var(--pad) clamp(40px,7vh,82px)}
+.story__heroinner .story__title{max-width:15ch;margin-bottom:0}
+.story__heroinner .story__pull{margin-bottom:.2rem}
+.story__below{max-width:var(--maxw);margin:0 auto;padding:clamp(44px,7vh,86px) var(--pad) clamp(72px,12vh,150px)}
+.story__below .story__body{max-width:66ch}
+.story__below .story__body p{max-width:none}
+.story__below--cols .story__body{max-width:none;columns:2;column-gap:clamp(34px,4vw,72px)}
+.story__below--cols .story__body p{max-width:none;break-inside:avoid}
+.story__below .story__chips{justify-content:flex-start}
+
+/* dedicated section PAGE: hetjan byrjar undir fasta navinu; h1 stærð */
+.story--page .story__hero{min-height:clamp(440px,78vh,820px)}
+.story--page .story__title{font-size:clamp(2.6rem,5.4vw,4.6rem)}
+body.is-page{background:#0e0f10}
+
+/* prev/next pager á undirsíðum */
+.story__pager{display:flex;justify-content:space-between;gap:1.2rem;flex-wrap:wrap;
+  margin-top:clamp(2.6rem,5vh,4rem);padding-top:1.8rem;border-top:1px solid rgba(255,255,255,.12)}
+.story__pager a{display:inline-flex;flex-direction:column;gap:.25rem;color:rgba(244,242,236,.7);
+  font-size:.92rem;transition:.25s var(--ease)}
+.story__pager a:hover{color:#fff}
+.story__pager a small{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--green);opacity:.85}
+.story__pager a.is-next{text-align:right;margin-left:auto}
+.story__pager a b{font-family:var(--display);font-weight:300;font-size:1.32rem}
+
+/* mobile menu (burger + full-screen overlay) */
+.navmenu{display:none}
+@media (max-width:1080px){
+  .nav__links,.nav__right .nav__link,.nav__right .nav__contact{display:none}
+  .burger{display:flex;position:relative;z-index:62;background:none;border:0;cursor:pointer;color:#fff}
+  .navmenu{display:flex;position:fixed;inset:0;z-index:58;flex-direction:column;
+    align-items:center;justify-content:center;gap:clamp(1rem,2.4vh,1.7rem);
+    padding:84px var(--pad) 48px;text-align:center;
+    background:rgba(8,9,10,.975);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    opacity:0;visibility:hidden;transition:opacity .32s var(--ease),visibility .32s var(--ease)}
+  .nav.open .navmenu{opacity:1;visibility:visible}
+  .navmenu a{color:rgba(255,255,255,.92);font-family:var(--display);font-weight:300;
+    font-size:clamp(1.5rem,6vw,2.1rem);line-height:1.1;letter-spacing:-.01em}
+  .navmenu a.is-current{color:var(--green)}
+  .navmenu .navmenu__sub{font-size:clamp(1.02rem,4.2vw,1.42rem);opacity:.66;font-weight:300}
+  .navmenu .navmenu__sub.is-current{opacity:1}
+  .navmenu hr{width:46px;border:0;border-top:1px solid rgba(255,255,255,.2);margin:.4rem 0}
+  .navmenu .navmenu__action{font-size:clamp(1rem,4vw,1.2rem);color:rgba(244,242,236,.66);font-family:var(--font)}
+  body.navopen{overflow:hidden}
+  .nav.open .burger span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+  .nav.open .burger span:nth-child(2){opacity:0}
+  .nav.open .burger span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+}
+
+/* ============================= RESPONSIVE ========================== */
+@media (max-width:1000px){
+  .qgrid{grid-template-columns:repeat(2,1fr)}
+  .contact__facts{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:860px){
+  .kontakt{min-height:auto;padding:clamp(3.4rem,8vh,5rem) clamp(24px,6vw,120px)}
+  .kontakt__inner{grid-template-columns:1fr;gap:2.4rem}
+  .types{grid-template-columns:1fr}
+  /* On touch, drop the full-screen snapping — native scroll feels right and
+     stacked sections vary in height. */
+  .snap{scroll-snap-type:none}
+  .panel{height:auto;min-height:auto;overflow:visible;scroll-snap-stop:normal;padding:96px var(--pad) 72px}
+  .split,.split--rev{flex-direction:column;height:auto;overflow:visible}
+  .split__media{min-height:42vh}
+  .split__text{max-width:none;padding:64px var(--pad)}
+  .list{padding-top:96px}
+  .hero{height:100vh}
+  .select{height:100svh;min-height:540px;padding:0;overflow:hidden}
+  .modal__card{flex-direction:column;max-height:92vh}
+  .list__head{flex-direction:column;align-items:flex-start}
+  .aptm__body{grid-template-columns:1fr;gap:1.8rem}
+  /* grunnmyndin hrundi í 0 hæð á síma -> gefa kassa hæð + fylla hann */
+  .aptm__plan{aspect-ratio:1 / .9;min-height:auto;height:auto}
+  .aptm__planinner{left:0!important;top:0!important;width:100%!important;height:100%!important}
+  .aptm__plan img{max-height:46vh}
+  .aptm__specs{grid-template-columns:1fr 1fr}
+}
+@media (max-width:520px){
+  .cine__stats{flex-wrap:wrap;gap:1.4rem 2rem}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .contact__facts{grid-template-columns:1fr 1fr}
+  .qgrid{grid-template-columns:1fr}
+  .cform__row{grid-template-columns:1fr}
+}
+
+/* ===================== SÍMI (phone) — heildaryfirferð ===================== */
+@media (max-width:640px){
+  /* haus — passar á síma (vörumerki + Hafa samband + hnöttur) */
+  .nav{padding:0 18px;height:64px;background:linear-gradient(180deg,rgba(0,0,0,.42) 0%,rgba(0,0,0,0) 100%)}
+  .nav__logo{font-size:1.04rem;letter-spacing:.12em}
+  .nav__right{gap:.95rem}
+  .nav__contact,.lang{font-size:.92rem}
+  #langLabel{display:none}                 /* aðeins hnattartákn á síma */
+  .lang__globe{width:20px;height:20px}
+
+  /* hero texti passi á símaskjá — var of hár svo titillinn skaraðist við navið */
+  .cine__hero{padding:72px var(--pad) clamp(26px,4vh,46px)}
+  .hero__title{font-size:clamp(2.4rem,9vw,3.4rem)}
+  .hero__tag{font-size:1.04rem;margin-top:.6rem;max-width:26ch}
+  .hero__sub{font-size:.9rem;margin-top:.55rem;line-height:1.5}
+  .hero__cta{flex-direction:column;align-items:stretch;gap:.6rem;margin-top:1.3rem}
+  .hero__cta .btn{width:100%;justify-content:center;text-align:center}
+  .cine__stats{margin-top:1.4rem;padding-top:1rem}
+  .cine__stats b{font-size:1.5rem}
+
+  /* síur: stafla (sliðrar fá fulla breidd), svo eiginleikar */
+  .apts__filters{flex-direction:column;align-items:stretch;gap:2rem}
+  .apts__sliders{grid-template-columns:1fr}
+  .apts__features{padding-left:0;border-left:0}
+
+}
+
+/* íbúðatafla á síma: HÉLST sem tafla og skrunast TIL HLIÐAR (eins og á tölvu / vesturvin) — ekki spjöld */
+@media (max-width:768px){
+  .apts__tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .apts__table{display:table;min-width:720px}
+  .apts__table thead{display:table-header-group}
+  .apts__table tbody{display:table-row-group}
+  .apts__table tr.aptrow{display:table-row}
+  .apts__table td{display:table-cell}
+  .apts__table td::before{content:none}      /* engin label:gildi merki */
+}
+
+/* litlir símar: tölfræði í 2×2 svo ekkert klemmist við brún */
+@media (max-width:430px){
+  .cine__stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 1.2rem}
+}
+/* ===== Sími/spjaldtölva: eitt samfellt skot — niðurflug, svo ZOOM-AR ÚT í lokin
+   þar sem byggingin minnkar í 16:9 borða og íbúðalistinn rís upp undir hann
+   (cine.js stýrir hæð .cine__stick á síma). Engin tvöföld mynd. ===== */
+@media (max-width:860px){
+  .cine{height:210vh}                     /* niðurflug + zoom-out svigrúm (styttra -> lýkur fyrr) */
+  .facade__sides{top:auto}                /* cine.js setur bottom — takkinn fer UNDIR myndina */
+  /* „Skoðaðu íbúðirnar“ caption-ið birtist líka á síma — þétt, minni útgáfa neðst á borðanum */
+  .select__head{display:block;padding:30px var(--pad) 10px;
+    background:linear-gradient(0deg,rgba(14,16,18,.86) 0%,rgba(14,16,18,.32) 58%,transparent 100%)}
+  .select__head .kicker{font-size:.56rem;letter-spacing:.22em}
+  .select__head h2{font-size:clamp(1.1rem,5vw,1.5rem);line-height:1.1;margin-top:.1rem}
+  .select__sub{font-size:.74rem;line-height:1.4;margin-top:.32rem;max-width:38ch;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  /* íbúðirnar sitja þétt undir borðanum þegar hreyfingin læsist (minna dökkt bil) */
+  .apts{padding-top:clamp(26px,3.4vh,34px)}
+}
+/* ===== Story-sections á síma: stafla mynd yfir texta, styttri immersive hetjur ===== */
+@media (max-width:860px){
+  .story__media{aspect-ratio:16/11}
+  .story__hero{min-height:clamp(400px,66vh,600px)}
+  .story__below{padding:clamp(34px,6vh,62px) var(--pad) clamp(54px,9vh,92px)}
+  .story__below--cols .story__body{columns:1}
+  .story__title{max-width:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important}
+  .reveal{opacity:1;transform:none;transition:none}
+}
+
+/* Sími: forsíðu-hausinn ógegnsær svo cinematic hero-textinn sjáist EKKI í gegnum
+   navið þegar hann skrunar upp undir það (z-index 60 > hero 3; vandinn var bara
+   hálfgegnsær bakgrunnur). Tryggir engin skörun óháð render-tímasetningu. */
+@media (max-width:860px){
+  body:not(.is-page):not(.is-contact) .nav{background:#0b0c0d}
+}
+
+/* Sími: snerti-orðalag ("Ýttu eða smelltu") í stað "Færðu músina yfir" (engin mús á síma).
+   Tvö afbrigði af caption-textanum; CSS velur eftir skjástærð. Bæði ritstýranleg í CMS. */
+.select__sub--touch{display:none}
+@media (max-width:860px){
+  .select__head .select__sub:not(.select__sub--touch){display:none}
+  .select__head .select__sub--touch{display:block}
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ganga um íbúð — Vorbraut 14</title>
+  <meta name="description" content="Gakktu um íbúðina í 3D — fyrstu persónu og doll house." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    [hidden]{display:none!important}
+    html,body{height:100%}
+    body{background:#0b0c0d;color:#fff;font-family:Inter,system-ui,sans-serif;overflow:hidden}
+    #c3d{position:fixed;inset:0}
+    #c3d canvas{display:block;cursor:grab}
+    /* efsta stika */
+    .bar3d{position:fixed;top:0;left:0;right:0;z-index:10;display:flex;align-items:center;
+      justify-content:space-between;gap:1rem;padding:.85rem clamp(16px,3vw,32px);
+      background:linear-gradient(180deg,rgba(8,9,10,.82),rgba(8,9,10,0));pointer-events:none}
+    .bar3d > *{pointer-events:auto}
+    .bar3d__back{display:inline-flex;align-items:center;gap:.5rem;color:#fff;background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.16);border-radius:0;cursor:pointer;font:inherit;font-size:.92rem;
+      padding:.52rem .9rem;text-decoration:none;transition:background .2s}
+    .bar3d__back:hover{background:rgba(255,255,255,.16)}
+    .bar3d__title{font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:1.18rem;letter-spacing:.01em;
+      white-space:nowrap;text-shadow:0 1px 10px rgba(0,0,0,.5)}
+    .seg{display:inline-flex;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);padding:3px}
+    .seg button{appearance:none;background:none;border:0;color:rgba(255,255,255,.72);cursor:pointer;font:inherit;
+      font-size:.84rem;letter-spacing:.04em;padding:.46rem .95rem;transition:.2s}
+    .seg button.is-on{background:#fff;color:#111}
+    /* vísbending neðst */
+    .hint3d{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:10;
+      background:rgba(8,9,10,.72);border:1px solid rgba(255,255,255,.14);padding:.6rem 1.05rem;
+      font-size:.86rem;letter-spacing:.02em;color:rgba(255,255,255,.92);text-align:center;
+      white-space:nowrap;transition:opacity .3s;backdrop-filter:blur(6px)}
+    .cross3d{position:fixed;left:50%;top:50%;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;
+      background:rgba(255,255,255,.85);box-shadow:0 0 0 1.5px rgba(0,0,0,.45);z-index:9;display:none;pointer-events:none}
+    .boot3d{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:20;
+      color:rgba(255,255,255,.7);font-size:1rem;letter-spacing:.04em}
+    .fb3d{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:21;padding:2rem;
+      text-align:center;color:rgba(255,255,255,.85);line-height:1.7}
+    @media (max-width:680px){
+      .bar3d__title{display:none}
+      .hint3d{font-size:.76rem;white-space:normal;max-width:90vw}
+    }
+  </style>
+</head>
+<body>
+  <div id="c3d"></div>
+
+  <div class="bar3d">
+    <button class="bar3d__back" onclick="history.length>1?history.back():location.href='index.html'">← <span data-label="back">Til baka</span></button>
+    <div class="bar3d__title" id="title3d">Íbúð 0401 · 3D</div>
+    <div class="seg" role="group" aria-label="Hamur">
+      <button data-mode="walk" class="is-on">Ganga um</button>
+      <button data-mode="doll">Doll house</button>
+    </div>
+  </div>
+
+  <div class="cross3d" id="cross3d"></div>
+  <div class="hint3d" id="hint3d"
+       data-walk="Smelltu til að ganga um · W A S D til að hreyfa þig · mús til að líta · Esc til að sleppa"
+       data-doll="Dragðu til að snúa · skruna til að þysja">
+    Smelltu til að ganga um · W A S D til að hreyfa þig · mús til að líta · Esc til að sleppa
+  </div>
+  <div class="boot3d" id="boot3d">Hleð inn 3D…</div>
+  <div class="fb3d" id="fallback3d" hidden>
+    Vafrinn þinn styður ekki 3D (WebGL). Prófaðu nýrri vafra eða annað tæki.<br>
+    <a href="index.html" style="color:#9fc06a">← Til baka</a>
+  </div>
+
+  <script>
+    (function () {
+      var id = (new URLSearchParams(location.search).get('id') || '0401').replace(/[^0-9]/g, '') || '0401';
+      document.getElementById('title3d').textContent = 'Íbúð ' + id + ' · 3D';
+      document.title = 'Íbúð ' + id + ' — gönguferð · Vorbraut 14';
+    })();
+  </script>
+
+  <script type="importmap">
+  { "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }}
+  </script>
+  <script type="module" src="js/explore3d.js?v=150"></script>
+</body>
+</html>

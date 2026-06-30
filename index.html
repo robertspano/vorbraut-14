@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vorbraut 14 — Hnoðraholt, Garðabær</title>
+  <meta name="description" content="Vorbraut 14 — fjórtán vandaðar íbúðir í Hnoðraholti í Garðabæ. Bjartar íbúðir, læstur bílakjallari og fjölskylduvænt umhverfi." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="assets/cine/f001.webp" fetchpriority="high" />
+  <link rel="stylesheet" href="css/styles.css?v=150" />
+</head>
+<body>
+
+  <!-- ============================ NAV ============================ -->
+  <header class="nav" id="nav">
+    <div class="nav__left">
+      <a href="index.html" class="nav__logo" data-i18n="brand.logo">VORBRAUT&nbsp;14</a>
+      <nav class="nav__links" aria-label="Aðalvalmynd">
+        <a href="verkefnid.html" data-i18n="nav.verkefnid">Verkefnið</a>
+        <a href="arkitektur.html" data-i18n="nav.arkitektur">Arkitektúr</a>
+        <span class="navdrop">
+          <a href="husid.html" class="navdrop__trigger" data-i18n="nav.husid">Húsið</a>
+          <span class="navdrop__caret" aria-hidden="true"></span>
+          <span class="navdrop__menu" role="group" aria-label="Húsið">
+            <a href="utsyni.html" class="navdrop__item" data-i18n="nav.utsyni">Útsýni</a>
+            <a href="utirymi.html" class="navdrop__item" data-i18n="nav.utirymi">Útirými</a>
+            <a href="adgengi.html" class="navdrop__item" data-i18n="nav.adgengi">Aðgengi</a>
+          </span>
+        </span>
+        <a href="hverfid.html" data-i18n="nav.hverfid">Hverfið</a>
+        <a href="index.html#ibudir" data-i18n="nav.ibudir">Íbúðir</a>
+      </nav>
+    </div>
+    <div class="nav__right">
+      <a href="index.html#soluadilar" class="nav__link" data-i18n="sellers.title">Söluaðilar</a>
+      <a href="hafa-samband.html" class="nav__contact" data-i18n="nav.contact">Hafa samband</a>
+      <button class="lang" id="langBtn" aria-label="Language"><svg class="lang__globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 2.6 15.5 0 18M12 3c-2.6 2.5-2.6 15.5 0 18"/></svg><span id="langLabel">English</span></button>
+      <button class="burger" id="burger" aria-label="Valmynd" aria-controls="navmenu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+    <nav class="navmenu" id="navmenu" aria-label="Valmynd">
+      <a href="verkefnid.html" data-i18n="nav.verkefnid">Verkefnið</a>
+      <a href="arkitektur.html" data-i18n="nav.arkitektur">Arkitektúr</a>
+      <a href="husid.html" data-i18n="nav.husid">Húsið</a>
+      <a href="utsyni.html" class="navmenu__sub" data-i18n="nav.utsyni">Útsýni</a>
+      <a href="utirymi.html" class="navmenu__sub" data-i18n="nav.utirymi">Útirými</a>
+      <a href="adgengi.html" class="navmenu__sub" data-i18n="nav.adgengi">Aðgengi</a>
+      <a href="hverfid.html" data-i18n="nav.hverfid">Hverfið</a>
+      <a href="index.html#ibudir" data-i18n="nav.ibudir">Íbúðir</a>
+      <hr/>
+      <a class="navmenu__action" href="index.html#soluadilar" data-i18n="sellers.title">Söluaðilar</a>
+      <a class="navmenu__action" href="hafa-samband.html" data-i18n="nav.contact">Hafa samband</a>
+    </nav>
+  </header>
+
+  <main class="snap" id="scroller" data-block="mainflow">
+
+    <!-- ============== CINEMATIC SCROLL: aerial → fly-down → facade ============== -->
+    <section class="cine" id="cine">
+      <div class="cine__stick" id="cineStick">
+        <canvas id="cineCanvas" aria-hidden="true"></canvas>
+
+        <!-- interactive facade — overlay sem zoom-ar út í borða í lok niðurflugs -->
+        <figure class="facade" id="facade">
+          <img class="facade__front" id="facadeFront" data-img="img.facade" src="assets/renders/entrance.webp?v=150" alt="Vorbraut 14 — framhlið með aðkomu" />
+          <div class="facade__shine" id="facadeShine" aria-hidden="true"></div>
+          <svg class="facade__svg" id="facadeSvg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+          <div class="facade__tip" id="facadeTip" hidden></div>
+          <figcaption class="select__head">
+            <p class="kicker kicker--light" data-i18n="sel.kicker">Íbúðir í Vorbraut 14</p>
+            <h2 data-i18n="sel.title">Smelltu þig inn í húsið</h2>
+            <p class="select__sub" data-i18n="sel.body"></p>
+            <p class="select__sub select__sub--touch" data-i18n="sel.bodyTouch"></p>
+          </figcaption>
+        </figure>
+
+        <!-- Aftan/Framan — utan við myndina (yfir á tölvu, undir myndinni á síma) -->
+        <div class="facade__sides" id="facadeSides" role="group" aria-label="Hlið hússins">
+          <button type="button" class="facade__sidebtn is-on" data-side="aftan" data-i18n="facade.back">Aftan</button>
+          <button type="button" class="facade__sidebtn" data-side="framan" data-i18n="facade.front">Framan</button>
+        </div>
+
+        <!-- hero overlay — fades out as the descent begins -->
+        <div class="cine__hero" id="cineHero">
+          <div class="cine__scrim"></div>
+          <div class="cine__heroinner">
+            <p class="kicker kicker--light" data-i18n="hero.kicker">Hnoðraholt · Garðabær</p>
+            <h1 class="hero__title"><span data-i18n="hero.name">Vorbraut</span> <span class="hero__no" data-i18n="hero.no">14</span></h1>
+            <p class="hero__tag" data-i18n="hero.tag">Vandaðar íbúðir í Hnoðraholti í Garðabæ.</p>
+            <p class="hero__sub" data-i18n="hero.sub"></p>
+            <div class="hero__cta">
+              <button class="btn btn--solid" data-cinedown data-i18n="cta.ibudir">Skoða íbúðir</button>
+              <button class="btn btn--ghost" data-contact data-i18n="cta.contact">Hafa samband</button>
+            </div>
+          </div>
+          <div class="cine__stats">
+            <div><b>14</b><span data-i18n="stat.ibudir">íbúðir</span></div>
+            <div><b>4</b><span data-i18n="stat.haedir">hæðir</span></div>
+            <div><b>10</b><span data-i18n="stat.bilastaedi">bílastæði</span></div>
+            <div><b>68,6</b><span data-i18n="stat.fra">m² frá</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ====================== ÍBÚÐALISTI (vesturvin-stíll) ====================== -->
+    <section class="apts" id="ibudir" data-block="sec-ibudir">
+      <div class="apts__inner">
+        <header class="apts__head">
+          <p class="kicker kicker--light" data-i18n="sel.kicker">Íbúðir í Vorbraut 14</p>
+          <h2 class="apts__title" data-i18n="apts.title">Íbúðir</h2>
+        </header>
+
+        <div class="apts__filters">
+          <div class="apts__sliders">
+            <div class="rng" data-key="area" data-min="64" data-max="172" data-step="1" data-unit="m²">
+              <span class="rng__label" data-i18n="spec.area">Birt stærð</span>
+              <div class="rng__track"><div class="rng__fill"></div><button type="button" class="rng__h rng__h--lo" aria-label="lágmark"></button><button type="button" class="rng__h rng__h--hi" aria-label="hámark"></button></div>
+              <div class="rng__vals"><span class="rng__lo"></span><span class="rng__hi"></span></div>
+            </div>
+            <div class="rng" data-key="floor" data-min="1" data-max="4" data-step="1">
+              <span class="rng__label" data-i18n="filter.floor">Hæð</span>
+              <div class="rng__track"><div class="rng__fill"></div><button type="button" class="rng__h rng__h--lo" aria-label="lágmark"></button><button type="button" class="rng__h rng__h--hi" aria-label="hámark"></button></div>
+              <div class="rng__vals"><span class="rng__lo"></span><span class="rng__hi"></span></div>
+            </div>
+            <div class="rng" data-key="rooms" data-min="2" data-max="4" data-step="1">
+              <span class="rng__label" data-i18n="filter.rooms">Herbergi</span>
+              <div class="rng__track"><div class="rng__fill"></div><button type="button" class="rng__h rng__h--lo" aria-label="lágmark"></button><button type="button" class="rng__h rng__h--hi" aria-label="hámark"></button></div>
+              <div class="rng__vals"><span class="rng__lo"></span><span class="rng__hi"></span></div>
+            </div>
+            <button class="apts__reset" id="resetBtn" data-i18n="filter.reset">Hreinsa</button>
+          </div>
+          <div class="apts__features">
+            <div class="feat__group">
+              <h4 class="feat__title" data-i18n="feat.title">Eiginleikar íbúða</h4>
+              <button type="button" class="feat" data-feat="parking"><i></i><span data-i18n="feat.parking">Sér bílastæði</span></button>
+              <button type="button" class="feat" data-feat="laundry"><i></i><span data-i18n="spec.laundry">Sér þvottahús</span></button>
+              <button type="button" class="feat" data-feat="pottur"><i></i><span data-i18n="feat.pottur">Möguleiki á heitum potti</span></button>
+            </div>
+            <div class="feat__group">
+              <h4 class="feat__title" data-i18n="apts.title">Íbúðir</h4>
+              <button type="button" class="feat" data-feat="available"><i></i><span data-i18n="feat.forsale">Einungis íbúðir í sölu</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="apts__tablewrap">
+          <table class="apts__table">
+            <thead>
+              <tr>
+                <th data-i18n="col.id">Íbúð</th>
+                <th data-i18n="col.floor">Hæð</th>
+                <th data-i18n="spec.area">Birt stærð</th>
+                <th data-i18n="col.rooms">Herbergi</th>
+                <th data-i18n="spec.balcony">Svalir / verönd</th>
+                <th data-i18n="spec.parking">Bílastæði</th>
+                <th data-i18n="spec.storage">Sérgeymsla</th>
+                <th data-i18n="spec.price">Verð</th>
+                <th data-i18n="col.status">Staða</th>
+                <th aria-hidden="true"></th>
+              </tr>
+            </thead>
+            <tbody id="aptRows"></tbody>
+          </table>
+          <p class="apts__empty" id="gridEmpty" hidden data-i18n="list.empty">Engin íbúð passar við valið. Hreinsaðu síur.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== SÖLUAÐILAR (vesturvin-stíll) ====================== -->
+    <section class="sellers" id="soluadilar" data-block="sec-soluadilar">
+      <div class="sellers__inner">
+        <div class="sellers__intro">
+          <h2 class="sellers__title" data-i18n="sellers.title">Söluaðilar</h2>
+          <p class="sellers__lead" data-i18n="sellers.lead">Fasteignasalan Miklaborg hefur umsjón með sölu íbúða í Vorbraut 14. Hafðu samband við söluaðila fyrir nánari upplýsingar eða til að bóka einkaskoðun.</p>
+        </div>
+        <div class="sellers__main">
+          <div class="sellers__brand">
+            <img class="sellers__logo" loading="lazy" decoding="async" src="https://miklaborg.is/themes/custom/granite/design-system/src/assets/logos/logo_white.svg" alt="Fasteignasalan Miklaborg" onerror="this.closest('.sellers__brand').classList.add('no-logo');this.remove()" />
+            <span class="sellers__brandtxt"><span data-i18n="sellers.brand1">Fasteignasalan</span><b data-i18n="sellers.brand2">MIKLABORG</b></span>
+          </div>
+          <div class="sellers__grid" data-block="agents">
+            <article class="agent" data-block="agent1">
+              <div class="agent__avatar"><img data-img="img.ag1" loading="lazy" decoding="async" src="assets/agents/steinn.webp?v=150" alt="Steinn Andri Viðarsson" /></div>
+              <h3 class="agent__name" data-i18n="ag.1.name">Steinn Andri Viðarsson</h3>
+              <p class="agent__title" data-i18n="ag.1.title">Löggiltur fasteigna- og skipasali</p>
+              <a class="agent__line" data-i18n="ag.1.phone" href="tel:+3547751477">775‑1477</a>
+              <a class="agent__line" data-i18n="ag.1.email" href="mailto:steinn@miklaborg.is">steinn@miklaborg.is</a>
+            </article>
+            <article class="agent" data-block="agent2">
+              <div class="agent__avatar"><img data-img="img.ag2" loading="lazy" decoding="async" src="assets/agents/gudrun.webp?v=150" alt="Guðrún Gonnigan Daníelsdóttir" /></div>
+              <h3 class="agent__name" data-i18n="ag.2.name">Guðrún Gonnigan Daníelsdóttir</h3>
+              <p class="agent__title" data-i18n="ag.2.title">Löggiltur fasteignasali</p>
+              <a class="agent__line" data-i18n="ag.2.phone" href="tel:+3548971161">897‑1161</a>
+              <a class="agent__line" data-i18n="ag.2.email" href="mailto:gudrun@miklaborg.is">gudrun@miklaborg.is</a>
+            </article>
+            <article class="agent" data-block="agent3">
+              <div class="agent__avatar"><img data-img="img.ag3" loading="lazy" decoding="async" src="assets/agents/kjartan.webp?v=150" alt="Kjartan Ísak Guðmundsson" /></div>
+              <h3 class="agent__name" data-i18n="ag.3.name">Kjartan Ísak Guðmundsson</h3>
+              <p class="agent__title" data-i18n="ag.3.title">Löggiltur fasteignasali</p>
+              <a class="agent__line" data-i18n="ag.3.phone" href="tel:+3546634392">663‑4392</a>
+              <a class="agent__line" data-i18n="ag.3.email" href="mailto:kjartan@miklaborg.is">kjartan@miklaborg.is</a>
+            </article>
+            <article class="agent" data-block="agent4">
+              <div class="agent__avatar"><img data-img="img.ag4" loading="lazy" decoding="async" src="assets/agents/kristin.webp?v=150" alt="Kristín Pétursdóttir" /></div>
+              <h3 class="agent__name" data-i18n="ag.4.name">Kristín Pétursdóttir</h3>
+              <p class="agent__title" data-i18n="ag.4.title">Löggiltur fasteigna- og skipasali</p>
+              <a class="agent__line" data-i18n="ag.4.phone" href="tel:+3548241965">824‑1965</a>
+              <a class="agent__line" data-i18n="ag.4.email" href="mailto:kristin@miklaborg.is">kristin@miklaborg.is</a>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== FOOTER (eftir scroll-animation) ====================== -->
+    <footer class="sitefoot" data-block="sec-footer">
+      <div class="sitefoot__inner">
+        <!-- heimilisfang — lengst til vinstri -->
+        <div class="sitefoot__left">
+          <a href="#" class="sitefoot__logo" data-totop data-i18n="brand.logo">VORBRAUT&nbsp;14</a>
+          <div class="sitefoot__col">
+            <span data-i18n="foot.addr1">Vorbraut 14, Hnoðraholt</span>
+            <span data-i18n="foot.addr2">210 Garðabær</span>
+            <span class="sitefoot__muted"><span data-i18n="ct.landLabel">Landeignarnúmer</span> <span data-i18n="foot.landnr">L232219</span></span>
+          </div>
+        </div>
+        <!-- tengiliður (söluaðili) — í miðjunni -->
+        <div class="sitefoot__mid">
+          <a href="mailto:miklaborg@miklaborg.is" data-i18n="foot.email">miklaborg@miklaborg.is</a>
+          <a href="tel:+3545697000" data-i18n="foot.phone">S: 569 7000</a>
+        </div>
+        <!-- tenglar — lengst til hægri -->
+        <nav class="sitefoot__links">
+          <a href="#" data-cinedown data-i18n="cta.ibudir">Skoða íbúðir</a>
+          <a href="#soluadilar" data-scrollto="soluadilar" data-i18n="sellers.title">Söluaðilar</a>
+          <button class="sitefoot__contact" data-contact data-i18n="nav.contact">Hafa samband</button>
+        </nav>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- ====================== ÍBÚÐ — MODAL (vesturvin-stíll) ====================== -->
+  <div class="modal modal--apt" id="modal" hidden>
+    <div class="modal__backdrop" data-close></div>
+    <div class="aptm" role="dialog" aria-modal="true">
+      <header class="aptm__bar">
+        <span class="aptm__logo">VORBRAUT&nbsp;14</span>
+        <h3 class="aptm__title" id="mTitle"></h3>
+        <button class="aptm__x" data-close aria-label="Loka">×</button>
+      </header>
+      <div class="aptm__body">
+        <!-- vinstri: grunnmynd -->
+        <div class="aptm__left">
+          <div class="aptm__pview" id="mPlanView" hidden role="group" aria-label="Útlit grunnmyndar">
+            <button type="button" class="aptm__pvbtn is-on" data-view="line">Teikning</button>
+            <button type="button" class="aptm__pvbtn" data-view="tex">Með áferð</button>
+          </div>
+          <button class="aptm__plan" id="mPlanBtn" aria-label="Stækka grunnmynd">
+            <span class="aptm__planinner" id="mPlanInner"><img id="mPlan" decoding="async" src="" alt="" /></span>
+          </button>
+          <p class="aptm__planhint" id="mPlanHint" data-i18n="modal.planHint"></p>
+          <p class="aptm__disc" data-i18n="modal.planDisc"></p>
+        </div>
+        <!-- hægri: hæðarval + hæðarkort + upplýsingar -->
+        <div class="aptm__right">
+          <div class="aptm__floors">
+            <span class="aptm__floorslbl" data-i18n="modal.floorLbl">Hæð</span>
+            <div class="aptm__floorsel" id="mFloorSel"></div>
+          </div>
+          <div class="aptm__diagram">
+            <svg id="mDiagram" viewBox="0 0 300 181" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+          </div>
+          <span class="aptm__status tag" id="mStatus"></span>
+          <dl class="aptm__specs" id="mSpecs"></dl>
+          <div class="aptm__cta">
+            <button class="btn btn--solid" data-contact data-i18n="cta.contact">Hafa samband</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- grunnmynd í fullri stærð -->
+  <div class="planzoom" id="planZoom" hidden>
+    <img id="planZoomImg" decoding="async" src="" alt="" />
+  </div>
+
+  <script defer src="js/data.js?v=150"></script>
+  <script defer src="js/content.js?v=150"></script>
+  <script defer src="js/supabase-config.js?v=150"></script>
+  <script defer src="js/vbsupa.js?v=150"></script>
+  <script defer src="js/app.js?v=150"></script>
+  <script defer src="js/cine.js?v=150"></script>
+  <!-- þróunartól (facade-/grunnmynda-ritlar) hlaðast AÐEINS þegar eigandinn bætir ?edit/?planedit/?mask við slóðina — gestir sækja ekkert -->
+  <script>[['edit','calibrate'],['planedit','planedit'],['mask','maskedit']].forEach(function(p){if(new RegExp('[?&]'+p[0]+'\\b').test(location.search)){var s=document.createElement('script');s.src='js/'+p[1]+'.js?v=150';document.body.appendChild(s);}});</script>
+</body>
+</html>
