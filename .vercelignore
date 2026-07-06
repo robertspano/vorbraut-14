@@ -1,0 +1,7 @@
+tools
+serve.py
+*.py
+*.docx
+*.pdf
+assets/plans_ai
+*.orig.*
