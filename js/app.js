@@ -17,6 +17,8 @@
     if (window.VB.syncContactLinks) window.VB.syncContactLinks();
     $('#langLabel').textContent = lang === 'is' ? 'English' : 'Íslenska';
     buildGrid();                 // labels inside cards depend on language
+    if (typeof syncZoneAria === 'function') syncZoneAria();
+    if (typeof renderSelector === 'function') renderSelector();   // veljarinn fylgir tungumálinu
     if (currentApt && !modal.hidden) openModal(currentApt); // refresh modal if open
   }
   $('#langBtn').addEventListener('click', () => {
@@ -31,6 +33,7 @@
 
   function onScroll() {
     nav.classList.toggle('nav--solid', scroller.scrollTop > window.innerHeight * 0.72);
+    nav.classList.toggle('nav--scrolled', scroller.scrollTop > 8);
   }
   scroller.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
@@ -144,21 +147,34 @@
     const poly = document.createElementNS(SVGNS, 'polygon');
     poly.setAttribute('points', pts.map((p) => p.join(',')).join(' '));
     poly.dataset.id = id;
+    poly.setAttribute('tabindex', '0');
+    poly.setAttribute('role', 'button');
     const apt = aptById[id];
     if (apt && apt.status !== 'available') poly.style.fill = statusFill(apt.status);
     poly.addEventListener('mousemove', (e) => moveTip(e, id));
     poly.addEventListener('mouseenter', () => showTip(id));
     poly.addEventListener('mouseleave', hideTip);
-    poly.addEventListener('click', () => { const a = aptById[id]; if (a) openModal(a); });
+    poly.addEventListener('click', () => selectApt(id));
+    poly.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectApt(id); } });
     svg.appendChild(poly);
   });
+  // aria-lýsingar á íbúða-svæðunum (uppfærist við tungumála- og stöðubreytingar)
+  function syncZoneAria() {
+    $$('polygon', svg).forEach((p) => {
+      const a = aptById[p.dataset.id]; if (!a) return;
+      p.setAttribute('aria-label', `${lang === 'is' ? 'Íbúð' : 'Apartment'} ${a.id}, ${roomsLabel(a.rooms)}, ${fmtArea(a.area)} m², ${statusLabel(a.status)}`);
+    });
+  }
 
   // Framan / Aftan — skipta um hlið. framan = föst inngangsmynd, aftan = interactive svalahlið
   const facadeSides = $('#facadeSides');
   if (facadeSides) facadeSides.addEventListener('click', (e) => {
     const b = e.target.closest('.facade__sidebtn'); if (!b) return;
     facadeFig.classList.toggle('is-front', b.dataset.side === 'framan');
-    $$('.facade__sidebtn', facadeSides).forEach((x) => x.classList.toggle('is-on', x === b));
+    $$('.facade__sidebtn', facadeSides).forEach((x) => {
+      x.classList.toggle('is-on', x === b);
+      x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+    });
   });
 
   function statusFill(s) {
@@ -259,13 +275,15 @@
     buildGrid(); syncFacade();
   });
 
-  // dim facade zones that don't match active filters
+  // dim facade zones that don't match active filters or the selected floor
   function syncFacade() {
-    const filtering = APARTMENTS.some((a) => !matches(a));
+    const filtering = APARTMENTS.some((a) => !matches(a)) || selFloor != null;
     facadeFig.classList.toggle('dim', filtering);
     $$('polygon', svg).forEach((p) => {
       const a = aptById[p.dataset.id];
-      p.classList.toggle('match', filtering && a && matches(a));
+      const ok = a && matches(a) && (selFloor == null || a.floor === selFloor);
+      p.classList.toggle('match', filtering && !!ok);
+      p.classList.toggle('on', !!(selApt && a && a.id === selApt.id));
     });
   }
 
@@ -278,10 +296,10 @@
 
   const aptsOnFloor = (f) => APARTMENTS.filter((a) => a.floor === f).sort((x, y) => x.id.localeCompare(y.id));
 
-  /* ---- hæðarval (HÆÐ 1–4 hringir) ---- */
+  /* ---- hæðarval (hringir — hæðir sóttar úr gögnunum) ---- */
   function renderFloorSel(active) {
     const sel = $('#mFloorSel');
-    sel.innerHTML = [1, 2, 3, 4]
+    sel.innerHTML = FLOOR_LIST
       .map((f) => `<button class="aptm__fbtn${f === active ? ' is-on' : ''}" data-f="${f}">${f}</button>`)
       .join('');
     $$('.aptm__fbtn', sel).forEach((b) => b.addEventListener('click', () => {
@@ -306,8 +324,12 @@
     return [cx / (3 * a), cy / (3 * a)];
   }
   function renderDiagram(floor, selId) {
+    renderDiagramInto($('#mDiagram'), floor, selId, (id) => openModal(aptById[id]));
+  }
+  // teiknar hæðarkort inn í hvaða svg sem er; onPick keyrir við smell/Enter á íbúð
+  function renderDiagramInto(svg, floor, selId, onPick) {
+    if (!svg) return;
     const F = FLOOR_SHAPES.floors[floor];
-    const svg = $('#mDiagram');
     if (!F) { svg.innerHTML = ''; return; }
     svg.setAttribute('viewBox', FLOOR_SHAPES.viewBox);
     // heil grunnplata undir öllu — engin hvít bil sjást nokkurs staðar á byggingunni
@@ -339,7 +361,15 @@
       </g></g>
       <text class="dg-northlbl" x="${nlx}" y="${nly}">N</text>`;
     svg.innerHTML = html;
-    $$('.dg-apt', svg).forEach((g) => g.addEventListener('click', () => openModal(aptById[g.dataset.id])));
+    $$('.dg-apt', svg).forEach((g) => {
+      const a = aptById[g.dataset.id];
+      g.setAttribute('tabindex', '0');
+      g.setAttribute('role', 'button');
+      if (a) g.setAttribute('aria-label', `${lang === 'is' ? 'Íbúð' : 'Apartment'} ${a.id}, ${roomsLabel(a.rooms)}, ${fmtArea(a.area)} m², ${statusLabel(a.status)}`);
+      const pick = () => onPick(g.dataset.id);
+      g.addEventListener('click', pick);
+      g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+    });
   }
 
   function openModal(a) {
@@ -456,6 +486,72 @@
     else if (!modal.hidden) closeModal();
   });
 
+  /* ========== VELJARI — bygging + hæðir + hæðarkort + upplýsingar ======== */
+  const selFloorsEl = $('#selFloors'), selDiagramEl = $('#selDiagram'),
+        selInfoEl = $('#selInfo'), selLegendEl = $('#selLegend');
+  let selApt = null;      // valin íbúð í veljaranum (ekki það sama og modal)
+  let selFloor = null;    // valin hæð (null = allar hæðir)
+  const FLOOR_LIST = [...new Set(APARTMENTS.map((a) => a.floor))].sort((a, b) => a - b);
+
+  function selectApt(id) {
+    const a = aptById[id]; if (!a) return;
+    selApt = a;
+    if (selFloor != null && a.floor !== selFloor) selFloor = a.floor;
+    renderSelector();
+  }
+
+  function renderSelFloors() {
+    if (!selFloorsEl) return;
+    selFloorsEl.innerHTML = FLOOR_LIST.map((f) =>
+      `<button type="button" class="select__fbtn${selFloor === f ? ' is-on' : ''}" data-f="${f}" aria-pressed="${selFloor === f}">${f}</button>`).join('');
+    $$('.select__fbtn', selFloorsEl).forEach((b) => b.addEventListener('click', () => {
+      const f = +b.dataset.f;
+      selFloor = (selFloor === f) ? null : f;              // smellur aftur = afvelja hæð
+      if (selApt && selFloor != null && selApt.floor !== selFloor) selApt = null;
+      renderSelector();
+    }));
+  }
+
+  function renderSelLegend() {
+    if (!selLegendEl) return;
+    const present = new Set(APARTMENTS.map((a) => a.status));
+    selLegendEl.innerHTML = ['available', 'reserved', 'sold'].filter((s) => present.has(s))
+      .map((s) => `<li class="select__leg select__leg--${s}"><i aria-hidden="true"></i>${statusLabel(s)}</li>`).join('');
+  }
+
+  function renderSelInfo() {
+    if (!selInfoEl) return;
+    if (!selApt) { selInfoEl.innerHTML = `<p class="select__hint">${t('sel.empty')}</p>`; return; }
+    const a = selApt;
+    const rows = [
+      [t('col.floor'), floorLabel(a.floor)],
+      [t('col.rooms'), roomsLabel(a.rooms)],
+      [t('spec.area'), fmtArea(a.area) + ' m²'],
+    ];
+    if (a.price) rows.push([t('spec.price'), fmtKr(a.price)]);
+    selInfoEl.innerHTML = `
+      <div class="select__card">
+        <div class="select__cardhead">
+          <h3>${(lang === 'is' ? 'Íbúð ' : 'Apartment ') + a.id}</h3>
+          <span class="tag tag--${a.status}">${statusLabel(a.status)}</span>
+        </div>
+        <dl class="select__specs">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+        <button type="button" class="btn btn--solid select__open">${t('sel.open')}</button>
+      </div>`;
+    const open = $('.select__open', selInfoEl);
+    if (open) open.addEventListener('click', () => openModal(aptById[a.id]));
+  }
+
+  function renderSelector() {
+    if (!selFloorsEl) return;                              // veljarinn er aðeins á forsíðunni
+    renderSelFloors();
+    renderSelLegend();
+    const f = selFloor != null ? selFloor : (selApt ? selApt.floor : FLOOR_LIST[0]);
+    renderDiagramInto(selDiagramEl, f, selApt ? selApt.id : null, selectApt);
+    renderSelInfo();
+    syncFacade();
+  }
+
   /* ----- staða íbúða úr Supabase (lifandi: grænt/gult/rautt) ----------- */
   if (window.VB && typeof VB.getStatuses === 'function') {
     VB.getStatuses().then((m) => {
@@ -465,7 +561,7 @@
         const a = aptById[p.dataset.id];
         p.style.fill = (a && a.status !== 'available') ? statusFill(a.status) : '';
       });
-      buildGrid(); syncFacade();
+      buildGrid(); syncZoneAria(); renderSelector(); syncFacade();
     }).catch(() => {});
   }
 
@@ -480,6 +576,6 @@
     const txtChanged = window.VB.applyContentOverrides(ov);
     if (txtChanged) applyLang();          // applyLang endurteiknar töfluna líka
     else if (aptChanged) buildGrid();
-    if (aptChanged) { syncFacade(); if (currentApt && modal && !modal.hidden) openModal(currentApt); }
+    if (aptChanged) { syncZoneAria(); renderSelector(); syncFacade(); if (currentApt && modal && !modal.hidden) openModal(currentApt); }
   }).catch(() => {});
 })();

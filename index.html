@@ -10,9 +10,9 @@
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="assets/cine/f001.webp" fetchpriority="high" />
-  <link rel="stylesheet" href="css/styles.css?v=149" />
+  <link rel="stylesheet" href="css/styles.css?v=150" />
 </head>
-<body>
+<body class="home">
 
   <!-- ============================ NAV ============================ -->
   <header class="nav" id="nav">
@@ -36,7 +36,7 @@
     </div>
     <div class="nav__right">
       <a href="index.html#soluadilar" class="nav__link" data-i18n="sellers.title">Söluaðilar</a>
-      <a href="hafa-samband.html" class="nav__contact" data-i18n="nav.contact">Hafa samband</a>
+      <a href="hafa-samband.html" class="nav__contact" data-i18n="cta.enquiry">Senda fyrirspurn</a>
       <button class="lang" id="langBtn" aria-label="Language"><svg class="lang__globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 2.6 15.5 0 18M12 3c-2.6 2.5-2.6 15.5 0 18"/></svg><span id="langLabel">English</span></button>
       <button class="burger" id="burger" aria-label="Valmynd" aria-controls="navmenu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
@@ -57,45 +57,60 @@
 
   <main class="snap" id="scroller" data-block="mainflow">
 
-    <!-- ============================ HERO (static image + text) ============================ -->
-    <section class="vhero" id="hero">
-      <div class="vhero__scrim"></div>
-      <div class="vhero__inner">
-        <p class="kicker kicker--light" data-i18n="hero.kicker">Hnoðraholt · Garðabær</p>
-        <h1 class="hero__title"><span data-i18n="hero.name">Vorbraut</span> <span class="hero__no" data-i18n="hero.no">14</span></h1>
-        <p class="hero__tag" data-i18n="hero.tag">Vandaðar íbúðir í Hnoðraholti í Garðabæ.</p>
-        <p class="hero__sub" data-i18n="hero.sub"></p>
-        <div class="hero__cta">
-          <button class="btn btn--solid" data-cinedown data-i18n="cta.ibudir">Skoða íbúðir</button>
-          <button class="btn btn--ghost" data-contact data-i18n="cta.contact">Hafa samband</button>
+    <!-- ================= HERO — skipt skjámynd: texti vinstra, mynd hægra ================= -->
+    <section class="shero" id="hero">
+      <div class="shero__text">
+        <div class="shero__textinner">
+          <p class="shero__eyebrow" data-i18n="hero.eyebrow">Vorbraut 14 · Hnoðraholt</p>
+          <h1 class="shero__title" data-i18n="hero.headline">Vandaðar íbúðir á einstökum stað</h1>
+          <p class="shero__lead" data-i18n="hero.lead">Veldu íbúð og skoðaðu staðsetningu, stærð, skipulag og sölustöðu.</p>
+          <div class="shero__cta">
+            <button class="btn btn--solid" data-cinedown data-i18n="cta.ibudir">Skoða íbúðir</button>
+            <button class="btn btn--ghost" data-contact data-i18n="cta.enquiry">Senda fyrirspurn</button>
+          </div>
+          <div class="shero__facts">
+            <div><b>14</b><span data-i18n="stat.ibudir">íbúðir</span></div>
+            <div><b>4</b><span data-i18n="stat.haedir">hæðir</span></div>
+            <div><b>10</b><span data-i18n="stat.bilastaedi">bílastæði</span></div>
+            <div><b>68,6</b><span data-i18n="stat.fra">m² frá</span></div>
+          </div>
         </div>
-        <div class="vhero__stats">
-          <div><b>14</b><span data-i18n="stat.ibudir">íbúðir</span></div>
-          <div><b>4</b><span data-i18n="stat.haedir">hæðir</span></div>
-          <div><b>10</b><span data-i18n="stat.bilastaedi">bílastæði</span></div>
-          <div><b>68,6</b><span data-i18n="stat.fra">m² frá</span></div>
-        </div>
+      </div>
+      <div class="shero__media">
+        <img src="assets/renders/hero.jpg" data-img="img.hero" alt="Vorbraut 14 — loftmynd af fjölbýlishúsinu í Hnoðraholti í Garðabæ" fetchpriority="high" decoding="async" />
       </div>
     </section>
 
-    <!-- ==================== INTERACTIVE FRAMHLIÐ (íbúðaval) — static ==================== -->
+    <!-- ============ VELJARI — gagnvirk bygging vinstra, hæðir/kort/upplýsingar hægra ============ -->
     <section class="select" id="facade-section" data-block="sec-facade">
-      <figure class="facade" id="facade">
-        <img class="facade__front" id="facadeFront" data-img="img.facade" src="assets/renders/entrance.webp?v=141" alt="Vorbraut 14 — framhlið með aðkomu" />
-        <div class="facade__shine" id="facadeShine" aria-hidden="true"></div>
-        <svg class="facade__svg" id="facadeSvg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
-        <div class="facade__tip" id="facadeTip" hidden></div>
-        <div class="facade__sides" id="facadeSides" role="group" aria-label="Hlið hússins">
-          <button type="button" class="facade__sidebtn is-on" data-side="aftan" data-i18n="facade.back">Aftan</button>
-          <button type="button" class="facade__sidebtn" data-side="framan" data-i18n="facade.front">Framan</button>
-        </div>
-        <figcaption class="select__head">
+      <div class="select__inner">
+        <header class="select__intro">
           <p class="kicker kicker--light" data-i18n="sel.kicker">Íbúðir í Vorbraut 14</p>
           <h2 data-i18n="sel.title">Veldu íbúð í húsinu</h2>
-          <p class="select__sub" data-i18n="sel.body"></p>
-          <p class="select__sub select__sub--touch" data-i18n="sel.bodyTouch"></p>
-        </figcaption>
-      </figure>
+          <p class="select__lead" data-i18n="sel.bodyTouch">Smelltu eða ýttu á íbúð til að sjá teikningar, stærðir og nánari upplýsingar.</p>
+        </header>
+        <div class="select__grid">
+          <figure class="facade" id="facade">
+            <img class="facade__front" id="facadeFront" data-img="img.facade" src="assets/renders/entrance.webp?v=141" alt="Vorbraut 14 — framhlið með aðkomu" loading="lazy" decoding="async" />
+            <div class="facade__shine" id="facadeShine" aria-hidden="true"></div>
+            <svg class="facade__svg" id="facadeSvg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" role="group" aria-label="Gagnvirk framhlið — veldu íbúð"></svg>
+            <div class="facade__tip" id="facadeTip" hidden></div>
+            <div class="facade__sides" id="facadeSides" role="group" aria-label="Hlið hússins">
+              <button type="button" class="facade__sidebtn is-on" data-side="aftan" aria-pressed="true" data-i18n="facade.back">Bakhlið</button>
+              <button type="button" class="facade__sidebtn" data-side="framan" aria-pressed="false" data-i18n="facade.front">Framhlið</button>
+            </div>
+          </figure>
+          <aside class="select__panel">
+            <div class="select__floors">
+              <span class="select__floorslbl" data-i18n="modal.floorLbl">Hæð</span>
+              <div class="select__fbtns" id="selFloors" role="group" aria-label="Veldu hæð"></div>
+            </div>
+            <div class="select__diagram"><svg id="selDiagram" viewBox="0 0 300 181" preserveAspectRatio="xMidYMid meet"></svg></div>
+            <ul class="select__legend" id="selLegend"></ul>
+            <div class="select__info" id="selInfo" aria-live="polite"></div>
+          </aside>
+        </div>
+      </div>
     </section>
 
 
@@ -284,10 +299,10 @@
   </div>
 
   <script defer src="js/data.js?v=148"></script>
-  <script defer src="js/content.js?v=142"></script>
+  <script defer src="js/content.js?v=143"></script>
   <script defer src="js/supabase-config.js?v=141"></script>
   <script defer src="js/vbsupa.js?v=141"></script>
-  <script defer src="js/app.js?v=146"></script>
+  <script defer src="js/app.js?v=147"></script>
   <script>
   /* forsíðuhnappar (áður í cine.js): „Skoða íbúðir“ → framhlið · footer-logo → toppur */
   (function(){
