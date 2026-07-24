@@ -145,30 +145,24 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
   -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
 .hero__cta .btn--ghost:hover{background:#fff;color:var(--charcoal);border-color:#fff}
 
-/* ===================== CINEMATIC SCROLL INTRO ====================== */
-/* holds the timeline — fly down · hold (interactive) · continuation journey */
-.cine{position:relative;height:360vh}
-.cine__stick{position:sticky;top:0;height:100vh;overflow:hidden;background:#0b0c0d}
-#cineCanvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.cine .facade{position:absolute;inset:0;opacity:0;z-index:2;will-change:opacity}
-/* hero overlay (opacity driven by scroll in cine.js) */
-.cine__hero{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;justify-content:flex-end;
-  align-items:flex-start;color:#fff;padding:120px var(--pad) clamp(70px,11vh,118px);overflow:hidden;will-change:opacity}
-.cine__scrim{position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(180deg,rgba(18,20,22,.5) 0%,rgba(18,20,22,.04) 30%,rgba(18,20,22,.30) 72%,rgba(18,20,22,.72) 100%)}
-.cine__heroinner{position:relative;max-width:var(--maxw);width:100%;margin:0 auto}
-.cine__stats{position:relative;max-width:var(--maxw);width:100%;margin:2.4rem auto 0;
+/* ===================== HERO (static image + text) ====================== */
+.vhero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
+  align-items:flex-start;color:#fff;padding:140px var(--pad) clamp(70px,11vh,118px);overflow:hidden;
+  background:#0b0c0d center/cover no-repeat;background-image:url('../assets/renders/hero.jpg')}
+.vhero__scrim{position:absolute;inset:0;z-index:0;
+  background:linear-gradient(180deg,rgba(18,20,22,.48) 0%,rgba(18,20,22,.06) 32%,rgba(18,20,22,.34) 70%,rgba(18,20,22,.82) 100%)}
+.vhero__inner{position:relative;z-index:1;max-width:var(--maxw);width:100%;margin:0 auto}
+.vhero__stats{max-width:var(--maxw);width:100%;margin:2.4rem 0 0;
   display:flex;gap:clamp(1.6rem,5vw,4rem);border-top:1px solid rgba(255,255,255,.22);padding-top:1.2rem}
-.cine__stats div{display:flex;flex-direction:column}
-.cine__stats b{font-family:var(--display);font-weight:400;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1}
-.cine__stats span{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:.4rem}
+.vhero__stats div{display:flex;flex-direction:column}
+.vhero__stats b{font-family:var(--display);font-weight:400;font-size:clamp(1.6rem,3vw,2.3rem);line-height:1}
+.vhero__stats span{font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:.4rem}
 
 
 /* ===================== GAGNVIRKT VAL (full-screen) =================== */
-.select{padding:0;height:100vh;overflow:hidden;background:#0c0d0e}
-/* overlay yfir canvas-ið; eigin bakgrunnur (byggingin/aftan) svo zoom-out borðinn
-   sýni heila bygginguna með cover (engin letterbox) */
-.facade{position:absolute;inset:0;width:100%;height:100%;margin:0;overflow:hidden;
+.select{position:relative;padding:0;overflow:hidden;background:#0c0d0e}
+/* static framhlið: 16:9 kassi í flæði (byggingin/aftan sem bakgrunnur með cover) */
+.facade{position:relative;width:100%;aspect-ratio:16/9;max-height:100svh;margin:0 auto;overflow:hidden;
   background:#0b0c0d url('../assets/cine/f096.webp') center/cover no-repeat}
 .facade>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .facade__svg{position:absolute;inset:0;width:100%;height:100%;transition:opacity .6s ease}
@@ -207,7 +201,7 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 }
 .facade__sides{position:absolute;top:5.4rem;left:50%;transform:translateX(-50%);z-index:6;display:inline-flex;
   background:rgba(18,20,18,.42);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.3);border-radius:999px;overflow:hidden;opacity:0}
+  border:1px solid rgba(255,255,255,.3);border-radius:999px;overflow:hidden;opacity:1}
 .facade__sidebtn{border:0;background:none;color:rgba(255,255,255,.86);font:inherit;font-size:.82rem;
   letter-spacing:.04em;padding:.5rem 1.3rem;cursor:pointer;transition:.18s;white-space:nowrap}
 .facade__sidebtn+.facade__sidebtn{border-left:1px solid rgba(255,255,255,.24)}
@@ -667,7 +661,7 @@ body.is-page{background:#0e0f10}
   .split__text{max-width:none;padding:64px var(--pad)}
   .list{padding-top:96px}
   .hero{height:100vh}
-  .select{height:100svh;min-height:540px;padding:0;overflow:hidden}
+  .select{padding:0;overflow:hidden}
   .modal__card{flex-direction:column;max-height:92vh}
   .list__head{flex-direction:column;align-items:flex-start}
   .aptm__body{grid-template-columns:1fr;gap:1.8rem}
@@ -678,7 +672,7 @@ body.is-page{background:#0e0f10}
   .aptm__specs{grid-template-columns:1fr 1fr}
 }
 @media (max-width:520px){
-  .cine__stats{flex-wrap:wrap;gap:1.4rem 2rem}
+  .vhero__stats{flex-wrap:wrap;gap:1.4rem 2rem}
   .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
   .contact__facts{grid-template-columns:1fr 1fr}
   .qgrid{grid-template-columns:1fr}
@@ -696,14 +690,14 @@ body.is-page{background:#0e0f10}
   .lang__globe{width:20px;height:20px}
 
   /* hero texti passi á símaskjá — var of hár svo titillinn skaraðist við navið */
-  .cine__hero{padding:72px var(--pad) clamp(26px,4vh,46px)}
+  .vhero{padding:96px var(--pad) clamp(34px,5vh,54px)}
   .hero__title{font-size:clamp(2.4rem,9vw,3.4rem)}
   .hero__tag{font-size:1.04rem;margin-top:.6rem;max-width:26ch}
   .hero__sub{font-size:.9rem;margin-top:.55rem;line-height:1.5}
   .hero__cta{flex-direction:column;align-items:stretch;gap:.6rem;margin-top:1.3rem}
   .hero__cta .btn{width:100%;justify-content:center;text-align:center}
-  .cine__stats{margin-top:1.4rem;padding-top:1rem}
-  .cine__stats b{font-size:1.5rem}
+  .vhero__stats{margin-top:1.4rem;padding-top:1rem}
+  .vhero__stats b{font-size:1.5rem}
 
   /* síur: stafla (sliðrar fá fulla breidd), svo eiginleikar */
   .apts__filters{flex-direction:column;align-items:stretch;gap:2rem}
@@ -725,23 +719,18 @@ body.is-page{background:#0e0f10}
 
 /* litlir símar: tölfræði í 2×2 svo ekkert klemmist við brún */
 @media (max-width:430px){
-  .cine__stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 1.2rem}
+  .vhero__stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 1.2rem}
 }
-/* ===== Sími/spjaldtölva: eitt samfellt skot — niðurflug, svo ZOOM-AR ÚT í lokin
-   þar sem byggingin minnkar í 16:9 borða og íbúðalistinn rís upp undir hann
-   (cine.js stýrir hæð .cine__stick á síma). Engin tvöföld mynd. ===== */
+/* ===== Sími/spjaldtölva: static framhlið (16:9 kassi) með Aftan/Framan efst
+   og „Skoðaðu íbúðirnar“ caption neðst. ===== */
 @media (max-width:860px){
-  .cine{height:210vh}                     /* niðurflug + zoom-out svigrúm (styttra -> lýkur fyrr) */
-  .facade__sides{top:auto}                /* cine.js setur bottom — takkinn fer UNDIR myndina */
-  /* „Skoðaðu íbúðirnar“ caption-ið birtist líka á síma — þétt, minni útgáfa neðst á borðanum */
-  .select__head{display:block;padding:30px var(--pad) 10px;
+  .facade__sides{top:4.8rem}              /* takkarnir neðan við fasta navið á framhliðinni */
+  .select__head{display:block;padding:34px var(--pad) 14px;
     background:linear-gradient(0deg,rgba(14,16,18,.86) 0%,rgba(14,16,18,.32) 58%,transparent 100%)}
   .select__head .kicker{font-size:.56rem;letter-spacing:.22em}
   .select__head h2{font-size:clamp(1.1rem,5vw,1.5rem);line-height:1.1;margin-top:.1rem}
   .select__sub{font-size:.74rem;line-height:1.4;margin-top:.32rem;max-width:38ch;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  /* íbúðirnar sitja þétt undir borðanum þegar hreyfingin læsist (minna dökkt bil) */
-  .apts{padding-top:clamp(26px,3.4vh,34px)}
 }
 /* ===== Story-sections á síma: stafla mynd yfir texta, styttri immersive hetjur ===== */
 @media (max-width:860px){
