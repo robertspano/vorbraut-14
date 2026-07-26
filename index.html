@@ -10,10 +10,10 @@
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="assets/cine/f001.webp" fetchpriority="high" />
-  <link rel="stylesheet" href="css/styles.css?v=151" />
+  <link rel="stylesheet" href="css/styles.css?v=152" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
-<body>
+<body class="home">
 
   <!-- ============================ NAV ============================ -->
   <header class="nav" id="nav">
@@ -37,7 +37,7 @@
     </div>
     <div class="nav__right">
       <a href="index.html#soluadilar" class="nav__link" data-i18n="sellers.title">Söluaðilar</a>
-      <a href="hafa-samband.html" class="nav__contact" data-i18n="nav.contact">Hafa samband</a>
+      <a href="hafa-samband.html" class="nav__contact" data-i18n="cta.enquiry">Senda fyrirspurn</a>
       <button class="lang" id="langBtn" aria-label="Language"><svg class="lang__globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 2.6 15.5 0 18M12 3c-2.6 2.5-2.6 15.5 0 18"/></svg><span id="langLabel">English</span></button>
       <button class="burger" id="burger" aria-label="Valmynd" aria-controls="navmenu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
@@ -58,50 +58,58 @@
 
   <main class="snap" id="scroller" data-block="mainflow">
 
-    <!-- ============== CINEMATIC SCROLL: aerial → fly-down → facade ============== -->
-    <section class="cine" id="cine">
-      <div class="cine__stick" id="cineStick">
-        <canvas id="cineCanvas" aria-hidden="true"></canvas>
-
-        <!-- interactive facade — overlay sem zoom-ar út í borða í lok niðurflugs -->
-        <figure class="facade" id="facade">
-          <img class="facade__front" id="facadeFront" data-img="img.facade" src="assets/renders/entrance.webp?v=151" alt="Vorbraut 14 — framhlið með aðkomu" />
-          <div class="facade__shine" id="facadeShine" aria-hidden="true"></div>
-          <svg class="facade__svg" id="facadeSvg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
-          <div class="facade__tip" id="facadeTip" hidden></div>
-          <figcaption class="select__head">
-            <p class="kicker kicker--light" data-i18n="sel.kicker">Íbúðir í Vorbraut 14</p>
-            <h2 data-i18n="sel.title">Smelltu þig inn í húsið</h2>
-            <p class="select__sub" data-i18n="sel.body"></p>
-            <p class="select__sub select__sub--touch" data-i18n="sel.bodyTouch"></p>
-          </figcaption>
-        </figure>
-
-        <!-- Aftan/Framan — utan við myndina (yfir á tölvu, undir myndinni á síma) -->
-        <div class="facade__sides" id="facadeSides" role="group" aria-label="Hlið hússins">
-          <button type="button" class="facade__sidebtn is-on" data-side="aftan" data-i18n="facade.back">Aftan</button>
-          <button type="button" class="facade__sidebtn" data-side="framan" data-i18n="facade.front">Framan</button>
-        </div>
-
-        <!-- hero overlay — fades out as the descent begins -->
-        <div class="cine__hero" id="cineHero">
-          <div class="cine__scrim"></div>
-          <div class="cine__heroinner">
-            <p class="kicker kicker--light" data-i18n="hero.kicker">Hnoðraholt · Garðabær</p>
-            <h1 class="hero__title"><span data-i18n="hero.name">Vorbraut</span> <span class="hero__no" data-i18n="hero.no">14</span></h1>
-            <p class="hero__tag" data-i18n="hero.tag">Vandaðar íbúðir í Hnoðraholti í Garðabæ.</p>
-            <p class="hero__sub" data-i18n="hero.sub"></p>
-            <div class="hero__cta">
-              <button class="btn btn--solid" data-cinedown data-i18n="cta.ibudir">Skoða íbúðir</button>
-              <button class="btn btn--ghost" data-contact data-i18n="cta.contact">Hafa samband</button>
-            </div>
+    <!-- ================= HERO — skipt skjámynd: texti vinstra, mynd hægra ================= -->
+    <section class="shero" id="hero">
+      <div class="shero__text">
+        <div class="shero__textinner">
+          <p class="shero__eyebrow" data-i18n="hero.eyebrow">Vorbraut 14 · Hnoðraholt</p>
+          <h1 class="shero__title" data-i18n="hero.headline">Vandaðar íbúðir á einstökum stað</h1>
+          <p class="shero__lead" data-i18n="hero.lead">Veldu íbúð og skoðaðu staðsetningu, stærð, skipulag og sölustöðu.</p>
+          <div class="shero__cta">
+            <button class="btn btn--solid" data-cinedown data-i18n="cta.ibudir">Skoða íbúðir</button>
+            <button class="btn btn--ghost" data-contact data-i18n="cta.enquiry">Senda fyrirspurn</button>
           </div>
-          <div class="cine__stats">
+          <div class="shero__facts">
             <div><b>14</b><span data-i18n="stat.ibudir">íbúðir</span></div>
             <div><b>4</b><span data-i18n="stat.haedir">hæðir</span></div>
             <div><b>10</b><span data-i18n="stat.bilastaedi">bílastæði</span></div>
             <div><b>68,6</b><span data-i18n="stat.fra">m² frá</span></div>
           </div>
+        </div>
+      </div>
+      <div class="shero__media">
+        <img src="assets/renders/hero.jpg" data-img="img.hero" alt="Vorbraut 14 — loftmynd af fjölbýlishúsinu í Hnoðraholti í Garðabæ" fetchpriority="high" decoding="async" />
+      </div>
+    </section>
+
+    <!-- ============ VELJARI — gagnvirk bygging vinstra, hæðir/kort/upplýsingar hægra ============ -->
+    <section class="select" id="facade-section" data-block="sec-facade">
+      <div class="select__inner">
+        <header class="select__intro">
+          <p class="kicker kicker--light" data-i18n="sel.kicker">Íbúðir í Vorbraut 14</p>
+          <h2 data-i18n="sel.title">Veldu íbúð í húsinu</h2>
+          <p class="select__lead" data-i18n="sel.bodyTouch">Smelltu eða ýttu á íbúð til að sjá teikningar, stærðir og nánari upplýsingar.</p>
+        </header>
+        <div class="select__grid">
+          <figure class="facade" id="facade">
+            <img class="facade__front" id="facadeFront" data-img="img.facade" src="assets/renders/entrance.webp?v=152" alt="Vorbraut 14 — framhlið með aðkomu" loading="lazy" decoding="async" />
+            <div class="facade__shine" id="facadeShine" aria-hidden="true"></div>
+            <svg class="facade__svg" id="facadeSvg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" role="group" aria-label="Gagnvirk framhlið — veldu íbúð"></svg>
+            <div class="facade__tip" id="facadeTip" hidden></div>
+            <div class="facade__sides" id="facadeSides" role="group" aria-label="Hlið hússins">
+              <button type="button" class="facade__sidebtn is-on" data-side="aftan" aria-pressed="true" data-i18n="facade.back">Bakhlið</button>
+              <button type="button" class="facade__sidebtn" data-side="framan" aria-pressed="false" data-i18n="facade.front">Framhlið</button>
+            </div>
+          </figure>
+          <aside class="select__panel">
+            <div class="select__floors">
+              <span class="select__floorslbl" data-i18n="modal.floorLbl">Hæð</span>
+              <div class="select__fbtns" id="selFloors" role="group" aria-label="Veldu hæð"></div>
+            </div>
+            <div class="select__diagram"><svg id="selDiagram" viewBox="0 0 300 181" preserveAspectRatio="xMidYMid meet"></svg></div>
+            <ul class="select__legend" id="selLegend"></ul>
+            <div class="select__info" id="selInfo" aria-live="polite"></div>
+          </aside>
         </div>
       </div>
     </section>
@@ -185,28 +193,28 @@
           </div>
           <div class="sellers__grid" data-block="agents">
             <article class="agent" data-block="agent1">
-              <div class="agent__avatar"><img data-img="img.ag1" loading="lazy" decoding="async" src="assets/agents/steinn.webp?v=151" alt="Steinn Andri Viðarsson" /></div>
+              <div class="agent__avatar"><img data-img="img.ag1" loading="lazy" decoding="async" src="assets/agents/steinn.webp?v=152" alt="Steinn Andri Viðarsson" /></div>
               <h3 class="agent__name" data-i18n="ag.1.name">Steinn Andri Viðarsson</h3>
               <p class="agent__title" data-i18n="ag.1.title">Löggiltur fasteigna- og skipasali</p>
               <a class="agent__line" data-i18n="ag.1.phone" href="tel:+3547751477">775‑1477</a>
               <a class="agent__line" data-i18n="ag.1.email" href="mailto:steinn@miklaborg.is">steinn@miklaborg.is</a>
             </article>
             <article class="agent" data-block="agent2">
-              <div class="agent__avatar"><img data-img="img.ag2" loading="lazy" decoding="async" src="assets/agents/gudrun.webp?v=151" alt="Guðrún Gonnigan Daníelsdóttir" /></div>
+              <div class="agent__avatar"><img data-img="img.ag2" loading="lazy" decoding="async" src="assets/agents/gudrun.webp?v=152" alt="Guðrún Gonnigan Daníelsdóttir" /></div>
               <h3 class="agent__name" data-i18n="ag.2.name">Guðrún Gonnigan Daníelsdóttir</h3>
               <p class="agent__title" data-i18n="ag.2.title">Löggiltur fasteignasali</p>
               <a class="agent__line" data-i18n="ag.2.phone" href="tel:+3548971161">897‑1161</a>
               <a class="agent__line" data-i18n="ag.2.email" href="mailto:gudrun@miklaborg.is">gudrun@miklaborg.is</a>
             </article>
             <article class="agent" data-block="agent3">
-              <div class="agent__avatar"><img data-img="img.ag3" loading="lazy" decoding="async" src="assets/agents/kjartan.webp?v=151" alt="Kjartan Ísak Guðmundsson" /></div>
+              <div class="agent__avatar"><img data-img="img.ag3" loading="lazy" decoding="async" src="assets/agents/kjartan.webp?v=152" alt="Kjartan Ísak Guðmundsson" /></div>
               <h3 class="agent__name" data-i18n="ag.3.name">Kjartan Ísak Guðmundsson</h3>
               <p class="agent__title" data-i18n="ag.3.title">Löggiltur fasteignasali</p>
               <a class="agent__line" data-i18n="ag.3.phone" href="tel:+3546634392">663‑4392</a>
               <a class="agent__line" data-i18n="ag.3.email" href="mailto:kjartan@miklaborg.is">kjartan@miklaborg.is</a>
             </article>
             <article class="agent" data-block="agent4">
-              <div class="agent__avatar"><img data-img="img.ag4" loading="lazy" decoding="async" src="assets/agents/kristin.webp?v=151" alt="Kristín Pétursdóttir" /></div>
+              <div class="agent__avatar"><img data-img="img.ag4" loading="lazy" decoding="async" src="assets/agents/kristin.webp?v=152" alt="Kristín Pétursdóttir" /></div>
               <h3 class="agent__name" data-i18n="ag.4.name">Kristín Pétursdóttir</h3>
               <p class="agent__title" data-i18n="ag.4.title">Löggiltur fasteigna- og skipasali</p>
               <a class="agent__line" data-i18n="ag.4.phone" href="tel:+3548241965">824‑1965</a>
@@ -291,13 +299,21 @@
     <img id="planZoomImg" decoding="async" src="" alt="" />
   </div>
 
-  <script defer src="js/data.js?v=151"></script>
-  <script defer src="js/content.js?v=151"></script>
-  <script defer src="js/supabase-config.js?v=151"></script>
-  <script defer src="js/vbsupa.js?v=151"></script>
-  <script defer src="js/app.js?v=151"></script>
-  <script defer src="js/cine.js?v=151"></script>
+  <script defer src="js/data.js?v=152"></script>
+  <script defer src="js/content.js?v=152"></script>
+  <script defer src="js/supabase-config.js?v=152"></script>
+  <script defer src="js/vbsupa.js?v=152"></script>
+  <script defer src="js/app.js?v=152"></script>
+  <script>
+  /* forsíðuhnappar (áður í cine.js): „Skoða íbúðir“ → framhlið · footer-logo → toppur */
+  (function(){
+    var sc=document.getElementById('scroller');
+    function to(el){ if(sc&&el) sc.scrollTo({ top: el.offsetTop, behavior: 'smooth' }); }
+    document.querySelectorAll('[data-cinedown]').forEach(function(b){ b.addEventListener('click', function(e){ if(e.cancelable) e.preventDefault(); to(document.getElementById('facade-section')); }); });
+    document.querySelectorAll('[data-totop]').forEach(function(b){ b.addEventListener('click', function(e){ e.preventDefault(); if(sc) sc.scrollTo({ top: 0, behavior: 'smooth' }); }); });
+  })();
+  </script>
   <!-- þróunartól (facade-/grunnmynda-ritlar) hlaðast AÐEINS þegar eigandinn bætir ?edit/?planedit/?mask við slóðina — gestir sækja ekkert -->
-  <script>[['edit','calibrate'],['planedit','planedit'],['mask','maskedit']].forEach(function(p){if(new RegExp('[?&]'+p[0]+'\\b').test(location.search)){var s=document.createElement('script');s.src='js/'+p[1]+'.js?v=151';document.body.appendChild(s);}});</script>
+  <script>[['edit','calibrate'],['planedit','planedit'],['mask','maskedit']].forEach(function(p){if(new RegExp('[?&]'+p[0]+'\\b').test(location.search)){var s=document.createElement('script');s.src='js/'+p[1]+'.js?v=152';document.body.appendChild(s);}});</script>
 </body>
 </html>
