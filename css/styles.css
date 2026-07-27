@@ -329,11 +329,6 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .aptview__specs dt,.aptview__specs dd{font-size:.92rem;letter-spacing:.03em;text-transform:uppercase;
   color:#262522;margin:0;font-weight:500}
 .aptview__specs dd{text-align:right}
-.aptview__cta{display:flex;flex-direction:column;gap:.5rem;margin-top:1.5rem}
-.aptview__cta .btn{width:100%;display:block;text-align:center;background:#7C7064;color:#FFFAF2;border:0;
-  letter-spacing:.06em;text-transform:uppercase;font-size:.86rem;font-weight:500;
-  padding:.85rem 1rem;border-radius:3px;cursor:pointer;transition:background .15s;font-family:inherit}
-.aptview__cta .btn:hover{background:#5f564c}
 .aptview__plan img{max-width:100%;max-height:min(72vh,720px);width:auto;height:auto;
   display:block;margin:0 auto;cursor:zoom-in}
 .aptview__cap{margin:1.4rem 0 0;text-align:center;color:#7C7064;font-size:.86rem}

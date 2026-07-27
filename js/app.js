@@ -705,11 +705,6 @@
     // smella á teikningu -> myndin ein opnast í fullri upplausn (nýr flipi)
     plan.onclick = () => window.open('assets/plans/' + a.plan + PLANV, '_blank', 'noopener');
 
-    $('#avCta').innerHTML =
-      `<button type="button" class="btn" data-av-open>${t('sel.open')}</button>`;
-    const ob = $('[data-av-open]', avEl);
-    if (ob) ob.addEventListener('click', () => openModal(a));
-
     avEl.hidden = false;
     // setTimeout (ekki rAF) — rAF keyrir ekki í földum/óvirkum flipum
     setTimeout(() => {
