@@ -159,16 +159,29 @@ if major:
             A(f'<path d="{d}"/>')
     A("</g>")
 
-# fjarlægðarhringir
+# fjarlægðarhringir — sýnileg bönd svo fjarlægðin lesist beint af kortinu
 A('<g class="kort__hringir">')
+#   ljós bönd: teiknuð stærst fyrst, skarast og verða þéttari inn að miðju
+for m in (1500, 1000, 500):
+    r = m * SCALE
+    A(f'<circle cx="{W/2:.0f}" cy="{H*CY:.0f}" r="{r:.0f}" fill="#fff" opacity=".34"/>')
+#   línur ofan á
 for m in (500, 1000, 1500):
     r = m * SCALE
-    A(f'<circle cx="{W/2:.1f}" cy="{H*CY:.1f}" r="{r:.1f}" fill="none" '
-      f'stroke="#BFB6A9" stroke-width="1" stroke-dasharray="6 6"/>')
-    lab = f'{m} m' if m < 1000 else f'{m//1000}' + (',5' if m % 1000 else '') + ' km'
-    A(f'<text x="{W/2 + r - 9:.1f}" y="{H*CY - 8:.1f}" text-anchor="end" '
-      f'class="kort__hringtxt">{lab}</text>')
-A("</g>")
+    A(f'<circle cx="{W/2:.0f}" cy="{H*CY:.0f}" r="{r:.0f}" fill="none" '
+      f'stroke="#fff" stroke-width="3"/>')
+    A(f'<circle cx="{W/2:.0f}" cy="{H*CY:.0f}" r="{r:.0f}" fill="none" '
+      f'stroke="#A79C8C" stroke-width="1.2" stroke-dasharray="7 6"/>')
+#   merkimiðar á ská upp til hægri svo þeir skarist ekki
+for m in (500, 1000, 1500):
+    r = m * SCALE
+    lx = W / 2 + r * 0.7071
+    ly = H * CY - r * 0.7071
+    lab = "500 m" if m < 1000 else ("1 km" if m == 1000 else "1,5 km")
+    wdt = 74 if m < 1000 else (62 if m == 1000 else 84)
+    A(f'<g class="kort__hringmerki" transform="translate({lx:.0f},{ly:.0f})">'
+      f'<rect x="{-wdt/2:.0f}" y="-15" width="{wdt}" height="30" rx="15"/>'
+      f'<text y="6">{lab}</text></g>')
 A("</g>")  # clip
 
 PLACEHOLDER_MARKERS = "<!--MARKERS-->"
@@ -210,10 +223,10 @@ for _ in range(220):
             a, b = pos[keys[i]], pos[keys[j]]
             dx, dy = b[0] - a[0], b[1] - a[1]
             dd = math.hypot(dx, dy)
-            if dd < 23:
+            if dd < 37:
                 if dd < 0.01:
                     dx, dy, dd = 1.0, 0.6, 1.17
-                push = (23 - dd) / 2
+                push = (37 - dd) / 2
                 ux, uy = dx / dd, dy / dd
                 a[0] -= ux * push; a[1] -= uy * push
                 b[0] += ux * push; b[1] += uy * push
@@ -239,8 +252,8 @@ for heiti, slug in FLOKKAR:
                          f'x2="{x:.1f}" y2="{y:.1f}"/>')
         marks.append(
             f'<g class="kort__m" data-f="{slug}" data-nr="{n}" transform="translate({x:.1f},{y:.1f})">'
-            f'<rect x="-9" y="-9" width="18" height="18" rx="3"/>'
-            f'<text y="4.5">{n}</text></g>'
+            f'<rect x="-15" y="-15" width="30" height="30" rx="5"/>'
+            f'<text y="6">{n}</text></g>'
         )
         km = f'{s["m"]/1000:.1f}'.replace(".", ",") + " km" if s["m"] >= 950 else f'{s["m"]} m'
         legend.append(
@@ -251,8 +264,8 @@ for heiti, slug in FLOKKAR:
 hx, hy = xy(*HOME)
 marks.append(
     f'<g class="kort__heim" transform="translate({hx:.1f},{hy:.1f})">'
-    f'<rect x="-8" y="-8" width="16" height="16" rx="2" transform="rotate(45)"/>'
-    f'<text y="-16">VORBRAUT 14</text></g>'
+    f'<rect x="-12" y="-12" width="24" height="24" rx="3" transform="rotate(45)"/>'
+    f'<text y="-26">VORBRAUT 14</text></g>'
 )
 
 svg = svg.replace(PLACEHOLDER_MARKERS, "\n".join(marks))
