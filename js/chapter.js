@@ -37,7 +37,7 @@
      Falda ástandið er ALDREI virkt nema þessi skrifta keyri (.js-chap), og
      öryggisklukka opnar allt eftir 1,5 s. Þannig getur efni aldrei orðið
      ósýnilegt — hvorki án JS né í flipa sem browserinn hefur sett á pásu. */
-  var reveal = [].slice.call(document.querySelectorAll('.chap__plate,.chap__ledger,.chap__index'));
+  var reveal = [].slice.call(document.querySelectorAll('.chap__plate,.chap__ledger'));
   if (!reveal.length) return;
   document.documentElement.classList.add('js-chap');
   var open = function (el) { el.classList.add('is-open'); };
