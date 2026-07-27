@@ -48,4 +48,31 @@
   }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
   reveal.forEach(function (el) { io.observe(el); });
   setTimeout(function () { reveal.forEach(open); }, 1500);
+
+  /* --- myndband hleðst EKKI fyrr en það sést (2,6 MB sparast annars) ------ */
+  var film = document.querySelector('.chap__film');
+  if (film) {
+    var start = function () {
+      if (film.dataset.on) return;
+      film.dataset.on = '1';
+      film.preload = 'auto';
+      film.load();
+      var p = film.play();
+      if (p && p.catch) p.catch(function () {});   // browser hafnar sjálfspilun -> poster stendur
+    };
+    var fio = new IntersectionObserver(function (es) {
+      es.forEach(function (en) { if (en.isIntersecting) { start(); fio.disconnect(); } });
+    }, { rootMargin: '200px 0px' });
+    fio.observe(film);
+    /* varaleið: sums staðar er IntersectionObserver settur á pásu (falinn flipi,
+       sparnaðarhamur). Skrunhandfangið er alltaf keyrt, svo það sér um afganginn. */
+    var nearby = function () {
+      if (film.dataset.on) { window.removeEventListener('scroll', nearby); return; }
+      var r = film.getBoundingClientRect();
+      if (r.top < window.innerHeight + 200 && r.bottom > -200) { start(); fio.disconnect(); }
+    };
+    window.addEventListener('scroll', nearby, { passive: true });
+    window.addEventListener('resize', nearby, { passive: true });
+    setTimeout(nearby, 400);
+  }
 })();

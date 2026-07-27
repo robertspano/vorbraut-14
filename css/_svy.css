@@ -1,0 +1,244 @@
+/* ==========================================================================
+   VORBRAUT 14 — ÚTTEKTIN
+   Opnan: raunveruleg ljósmynd af húsinu í fullri breidd, með úttekt hússins
+   teiknaðri ofan á í hárlínum — ÞÆR SÖMU 14 ÍBÚÐAÚTLÍNUR sem þegar eru til
+   í js/data.js og eru kvarðaðar á foto-bak.webp. Kremplata bítur í ljósmyndina
+   neðst til vinstri og ber letrið; við hlið hennar er 14-reita talning hússins
+   sem er LIFANDI (staða úr Supabase).  Bætist AFTAN VIÐ css/chapter.css.
+   ========================================================================== */
+
+/* --ov = hversu langt kremplatan bítur upp í ljósmyndina. EIN stika stýrir
+   bæði skörun plötunnar og því hve langt talningin er ýtt niður fyrir myndina,
+   svo þau geta aldrei rekist á. */
+.chap{--ov:clamp(40px,6vh,92px)}
+
+/* ------------------------------------------------------------------ OPNAN */
+/* .chap__open er nú BEINT BARN .chap (ekki inni í .chap__wrap) og spannar
+   því frá hæðarásinni út að hægri skjábrún — nákvæmlega eins og .chap__plate
+   gerir í dag. Engin 100vw-brella, ekkert lárétt yfirflæði. */
+.chap__open{
+  display:block;position:relative;margin:0;
+  padding:0 0 clamp(26px,3.6vh,46px);
+  min-height:0;                      /* engin þvinguð skjáhæð -> ekkert gat */
+  background:var(--paper);
+  border-bottom:1px solid var(--hair);
+}
+
+/* ------------------------------------------------------- LJÓSMYNDARAMMINN */
+.svy{
+  position:relative;overflow:hidden;background:var(--wash2);
+  height:clamp(380px,66vh,660px);height:clamp(380px,66svh,660px);
+}
+/* Skráning: mynd og teikning liggja í SAMA hnitakerfi.
+   object-fit:cover + object-position:50% 50%  ===  preserveAspectRatio="xMidYMid slice".
+   Sameiginlega umgjörðin .svy__reg pannar/þysjar BÆÐI í einu, svo teikningin
+   getur aldrei losnað frá myndinni — í neinni breidd. */
+.svy__reg{
+  position:absolute;inset:0;
+  transform:scale(var(--fz,1)) translate(var(--fx,0),var(--fy,0));
+  transform-origin:50% 50%;
+}
+.svy__shot{
+  position:absolute;inset:0;width:100%;height:100%;display:block;
+  object-fit:cover;object-position:50% 50%;
+}
+.svy__net{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+
+/* teikningin — hárlínur sem haldast 1px í ÖLLUM breiddum og undir scale() */
+.svy__net path,.svy__net line,.svy__net polyline{
+  fill:none;stroke:#fff;stroke-width:1;vector-effect:non-scaling-stroke;
+  stroke-linejoin:round;stroke-linecap:round;
+}
+.svy__net .z{opacity:.5}
+.svy__net .z.is-on{opacity:1;stroke-width:1.6}
+.svy__net .z.is-off{opacity:.14}
+.svy__net .rulez{stroke:#fff;opacity:.62;stroke-dasharray:none}
+.svy__net text{
+  fill:#fff;font:600 15px/1 'DM Sans',sans-serif;letter-spacing:.13em;
+  font-variant-numeric:tabular-nums;paint-order:stroke;
+  stroke:rgba(38,37,34,.42);stroke-width:3px;vector-effect:non-scaling-stroke;
+}
+.svy__net text.lg{font-size:19px;letter-spacing:.1em}
+
+/* teiknast inn — ein hreyfing, aðeins einu sinni */
+.js-chap .svy__net .ink{stroke-dasharray:1;stroke-dashoffset:1}
+.js-chap .svy.is-drawn .svy__net .ink{
+  stroke-dashoffset:0;transition:stroke-dashoffset 1.05s var(--ez) var(--d,0s);
+}
+.js-chap .svy__net text{opacity:0}
+.js-chap .svy.is-drawn .svy__net text{opacity:1;transition:opacity .5s var(--ez) .55s}
+
+/* hvít upplausn efst — dökka valmyndin (body.is-chapter) helst læsileg
+   ofan á HVAÐA mynd sem er, og myndin rís upp úr pappírnum í stað þess
+   að vera límd á hann. */
+.svy__wash{
+  position:absolute;left:0;right:0;top:0;z-index:3;pointer-events:none;
+  height:clamp(92px,14vh,146px);
+  background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,255,255,.52) 44%,rgba(255,255,255,0));
+}
+/* örmerking uppi til hægri, á myndinni — alltaf á kremuðum bakreit svo hún
+   sé læsileg á hvaða mynd sem er (birtuskil eru ekki háð myndefninu) */
+.svy__tag{
+  position:absolute;z-index:4;right:0;bottom:0;
+  display:flex;align-items:center;gap:.85rem;
+  padding:.62rem clamp(18px,2.2vw,30px) .62rem clamp(16px,2vw,26px);
+  background:var(--wash);
+  font:600 .56rem/1 'DM Sans',sans-serif;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+.svy__tag b{color:var(--acc);font-weight:600}
+
+/* --------------------------------------------------------- PAPPÍRSBANDIÐ */
+/* Kremplatan bítur upp í ljósmyndina; talningin stendur við hlið hennar.
+   Þetta er svarið við tómu miðjunni: enginn auður flötur myndast, því
+   platan byrjar INNI Í myndinni og bandið undir henni er fullt. */
+.svy__deck{
+  position:relative;z-index:5;
+  display:grid;grid-template-columns:minmax(0,min(46vw,660px)) minmax(0,1fr);
+  column-gap:clamp(26px,3.4vw,64px);align-items:start;
+  margin-top:calc(-1 * var(--ov));
+  padding:0 var(--gut);
+}
+.svy__card{
+  background:var(--wash);
+  padding:clamp(26px,3.4vh,44px) clamp(24px,2.6vw,42px) clamp(22px,3vh,36px);
+  box-shadow:0 30px 64px -40px rgba(38,37,34,.42);
+}
+/* letrið — STÆRRA en í dag (105,6px -> 120px í 1440), því platan er þröng
+   og titillinn á að vera stærsta augnablik síðunnar */
+.svy__card .chap__title{
+  font-size:clamp(2.5rem,5.6vw,7.5rem);line-height:.88;letter-spacing:-.034em;
+  margin:0 0 clamp(15px,2vh,22px);margin-left:-.05em;
+  max-width:11ch;text-wrap:balance;overflow-wrap:break-word;
+}
+.svy__card .chap__kick{margin-bottom:clamp(14px,1.9vh,22px)}
+.svy__card .chap__rule{max-width:none;background:var(--hair2);margin:0 0 clamp(13px,1.7vh,18px)}
+.svy__card .chap__pull{
+  font-size:clamp(1.05rem,1.45vw,1.34rem);line-height:1.4;max-width:30ch;margin:0;
+}
+.svy__card .chap__lvl{
+  margin:clamp(14px,1.9vh,20px) 0 0;padding-top:clamp(12px,1.6vh,16px);
+  border-top:1px solid var(--hair2);font-size:.56rem;letter-spacing:.2em;
+}
+
+/* ------------------------------------------- TALNINGIN — húsið sem 14 reitir */
+.svy__tally{padding-top:calc(var(--ov) + clamp(14px,2vh,24px));min-width:0}
+.svy__tallyh{
+  margin:0 0 .72rem;font:600 .55rem/1 'DM Sans',sans-serif;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--faint);
+}
+/* 4 dálkar = fjórar íbúðir á hæð; efsta röðin = tvær þakíbúðir (2 dálkar hvor).
+   Reitirnir standa NÁKVÆMLEGA eins og íbúðirnar raðast í húsinu. */
+.svy__grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:3px;width:min(100%,214px);margin:0 0 .8rem;
+}
+.svy__grid b{
+  display:block;height:15px;border:1px solid var(--hair);background:transparent;
+  transition:opacity .35s var(--ez),background .35s var(--ez);
+}
+.svy__grid b[data-s="available"]{background:var(--acc);border-color:var(--acc)}
+.svy__grid b[data-s="reserved"]{background:rgba(170,135,101,.34);border-color:var(--acc)}
+.svy__grid b[data-s="sold"]{background:var(--hair2);border-color:var(--hair)}
+.svy__grid b.is-dim{opacity:.2}
+.svy__grid b.pent{grid-column:span 2}
+.svy__count{
+  margin:0;font:500 .82rem/1.4 'DM Sans',sans-serif;color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+.svy__count b{font-family:'Zilla Slab',Georgia,serif;font-weight:700;
+  font-size:1.32rem;color:var(--acc);margin-right:.12em}
+.svy__key{
+  margin:.55rem 0 0;display:flex;flex-wrap:wrap;gap:.15rem .9rem;
+  font:500 .55rem/1.7 'DM Sans',sans-serif;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--faint);
+}
+.svy__key i{display:inline-flex;align-items:center;gap:.38rem;font-style:normal}
+.svy__key i::before{content:"";width:8px;height:8px;border:1px solid var(--hair)}
+.svy__key i.a::before{background:var(--acc);border-color:var(--acc)}
+.svy__key i.s::before{background:var(--hair2)}
+
+/* --------------------------------------------------------------- STRÍPAN */
+/* fimm hárlínureitir með RAUNTÖLUM — allt reiknað úr js/data.js, aldrei slegið inn */
+.svy__strip{
+  position:relative;z-index:5;
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  margin:clamp(24px,3.4vh,44px) var(--gut) 0;
+  border-top:1px solid var(--hair);
+}
+.svy__strip div{padding:.9rem 1.1rem .1rem 0}
+.svy__strip div+div{border-left:1px solid var(--hair2);padding-left:1.1rem}
+.svy__strip i{
+  display:block;margin-bottom:.42rem;font-style:normal;
+  font:600 .54rem/1 'DM Sans',sans-serif;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--faint);
+}
+.svy__strip b{
+  font:500 .84rem/1.35 'DM Sans',sans-serif;color:var(--ink);
+  font-variant-numeric:tabular-nums;letter-spacing:.01em;
+}
+
+/* ================= HRYNJANDI — kremband undir meginmálinu ================ */
+/* .chap__read fer ÚT ÚR .chap__wrap og verður beint barn .chap; innri
+   .chap__wrap heldur textanum í sömu súlu og annað. */
+.chap__read{
+  background:var(--wash);border-bottom:1px solid var(--hair);border-top:0;
+  margin-left:0;padding:0;display:block;
+}
+.chap__readin{
+  max-width:1500px;margin:0 auto;padding:clamp(44px,7vh,88px) var(--gut);
+  display:grid;grid-template-columns:minmax(0,7fr) minmax(0,3fr);
+  column-gap:clamp(30px,4.5vw,90px);align-items:start;
+}
+.chap__read .chap__body{margin-left:clamp(0px,4vw,110px)}
+.chap__body p{font-size:clamp(1.06rem,1.24vw,1.28rem);line-height:1.76}
+
+/* skráin verður alvöru ruðningsskrá með punktaleiðara */
+.chap__ledger li{position:relative;gap:.9rem}
+.chap__ledger li::after{
+  content:"";flex:1 1 auto;height:1px;margin-bottom:.28rem;
+  background:repeating-linear-gradient(90deg,var(--hair) 0 1px,transparent 1px 5px);
+}
+
+/* ============================ HÆÐARÁSIN LIFNAR ========================== */
+.rail__prog{width:2px;right:-.5px}
+.rail__prog::after{
+  content:"";position:absolute;left:-3px;bottom:-4px;width:8px;height:8px;
+  background:var(--acc);
+}
+
+/* ================================= SÍMI ================================= */
+@media (max-width:900px){
+  .svy{height:clamp(300px,46svh,420px)}
+  .svy__deck{
+    grid-template-columns:1fr;row-gap:clamp(20px,3vh,30px);
+    margin-top:calc(-1 * var(--ov));padding:0 var(--gut);
+  }
+  .svy__card{padding:clamp(22px,5.5vw,30px) clamp(20px,5vw,26px)}
+  .svy__card .chap__title{font-size:clamp(2.3rem,10.5vw,3.4rem);max-width:14ch}
+  .svy{--ov:clamp(28px,6vw,48px)}
+  .svy__tally{padding-top:0}
+  .svy__grid{width:min(100%,190px)}
+  .svy__tag{font-size:.5rem;letter-spacing:.16em;padding:.55rem var(--gut)}
+  .svy__net text{font-size:26px}
+  .svy__net text.lg{font-size:30px}
+  .svy__net .sm{display:none}          /* íbúðanúmerin víkja í síma */
+  .svy__strip{grid-template-columns:1fr 1fr;margin-top:clamp(20px,3vh,30px)}
+  .svy__strip div{padding:.8rem 1rem .1rem 0}
+  .svy__strip div:nth-child(odd){border-left:0;padding-left:0}
+  .svy__strip div:nth-child(even){border-left:1px solid var(--hair2);padding-left:1rem}
+  .svy__strip div:nth-child(-n+4){border-bottom:1px solid var(--hair2);padding-bottom:.75rem}
+  .chap__readin{grid-template-columns:1fr;row-gap:clamp(26px,4vh,42px)}
+  .chap__read .chap__body{margin-left:0}
+}
+@media (max-width:430px){
+  .svy__strip{grid-template-columns:1fr}
+  .svy__strip div,.svy__strip div:nth-child(even){border-left:0;padding-left:0}
+  .svy__strip div:nth-child(-n+4){border-bottom:1px solid var(--hair2)}
+}
+
+/* ============================== ÖRYGGISNET ============================== */
+@media (prefers-reduced-motion:reduce){
+  .js-chap .svy__net .ink{stroke-dasharray:none;stroke-dashoffset:0;transition:none}
+  .js-chap .svy__net text{opacity:1;transition:none}
+}
