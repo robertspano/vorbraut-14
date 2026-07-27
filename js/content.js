@@ -46,6 +46,9 @@ const STR = {
     'pager.ibudir': 'Skoða íbúðir',
     /* ---- story sections ---- */
     'fig.label': 'Mynd',
+    'kort.kick': 'Í göngufæri',
+    'kort.title': 'Þjónustukort',
+    'kort.sub': 'Allt á kortinu er innan 1,5 km frá Vorbraut 14, mælt í loftlínu. Kortagögn frá OpenStreetMap.',
     'fig.viz': 'Tölvumynd',
     'st.intro.kick': '01 · Vorbraut 14',
     'st.intro.title': 'Heillandi búseta í Garðabæ',
@@ -358,6 +361,9 @@ const STR = {
     'pager.ibudir': 'View apartments',
     /* ---- story sections ---- */
     'fig.label': 'Fig.',
+    'kort.kick': 'Within walking distance',
+    'kort.title': 'Local amenities',
+    'kort.sub': 'Everything on the map lies within 1.5 km of Vorbraut 14, measured as the crow flies. Map data from OpenStreetMap.',
     'fig.viz': 'Visualisation',
     'st.intro.kick': '01 · Vorbraut 14',
     'st.intro.title': 'Captivating Living in Garðabær',

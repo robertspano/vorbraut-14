@@ -75,4 +75,28 @@
     window.addEventListener('resize', nearby, { passive: true });
     setTimeout(nearby, 400);
   }
+
+  /* --- þjónustukort: skráin og kortið lýsa hvort annað upp -------------- */
+  var kort = document.querySelector('.kort');
+  if (kort) {
+    var lis = kort.querySelectorAll('.kort__flokkur li[data-nr]');
+    var mrk = {};
+    kort.querySelectorAll('.kort__m[data-nr]').forEach(function (g) { mrk[g.dataset.nr] = g; });
+    var lit = function (nr, on) {
+      var g = mrk[nr];
+      if (g) g.classList.toggle('is-on', on);
+      var li = kort.querySelector('.kort__flokkur li[data-nr="' + nr + '"]');
+      if (li) li.classList.toggle('is-on', on);
+    };
+    lis.forEach(function (li) {
+      var nr = li.dataset.nr;
+      li.addEventListener('mouseenter', function () { lit(nr, true); });
+      li.addEventListener('mouseleave', function () { lit(nr, false); });
+    });
+    Object.keys(mrk).forEach(function (nr) {
+      var g = mrk[nr];
+      g.addEventListener('mouseenter', function () { lit(nr, true); });
+      g.addEventListener('mouseleave', function () { lit(nr, false); });
+    });
+  }
 })();

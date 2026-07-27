@@ -360,3 +360,79 @@ body.is-chapter .lang{color:#262522}
   .js-chap .chap__plate .cut img,.js-chap .chap__plate.is-open .cut img{
     transform:scale(var(--zoom,1)) translate(var(--tx,0),var(--ty,0));transition:none}
 }
+
+/* ==========================================================================
+   ÞJÓNUSTUKORT — Hnoðraholt í 1,5 km radíus (Hverfið)
+   SVG-kortið er teiknað úr OpenStreetMap-gögnum, ekki flísaþjónustu:
+   engin utanaðkomandi köll, engar smákökur, sömu litir og síðan.
+   ========================================================================== */
+.kort{background:var(--wash);border-top:1px solid var(--hair);
+  padding:clamp(46px,7vh,96px) 0 clamp(46px,7vh,92px)}
+.kort__wrap{max-width:1500px;margin:0 auto;padding:0 var(--gut)}
+.kort__haus{margin:0 0 clamp(26px,4vh,44px);max-width:52ch}
+.kort__kick{display:flex;align-items:center;gap:.85rem;margin:0 0 .85rem;
+  font:600 .66rem/1 'DM Sans',sans-serif;letter-spacing:.26em;text-transform:uppercase;color:var(--acc)}
+.kort__kick::before{content:"";width:30px;height:1px;background:var(--acc);flex:none}
+.kort__h{font-family:'Zilla Slab',Georgia,serif;font-weight:600;
+  font-size:clamp(1.9rem,3.6vw,2.9rem);line-height:1.02;letter-spacing:-.025em;
+  color:var(--ink);margin:0 0 .7rem}
+.kort__sub{margin:0;font-size:.95rem;line-height:1.6;color:var(--dim)}
+
+.kort__grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);
+  gap:clamp(24px,3.4vw,58px);align-items:start}
+.kort__mynd{margin:0;background:#FBFAF8;border:1px solid var(--hair);overflow:hidden}
+.kort__svg{display:block;width:100%;height:auto}
+
+/* kortamerkin */
+.kort__m{cursor:default}
+.kort__m rect{fill:#8A7F72;transition:fill .18s var(--ez)}
+.kort__m[data-f="skoli"]     rect{fill:#4A6C8C}
+.kort__m[data-f="utivist"]   rect{fill:#7A8B5F}
+.kort__m[data-f="matur"]     rect{fill:#B5643C}
+.kort__m[data-f="verslun"]   rect{fill:#8A7F72}
+.kort__m[data-f="thjonusta"] rect{fill:#6B665F}
+.kort__m text{fill:#fff;font:600 11px 'DM Sans',sans-serif;text-anchor:middle;
+  font-variant-numeric:tabular-nums;pointer-events:none}
+.kort__leggur{stroke:#B9B0A3;stroke-width:1}
+.kort__heim rect{fill:var(--acc)}
+.kort__heim text{fill:var(--ink);font:700 12px 'DM Sans',sans-serif;text-anchor:middle;
+  letter-spacing:.14em}
+.kort__hringtxt{fill:#a09a92;font:600 11px 'DM Sans',sans-serif;letter-spacing:.1em}
+
+/* upplýst þegar bent er á í skránni */
+.kort__m.is-on rect{fill:var(--acc)}
+.kort__m.is-on text{fill:#fff}
+
+/* skráin */
+.kort__skra{columns:1;font-family:'DM Sans',sans-serif}
+.kort__flokkur+.kort__flokkur{margin-top:1.6rem}
+.kort__flokkur h3{margin:0 0 .5rem;font-family:'Zilla Slab',Georgia,serif;font-weight:600;
+  font-size:1.02rem;letter-spacing:-.01em;color:var(--ink)}
+.kort__flokkur ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair2)}
+.kort__flokkur li{display:flex;align-items:baseline;gap:.7rem;padding:.44rem 0;
+  border-bottom:1px solid var(--hair2);font-size:.88rem;line-height:1.35;color:var(--ink)}
+.kort__flokkur li i{flex:none;width:1.55rem;height:1.55rem;border-radius:3px;
+  display:inline-flex;align-items:center;justify-content:center;align-self:center;
+  font:600 .62rem/1 'DM Sans',sans-serif;font-style:normal;color:#fff;
+  font-variant-numeric:tabular-nums;background:#8A7F72}
+.kort__flokkur[data-f="skoli"]     li i{background:#4A6C8C}
+.kort__flokkur[data-f="utivist"]   li i{background:#7A8B5F}
+.kort__flokkur[data-f="matur"]     li i{background:#B5643C}
+.kort__flokkur[data-f="verslun"]   li i{background:#8A7F72}
+.kort__flokkur[data-f="thjonusta"] li i{background:#6B665F}
+.kort__flokkur li span{flex:1 1 auto;min-width:0}
+.kort__flokkur li b{flex:none;font:500 .74rem/1 'DM Sans',sans-serif;letter-spacing:.06em;
+  color:var(--faint);font-variant-numeric:tabular-nums}
+.kort__flokkur li.is-on{background:#fff}
+.kort__flokkur li.is-on b{color:var(--acc)}
+
+@media (max-width:980px){
+  .kort__grid{grid-template-columns:1fr;gap:clamp(22px,3.5vh,36px)}
+  .kort__skra{columns:2;column-gap:clamp(18px,3vw,38px)}
+  .kort__flokkur{break-inside:avoid}
+  .kort__flokkur+.kort__flokkur{margin-top:1.3rem}
+}
+@media (max-width:560px){
+  .kort__skra{columns:1}
+  .kort__flokkur li{font-size:.86rem}
+}
