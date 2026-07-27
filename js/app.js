@@ -68,6 +68,28 @@
     };
     scrollAnim = requestAnimationFrame(step);
   }
+  /* ---- Hero: fíngerð músar-parallax á myndbandsspjaldinu ---- */
+  (function heroExtras() {
+    // parallax: spjaldið hallar örlítið að músinni (ekki á snerti/reduced-motion)
+    const panel = $('.shero__panel'), heroSec = $('.shero');
+    if (panel && heroSec && matchMedia('(pointer:fine)').matches
+        && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
+      heroSec.addEventListener('mousemove', (e) => {
+        const r = heroSec.getBoundingClientRect();
+        const dx = (e.clientX - r.left) / r.width - 0.5;
+        const dy = (e.clientY - r.top) / r.height - 0.5;
+        panel.style.transform = `translate(${(dx * 10).toFixed(1)}px, ${(dy * 8).toFixed(1)}px)`;
+      });
+      heroSec.addEventListener('mouseleave', () => { panel.style.transform = ''; });
+    }
+  })();
+
+  // hlekkir eiga að lenda UNDIR föstu valmyndinni (annars klippist toppur kaflans)
+  const goToAnchor = (el) => {
+    const navH = nav ? nav.offsetHeight : 84;
+    goToSection(Math.max(0, el.offsetTop - navH));
+  };
+
   $$('[data-scroll]').forEach((a) => {
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');
@@ -76,7 +98,7 @@
       if (!target) return;
       e.preventDefault();
       nav.classList.remove('open');
-      goToSection(target.offsetTop);
+      goToAnchor(target);
     });
   });
 
@@ -97,7 +119,7 @@
     a.addEventListener('click', (e) => {
       const hash = href.split('#')[1]; const target = hash && $('#' + hash);
       if (!target) return;
-      e.preventDefault(); closeMenu(); goToSection(target.offsetTop);
+      e.preventDefault(); closeMenu(); goToAnchor(target);
     });
   });
   // vörumerki á forsíðu -> efst (ekki endurhlaða)
@@ -105,7 +127,7 @@
   if (navLogo) navLogo.addEventListener('click', (e) => { e.preventDefault(); closeMenu(); goToSection(0); });
   // lentum á forsíðu með #hash frá undirsíðu
   if (location.hash && $(location.hash)) {
-    setTimeout(() => { const tgt = $(location.hash); if (tgt) goToSection(tgt.offsetTop); }, 120);
+    setTimeout(() => { const tgt = $(location.hash); if (tgt) goToAnchor(tgt); }, 120);
   }
 
   // active nav link
@@ -127,6 +149,8 @@
     entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); revealObs.unobserve(en.target); } });
   }, { root: scroller, threshold: 0.16 });
   $$('.reveal').forEach((el, i) => { el.dataset.d = (i % 3); revealObs.observe(el); });
+
+  const PLANV = '?r=9';        // útgáfumerki grunnmynda — hækka þegar teikningum er skipt út
 
   /* --------------------------- helpers ---------------------------------- */
   const fmtArea = (n) => n.toLocaleString('is-IS', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -295,7 +319,8 @@
       </tr>`;
     }).join('');
     if (gridEmpty) gridEmpty.hidden = list.length > 0;
-    $$('.aptrow', grid).forEach((r) => r.addEventListener('click', () => openModal(aptById[r.dataset.id])));
+    // „Skoða" í verðskránni: upp í teikningarkaflann undir veljaranum (ekki popup)
+    $$('.aptrow', grid).forEach((r) => r.addEventListener('click', () => selectApt(r.dataset.id)));
   }
 
   // dual-range sliðrar (Birt stærð / Hæð / Herbergi)
@@ -316,6 +341,15 @@
     const down = (e, w) => { drag = w; try { e.target.setPointerCapture(e.pointerId); } catch (x) {} e.preventDefault(); };
     hLo.addEventListener('pointerdown', (e) => down(e, 0));
     hHi.addEventListener('pointerdown', (e) => down(e, 1));
+    // smellur á línuna: næsta doppa stekkur þangað — og eltir músina sé haldið niðri
+    track.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.rng__h')) return;               // doppurnar sjá um sig sjálfar
+      const v = valAt(e.clientX), r = state[key];
+      const w = Math.abs(v - r[0]) <= Math.abs(v - r[1]) ? 0 : 1;
+      if (w === 0) r[0] = Math.min(v, r[1]); else r[1] = Math.max(v, r[0]);
+      draw(); buildGrid(); syncFacade();
+      down(e, w);
+    });
     window.addEventListener('pointermove', (e) => { if (drag == null) return; const v = valAt(e.clientX), r = state[key]; if (drag === 0) r[0] = Math.min(v, r[1]); else r[1] = Math.max(v, r[0]); draw(); buildGrid(); syncFacade(); });
     window.addEventListener('pointerup', () => { drag = null; });
     el._draw = draw; draw();
@@ -534,7 +568,7 @@
   function applyPlanView() {
     const a = currentApt; if (!a) return;
     if (planView === 'tex' && a.tex) planImg.src = 'assets/plans_tex/' + a.tex + '?r=2';
-    else { planView = 'line'; planImg.src = 'assets/plans/' + a.plan + '?r=7'; }
+    else { planView = 'line'; planImg.src = 'assets/plans/' + a.plan + PLANV; }
     if (planView_el) $$('.aptm__pvbtn', planView_el).forEach((b) => b.classList.toggle('is-on', b.dataset.view === planView));
     requestAnimationFrame(() => setPlanFrame(a.id));
   }
@@ -666,9 +700,10 @@
     $('#avSpecs').innerHTML = rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
 
     const plan = $('#avPlan');
-    plan.src = 'assets/plans/' + a.plan;
+    plan.src = 'assets/plans/' + a.plan + PLANV;
     plan.alt = (lang === 'is' ? 'Grunnmynd íbúðar ' : 'Floor plan ') + a.id;
-    plan.onclick = () => openModal(a);        // smella á teikningu -> hærri upplausn
+    // smella á teikningu -> myndin ein opnast í fullri upplausn (nýr flipi)
+    plan.onclick = () => window.open('assets/plans/' + a.plan + PLANV, '_blank', 'noopener');
 
     $('#avCta').innerHTML =
       `<button type="button" class="btn" data-av-open>${t('sel.open')}</button>`;
@@ -689,8 +724,7 @@
 
   function renderSelInfo() {
     if (!selInfoEl) return;
-    // Þegar íbúð er valin birtast upplýsingarnar FYRIR NEÐAN (.aptview) — ekki tvítaka þær hér.
-    selInfoEl.innerHTML = selApt ? '' : `<p class="select__hint">${t('sel.empty')}</p>`;
+    selInfoEl.innerHTML = '';   // upplýsingarnar birtast fyrir neðan (.aptview)
   }
 
 
