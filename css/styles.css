@@ -28,7 +28,12 @@
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+/* ATH: hér var scroll-behavior:smooth. Þegar skrunið færðist af main.snap
+   yfir á skjalið sjálft fór þessi regla að gilda um AÐALflötinn — þá varð
+   hver einasta stilling á scrollTop að hreyfimynd sem togaðist á við mjúka
+   skrunið í js/app.js. Skrunið er stýrt þar; CSS á ekki að blanda sér í það. */
+html{-webkit-text-size-adjust:100%}
+html{scroll-padding-top:96px}
 body{
   font-family:var(--font);
   color:var(--ink);
@@ -132,9 +137,11 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
    never resting between two. Panels are exactly one viewport tall; any panel
    whose content is taller (e.g. the apartment list) scrolls inside itself and
    then chains to the next section. */
-.snap{height:100svh;overflow-y:auto;scroll-snap-type:none;scrollbar-width:none;
-  overscroll-behavior-y:contain}
-.snap::-webkit-scrollbar{display:none}
+/* Öll síðan skrunaði áður inni í þessum fleti (main.snap) — leifar af
+   PowerPoint-skruninu sem er löngu farið. Hreiðraðir skrunfletir fá ekki
+   sömu flýtimeðferð í vafranum og skjalið sjálft, og það olli hökti.
+   Skjalið skrunar núna. */
+.snap{display:block}
 .panel{
   position:relative;height:100vh;overflow-y:auto;
   scroll-snap-align:start;scroll-snap-stop:always;
@@ -199,7 +206,7 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .shero__panel{position:relative;width:100%;aspect-ratio:16/9;
   transition:transform .45s cubic-bezier(.2,.6,.25,1)}
 .shero__vidwrap{position:absolute;inset:0;overflow:hidden;border-radius:2px;background:#E8E7E8;
-  box-shadow:0 44px 88px -46px rgba(38,37,34,.42)}
+  box-shadow:0 22px 44px -30px rgba(38,37,34,.34)}
 .shero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .shero__frame{position:absolute;pointer-events:none;
   top:calc(-1*clamp(14px,1.8vw,28px));right:calc(-1*clamp(14px,1.8vw,28px));
@@ -292,8 +299,8 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .facade__svg{position:absolute;inset:0;width:100%;height:100%;transition:opacity .45s ease}
 /* Sjónarhorn hússins — hver mynd er lag sem krossblandast. Ótakmarkaður fjöldi. */
 .facade__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
-  opacity:0;transition:opacity .5s ease}
-.facade__img.is-on{opacity:1}
+  opacity:0;visibility:hidden;transition:opacity .5s ease,visibility 0s linear .5s}
+.facade__img.is-on{opacity:1;visibility:visible;transition:opacity .5s ease,visibility 0s}
 /* smellisvæðin eiga aðeins við bakhliðina (þar eru þau kvörðuð) */
 .facade:not([data-view="aftan"]) .facade__svg{opacity:0;pointer-events:none}
 .facade:not([data-view="aftan"]) .select__head{opacity:0;pointer-events:none;transition:opacity .5s ease}

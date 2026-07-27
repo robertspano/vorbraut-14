@@ -28,14 +28,15 @@
   });
 
   /* ------------------------- nav / scrolling ---------------------------- */
-  const scroller = $('#scroller');
+  // Skjalið sjálft er skrunflöturinn (var áður main#scroller — sjá css/styles.css).
+  const scroller = document.scrollingElement || document.documentElement;
   const nav = $('#nav');
 
   function onScroll() {
     nav.classList.toggle('nav--solid', scroller.scrollTop > window.innerHeight * 0.72);
     nav.classList.toggle('nav--scrolled', scroller.scrollTop > 8);
   }
-  scroller.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
   // Animated section jump via rAF. Native smooth scrolling is unreliable with
@@ -66,12 +67,12 @@
     // sömu skrunstöðuna og hann kippist svo aftur á áfangastað þegar það lýkur.
     const bail = () => stop();
     const opts = { passive: true };
-    scroller.addEventListener('wheel', bail, opts);
-    scroller.addEventListener('touchstart', bail, opts);
+    window.addEventListener('wheel', bail, opts);
+    window.addEventListener('touchstart', bail, opts);
     window.addEventListener('keydown', bail, opts);
     dropAbort = () => {
-      scroller.removeEventListener('wheel', bail, opts);
-      scroller.removeEventListener('touchstart', bail, opts);
+      window.removeEventListener('wheel', bail, opts);
+      window.removeEventListener('touchstart', bail, opts);
       window.removeEventListener('keydown', bail, opts);
       dropAbort = null;
     };
@@ -179,14 +180,14 @@
         const a = navMap[en.target.id]; if (a) a.classList.add('active');
       }
     });
-  }, { root: scroller, threshold: 0.5 });
+  }, { threshold: 0.5 });
   ['stadsetning','ibudir','val','yfirlit','honnun','gaedi','hverfi','hafa-samband']
     .forEach((id) => { const s = $('#' + id); if (s) navObserver.observe(s); });
 
   /* --------------------------- reveal anim ------------------------------ */
   const revealObs = new IntersectionObserver((entries) => {
     entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); revealObs.unobserve(en.target); } });
-  }, { root: scroller, threshold: 0.16 });
+  }, { threshold: 0.16 });
   $$('.reveal').forEach((el, i) => { el.dataset.d = (i % 3); revealObs.observe(el); });
 
   const PLANV = '?r=9';        // útgáfumerki grunnmynda — hækka þegar teikningum er skipt út
@@ -749,9 +750,9 @@
     setTimeout(() => {
       avEl.classList.add('is-in');
       // .select er position:relative, svo offsetTop dugar ekki — reikna út frá skrunstöðu
-      const sr = scroller.getBoundingClientRect(), er = avEl.getBoundingClientRect();
-      const NAV = 84;                                   // fasta valmyndin efst
-      const top = scroller.scrollTop + (er.top - sr.top) - NAV - 12;
+      const er = avEl.getBoundingClientRect();
+      const NAV = nav ? nav.offsetHeight : 84;          // fasta valmyndin efst
+      const top = scroller.scrollTop + er.top - NAV - 12;
       goToSection(Math.max(0, top));                    // sama mjúka skrunið og annars staðar
     }, 30);
   }
