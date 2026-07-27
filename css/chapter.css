@@ -200,6 +200,16 @@ body.is-chapter .lang{color:#262522}
   display:flex;gap:.7rem;margin-top:.75rem;
   font:400 .76rem/1.5 'DM Sans',sans-serif;color:var(--dim);
 }
+/* tölvumynd-merki — heiðarleg aðgreining frá ljósmyndum */
+.chap__slice figcaption em,.chap__plate figcaption em{
+  flex:none;order:3;margin-left:auto;font-style:normal;
+  font:600 .56rem/1.9 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--faint);border:1px solid var(--hair);border-radius:2px;padding:0 .5rem;
+  align-self:center;white-space:nowrap;
+}
+@media (max-width:560px){
+  .chap__slice figcaption em,.chap__plate figcaption em{order:0;margin-left:0}
+}
 .chap__slice figcaption b,.chap__plate figcaption b{
   flex:none;font:600 .6rem/1.9 'DM Sans',sans-serif;letter-spacing:.18em;
   text-transform:uppercase;color:var(--acc);
