@@ -159,20 +159,22 @@ if major:
             A(f'<path d="{d}"/>')
     A("</g>")
 
-# fjarlægðarhringir — sýnileg bönd svo fjarlægðin lesist beint af kortinu
+# fjarlægðarhringir — heilir og áberandi, með hvítri baklýsingu svo þeir
+# haldi sér yfir götum og gróðri
 A('<g class="kort__hringir">')
-#   ljós bönd: teiknuð stærst fyrst, skarast og verða þéttari inn að miðju
+#   ljós bönd inn að miðju (sjást þar sem eitthvað er undir)
 for m in (1500, 1000, 500):
     r = m * SCALE
-    A(f'<circle cx="{W/2:.0f}" cy="{H*CY:.0f}" r="{r:.0f}" fill="#fff" opacity=".34"/>')
-#   línur ofan á
+    A(f'<circle cx="{W/2:.0f}" cy="{H*CY:.0f}" r="{r:.0f}" fill="#fff" opacity=".30"/>')
+#   hringirnir sjálfir: breið hvít undirlína, svo heil brún lína
 for m in (500, 1000, 1500):
     r = m * SCALE
     A(f'<circle cx="{W/2:.0f}" cy="{H*CY:.0f}" r="{r:.0f}" fill="none" '
-      f'stroke="#fff" stroke-width="3"/>')
-    A(f'<circle cx="{W/2:.0f}" cy="{H*CY:.0f}" r="{r:.0f}" fill="none" '
-      f'stroke="#A79C8C" stroke-width="1.2" stroke-dasharray="7 6"/>')
-#   merkimiðar á ská upp til hægri svo þeir skarist ekki
+      f'stroke="#fff" stroke-width="7" opacity=".9"/>')
+for m in (500, 1000, 1500):
+    r = m * SCALE
+    A(f'<circle class="kort__hringur" cx="{W/2:.0f}" cy="{H*CY:.0f}" r="{r:.0f}"/>')
+#   merkimiðar á ská upp til hægri
 for m in (500, 1000, 1500):
     r = m * SCALE
     lx = W / 2 + r * 0.7071

@@ -398,8 +398,10 @@ body.is-chapter .lang{color:#262522}
 .kort__heim rect{fill:var(--acc)}
 .kort__heim text{fill:var(--ink);font:700 21px 'DM Sans',sans-serif;text-anchor:middle;
   letter-spacing:.14em;paint-order:stroke;stroke:#fff;stroke-width:4}
-.kort__hringmerki rect{fill:#fff;stroke:#CFC6B8;stroke-width:1.4}
-.kort__hringmerki text{fill:#6b665f;font:600 21px 'DM Sans',sans-serif;letter-spacing:.08em;
+/* hringirnir: heilir, brúnir og áberandi */
+.kort__hringur{fill:none;stroke:var(--acc);stroke-width:3;opacity:.9}
+.kort__hringmerki rect{fill:var(--acc);stroke:none}
+.kort__hringmerki text{fill:#fff;font:700 21px 'DM Sans',sans-serif;letter-spacing:.08em;
   text-anchor:middle;font-variant-numeric:tabular-nums}
 
 /* upplýst þegar bent er á í skránni */
