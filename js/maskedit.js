@@ -20,25 +20,35 @@
   let selId = ids[0], mode = 'move', drag = null, spaceDown = false;
   let view = { x: 0, y: 0, w: IW, h: IH };
 
-  const ready = (fn) => ((window.__cine && document.getElementById('facade') && document.getElementById('facadeSvg')) ? fn() : setTimeout(() => ready(fn), 60));
+  const ready = (fn) => ((document.getElementById('facade') && document.getElementById('facadeSvg')) ? fn() : setTimeout(() => ready(fn), 60));
   ready(init);
+
+  // Bakgrunnur ritilsins = NÁKVÆMLEGA sama mynd og veljarinn sýnir (bakhliðin),
+  // lesin úr CSS svo hún fylgi sjálfkrafa ef myndinni er skipt út.
+  function facadeImageUrl() {
+    const el = document.getElementById('facade');
+    const bg = getComputedStyle(el).backgroundImage || '';
+    const m = bg.match(/url\(["']?(.*?)["']?\)/);
+    return m ? m[1] : 'assets/renders/foto-bak.webp';
+  }
 
   function init() {
     document.body.classList.add('maskedit');
     document.getElementById('facade').classList.remove('is-front');
-    const scroller = document.getElementById('scroller'), cine = document.getElementById('cine');
-    const lock = () => { const c = window.__cine; scroller.scrollTop = cine.offsetTop + (cine.offsetHeight - innerHeight) * Math.min(c.D + 0.06, 0.92); window.__cine.render(); };
-    lock(); setTimeout(lock, 120);
-    scroller.style.overflow = 'hidden';
+    const scroller = document.getElementById('scroller');
+    // skruna að veljaranum svo hann sé undir ritlinum
+    const sec = document.getElementById('facade-section');
+    if (sec && scroller) scroller.scrollTop = sec.offsetTop;
+    if (scroller) scroller.style.overflow = 'hidden';
     const live = document.getElementById('facadeSvg'); if (live) live.style.pointerEvents = 'none';
 
     const svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('class', 'mask__svg');
     svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
     applyView();
-    // bakgrunnur: sama fram-rammi og síðan sýnir (svo myndin þysji með punktunum)
+    // bakgrunnur: sama mynd og síðan sýnir (svo hún þysji með punktunum)
     const bg = document.createElementNS(NS, 'image');
-    bg.setAttribute('href', 'assets/cine/f096.jpg'); bg.setAttribute('x', 0); bg.setAttribute('y', 0);
+    bg.setAttribute('href', facadeImageUrl()); bg.setAttribute('x', 0); bg.setAttribute('y', 0);
     bg.setAttribute('width', IW); bg.setAttribute('height', IH); bg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
     svg.appendChild(bg);
     const layer = document.createElementNS(NS, 'g'); layer.setAttribute('id', 'mkLayer'); svg.appendChild(layer);
@@ -50,7 +60,10 @@
       '<span class="mk__modes"></span>' +
       '<span class="mk__zoom"><button data-z="out">–</button><span id="mkZlbl">100%</span><button data-z="in">+</button><button data-z="reset">⟲</button></span>' +
       '<span class="mk__sp"></span>' +
-      '<button data-act="copy">Afrita kóða</button><button data-act="reset">Núllstilla íbúð</button><button data-act="close">Loka</button></div>' +
+      '<button data-act="copy">Afrita kóða</button><button data-act="reset">Núllstilla íbúð</button>' +
+      '<button data-act="top" title="Færa borðið upp/niður">⇅</button>' +
+      '<button id="mkFold" data-act="fold" title="Fella saman (sýna jarðhæð)">▾</button>' +
+      '<button data-act="close">Loka</button></div>' +
       '<div class="mk__hint">Veldu íbúð · dragðu punkta eftir brún · „Bæta punkti“ = smelltu á línu · „Eyða“ = smelltu á punkt · <b>skruna = þysja</b> · <b>bilslá+draga = færa</b> · Shift = enginn snap</div>' +
       '<div class="mk__legend"></div>';
     document.body.appendChild(panel);
@@ -133,6 +146,13 @@
       if (b.dataset.act === 'close') { panel.remove(); svg.remove(); document.body.classList.remove('maskedit'); scroller.style.overflow = ''; if (live) live.style.pointerEvents = ''; }
       else if (b.dataset.act === 'reset') { zones[selId] = clone(VB.FACADE.zones[selId]); save(); render(); }
       else if (b.dataset.act === 'copy') { copyCode(); }
+      // fella borðið saman -> jarðhæðin sést; ⇅ færir það upp/niður á skjánum
+      else if (b.dataset.act === 'fold') {
+        const min = panel.classList.toggle('mk--min');
+        b.textContent = min ? '▴' : '▾';
+        b.title = min ? 'Opna borðið' : 'Fella saman (sýna jarðhæð)';
+      }
+      else if (b.dataset.act === 'top') { panel.classList.toggle('mk--top'); }
     });
     window.addEventListener('keydown', (e) => {
       if (e.key === ' ' && !drag) { spaceDown = true; svg.style.cursor = 'grab'; return; }

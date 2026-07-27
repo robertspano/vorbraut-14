@@ -152,8 +152,16 @@
     const apt = aptById[id];
     if (apt && apt.status !== 'available') poly.style.fill = statusFill(apt.status);
     poly.addEventListener('mousemove', (e) => moveTip(e, id));
-    poly.addEventListener('mouseenter', () => showTip(id));
-    poly.addEventListener('mouseleave', hideTip);
+    poly.addEventListener('mouseenter', () => {
+      showTip(id);
+      // grunnmyndin hægra megin fer á hæð íbúðarinnar — og situr þar áfram
+      const a = aptById[id];
+      if (a) { hoverApt = a; planFloor = a.floor; renderSelector(); }
+    });
+    poly.addEventListener('mouseleave', () => {
+      hideTip();
+      if (hoverApt) { hoverApt = null; renderSelector(); }
+    });
     poly.addEventListener('click', () => selectApt(id));
     poly.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectApt(id); } });
     svg.appendChild(poly);
@@ -166,21 +174,74 @@
     });
   }
 
-  // Framan / Aftan — skipta um hlið. framan = föst inngangsmynd, aftan = interactive svalahlið
-  const facadeSides = $('#facadeSides');
+  /* ---- Sjónarhorn hússins (bakhlið / framhlið / hlið / bílakjallari …) ----
+     Myndalögin og takkarnir eru byggð úr VIEWS; bættu bara við færslu í data.js
+     til að fá nýtt sjónarhorn. Gagnvirku íbúðasvæðin virka á 'zones:true' myndinni. */
+  const VIEWS = (window.VB.VIEWS && window.VB.VIEWS.length)
+    ? window.VB.VIEWS
+    : [{ id: 'aftan', label: 'Bakhlið', img: 'assets/renders/foto-bak.webp', zones: true }];
+  const facadeSides = $('#facadeSides'), facadeViews = $('#facadeViews');
+  const viewLabel = (v) => (t('facade.' + v.id) !== 'facade.' + v.id ? t('facade.' + v.id) : v.label);
+  let curView = (VIEWS.find((v) => v.zones) || VIEWS[0]).id;
+
+  if (facadeViews) facadeViews.innerHTML = VIEWS.map((v, i) =>
+    `<img class="facade__img${v.id === curView ? ' is-on' : ''}" data-view="${v.id}"` +
+    ` src="${v.img}" alt="Vorbraut 14 — ${v.label}"` +
+    `${i ? ' loading="lazy"' : ''} decoding="async">`).join('');
+
+  function renderSideBtns() {
+    if (!facadeSides) return;
+    facadeSides.innerHTML = VIEWS.map((v) =>
+      `<button type="button" class="facade__sidebtn${v.id === curView ? ' is-on' : ''}"` +
+      ` data-side="${v.id}" aria-pressed="${v.id === curView}">${viewLabel(v)}</button>`).join('');
+  }
+  renderSideBtns();
+
+  function setSide(side) {
+    if (!VIEWS.some((v) => v.id === side)) return;
+    curView = side;
+    facadeFig.setAttribute('data-view', side);
+    $$('.facade__img', facadeViews).forEach((im) => im.classList.toggle('is-on', im.dataset.view === side));
+    $$('.facade__sidebtn', facadeSides).forEach((x) => {
+      const on = x.dataset.side === side;
+      x.classList.toggle('is-on', on);
+      x.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    // útsýnis-keilurnar á grunnmyndinni fylgja: virka sjónarhornið er brúnt
+    $$('#selDiagram .dg-cone').forEach((c) => c.classList.toggle('is-active', c.dataset.side === side));
+  }
+  setSide(curView);
   if (facadeSides) facadeSides.addEventListener('click', (e) => {
     const b = e.target.closest('.facade__sidebtn'); if (!b) return;
-    facadeFig.classList.toggle('is-front', b.dataset.side === 'framan');
-    $$('.facade__sidebtn', facadeSides).forEach((x) => {
-      x.classList.toggle('is-on', x === b);
-      x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
-    });
+    setSide(b.dataset.side);
   });
 
+  /* Keilurnar á hæðarkortinu skipta um mynd við hover/smell.
+     Atburðaveiting á SVG-ið sjálft (ekki per-keilu) — lifir af endurteikningu
+     kortsins, sem gerist í hvert sinn sem hæð/íbúð breytist. */
+  const selDiagramSvg = $('#selDiagram');
+  const inConeEdit = /[?&]conedit\b/.test(location.search);   // í ritli: draga, ekki skipta
+  if (selDiagramSvg && !inConeEdit) {
+    const pickCone = (e) => {
+      const c = e.target.closest && e.target.closest('.dg-cone');
+      if (c && c.dataset.side && c.dataset.side !== curView) setSide(c.dataset.side);
+    };
+    // mousemove er lykilatriði: ef keilan er endurteiknuð undir músinni kviknar
+    // ENGINN nýr mouseover/mouseenter — en mousemove heldur áfram að berast.
+    selDiagramSvg.addEventListener('mousemove', pickCone);
+    selDiagramSvg.addEventListener('mouseover', pickCone);
+    selDiagramSvg.addEventListener('click', pickCone);
+    selDiagramSvg.addEventListener('touchstart', pickCone, { passive: true });
+  }
+  // hover á íbúð í grunnmyndinni -> nákvæmlega sú íbúð lýsist upp á byggingamyndinni
+  function highlightApt(id, on) {
+    $$('polygon', svg).forEach((p) => p.classList.toggle('on', !!on && p.dataset.id === id));
+  }
+
   function statusFill(s) {
-    if (s === 'sold') return '#cf4036';        // selt -> rautt
-    if (s === 'reserved') return '#d8a72c';    // selt með fyrirvara -> gult
-    return '#5fa83c';                          // til sölu -> grænt (CSS-sjálfgildi)
+    if (s === 'sold') return '#FF5050';        // selt -> kórall-rautt (vorbrautin.is)
+    if (s === 'reserved') return '#D8A72C';    // selt með fyrirvara -> gult
+    return '#0D710A';                          // til sölu -> dökkgrænt (vorbrautin.is)
   }
   function showTip(id) {
     const a = aptById[id]; if (!a) return;
@@ -283,7 +344,8 @@
       const a = aptById[p.dataset.id];
       const ok = a && matches(a) && (selFloor == null || a.floor === selFloor);
       p.classList.toggle('match', filtering && !!ok);
-      p.classList.toggle('on', !!(selApt && a && a.id === selApt.id));
+      const lit = (hoverApt && a && a.id === hoverApt.id) || (!hoverApt && selApt && a && a.id === selApt.id);
+      p.classList.toggle('on', !!lit);
     });
   }
 
@@ -331,9 +393,45 @@
     if (!svg) return;
     const F = FLOOR_SHAPES.floors[floor];
     if (!F) { svg.innerHTML = ''; return; }
-    svg.setAttribute('viewBox', FLOOR_SHAPES.viewBox);
+    // FASTUR rammi um hæðina — hann breytist ALDREI þótt keilurnar séu dregnar til,
+    // svo grunnmyndin haldist kyrr. Keilur utan rammans sjást samt (svg er overflow:visible).
+    const vb = (FLOOR_SHAPES.viewBox || '0 0 300 181').split(/\s+/).map(Number);
+    // Grunnrammi + teygja svo keilurnar séu INNAN hans. Það skiptir máli: keila sem
+    // liggur utan SVG-kassans teiknast (overflow:visible) en tekur EKKI við músinni.
+    // Teygjan er takmörkuð (MAX) svo ein keila sem er dregin langt í burtu smækki ekki hæðina.
+    const MAX = 110;
+    let L = 44, R = 44, T = 36, B = 104;
+    (window.VB.VIEW_CONES || []).forEach((c) => {
+      const rad = 42 * (c.s || 0.8) + 6;
+      L = Math.min(MAX, Math.max(L, vb[0] - (c.x - rad)));
+      T = Math.min(MAX, Math.max(T, vb[1] - (c.y - rad)));
+      R = Math.min(MAX, Math.max(R, (c.x + rad) - (vb[0] + vb[2])));
+      B = Math.min(MAX, Math.max(B, (c.y + rad) - (vb[1] + vb[3])));
+    });
+    const W = vb[2] + L + R;
+    svg.setAttribute('viewBox', `${vb[0] - L} ${vb[1] - T} ${W} ${vb[3] + T + B}`);
+    // Stækkum SVG-kassann í sama hlutfalli og rammann -> hæðin helst NÁKVÆMLEGA jafnstór
+    // á skjánum þótt ramminn víkki út fyrir keilurnar.
+    if (svg.id === 'selDiagram') {
+      const grow = W / (vb[2] + 88);
+      svg.style.width = (grow * 100) + '%';
+      svg.style.marginLeft = (-(grow - 1) * 50) + '%';
+    }
+    // útsýnis-keilur (sjónarhorn) — nákvæmlega form/hlutföll vorbrautin.is:
+    //   <path d="M50 50 30 20a30 30 0 0 1 40 0Z"/> + <circle cx50 cy50 r6/>, hvít útlína.
+    // Oddurinn (punkturinn) er myndavélarstaðurinn og fleygurinn vísar á húshliðina.
+    // Virk hlið = brún (#aa8765), hin grá (#999). Hover/smellur skiptir um mynd.
+    // Sýnilegi fleygurinn er mjór; ósýnilegur hringur utan um hann gerir hann
+    // auðveldan að hitta með músinni (annars þarf að hitta nákvæmlega á formið).
+    const CONE = '<circle class="dg-cone-hit" cx="0" cy="-16" r="26"/>' +
+                 '<path d="M0 0-20-30a30 30 0 0 1 40 0Z"/><circle r="6"/>';
+    const curSide = (facadeFig && facadeFig.getAttribute('data-view')) || 'aftan';
+    // staðsetning/snúningur/stærð koma úr VIEW_CONES (má draga til með ?conedit)
+    let html = (window.VB.VIEW_CONES || []).map((c) =>
+      `<g class="dg-cone${c.side === curSide ? ' is-active' : ''}" data-side="${c.side}"
+          transform="translate(${c.x},${c.y}) rotate(${c.deg}) scale(${c.s})">${CONE}</g>`).join('');
     // heil grunnplata undir öllu — engin hvít bil sjást nokkurs staðar á byggingunni
-    let html = F.footprint ? `<polygon class="dg-foot" points="${polyPts(F.footprint)}"/>` : '';
+    html += F.footprint ? `<polygon class="dg-foot" points="${polyPts(F.footprint)}"/>` : '';
     const draw = (a) => {
       const poly = F.apts[a.id];
       if (!poly) return '';
@@ -349,15 +447,15 @@
     const selA = list.find((a) => a.id === selId);
     if (selA) html += draw(selA);                                             // valda íbúðin efst
     // áttaviti — hreinn áttavísir í lausa plássinu neðst t.h. (snertir ekki teikninguna)
-    const nd = FLOOR_SHAPES.northDeg, cx = 281, cy = 168, nlen = 13.5;
+    const nd = FLOOR_SHAPES.northDeg, cx = vb[0] + vb[2] + 20, cy = vb[1] - 16, nlen = 19;
     const nth = (nd + 90) * Math.PI / 180;
     const nlx = (cx + nlen * Math.sin(nth)).toFixed(1);
     const nly = (cy - nlen * Math.cos(nth)).toFixed(1);
     html += `<g class="dg-north" transform="translate(${cx},${cy})">
-      <circle class="dg-north-ring" r="9.6"/>
+      <circle class="dg-north-ring" r="13.5"/>
       <g transform="rotate(${(nd + 90).toFixed(1)})">
-        <path class="dg-north-l" d="M0,-8 L-2.7,4.4 L0,1.8 Z"/>
-        <path class="dg-north-r" d="M0,-8 L0,1.8 L2.7,4.4 Z"/>
+        <path class="dg-north-l" d="M0,-12.8 L-4.3,7 L0,2.9 Z"/>
+        <path class="dg-north-r" d="M0,-12.8 L0,2.9 L4.3,7 Z"/>
       </g></g>
       <text class="dg-northlbl" x="${nlx}" y="${nly}">N</text>`;
     svg.innerHTML = html;
@@ -369,6 +467,13 @@
       const pick = () => onPick(g.dataset.id);
       g.addEventListener('click', pick);
       g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+      // hover á íbúð í grunnmyndinni -> sama íbúð lýsist upp á byggingamyndinni
+      if (svg.id === 'selDiagram') {
+        g.addEventListener('mouseenter', () => highlightApt(g.dataset.id, true));
+        g.addEventListener('mouseleave', () => highlightApt(g.dataset.id, false));
+        g.addEventListener('focus', () => highlightApt(g.dataset.id, true));
+        g.addEventListener('blur', () => highlightApt(g.dataset.id, false));
+      }
     });
   }
 
@@ -491,25 +596,46 @@
         selInfoEl = $('#selInfo'), selLegendEl = $('#selLegend');
   let selApt = null;      // valin íbúð í veljaranum (ekki það sama og modal)
   let selFloor = null;    // valin hæð (null = allar hæðir)
+  let hoverApt = null;    // íbúð sem sveimað er yfir á byggingamyndinni (fyrir lýsingu)
+  let planFloor = null;   // hæðin sem grunnmyndin sýnir — helst þar sem síðast var staðnæmst
   const FLOOR_LIST = [...new Set(APARTMENTS.map((a) => a.floor))].sort((a, b) => a - b);
 
   function selectApt(id) {
     const a = aptById[id]; if (!a) return;
     selApt = a;
+    planFloor = a.floor;
     if (selFloor != null && a.floor !== selFloor) selFloor = a.floor;
     renderSelector();
+    showAptView(a);                       // teikningin birtist fyrir neðan + mjúkt skrun
   }
 
   function renderSelFloors() {
     if (!selFloorsEl) return;
-    selFloorsEl.innerHTML = FLOOR_LIST.map((f) =>
-      `<button type="button" class="select__fbtn${selFloor === f ? ' is-on' : ''}" data-f="${f}" aria-pressed="${selFloor === f}">${f}</button>`).join('');
-    $$('.select__fbtn', selFloorsEl).forEach((b) => b.addEventListener('click', () => {
+    const shown = planFloor != null ? planFloor : (selApt ? selApt.floor : FLOOR_LIST[0]);  // takkinn fylgir sýndri hæð
+    // Takkarnir eru byggðir EINU SINNI og svo bara uppfærðir — annars eyðileggst
+    // takkinn undir músinni við hverja endurteikningu og hover-ið slitnar.
+    if (!selFloorsEl.children.length) {
+      selFloorsEl.innerHTML = FLOOR_LIST.map((f) =>
+        `<button type="button" class="select__fbtn" data-f="${f}">${f}.</button>`).join('');
+      $$('.select__fbtn', selFloorsEl).forEach((b) => {
+        const f = +b.dataset.f;
+        b.addEventListener('click', () => {
+          selFloor = (selFloor === f) ? null : f;          // smellur aftur = afvelja síuna
+          planFloor = f;                                   // grunnmyndin sýnir þessa hæð áfram
+          if (selApt && selApt.floor !== f) selApt = null;
+          renderSelector();
+        });
+        // sveim yfir hæð -> grunnmyndin sýnir þá hæð (og situr þar áfram)
+        const show = () => { if (planFloor !== f) { planFloor = f; renderSelector(); } };
+        b.addEventListener('mouseenter', show);
+        b.addEventListener('focus', show);
+      });
+    }
+    $$('.select__fbtn', selFloorsEl).forEach((b) => {
       const f = +b.dataset.f;
-      selFloor = (selFloor === f) ? null : f;              // smellur aftur = afvelja hæð
-      if (selApt && selFloor != null && selApt.floor !== selFloor) selApt = null;
-      renderSelector();
-    }));
+      b.classList.toggle('is-on', shown === f);
+      b.setAttribute('aria-pressed', selFloor === f ? 'true' : 'false');
+    });
   }
 
   function renderSelLegend() {
@@ -519,38 +645,66 @@
       .map((s) => `<li class="select__leg select__leg--${s}"><i aria-hidden="true"></i>${statusLabel(s)}</li>`).join('');
   }
 
+  /* ---- Valin íbúð: teikning + upplýsingar birtast FYRIR NEÐAN veljarann ----
+     Engin popup — kaflinn opnast mjúklega og síðan rennur sjálfkrafa niður (vorbrautin-stíll). */
+  const avEl = $('#aptview');
+  function showAptView(a) {
+    if (!avEl || !a) return;
+    $('#avTitle').textContent = (lang === 'is' ? 'Íbúð ' : 'Apartment ') + a.id;
+
+    // sömu reitir og á vorbrautin.is: heimilisfang, hæð, herb., birt stærð, geymsla, verð
+    const rows = [
+      [lang === 'is' ? 'Heimilisfang' : 'Address', 'Vorbraut 14'],
+      [lang === 'is' ? 'Hæð' : 'Floor', floorLabel(a.floor)],
+      [lang === 'is' ? 'Herb.' : 'Rooms', String(a.rooms)],
+      [lang === 'is' ? 'Birt stærð' : 'Size', fmtArea(a.area) + ' m²'],
+    ];
+    if (a.balcony) rows.push([lang === 'is' ? 'Svalir' : 'Balcony', fmtArea(a.balcony) + ' m²']);
+    rows.push([lang === 'is' ? 'Bílastæði' : 'Parking', String(parkOf(a) || '—')]);
+    rows.push([lang === 'is' ? 'Verð' : 'Price',
+               a.price ? fmtKr(a.price) : statusLabel(a.status)]);
+    $('#avSpecs').innerHTML = rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+
+    const plan = $('#avPlan');
+    plan.src = 'assets/plans/' + a.plan;
+    plan.alt = (lang === 'is' ? 'Grunnmynd íbúðar ' : 'Floor plan ') + a.id;
+    plan.onclick = () => openModal(a);        // smella á teikningu -> hærri upplausn
+
+    $('#avCta').innerHTML =
+      `<button type="button" class="btn" data-av-open>${t('sel.open')}</button>`;
+    const ob = $('[data-av-open]', avEl);
+    if (ob) ob.addEventListener('click', () => openModal(a));
+
+    avEl.hidden = false;
+    // setTimeout (ekki rAF) — rAF keyrir ekki í földum/óvirkum flipum
+    setTimeout(() => {
+      avEl.classList.add('is-in');
+      // .select er position:relative, svo offsetTop dugar ekki — reikna út frá skrunstöðu
+      const sr = scroller.getBoundingClientRect(), er = avEl.getBoundingClientRect();
+      const NAV = 84;                                   // fasta valmyndin efst
+      const top = scroller.scrollTop + (er.top - sr.top) - NAV - 12;
+      goToSection(Math.max(0, top));                    // sama mjúka skrunið og annars staðar
+    }, 30);
+  }
+
   function renderSelInfo() {
     if (!selInfoEl) return;
-    if (!selApt) { selInfoEl.innerHTML = `<p class="select__hint">${t('sel.empty')}</p>`; return; }
-    const a = selApt;
-    const rows = [
-      [t('col.floor'), floorLabel(a.floor)],
-      [t('col.rooms'), roomsLabel(a.rooms)],
-      [t('spec.area'), fmtArea(a.area) + ' m²'],
-    ];
-    if (a.price) rows.push([t('spec.price'), fmtKr(a.price)]);
-    selInfoEl.innerHTML = `
-      <div class="select__card">
-        <div class="select__cardhead">
-          <h3>${(lang === 'is' ? 'Íbúð ' : 'Apartment ') + a.id}</h3>
-          <span class="tag tag--${a.status}">${statusLabel(a.status)}</span>
-        </div>
-        <dl class="select__specs">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
-        <button type="button" class="btn btn--solid select__open">${t('sel.open')}</button>
-      </div>`;
-    const open = $('.select__open', selInfoEl);
-    if (open) open.addEventListener('click', () => openModal(aptById[a.id]));
+    // Þegar íbúð er valin birtast upplýsingarnar FYRIR NEÐAN (.aptview) — ekki tvítaka þær hér.
+    selInfoEl.innerHTML = selApt ? '' : `<p class="select__hint">${t('sel.empty')}</p>`;
   }
+
 
   function renderSelector() {
     if (!selFloorsEl) return;                              // veljarinn er aðeins á forsíðunni
     renderSelFloors();
     renderSelLegend();
-    const f = selFloor != null ? selFloor : (selApt ? selApt.floor : FLOOR_LIST[0]);
-    renderDiagramInto(selDiagramEl, f, selApt ? selApt.id : null, selectApt);
+    // grunnmyndin situr á þeirri hæð sem síðast var staðnæmst við (planFloor)
+    const f = planFloor != null ? planFloor : (selApt ? selApt.floor : FLOOR_LIST[0]);
+    renderDiagramInto(selDiagramEl, f, hoverApt ? hoverApt.id : (selApt ? selApt.id : null), selectApt);
     renderSelInfo();
     syncFacade();
   }
+  window.VB.renderSelector = renderSelector;   // ?conedit teiknar upp á nýtt eftir drag
 
   /* ----- staða íbúða úr Supabase (lifandi: grænt/gult/rautt) ----------- */
   if (window.VB && typeof VB.getStatuses === 'function') {

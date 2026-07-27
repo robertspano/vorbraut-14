@@ -76,6 +76,17 @@ h3{font-size:1.35rem}
   color:#fff;
 }
 .nav--solid{height:74px}
+/* Forsíðan: hero-textinn er á hvítum grunni -> dökk valmynd svo hún sjáist.
+   (Undirsíður halda ljósu valmyndinni ofan á dökkri hero-mynd.) */
+body.home .nav{background:linear-gradient(180deg,rgba(255,255,255,.96) 0%,rgba(255,255,255,.82) 62%,rgba(255,255,255,0) 100%);
+  color:#262522}
+body.home .nav a,body.home .nav button{color:#262522}
+body.home .nav__contact{border-color:#C0BBB5;color:#262522}
+body.home .nav__contact:hover{background:#262522;color:#fff;border-color:#262522}
+body.home .nav--solid{background:rgba(255,255,255,.96);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-bottom:1px solid #E8E7E8}
+body.home .burger span{background:#262522}
 /* undirsíður: dekkri haus þegar skrunað er (forsíðan helst gegnsæ) */
 body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.86);
   -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.07)}
@@ -146,132 +157,175 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .hero__cta .btn--ghost:hover{background:#fff;color:var(--charcoal);border-color:#fff}
 
 /* ============ HERO — skipt skjámynd: texti vinstra · mynd hægra ============ */
-.shero{display:grid;grid-template-columns:42fr 58fr;min-height:82vh;background:var(--bone);padding-top:84px}
-.shero__text{display:flex;align-items:center;justify-content:center;
-  padding:clamp(48px,7vh,96px) clamp(28px,4.5vw,84px)}
-.shero__textinner{max-width:560px;width:100%}
-.shero__eyebrow{font-size:.72rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase;
-  color:var(--timber);margin-bottom:1.3rem}
-.shero__title{font-family:var(--display);font-weight:300;font-size:clamp(2.5rem,4.6vw,4.3rem);
-  line-height:1.04;letter-spacing:-.015em;color:var(--charcoal);max-width:16ch}
-.shero__lead{margin-top:1.15rem;font-size:clamp(1rem,1.4vw,1.16rem);color:var(--muted);max-width:44ch}
-.shero__cta{display:flex;gap:.9rem;margin-top:2.1rem;flex-wrap:wrap}
-.shero__facts{display:flex;gap:clamp(1.4rem,3vw,2.8rem);border-top:1px solid var(--line);
-  margin-top:2.6rem;padding-top:1.3rem}
-.shero__facts div{display:flex;flex-direction:column}
-.shero__facts b{font-family:var(--display);font-weight:400;font-size:clamp(1.4rem,2.2vw,1.9rem);line-height:1;color:var(--charcoal)}
-.shero__facts span{font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-top:.4rem}
-.shero__media{position:relative}
-.shero__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+/* ===== HERO — texti vinstra á björtum grunni, dróna-myndband hægra ===== */
+.shero{display:grid;grid-template-columns:minmax(0,47fr) minmax(0,53fr);
+  min-height:100svh;background:#fff;position:relative}
+.shero__text{display:flex;align-items:center;
+  padding:calc(84px + 4vh) clamp(28px,4.5vw,84px) clamp(40px,6vh,72px) clamp(28px,7vw,128px)}
+.shero__textinner{max-width:600px;width:100%}
+
+/* auðkenni: fín lína + smátexti */
+.shero__eyebrow{display:flex;align-items:center;gap:.85rem;font-size:.7rem;font-weight:500;
+  letter-spacing:.24em;text-transform:uppercase;color:#7C7064;margin-bottom:1.6rem}
+.shero__rule{display:block;width:clamp(28px,4vw,56px);height:1px;background:#C0BBB5;flex:none}
+
+/* fyrirsögn: þrjár línur, þriðja í skáletruðu serif -> nútímaleg andstæða */
+.shero__title{margin:0;line-height:.98;letter-spacing:-.03em;color:#262522}
+.shero__title span{display:block}
+.shero__l1{font-family:'DM Sans',var(--font);font-weight:500;
+  font-size:clamp(2.6rem,5.6vw,4.6rem)}
+.shero__l2{font-family:'DM Sans',var(--font);font-weight:500;
+  font-size:clamp(2.6rem,5.6vw,4.6rem);margin-left:clamp(24px,4vw,72px)}
+.shero__l3{font-family:'Zilla Slab',Georgia,serif;font-weight:600;font-style:italic;
+  font-size:clamp(2.1rem,4.4vw,3.6rem);color:#7C7064;margin-top:.12em}
+
+.shero__lead{margin-top:1.5rem;font-size:clamp(1rem,1.25vw,1.12rem);line-height:1.6;
+  color:#5f564c;max-width:44ch}
+.shero__cta{display:flex;gap:.7rem;margin-top:2rem;flex-wrap:wrap}
+.shero .btn--solid{background:#262522;color:#fff;border:1px solid #262522;border-radius:3px;
+  letter-spacing:.06em;text-transform:uppercase;font-size:.76rem;font-weight:500;padding:.9rem 1.7rem}
+.shero .btn--solid:hover{background:#000;border-color:#000}
+.shero .btn--ghost{background:transparent;color:#262522;border:1px solid #C0BBB5;border-radius:3px;
+  letter-spacing:.06em;text-transform:uppercase;font-size:.76rem;font-weight:500;padding:.9rem 1.7rem}
+.shero .btn--ghost:hover{border-color:#262522}
+
+/* tölur: fjórar súlur með fínum skilum */
+.shero__facts{display:grid;grid-template-columns:repeat(4,auto);gap:0 clamp(1.1rem,2.4vw,2.4rem);
+  border-top:1px solid #E8E7E8;margin-top:2.6rem;padding-top:1.5rem;justify-content:start}
+.shero__facts div{display:flex;flex-direction:column;padding-right:clamp(1.1rem,2.4vw,2.4rem)}
+.shero__facts div+div{border-left:1px solid #E8E7E8;padding-left:clamp(1.1rem,2.4vw,2.4rem)}
+.shero__facts b{font-family:'Zilla Slab',Georgia,serif;font-weight:700;
+  font-size:clamp(1.5rem,2.2vw,2rem);line-height:1;color:#262522}
+.shero__facts span{font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
+  color:#7C7064;margin-top:.5rem}
+
+/* myndbandsdálkurinn */
+.shero__media{position:relative;overflow:hidden;background:#E8E7E8}
+.shero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.shero__badge{position:absolute;left:clamp(14px,1.6vw,26px);bottom:clamp(14px,1.8vh,26px);
+  z-index:2;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);
+  color:#262522;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+  padding:.5rem .9rem;border-radius:2px}
+
 @media (prefers-reduced-motion:no-preference){
-  .shero__textinner{animation:sheroIn .8s var(--ease) both}
-  @keyframes sheroIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .shero__textinner>*{animation:sheroIn .75s var(--ease) both}
+  .shero__eyebrow{animation-delay:.05s}
+  .shero__title{animation-delay:.13s}
+  .shero__lead{animation-delay:.21s}
+  .shero__cta{animation-delay:.29s}
+  .shero__facts{animation-delay:.37s}
+}
+@media(max-width:900px){
+  .shero{grid-template-columns:1fr;min-height:0}
+  .shero__media{height:62vw;max-height:460px;order:-1}
+  .shero__text{padding:clamp(28px,5vh,44px) clamp(24px,6vw,40px) clamp(34px,6vh,52px)}
+  .shero__l2{margin-left:clamp(16px,6vw,40px)}
 }
 
-/* forsíða: ljós, fastur haus yfir ljósu hero-i — skuggi aðeins eftir skrun */
-.home .nav{background:var(--snow);color:var(--charcoal);border-bottom:1px solid transparent}
-.home .nav--scrolled{border-bottom-color:var(--line);box-shadow:0 10px 30px -20px rgba(0,0,0,.22)}
-.home .navdrop__menu{background:#fff;border-color:var(--line);box-shadow:0 20px 44px rgba(0,0,0,.14)}
-.home .navdrop__menu a.navdrop__item:hover{background:rgba(58,61,64,.06)}
-.home .nav__contact{border:1px solid var(--charcoal);border-radius:100px;padding:.42rem 1.05rem}
-.home .nav__contact::after{display:none}
-.home .nav__contact:hover{background:var(--charcoal);color:#fff}
+@keyframes sheroIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
-
-/* ===================== GAGNVIRKT VAL (full-screen) =================== */
-.select{position:relative;overflow:hidden;background:#0c0d0e;color:#f3f1ec}
-.select__inner{max-width:1840px;margin:0 auto;padding:clamp(56px,8vh,104px) clamp(24px,4vw,88px)}
-.select__intro{text-align:center;margin-bottom:clamp(1.9rem,4vh,3.2rem)}
-.select__intro h2{color:#fff}
-.select__lead{color:rgba(255,255,255,.66);max-width:56ch;margin:.7rem auto 0;font-size:.98rem}
-.select__grid{display:grid;grid-template-columns:minmax(0,67fr) minmax(300px,33fr);
-  gap:clamp(1.4rem,2.2vw,2.6rem);align-items:stretch}
-/* static framhlið: 16:9 kassi í flæði (byggingin/aftan sem bakgrunnur með cover) */
-.facade{position:relative;width:100%;aspect-ratio:16/9;margin:0;overflow:hidden;align-self:start;
-  background:#0b0c0d url('../assets/cine/f096.webp') center/cover no-repeat}
-/* hægri spjald: hæðir · hæðarkort · skýringar · valin íbúð */
-.select__panel{display:flex;flex-direction:column;gap:1.1rem;min-width:0;
-  border:1px solid rgba(255,255,255,.12);background:#101112;padding:clamp(1rem,1.6vw,1.6rem)}
-.select__floors{display:flex;align-items:center;gap:.95rem}
-.select__floorslbl{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55)}
-.select__fbtns{display:flex;gap:.45rem}
-.select__fbtn{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.28);
-  color:#fff;font-size:.95rem;transition:.2s;display:inline-flex;align-items:center;justify-content:center}
-.select__fbtn:hover{border-color:#fff}
-.select__fbtn.is-on{background:var(--green);border-color:var(--green)}
-.select__diagram{background:#fff;border:1px solid rgba(255,255,255,.1);padding:.9rem}
+/* ===== ÍBÚÐAVELJARI — pixel-perfect eftir vorbrautin.is (Vorbraut 9) ===== */
+.select{position:relative;overflow:hidden;background:#fff;color:#262522;
+  font-family:'DM Sans',var(--font);border-top:8px solid #fff}   /* hvít lína aðskilur hero */
+.select__inner{max-width:none;margin:0;padding:0}
+.select__grid{display:grid;grid-template-columns:minmax(0,72fr) minmax(340px,28fr);gap:0;align-items:stretch}
+.facade{position:relative;width:100%;margin:0;overflow:hidden;align-self:stretch;
+  min-height:min(56vw,640px);
+  background:#E8E7E8 url('../assets/renders/foto-bak.webp') center/cover no-repeat}
+.select__panel{display:flex;flex-direction:column;gap:0;min-width:0;
+  padding:clamp(30px,3.4vw,56px) clamp(26px,3vw,54px) clamp(18px,2vh,28px)}
+.select__brand{font-family:'Zilla Slab',Georgia,serif;font-weight:700;
+  font-size:clamp(1.9rem,2.6vw,2.6rem);line-height:1.06;color:#262522;margin:0 0 1.7rem;letter-spacing:0}
+.select__sect{display:flex;gap:.7rem;align-items:center;padding-bottom:1rem}
+.select__sect h3{font-family:'Zilla Slab',Georgia,serif;font-weight:700;font-size:1.5rem;
+  line-height:1;color:#262522;margin:0}
+.select__rule{display:block;height:1px;background:#E8E7E8;flex:1}
+.select__fbtns{display:flex;gap:.3rem;font-weight:600;margin-bottom:2rem}
+.select__fbtn{min-width:28px;height:28px;padding:0 .38rem;border-radius:999px;
+  border:2px solid #E2D9CA;background:transparent;color:#262522;
+  font-family:'DM Sans',var(--font);font-size:.94rem;font-weight:600;line-height:1;
+  cursor:pointer;transition:background .15s}
+.select__fbtn:hover{background:#EFE9DE;border-color:#C0BBB5}
+.select__fbtn.is-on{background:#C0BBB5;border-color:#C0BBB5}
+.select__diagram{background:transparent;border:0;padding:0;max-width:520px}
 .select__diagram svg{width:100%;height:auto;display:block;overflow:visible}
-.select__legend{list-style:none;display:flex;flex-wrap:wrap;gap:.7rem 1.3rem;margin:0;padding:0}
-.select__leg{display:inline-flex;align-items:center;gap:.45rem;font-size:.78rem;letter-spacing:.06em;
-  text-transform:uppercase;color:rgba(255,255,255,.75)}
-.select__leg i{width:11px;height:11px;border-radius:2px;display:inline-block}
-.select__leg--available i{background:#5fa83c}
-.select__leg--reserved i{background:#d8a72c}
-.select__leg--sold i{background:#cf4036}
-.select__info{border-top:1px solid rgba(255,255,255,.12);padding-top:1.1rem;flex:1}
-.select__hint{color:rgba(255,255,255,.6);font-size:.92rem}
+.select__legend{list-style:none;display:flex;flex-wrap:wrap;gap:.7rem 1.9rem;margin:1.6rem 0 0;padding:0}
+.select__leg{display:inline-flex;align-items:center;gap:.55rem;font-size:.84rem;line-height:1;
+  letter-spacing:.05em;text-transform:uppercase;color:#262522;font-weight:500}
+.select__leg i{width:18px;height:18px;border-radius:2px;display:inline-block}
+.select__leg--available i{background:#0D710A}
+.select__leg--reserved i{background:#D8A72C}
+.select__leg--sold i{background:#FF5050}
+.select__info{border-top:1px solid #E8E7E8;padding-top:1.15rem;margin-top:1.4rem;flex:1}
+.select__hint{color:#7C7064;font-size:.95rem}
 .select__card{display:flex;flex-direction:column;gap:.95rem}
 .select__cardhead{display:flex;align-items:center;justify-content:space-between;gap:.8rem}
-.select__cardhead h3{color:#fff;font-size:1.3rem;font-weight:400}
+.select__cardhead h3{color:#262522;font-size:1.3rem;font-weight:600;font-family:'Zilla Slab',Georgia,serif}
 .select__specs{display:grid;grid-template-columns:1fr 1fr;gap:.6rem 1rem;margin:0}
-.select__specs dt{font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.5)}
-.select__specs dd{margin:0;font-size:1rem;color:#fff}
+.select__specs dt{font-size:.64rem;letter-spacing:.13em;text-transform:uppercase;color:#7C7064}
+.select__specs dd{margin:0;font-size:1rem;color:#262522}
 .select__open{align-self:flex-start}
-.select__card .btn--solid{background:#f3f1ec;color:var(--charcoal)}
-.select__card .btn--solid:hover{background:#fff;transform:translateY(-1px)}
-/* stöðumerki á dökku spjaldi — læsileg útgáfa af .tag litunum */
-.select__card .tag--available{background:rgba(95,168,60,.2);color:#a9cf8a}
-.select__card .tag--reserved{background:rgba(216,167,44,.18);color:#e7cd83}
-.select__card .tag--sold{background:rgba(207,64,54,.18);color:#e0a59c}
-/* lyklaborð: sýnileg fókus-útlína á öllum stýringum veljarans */
+.select__card .btn--solid{background:#262522;color:#FFFAF2}
+.select__card .btn--solid:hover{background:#000;transform:translateY(-1px)}
+.select__card .tag--available{background:rgba(13,113,10,.12);color:#0B5D0A}
+.select__card .tag--reserved{background:rgba(216,167,44,.16);color:#8a6d14}
+.select__card .tag--sold{background:rgba(255,80,80,.14);color:#C11414}
 .facade__svg polygon:focus{outline:none}
 .facade__svg polygon:focus-visible{opacity:.62;stroke:#fff;stroke-width:2.4}
-.select__fbtn:focus-visible,.facade__sidebtn:focus-visible,.select__open:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.select__fbtn:focus-visible,.facade__sidebtn:focus-visible,.select__open:focus-visible{outline:2px solid #262522;outline-offset:2px}
 .dg-apt:focus{outline:none}
-.dg-apt:focus-visible polygon{stroke:#2f3133;stroke-width:2.2}
+.dg-apt:focus-visible polygon{stroke:#262522;stroke-width:2.4}
 .facade>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.facade__svg{position:absolute;inset:0;width:100%;height:100%;transition:opacity .6s ease}
-/* Framan/Aftan — mjúkt skáreveal: myndin "myndast" frá efra-vinstra horni að neðra-hægra
-   með ljós-sópi (shine). Gradient-mask rennur skáhallt yfir → mjúk brún, ekki hörð. */
-.facade__front,.facade__shine{position:absolute;inset:0;
-  -webkit-mask-image:linear-gradient(135deg,#000 0%,#000 44%,rgba(0,0,0,0) 56%,rgba(0,0,0,0) 100%);
-          mask-image:linear-gradient(135deg,#000 0%,#000 44%,rgba(0,0,0,0) 56%,rgba(0,0,0,0) 100%);
-  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-  -webkit-mask-size:235% 235%;mask-size:235% 235%;
-  -webkit-mask-position:100% 100%;mask-position:100% 100%;
-  transition:-webkit-mask-position 1.2s cubic-bezier(.6,.01,.24,1),mask-position 1.2s cubic-bezier(.6,.01,.24,1),visibility 0s 1.2s;
-  will-change:mask-position}
-.facade__front{visibility:hidden}
-.facade__shine{z-index:5;pointer-events:none;opacity:0;mix-blend-mode:screen;
-  background:linear-gradient(122deg,transparent 32%,rgba(255,255,255,.9) 50%,transparent 68%);
-  background-size:320% 320%;background-position:0% 0%}
-.facade.is-front .facade__front{visibility:visible;
-  -webkit-mask-position:0% 0%;mask-position:0% 0%;
-  transition:-webkit-mask-position 1.2s cubic-bezier(.6,.01,.24,1),mask-position 1.2s cubic-bezier(.6,.01,.24,1),visibility 0s 0s}
-.facade.is-front .facade__shine{-webkit-mask-position:0% 0%;mask-position:0% 0%;
-  animation:facadeShine 1.2s cubic-bezier(.6,.01,.24,1)}
-@keyframes facadeShine{
-  0%{opacity:0;background-position:0% 0%}
-  18%{opacity:1}
-  80%{opacity:.95}
-  100%{opacity:0;background-position:100% 100%}
+.facade__svg{position:absolute;inset:0;width:100%;height:100%;transition:opacity .45s ease}
+/* Sjónarhorn hússins — hver mynd er lag sem krossblandast. Ótakmarkaður fjöldi. */
+.facade__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+  opacity:0;transition:opacity .5s ease}
+.facade__img.is-on{opacity:1}
+/* smellisvæðin eiga aðeins við bakhliðina (þar eru þau kvörðuð) */
+.facade:not([data-view="aftan"]) .facade__svg{opacity:0;pointer-events:none}
+.facade:not([data-view="aftan"]) .select__head{opacity:0;pointer-events:none;transition:opacity .5s ease}
+/* ===== VALIN ÍBÚÐ — teikning fyrir neðan veljarann (pixel-eftirlíking vorbrautin.is) ===== */
+.aptview{background:#fff;
+  opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.aptview.is-in{opacity:1;transform:none}
+.aptview__inner{max-width:1600px;margin:0 auto;display:grid;
+  grid-template-columns:minmax(240px,300px) minmax(0,1fr);
+  align-items:start;
+  padding:clamp(22px,3vh,40px) clamp(24px,7vw,128px) clamp(30px,4.5vh,58px)}
+/* þunn lína efst yfir allt + lóðrétt skillína milli dálka (eins og hjá þeim) */
+.aptview__inner::before{content:"";grid-column:1 / -1;height:1px;background:#E8E7E8;
+  margin-bottom:clamp(20px,2.6vh,36px)}
+.aptview__side{padding-right:clamp(22px,2.6vw,44px)}
+.aptview__plan{border-left:1px solid #E8E7E8;padding-left:clamp(24px,3vw,52px)}
+.aptview__title{font-family:'Zilla Slab',Georgia,serif;font-weight:700;
+  font-size:clamp(1.55rem,2vw,2rem);color:#262522;margin:0 0 1.6rem;line-height:1.1}
+.aptview__specs{margin:0}
+.aptview__specs>div{display:flex;justify-content:space-between;gap:1rem;align-items:baseline;
+  padding:.62rem 0;border-bottom:1px solid #E8E7E8}
+.aptview__specs>div:first-child{border-top:1px solid #E8E7E8}
+.aptview__specs dt,.aptview__specs dd{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;
+  color:#262522;margin:0;font-weight:500}
+.aptview__specs dd{text-align:right}
+.aptview__cta{display:flex;flex-direction:column;gap:.5rem;margin-top:1.5rem}
+.aptview__cta .btn{width:100%;display:block;text-align:center;background:#7C7064;color:#FFFAF2;border:0;
+  letter-spacing:.06em;text-transform:uppercase;font-size:.76rem;font-weight:500;
+  padding:.85rem 1rem;border-radius:3px;cursor:pointer;transition:background .15s;font-family:inherit}
+.aptview__cta .btn:hover{background:#5f564c}
+.aptview__plan img{max-width:100%;height:auto;display:block;margin:0 auto;cursor:zoom-in}
+.aptview__cap{margin:1.4rem 0 0;text-align:center;color:#7C7064;font-size:.86rem}
+@media(max-width:900px){
+  .aptview__inner{grid-template-columns:1fr;gap:26px}
+  .aptview__side{padding-right:0}
+  .aptview__plan{border-left:0;padding-left:0;border-top:1px solid #E8E7E8;padding-top:24px}
 }
-.facade.is-front .facade__svg{opacity:0;pointer-events:none}
-.facade.is-front .select__head{opacity:0;pointer-events:none;transition:opacity .55s ease}
-@media (prefers-reduced-motion:reduce){
-  .facade__front,.facade__shine{-webkit-mask-image:none;mask-image:none;transition:opacity .35s ease, visibility 0s .35s}
-  .facade__front{opacity:0}
-  .facade.is-front .facade__front{opacity:1;visibility:visible;transition:opacity .35s ease, visibility 0s 0s}
-  .facade.is-front .facade__shine{animation:none;opacity:0}
-}
-.facade__sides{position:absolute;top:1.1rem;left:50%;transform:translateX(-50%);z-index:6;display:inline-flex;
-  background:rgba(18,20,18,.42);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  border:1px solid rgba(255,255,255,.3);border-radius:999px;overflow:hidden;opacity:1}
-.facade__sidebtn{border:0;background:none;color:rgba(255,255,255,.86);font:inherit;font-size:.82rem;
-  letter-spacing:.04em;padding:.5rem 1.3rem;cursor:pointer;transition:.18s;white-space:nowrap}
-.facade__sidebtn+.facade__sidebtn{border-left:1px solid rgba(255,255,255,.24)}
-.facade__sidebtn:hover{color:#fff}
-.facade__sidebtn.is-on{background:var(--green);color:#fff}
+
+.facade__sides{position:absolute;top:1rem;right:1rem;z-index:6;display:inline-flex;gap:.45rem}
+.facade__sidebtn{border:1px solid rgba(124,112,100,.7);background:rgba(124,112,100,.7);color:#FFFAF2;
+  font-family:'DM Sans',var(--font);font-size:.78rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;padding:.6rem 1.15rem;border-radius:6px;cursor:pointer;
+  transition:.18s;white-space:nowrap}
+.facade__sidebtn:hover{background:rgba(124,112,100,.9)}
+.facade__sidebtn.is-on{background:#fff;border-color:#fff;color:#262522}
 /* text overlay at the bottom over a soft scrim */
 .select__head{position:absolute;left:0;right:0;bottom:0;z-index:4;pointer-events:none;
   text-align:center;color:#fff;padding:96px var(--pad) clamp(34px,6vh,66px);
@@ -282,7 +336,7 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .select__sub{color:rgba(255,255,255,.82);max-width:54ch;margin:.7rem auto 0;font-size:1rem}
 /* gegnsætt highlight — ferskur grasgrænn (ekki multiply -> ekkert mosa-grænt) */
 .facade__svg polygon{
-  fill:#5fa83c;stroke:rgba(95,168,60,.95);stroke-width:1.2;
+  fill:#0D710A;stroke:rgba(13,113,10,.9);stroke-width:1.2;
   opacity:0;cursor:pointer;transition:opacity .3s var(--ease);paint-order:stroke;
 }
 .facade__svg polygon:hover,.facade__svg polygon.on{opacity:.58}
@@ -296,7 +350,14 @@ body.maskedit .facade__sides,body.maskedit .select__head{display:none!important}
 .mk-h{fill:#fff;stroke:var(--green);stroke-width:2;vector-effect:non-scaling-stroke;cursor:grab}
 .mk-lbl{fill:#fff;font:600 13px var(--font);text-anchor:middle;paint-order:stroke;stroke:rgba(0,0,0,.5);stroke-width:3px;pointer-events:none}
 #maskPanel{position:fixed;left:0;right:0;bottom:0;z-index:9001;background:rgba(15,16,17,.93);color:#fff;
-  padding:.7rem 1rem .9rem;font:13px/1.4 var(--font);box-shadow:0 -10px 40px rgba(0,0,0,.45);backdrop-filter:blur(6px)}
+  padding:.7rem 1rem .9rem;font:13px/1.4 var(--font);box-shadow:0 -10px 40px rgba(0,0,0,.45);backdrop-filter:blur(6px);
+  transition:transform .22s ease}
+/* samanlagt: aðeins efsta röðin sést -> jarðhæðin verður sýnileg */
+#maskPanel.mk--min{transform:translateY(calc(100% - 46px))}
+#maskPanel.mk--min .mk__hint,#maskPanel.mk--min .mk__legend{opacity:0;pointer-events:none}
+#maskPanel.mk--top{bottom:auto;top:0;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+#maskPanel.mk--top.mk--min{transform:translateY(calc(-100% + 46px))}
+#mkFold{min-width:34px}
 .mk__row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
 .mk__row strong{font-size:.82rem;letter-spacing:.04em;margin-right:.3rem}
 .mk__sp{flex:1}
@@ -341,55 +402,56 @@ body.maskedit .facade__sides,body.maskedit .select__head{display:none!important}
 .tag--sold{background:rgba(58,61,64,.1);color:var(--muted)}
 
 /* ===================== ÍBÚÐALISTI (dökk tafla, vesturvin-stíll) ===================== */
-.apts{background:#0e0f10;color:#f3f1ec;padding:clamp(64px,9vh,118px) 0}
+.apts{background:#fff;color:#262522;padding:clamp(26px,3.5vh,48px) 0 clamp(56px,8vh,100px)}
 .apts__inner{max-width:1840px;width:100%;margin:0 auto;padding:0 clamp(24px,6vw,120px)}
-.apts__head{text-align:center;margin-bottom:clamp(2.4rem,5vh,3.6rem)}
-.apts__title{font-family:var(--display);font-weight:400;color:#fff;font-size:clamp(2rem,4vw,3rem);margin-top:.3rem}
+.apts__head{text-align:center;margin-bottom:clamp(1.5rem,3vh,2.4rem)}
+.apts__sub{color:#7C7064;font-size:.95rem;margin-top:.5rem}
+.apts__title{font-family:'Zilla Slab',Georgia,serif;font-weight:700;color:#262522;font-size:clamp(2rem,4vw,3rem);margin-top:.3rem}
 .apts__filters{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:center;gap:2.6rem 4.5rem;margin-bottom:3.2rem}
 .apts__sliders{display:grid;grid-template-columns:repeat(2,minmax(210px,320px));gap:1.8rem 3.4rem;align-items:start}
 .rng{display:flex;flex-direction:column}
-.rng__label{text-align:center;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:1.2rem}
-.rng__track{position:relative;height:2px;background:rgba(255,255,255,.22);margin:0 7px}
-.rng__fill{position:absolute;top:0;bottom:0;background:#fff}
-.rng__h{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:#fff;border:0;padding:0;
+.rng__label{text-align:center;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:#7C7064;margin-bottom:1.2rem}
+.rng__track{position:relative;height:2px;background:#E2D9CA;margin:0 7px}
+.rng__fill{position:absolute;top:0;bottom:0;background:#262522}
+.rng__h{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:#262522;border:0;padding:0;
   transform:translate(-50%,-50%);cursor:grab;touch-action:none;box-shadow:0 1px 5px rgba(0,0,0,.45)}
 .rng__h:active{cursor:grabbing}
-.rng__vals{display:flex;justify-content:space-between;margin-top:1rem;font-size:.96rem;color:rgba(255,255,255,.9)}
-.apts__reset{grid-column:1/-1;justify-self:center;border:0;background:none;color:rgba(255,255,255,.5);font:inherit;
+.rng__vals{display:flex;justify-content:space-between;margin-top:1rem;font-size:.96rem;color:#262522}
+.apts__reset{grid-column:1/-1;justify-self:center;border:0;background:none;color:#7C7064;font:inherit;
   font-size:.82rem;letter-spacing:.04em;cursor:pointer;text-decoration:underline;text-underline-offset:3px;padding:.3rem;margin-top:.3rem;transition:.18s}
-.apts__reset:hover{color:#fff}
-.apts__features{display:flex;flex-direction:column;gap:1.7rem;padding-left:3.4rem;border-left:1px solid rgba(255,255,255,.16)}
-.feat__title{font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:500;margin:0 0 1rem}
-.feat{display:flex;align-items:center;gap:.7rem;background:none;border:0;color:rgba(255,255,255,.82);font:inherit;
+.apts__reset:hover{color:#262522}
+.apts__features{display:flex;flex-direction:column;gap:1.7rem;padding-left:3.4rem;border-left:1px solid #E8E7E8}
+.feat__title{font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:#7C7064;font-weight:500;margin:0 0 1rem}
+.feat{display:flex;align-items:center;gap:.7rem;background:none;border:0;color:#3a3d40;font:inherit;
   font-size:.98rem;cursor:pointer;padding:.34rem 0;width:100%;text-align:left;transition:.15s}
-.feat i{width:15px;height:15px;border:1px solid rgba(255,255,255,.45);border-radius:50%;flex:none;transition:.15s;position:relative}
+.feat i{width:15px;height:15px;border:1px solid rgba(38,37,34,.42);border-radius:50%;flex:none;transition:.15s;position:relative}
 .feat.on i{background:var(--green);border-color:var(--green)}
-.feat.on i::after{content:"";position:absolute;inset:4px;border-radius:50%;background:#0e0f10}
-.feat:hover{color:#fff}
+.feat.on i::after{content:"";position:absolute;inset:4px;border-radius:50%;background:#fff}
+.feat:hover{color:#262522}
 .apts__tablewrap{overflow-x:auto}
 .apts__table{width:100%;border-collapse:collapse;min-width:760px}
 .apts__table th{text-align:left;font-weight:500;font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;
-  color:rgba(255,255,255,.5);padding:0 .85rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.22);white-space:nowrap}
+  color:#7C7064;padding:0 .85rem 1.1rem;border-bottom:1px solid #E2D9CA;white-space:nowrap}
 .apts__table th:last-child,.apts__table td:last-child{text-align:right}
-.apts__table td{padding:1.3rem .85rem;border-bottom:1px solid rgba(255,255,255,.1);
-  color:rgba(255,255,255,.92);font-size:1.06rem;white-space:nowrap}
+.apts__table td{padding:1.3rem .85rem;border-bottom:1px solid #E8E7E8;
+  color:#262522;font-size:1.06rem;white-space:nowrap}
 .aptrow{cursor:pointer}
-.aptrow__id{font-weight:600;color:#fff;letter-spacing:.02em;font-size:1.2rem}
+.aptrow__id{font-weight:600;color:#262522;letter-spacing:.02em;font-size:1.2rem}
 .aptrow--sold,.aptrow--reserved{cursor:pointer}
-.aptrow--sold td,.aptrow--reserved td{color:rgba(255,255,255,.4)}
-.aptrow--sold .aptrow__id,.aptrow--reserved .aptrow__id{color:rgba(255,255,255,.5)}
+.aptrow--sold td,.aptrow--reserved td{color:rgba(38,37,34,.42)}
+.aptrow--sold .aptrow__id,.aptrow--reserved .aptrow__id{color:#7C7064}
 .aptrow__status{font-size:1rem;letter-spacing:.02em}
-.aptrow--available .aptrow__status{color:#7cc04a}   /* til sölu -> grænt */
-.aptrow--reserved .aptrow__status{color:#e0b23e}    /* með fyrirvara -> gult */
-.aptrow--sold .aptrow__status{color:#e0655a}        /* selt -> rautt */
-.aptrow__view{text-decoration:underline;text-underline-offset:3px;color:#fff;white-space:nowrap}
-.apts__empty{text-align:center;color:rgba(255,255,255,.6);padding:2.4rem 0}
+.aptrow--available .aptrow__status{color:#0D710A}   /* til sölu -> grænt */
+.aptrow--reserved .aptrow__status{color:#8a6d14}    /* með fyrirvara -> gult */
+.aptrow--sold .aptrow__status{color:#C11414}        /* selt -> rautt */
+.aptrow__view{text-decoration:underline;text-underline-offset:3px;color:#262522;white-space:nowrap}
+.apts__empty{text-align:center;color:#7C7064;padding:2.4rem 0}
 @media(max-width:640px){
   .apts__filters{gap:1.2rem 1.4rem}
   .apts__table td,.apts__table th{padding-left:.7rem;padding-right:.7rem}
 }
 /* ===================== SÖLUAÐILAR (dökk, vesturvin-stíll) ===================== */
-.sellers{background:#0b0c0d;color:#f3f1ec;padding:clamp(64px,9vh,120px) 0;border-top:1px solid rgba(255,255,255,.08)}
+.sellers{background:#1E3226;color:#f3f1ec;padding:clamp(64px,9vh,120px) 0;border-top:1px solid rgba(255,255,255,.08)}
 .sellers__inner{max-width:1840px;width:100%;margin:0 auto;padding:0 clamp(24px,6vw,120px);
   display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:clamp(2.4rem,5vw,5rem);align-items:start}
 .sellers__title{font-family:var(--display);font-weight:400;color:#fff;font-size:clamp(2rem,3.6vw,2.9rem);margin-bottom:1.4rem;letter-spacing:.04em}
@@ -417,7 +479,7 @@ body.maskedit .facade__sides,body.maskedit .select__head{display:none!important}
 
 /* ===================== FOOTER (after the scroll film) ============== */
 /* mjór, hreinn footer — eins og vesturvin: heimilisfang vinstri · tengiliður miðja · tenglar hægri */
-.sitefoot{background:#0b0c0d;color:#fff;
+.sitefoot{background:#1E3226;color:#fff;
   padding:clamp(1rem,2.4vh,1.5rem) clamp(20px,3vw,56px) 0}
 .sitefoot__inner{max-width:1840px;margin:0 auto;
   border-top:1px solid rgba(255,255,255,.14);
@@ -513,21 +575,15 @@ body.planimg .aptm__plan img{pointer-events:none}
 .aptm__diagram{position:relative;margin:1.6rem 0 .2rem;padding:0 2px}
 .aptm__diagram svg{width:100%;height:auto;display:block;margin:0 auto;overflow:visible}
 /* heil grunnplata: byggingin er samfelld — engin hvít bil milli íbúða */
-.dg-foot{fill:#E7E1D2;stroke:rgba(58,61,64,.28);stroke-width:1;stroke-linejoin:round}
+.dg-foot{fill:#E8E7E8;stroke:#FFFAF2;stroke-width:1.6;stroke-linejoin:round}
 .dg-apt{cursor:pointer}
-/* íbúðir teiknaðar yfir plötuna: beige (sama og platan) með þunnri skiptilínu */
-.dg-apt polygon{fill:#E7E1D2;stroke:rgba(58,61,64,.28);stroke-width:1;stroke-linejoin:round;transition:fill .2s}
-.dg-apt text{fill:var(--charcoal);font-size:11px;font-weight:500;text-anchor:middle;font-family:var(--font);pointer-events:none}
-/* staða hverrar íbúðar á hæðinni — daufir tónar: grænt=til sölu, gult=frátekin, rautt=selt */
-.dg-apt--available polygon{fill:#a9cf8a}
-.dg-apt--reserved polygon{fill:#e7cd83}
-.dg-apt--sold polygon{fill:#e0a59c}
-.dg-apt:not(.is-sel):hover polygon{stroke:#3a3d40;stroke-width:1.5}
-/* valda íbúðin — sterkur staðu-litur + hvítur texti + dökk útlína */
-.dg-apt.is-sel polygon{stroke:#2f3133;stroke-width:1.7}
-.dg-apt.is-sel.dg-apt--available polygon{fill:#5fa83c}
-.dg-apt.is-sel.dg-apt--reserved polygon{fill:#d8a72c}
-.dg-apt.is-sel.dg-apt--sold polygon{fill:#cf4036}
+.dg-apt polygon{fill:#E8E7E8;stroke:#FFFAF2;stroke-width:2;stroke-linejoin:round;transition:fill .2s,filter .2s}
+.dg-apt text{fill:#fff;font-size:14px;font-weight:600;text-anchor:middle;font-family:'DM Sans',var(--font);pointer-events:none}
+.dg-apt--available polygon{fill:#0D710A}
+.dg-apt--reserved polygon{fill:#D8A72C}
+.dg-apt--sold polygon{fill:#FF5050}
+.dg-apt:not(.is-sel):hover polygon{filter:brightness(.9)}
+.dg-apt.is-sel polygon{stroke:#262522;stroke-width:2.2}
 .dg-apt.is-sel text{fill:#fff}
 /* ---- handvirkur hæðarkorts-ritill (?planedit) ---- */
 #peRoot{position:fixed;inset:0;z-index:9999;background:#f4f2ec;display:flex;flex-direction:column;font-family:var(--font);color:var(--ink)}
@@ -562,10 +618,21 @@ body.planimg .aptm__plan img{pointer-events:none}
 .pe__readout{font-size:.74rem;color:var(--charcoal);font-variant-numeric:tabular-nums;letter-spacing:.02em;min-width:11ch;text-align:right;margin-right:.3rem}
 .pe__legend{display:flex;gap:.3rem;padding:.5rem .9rem;background:#fff;border-top:1px solid var(--line);flex-wrap:wrap}
 .pe__toast{position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%);background:var(--charcoal);color:#fff;padding:.6rem 1.1rem;border-radius:8px;font-size:.84rem;z-index:10001;box-shadow:0 10px 30px rgba(0,0,0,.3)}
-.dg-north-ring{fill:#fff;stroke:rgba(58,61,64,.38);stroke-width:.8}
-.dg-north-l{fill:#fff;stroke:#3a3d40;stroke-width:.5;stroke-linejoin:round;stroke-linecap:round}
-.dg-north-r{fill:#3a3d40;stroke:#3a3d40;stroke-width:.5;stroke-linejoin:round;stroke-linecap:round}
-.dg-northlbl{fill:var(--charcoal);font-size:9px;font-weight:600;font-family:var(--font);text-anchor:middle;dominant-baseline:central;letter-spacing:.03em}
+.dg-north-ring{fill:#7C7064;stroke:none}
+.dg-north-l{fill:#FFFAF2;stroke:none}
+.dg-north-r{fill:#D8CFC0;stroke:none}
+/* útsýnis-keilur — nákvæmir litir vorbrautin.is: virk #aa8765, óvirk #999 */
+.dg-cone{cursor:pointer;pointer-events:all}
+/* ósýnilegt smell-svæði — gerir mjóa fleyginn auðveldan að hitta */
+.dg-cone-hit{fill:transparent;stroke:none;pointer-events:all}
+.dg-cone path,.dg-cone circle:not(.dg-cone-hit){fill:#999;stroke:#fff;stroke-width:2;transition:fill .18s}
+.dg-cone.is-active path,.dg-cone.is-active circle:not(.dg-cone-hit){fill:#aa8765}
+.dg-cone:hover path,.dg-cone:hover circle:not(.dg-cone-hit){fill:#aa8765}
+/* í keilu-ritlinum skiptir hover ekki um mynd -> ekki mála brúnt, svo liturinn
+   sýni ALLTAF hvaða sjónarhorn er raunverulega valið */
+body.conedit .dg-cone:hover path,body.conedit .dg-cone:hover circle:not(.dg-cone-hit){fill:#999}
+body.conedit .dg-cone.is-active:hover path,body.conedit .dg-cone.is-active:hover circle:not(.dg-cone-hit){fill:#aa8765}
+.dg-northlbl{fill:#474441;font-size:13px;font-weight:600;font-family:var(--font);text-anchor:middle;dominant-baseline:central;letter-spacing:.03em}
 /* tengill á heildar-hæðarmynd */
 /* skjala-tenglar (Heildarmynd hæðar / Skilalýsing) — eins og vesturvin */
 /* staða + tölur */
@@ -585,8 +652,8 @@ body.planimg .aptm__plan img{pointer-events:none}
   box-shadow:0 30px 80px rgba(0,0,0,.5)}
 
 /* ===== Hafa samband — sér síða (hafa-samband.html), dökkt þema, ferkantað form ===== */
-body.is-contact{background:#0b0c0d}
-.kontakt{min-height:100svh;display:flex;align-items:center;background:#0b0c0d;color:#fff;
+body.is-contact{background:#1E3226}
+.kontakt{min-height:100svh;display:flex;align-items:center;background:#1E3226;color:#fff;
   padding:clamp(4rem,10vh,7rem) clamp(24px,6vw,120px)}
 .kontakt__inner{max-width:1180px;width:100%;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;
   gap:clamp(2.4rem,5vw,6rem);align-items:center;animation:kontaktIn .8s var(--ease) both}
@@ -624,8 +691,8 @@ body.is-contact{background:#0b0c0d}
 .cform__note{margin:.1rem 0 0;font-size:.88rem;color:rgba(255,255,255,.85)}
 
 /* ======================= STORY SECTIONS (editorial) ======================= */
-.story{position:relative;background:#0e0f10;color:var(--bone);overflow:hidden}
-.story--alt{background:#0b0c0d}
+.story{position:relative;background:#24382C;color:var(--bone);overflow:hidden}
+.story--alt{background:#1E3226}
 .story__inner{max-width:var(--maxw);margin:0 auto;padding:clamp(72px,12vh,156px) var(--pad)}
 .story__num{font-family:var(--display);font-size:.82rem;letter-spacing:.16em;color:var(--green);
   opacity:.9;margin-bottom:1rem}
@@ -672,7 +739,7 @@ body.is-contact{background:#0b0c0d}
 /* dedicated section PAGE: hetjan byrjar undir fasta navinu; h1 stærð */
 .story--page .story__hero{min-height:clamp(440px,78vh,820px)}
 .story--page .story__title{font-size:clamp(2.6rem,5.4vw,4.6rem)}
-body.is-page{background:#0e0f10}
+body.is-page{background:#24382C}
 
 /* prev/next pager á undirsíðum */
 .story__pager{display:flex;justify-content:space-between;gap:1.2rem;flex-wrap:wrap;
@@ -754,7 +821,7 @@ body.is-page{background:#0e0f10}
   .lang__globe{width:20px;height:20px}
 
   /* hero texti passi á símaskjá — var of hár svo titillinn skaraðist við navið */
-  .shero{padding-top:64px}
+  .shero__text{padding-top:calc(64px + 3vh)}
   .hero__title{font-size:clamp(2.4rem,9vw,3.4rem)}
   .hero__tag{font-size:1.04rem;margin-top:.6rem;max-width:26ch}
   .hero__sub{font-size:.9rem;margin-top:.55rem;line-height:1.5}
@@ -792,9 +859,9 @@ body.is-page{background:#0e0f10}
 }
 /* ===== Sími/spjaldtölva: hero staflast (texti fyrst, mynd undir) ===== */
 @media (max-width:860px){
-  .shero{grid-template-columns:1fr;min-height:0}
+  .shero{min-height:88svh}
   .shero__text{padding:clamp(30px,5vh,48px) var(--pad)}
-  .shero__media{height:54vw;max-height:430px}
+  .shero__media{height:auto;max-height:none}
   .facade__sides{top:.8rem}
   .select__fbtn{width:44px;height:44px}     /* snertimörk ≥44px */
 }
@@ -815,7 +882,7 @@ body.is-page{background:#0e0f10}
    navið þegar hann skrunar upp undir það (z-index 60 > hero 3; vandinn var bara
    hálfgegnsær bakgrunnur). Tryggir engin skörun óháð render-tímasetningu. */
 @media (max-width:860px){
-  body:not(.is-page):not(.is-contact) .nav{background:#0b0c0d}
+  body:not(.is-page):not(.is-contact) .nav{background:#1E3226}
 }
 
 /* Sími: snerti-orðalag ("Ýttu eða smelltu") í stað "Færðu músina yfir" (engin mús á síma).
@@ -824,4 +891,47 @@ body.is-page{background:#0e0f10}
 @media (max-width:860px){
   .select__head .select__sub:not(.select__sub--touch){display:none}
   .select__head .select__sub--touch{display:block}
+}
+
+/* ===== BJARTAR UNDIRSÍÐUR — ljóst, líflegt ritstjórnarútlit ===== */
+body.is-page{background:var(--bone)}
+.story--page{background:var(--bone);color:var(--ink)}
+.story--page .story__hero{min-height:clamp(400px,64vh,700px)}
+
+.story--page .story__below{background:var(--bone)}
+.story--page .story__below:has(.story__shot){
+  display:grid;grid-template-columns:1.12fr .88fr;gap:clamp(30px,4.4vw,72px);align-items:start}
+.story--page .story__below .story__body{max-width:none}
+.story--page .story__below .story__body p{color:rgba(44,46,48,.80)}
+.story--page .story__below .story__body p:first-child{
+  font-family:var(--display);font-weight:300;color:var(--charcoal);
+  font-size:clamp(1.28rem,1.85vw,1.7rem);line-height:1.5}
+.story--page .story__below .story__body p:first-child::before{
+  content:"";display:block;width:52px;height:3px;background:var(--green);
+  border-radius:2px;margin:0 0 1.25rem}
+
+.story__shot{margin:0;border-radius:7px;overflow:hidden;position:relative;
+  box-shadow:0 32px 62px -36px rgba(20,22,18,.55);height:100%}
+.story__shot img{width:100%;height:100%;min-height:340px;object-fit:cover;display:block;
+  transition:transform 1.5s var(--ease)}
+.story__shot:hover img{transform:scale(1.05)}
+.story__shot figcaption{position:absolute;left:0;right:0;bottom:0;
+  font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:#fff;
+  padding:2rem 1.1rem .85rem;background:linear-gradient(0deg,rgba(10,12,10,.62),transparent)}
+
+.story--page .story__chips{margin-top:1.9rem}
+.story--page .story__chips li{color:var(--charcoal);
+  border:1px solid rgba(126,154,82,.42);background:rgba(126,154,82,.10)}
+
+.story--page .story__pager{border-top-color:rgba(44,46,48,.14)}
+.story--page .story__pager a{color:rgba(44,46,48,.6)}
+.story--page .story__pager a:hover{color:var(--ink)}
+.story--page .story__pager a b{color:var(--charcoal)}
+
+.story--page .story__below:has(.story__shot) .story__chips,
+.story--page .story__below:has(.story__shot) .story__pager{grid-column:1 / -1}
+
+@media(max-width:820px){
+  .story--page .story__below:has(.story__shot){grid-template-columns:1fr;gap:clamp(24px,6vw,38px)}
+  .story__shot img{min-height:240px}
 }
