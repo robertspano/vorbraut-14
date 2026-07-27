@@ -923,6 +923,26 @@ body.is-page{background:var(--bone)}
 .story--page .story__chips li{color:var(--charcoal);
   border:1px solid rgba(126,154,82,.42);background:rgba(126,154,82,.10)}
 
+/* lítið kort — hönnuður hússins (ARCHUS + Guðmundur Gunnlaugsson) */
+.story__arch{display:inline-flex;align-items:center;gap:1rem;margin-top:1.9rem;
+  padding:.85rem 1.3rem .85rem .85rem;border:1px solid rgba(58,61,64,.14);border-radius:12px;
+  background:#fff;box-shadow:0 18px 40px -30px rgba(20,22,18,.35);max-width:100%}
+.story__archface{width:52px;height:52px;border-radius:50%;flex:none;object-fit:cover;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--bone-2);color:var(--timber-dk);font-weight:600;letter-spacing:.04em;font-size:.95rem}
+.story__archinfo{display:flex;flex-direction:column;gap:.14rem;min-width:0}
+.story__archinfo b{font-weight:600;color:var(--charcoal);font-size:.98rem;line-height:1.25}
+.story__archinfo span{font-size:.78rem;color:var(--muted)}
+.story__archlogo{margin-left:.55rem;padding-left:1.15rem;border-left:1px solid rgba(58,61,64,.14);
+  display:inline-flex;flex-direction:column;line-height:1.1;color:var(--charcoal);
+  font-family:var(--display);font-weight:600;letter-spacing:.02em;font-size:1.04rem;white-space:nowrap}
+.story__archlogo em{font-style:normal;font-weight:400;font-size:.63rem;letter-spacing:.4em;color:rgba(44,46,48,.72)}
+.story--page .story__below:has(.story__shot) .story__arch{grid-column:1 / -1;justify-self:start}
+@media(max-width:520px){
+  .story__arch{flex-wrap:wrap;row-gap:.6rem}
+  .story__archlogo{margin-left:0;padding-left:0;border-left:0}
+}
+
 .story--page .story__pager{border-top-color:rgba(44,46,48,.14)}
 .story--page .story__pager a{color:rgba(44,46,48,.6)}
 .story--page .story__pager a:hover{color:var(--ink)}
