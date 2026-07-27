@@ -41,30 +41,51 @@
   // Animated section jump via rAF. Native smooth scrolling is unreliable with
   // `scroll-snap-type:mandatory` (and disabled under reduced-motion), so we
   // animate scrollTop ourselves with snap momentarily off, then restore it.
-  let scrollAnim, scrollSafety;
+  let scrollAnim, scrollSafety, dropAbort = null;
   const easeInOut = (p) => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2);
   function goToSection(top) {
+    if (dropAbort) dropAbort();
     if (scrollAnim) cancelAnimationFrame(scrollAnim);
     clearTimeout(scrollSafety);
     const start = scroller.scrollTop;
     const dist = top - start;
     if (Math.abs(dist) < 2) return;
-    const finish = () => {
+
+    const stop = () => {
       if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
-      scroller.scrollTo({ top, behavior: 'instant' });
+      clearTimeout(scrollSafety);
       scroller.style.scrollSnapType = '';
+      if (dropAbort) dropAbort();
     };
+    const finish = () => { stop(); scroller.scrollTo({ top, behavior: 'instant' }); };
+
     if (matchMedia('(prefers-reduced-motion:reduce)').matches) { finish(); return; }
+
+    // Notandinn á ALLTAF að ráða. Snerti hann hjólið, lyklaborðið eða skjáinn
+    // á meðan mjúka skrunið keyrir hættir það strax — annars berjast þau um
+    // sömu skrunstöðuna og hann kippist svo aftur á áfangastað þegar það lýkur.
+    const bail = () => stop();
+    const opts = { passive: true };
+    scroller.addEventListener('wheel', bail, opts);
+    scroller.addEventListener('touchstart', bail, opts);
+    window.addEventListener('keydown', bail, opts);
+    dropAbort = () => {
+      scroller.removeEventListener('wheel', bail, opts);
+      scroller.removeEventListener('touchstart', bail, opts);
+      window.removeEventListener('keydown', bail, opts);
+      dropAbort = null;
+    };
+
     scroller.style.scrollSnapType = 'none';
     const dur = Math.min(900, Math.max(420, Math.abs(dist) * 0.42));
-    scrollSafety = setTimeout(finish, dur + 250); // guard if rAF is throttled
+    scrollSafety = setTimeout(finish, dur + 250); // öryggisnet ef rAF er hemlað
     let t0 = null;
     const step = (ts) => {
       if (t0 == null) t0 = ts;
       const p = Math.min(1, (ts - t0) / dur);
       scroller.scrollTo({ top: start + dist * easeInOut(p), behavior: 'instant' });
       if (p < 1) scrollAnim = requestAnimationFrame(step);
-      else { scrollAnim = null; clearTimeout(scrollSafety); finish(); }
+      else finish();
     };
     scrollAnim = requestAnimationFrame(step);
   }
@@ -74,13 +95,26 @@
     const panel = $('.shero__panel'), heroSec = $('.shero');
     if (panel && heroSec && matchMedia('(pointer:fine)').matches
         && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
+      // rAF-hemlað: mousemove getur komið 100+ sinnum á sekúndu og hver skrif í
+      // style.transform neyða fram endurútreikning. Eitt skrif á ramma dugar.
+      let mx = 0, my = 0, pending = false;
+      const paint = () => {
+        pending = false;
+        panel.style.transform = `translate(${(mx * 10).toFixed(1)}px, ${(my * 8).toFixed(1)}px)`;
+      };
       heroSec.addEventListener('mousemove', (e) => {
         const r = heroSec.getBoundingClientRect();
-        const dx = (e.clientX - r.left) / r.width - 0.5;
-        const dy = (e.clientY - r.top) / r.height - 0.5;
-        panel.style.transform = `translate(${(dx * 10).toFixed(1)}px, ${(dy * 8).toFixed(1)}px)`;
+        mx = (e.clientX - r.left) / r.width - 0.5;
+        my = (e.clientY - r.top) / r.height - 0.5;
+        if (!pending) { pending = true; requestAnimationFrame(paint); }
+      }, { passive: true });
+      // will-change aðeins á meðan músin er yfir hetjunni — annars situr
+      // myndbandslagið í eigin lagi allan tímann og étur minni að óþörfu.
+      heroSec.addEventListener('mouseenter', () => { panel.style.willChange = 'transform'; });
+      heroSec.addEventListener('mouseleave', () => {
+        panel.style.transform = '';
+        panel.style.willChange = '';
       });
-      heroSec.addEventListener('mouseleave', () => { panel.style.transform = ''; });
     }
   })();
 
@@ -89,6 +123,11 @@
     const navH = nav ? nav.offsetHeight : 84;
     goToSection(Math.max(0, el.offsetTop - navH));
   };
+  // Eitt skrunkerfi fyrir alla síðuna. Innfelldu hnapparnir neðst í index.html
+  // notuðu áður sitt eigið scrollTo({behavior:'smooth'}) — tvö kerfi sem gátu
+  // bæði verið að skruna sama flötinn samtímis og toguðust á.
+  window.VB.goToSection = goToSection;
+  window.VB.goToAnchor = goToAnchor;
 
   $$('[data-scroll]').forEach((a) => {
     a.addEventListener('click', (e) => {

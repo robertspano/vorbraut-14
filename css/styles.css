@@ -84,8 +84,10 @@ body.home .nav,body.is-chapter .nav{background:linear-gradient(180deg,rgba(255,2
 body.home .nav a,body.home .nav button,body.is-chapter .nav a,body.is-chapter .nav button{color:#262522}
 body.home .nav__contact,body.is-chapter .nav__contact{border:1px solid #C0BBB5;border-radius:999px;padding:.5rem 1.15rem;color:#262522}
 body.home .nav__contact:hover,body.is-chapter .nav__contact:hover{background:#FBFAF8;border-color:#aa8765;color:#aa8765}
-body.home .nav--solid,body.is-chapter .nav--solid{background:rgba(255,255,255,.96);
-  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+/* ATH: hér var backdrop-filter:blur(10px). Það neyddi vafrann til að endurmóða
+   svæðið á bak við valmyndina í hverjum einasta skrunramma — sýnilegt hökt.
+   Bakgrunnurinn er 96% ógegnsær hvort eð er, svo móðan sást ekki. */
+body.home .nav--solid,body.is-chapter .nav--solid{background:rgba(255,255,255,.985);
   border-bottom:1px solid #E8E7E8}
 body.home .burger span,body.is-chapter .burger span{background:#262522}
 /* undirsíður: dekkri haus þegar skrunað er (forsíðan helst gegnsæ) */
@@ -195,7 +197,7 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .shero__media{position:relative;z-index:1;
   margin-left:calc(-1*clamp(48px,8vw,170px))}
 .shero__panel{position:relative;width:100%;aspect-ratio:16/9;
-  transition:transform .45s cubic-bezier(.2,.6,.25,1);will-change:transform}
+  transition:transform .45s cubic-bezier(.2,.6,.25,1)}
 .shero__vidwrap{position:absolute;inset:0;overflow:hidden;border-radius:2px;background:#E8E7E8;
   box-shadow:0 44px 88px -46px rgba(38,37,34,.42)}
 .shero__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
@@ -204,7 +206,7 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
   left:clamp(14px,1.8vw,28px);bottom:clamp(14px,1.8vw,28px);
   border:1px solid #E2D9CA}
 .shero__badge{position:absolute;right:clamp(12px,1.4vw,22px);bottom:clamp(12px,1.6vh,22px);
-  z-index:2;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);
+  z-index:2;background:rgba(255,255,255,.97);   /* móða fjarlægð: lá ofan á spilandi myndbandi */
   color:#262522;font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
   padding:.5rem .85rem;border-radius:2px}
 
