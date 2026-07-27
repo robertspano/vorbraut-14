@@ -7,20 +7,6 @@
   var chap = document.querySelector('.chap');
   if (!chap) return;
 
-  /* --- lesframvinda (0→1) sem CSS-breyta á .chap ------------------------- */
-  var tick = false;
-  function measure() {
-    tick = false;
-    var doc = document.documentElement;
-    var max = (doc.scrollHeight - window.innerHeight) || 1;
-    var p = (window.scrollY || doc.scrollTop) / max;
-    chap.style.setProperty('--p', Math.max(0, Math.min(1, p)).toFixed(4));
-  }
-  function onScroll() { if (!tick) { tick = true; requestAnimationFrame(measure); } }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
-  setTimeout(measure, 0);
-
   /* --- örvatakkar flakka milli kafla ------------------------------------- */
   document.addEventListener('keydown', function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
