@@ -1,0 +1,371 @@
+/* ==========================================================================
+   VORBRAUT 14 — SNIÐIÐ
+   Undirsíðurnar sjö sem sjö skurðir gegnum sama hús.
+   Föst hæðarás (K · 1 · 2 · 3 · 4 · ÞAK) í spássíu; hver kafli kveikir á
+   sinni hæð með sínu eigin formi. Ljóst ritstjórnarútlit — texti aldrei
+   ofan á mynd. Stendur ALGERLEGA utan .story (sem hefur overflow:hidden).
+   ========================================================================== */
+
+body.is-chapter{background:#fff;color:#262522}
+body.is-chapter .nav__logo,
+body.is-chapter .nav__links a,
+body.is-chapter .nav__right .nav__link,
+body.is-chapter .lang{color:#262522}
+
+.chap{
+  --u:clamp(13px,1.15vw,19px);
+  --gut:clamp(18px,5vw,68px);
+  --rail:clamp(46px,6.5vw,104px);
+  --paper:#fff;
+  --wash:#FFFAF2;
+  --wash2:#FBFAF8;
+  --hair:#E8E7E8;
+  --hair2:#EFEDEA;
+  --ink:#262522;
+  --dim:#6b665f;
+  --faint:#a09a92;
+  --acc:#aa8765;
+  --ez:cubic-bezier(.22,.61,.36,1);
+  --p:0;
+  --rtop:150px;                /* efri brún hæðarásarinnar */
+  --rbot:140px;                /* neðri brún hæðarásarinnar */
+  position:relative;
+  background:var(--paper);
+  padding-left:var(--rail);
+  font-family:'DM Sans',system-ui,sans-serif;
+}
+.chap__wrap{max-width:1500px;margin:0 auto;padding:0 var(--gut)}
+
+/* ============================ HÆÐARÁSIN ================================== */
+.rail{
+  position:fixed;left:0;top:0;bottom:0;width:var(--rail);z-index:3;
+  pointer-events:none;
+}
+/* lóðrétta hárlínan */
+.rail__line{
+  position:absolute;right:0;top:var(--rtop);bottom:var(--rbot);width:1px;background:var(--hair);
+}
+/* lesframvinda — eina framvindutækið á síðunni */
+.rail__prog{
+  position:absolute;right:0;top:var(--rtop);bottom:var(--rbot);width:1px;background:var(--acc);
+  transform-origin:top;transform:scaleY(var(--p));
+}
+.rail__ticks{position:absolute;right:0;top:var(--rtop);bottom:var(--rbot);width:1px}
+.rail__ticks i{
+  position:absolute;right:0;top:var(--y);height:0;width:13px;
+  font-style:normal;color:var(--faint);opacity:.62;
+}
+.rail__ticks i::before{
+  content:"";position:absolute;right:0;top:-.5px;width:13px;height:1px;background:var(--hair);
+}
+.rail__ticks i::after{
+  content:attr(data-t);position:absolute;right:18px;top:50%;transform:translateY(-50%);
+  font:500 .55rem/1 'DM Sans',sans-serif;letter-spacing:.15em;
+  font-variant-numeric:tabular-nums;white-space:nowrap;color:inherit;
+}
+/* kaflatal efst, vörumerki neðst */
+.rail__ch{
+  position:absolute;right:0;top:104px;text-align:right;line-height:1;
+  font-family:'Zilla Slab',Georgia,serif;font-weight:700;font-size:1rem;color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+.rail__ch i{display:block;margin-top:.28rem;font:400 .6rem/1 'DM Sans',sans-serif;
+  font-style:normal;color:var(--faint);letter-spacing:.08em}
+.rail__brand{
+  position:absolute;right:-2px;bottom:30px;writing-mode:vertical-rl;
+  font:500 .55rem/1 'DM Sans',sans-serif;letter-spacing:.3em;color:var(--faint);
+}
+
+/* ---- SJÖ FORM ÚR EINNI ÁS ---------------------------------------------- */
+.rail__mark{position:absolute;right:0;pointer-events:none}
+.rail__lab{
+  position:absolute;right:19px;
+  font:600 .53rem/1 'DM Sans',sans-serif;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--acc);white-space:nowrap;
+}
+.chap[data-lvl="base"] .rail__lab{top:calc(100% - var(--rbot) + 22px)}
+.chap[data-lvl="off"]  .rail__lab{top:calc(var(--rtop) - 34px)}
+
+/* 01 · LÓÐIN — einn fylltur teningur á jarðhæð, merktur ±0,00 */
+.chap[data-lvl="site"] .rail__mark{top:calc(var(--rtop) + (100% - var(--rtop) - var(--rbot)) * .8);right:-3.5px;width:8px;height:8px;margin-top:-4px;background:var(--acc)}
+.chap[data-lvl="site"] .rail__ticks i:nth-child(5)::after{content:"±0,00"}
+
+/* 02 · ALLAR HÆÐIR — ásin öll lýst upp */
+.chap[data-lvl="all"] .rail__mark{display:none}
+.chap[data-lvl="all"] .rail__line{background:var(--acc);opacity:.5}
+.chap[data-lvl="all"] .rail__ticks i{color:var(--acc);opacity:1}
+.chap[data-lvl="all"] .rail__ticks i::before{background:var(--acc)}
+
+/* 03 · HÆÐIR 1–4 — svigi sem spannar hæðirnar */
+.chap[data-lvl="1-4"] .rail__mark{
+  top:calc(var(--rtop) + (100% - var(--rtop) - var(--rbot)) * .2);height:calc((100% - var(--rtop) - var(--rbot)) * .6);
+  right:-1px;width:10px;border:2px solid var(--acc);border-right:0;
+}
+
+/* 04 · ÞAKIÐ — teningur efst, hárlínan lengist */
+.chap[data-lvl="roof"] .rail__mark{top:var(--rtop);right:-3.5px;width:8px;height:8px;margin-top:-4px;background:var(--acc)}
+.chap[data-lvl="roof"] .rail__ticks i:first-child::before{width:28px}
+
+/* 05 · JARÐHÆÐ OG ÞAK — tveir teningar tengdir punktalínu */
+.chap[data-lvl="both"] .rail__mark{
+  top:var(--rtop);height:calc((100% - var(--rtop) - var(--rbot)) * .8);right:-.5px;width:0;border-left:1px dotted var(--acc);
+}
+.chap[data-lvl="both"] .rail__mark::after{
+  content:"";position:absolute;left:-4.5px;bottom:-4px;width:8px;height:8px;background:var(--acc);
+}
+.chap[data-lvl="both"] .rail__marktop{
+  position:absolute;right:-3.5px;top:var(--rtop);margin-top:-4px;width:8px;height:8px;background:var(--acc);
+}
+
+/* 06 · BÍLAKJALLARI — kaflinn fer NIÐUR úr ásnum */
+.chap[data-lvl="base"] .rail__mark{
+  top:calc(100% - var(--rbot));right:-.5px;width:1px;height:30px;background:var(--acc);
+}
+.chap[data-lvl="base"] .rail__mark::after{
+  content:"";position:absolute;left:-3.5px;bottom:-4px;width:8px;height:8px;background:var(--acc);
+}
+.chap[data-lvl="base"] .rail__brand{display:none}   /* plássið fer undir KJALLARI-merkið */
+
+/* 07 · HVERFIÐ — kaflinn stígur AF húsinu, ásin dofnar */
+.chap[data-lvl="off"] .rail__mark{
+  bottom:calc(100% - var(--rtop));right:-.5px;width:1px;height:30px;background:var(--acc);
+}
+.chap[data-lvl="off"] .rail__mark::after{
+  content:"";position:absolute;left:-3.5px;top:-4px;width:8px;height:8px;background:var(--acc);
+}
+.chap[data-lvl="off"]{--rtop:190px}
+.chap[data-lvl="off"] .rail__line{background:var(--hair2)}
+.chap[data-lvl="off"] .rail__ticks i{opacity:.3}
+
+/* virk merki feitletruð */
+.chap[data-lvl="site"] .rail__ticks i:nth-child(5),
+.chap[data-lvl="roof"] .rail__ticks i:nth-child(1),
+.chap[data-lvl="base"] .rail__ticks i:nth-child(6),
+.chap[data-lvl="both"] .rail__ticks i:nth-child(1),
+.chap[data-lvl="both"] .rail__ticks i:nth-child(5),
+.chap[data-lvl="1-4"] .rail__ticks i:nth-child(n+2):nth-child(-n+5){
+  color:var(--ink);opacity:1;font-weight:600;
+}
+
+/* ============================== OPNAN ==================================== */
+.chap__open{
+  display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+  column-gap:clamp(26px,4vw,72px);align-items:end;
+  min-height:min(76svh,700px);
+  padding-top:clamp(120px,17vh,190px);padding-bottom:clamp(34px,5vh,62px);
+}
+.chap__head{min-width:0}
+.chap__kick{
+  display:flex;align-items:center;gap:.85rem;margin:0 0 clamp(16px,2.4vh,26px);
+  font:600 .66rem/1 'DM Sans',sans-serif;letter-spacing:.26em;text-transform:uppercase;color:var(--acc);
+}
+.chap__kick::before{
+  content:"";width:30px;height:1px;background:var(--acc);flex:none;
+  transform:scaleX(0);transform-origin:left;animation:chapLine .7s .15s var(--ez) forwards;
+}
+@keyframes chapLine{to{transform:scaleX(1)}}
+
+.chap__title{
+  font-family:'Zilla Slab',Georgia,serif;font-weight:600;
+  font-size:clamp(2.9rem,8.2vw,6.6rem);line-height:.93;letter-spacing:-.03em;
+  color:var(--ink);margin:0 0 clamp(20px,3vh,34px);margin-left:-.045em;
+  max-width:12ch;text-wrap:balance;
+  animation:chapReveal .9s .1s var(--ez) both;
+}
+@keyframes chapReveal{
+  from{clip-path:inset(0 0 105% 0);opacity:0}
+  to{clip-path:inset(0 0 -5% 0);opacity:1}
+}
+.chap__rule{height:1px;background:var(--hair);margin:0 0 clamp(18px,2.6vh,28px);max-width:520px}
+.chap__pull{
+  font-family:'Zilla Slab',Georgia,serif;font-weight:600;font-style:italic;
+  font-size:clamp(1.2rem,2.1vw,1.72rem);line-height:1.34;color:var(--acc);
+  margin:0 0 clamp(22px,3.4vh,40px);max-width:27ch;
+}
+.chap__pull::before{content:none}   /* græna slaufan úr styles.css slökkt */
+.chap__lvl{
+  margin:0;font:500 .6rem/1.5 'DM Sans',sans-serif;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--faint);
+}
+/* CMS getur skilað tómum reit — þá á ekkert bil að myndast */
+.chap__pull:empty,.chap__lvl:empty,.chap__rule:empty+.chap__pull:empty{display:none}
+.chap__slice figcaption:has(span:empty) b,.chap__plate figcaption:has(span:empty) b{opacity:0}
+
+/* SNEIÐIN — mjó lóðrétt súla úr 16:9 mynd */
+.chap__slice{margin:0;min-width:0}
+.chap__slice .cut{aspect-ratio:3/4;max-height:min(62svh,620px)}
+.chap__slice figcaption,.chap__plate figcaption{
+  display:flex;gap:.7rem;margin-top:.75rem;
+  font:400 .76rem/1.5 'DM Sans',sans-serif;color:var(--dim);
+}
+.chap__slice figcaption b,.chap__plate figcaption b{
+  flex:none;font:600 .6rem/1.9 'DM Sans',sans-serif;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--acc);
+}
+
+/* skurðarstýring — --zoom/--tx/--ty stillt á hverja mynd */
+.cut{
+  display:block;position:relative;overflow:hidden;background:var(--wash2);
+  box-shadow:inset 0 0 0 1px var(--hair);
+}
+.cut img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transform:scale(var(--zoom,1)) translate(var(--tx,0),var(--ty,0));
+}
+
+/* ============================= MEGINMÁL ================================== */
+.chap__body{
+  max-width:58ch;margin:0;
+  padding:clamp(38px,6vh,74px) 0 clamp(30px,5vh,58px);
+  margin-left:clamp(0px,7vw,180px);
+  border-top:1px solid var(--hair);
+}
+.chap__body p{
+  position:relative;margin:0;
+  font-size:clamp(1.04rem,1.15vw,1.15rem);line-height:1.78;color:#3a3733;
+  hyphens:auto;
+}
+.chap__body p+p{margin-top:1.25rem}
+
+/* eina málsgrein → upphafsstafur */
+.chap__body:not(:has(p+p)) p:first-child::first-letter{
+  float:left;font-family:'Zilla Slab',Georgia,serif;font-weight:700;
+  font-size:3.5em;line-height:.78;margin:.05em .12em 0 0;color:var(--acc);
+}
+/* margar málsgreinar → tölusettar spássíutölur */
+.chap__body:has(p+p){counter-reset:beat}
+.chap__body:has(p+p) p::before{
+  content:counter(beat,decimal-leading-zero);counter-increment:beat;
+  position:absolute;left:-3.6rem;top:.5em;
+  font:500 .62rem/1 'DM Sans',sans-serif;letter-spacing:.14em;color:var(--faint);
+  font-variant-numeric:tabular-nums;
+}
+
+/* ============================== SNIÐIÐ =================================== */
+/* beint barn .chap — fyllir því sjálfkrafa breiddina utan hæðarásarinnar
+   (engin 100vw-brella, svo lóðrétt skrunstika býr ekki til lárétt yfirflæði) */
+.chap__plate{
+  margin:0;position:relative;
+  border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);
+}
+.chap__plate .cut{aspect-ratio:21/9;max-height:min(62vh,620px);box-shadow:none}
+.chap__plate figcaption{padding:.8rem var(--gut) 0;max-width:820px}
+
+/* lítil plata — fyrir kafla sem ber ekki heilbreiða mynd */
+.chap[data-plate="small"] .chap__plate{
+  width:auto;margin-left:auto;margin-right:auto;max-width:620px;
+  border:1px solid var(--hair);background:var(--wash);
+  padding:clamp(28px,4.5vh,54px) clamp(24px,4vw,54px);
+}
+.chap[data-plate="small"] .chap__plate .cut{aspect-ratio:16/9;box-shadow:inset 0 0 0 1px var(--hair)}
+.chap[data-plate="small"] .chap__plate figcaption{padding:.8rem 0 0}
+
+/* ============================== SKRÁIN =================================== */
+.chap__ledger{
+  list-style:none;margin:0;padding:clamp(34px,5.5vh,66px) 0 0;
+  counter-reset:led;border-top:1px solid var(--hair);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  column-gap:clamp(20px,3vw,48px);
+}
+.chap__ledger li{
+  position:relative;padding:.85rem 0;border-top:1px solid var(--hair2);
+  font:500 .93rem/1.4 'DM Sans',sans-serif;color:var(--ink);
+}
+.chap__ledger li:first-child{border-top:0}
+.chap__ledger li::before{
+  content:counter(led,decimal-leading-zero);counter-increment:led;
+  display:block;margin-bottom:.3rem;
+  font:600 .58rem/1 'DM Sans',sans-serif;letter-spacing:.18em;color:var(--acc);
+  font-variant-numeric:tabular-nums;
+}
+@media (min-width:760px){.chap__ledger li:first-child{border-top:1px solid var(--hair2)}}
+
+/* ============================ KAFLASKRÁIN ================================ */
+.chap__index{
+  list-style:none;margin:clamp(46px,7vh,92px) 0 0;padding:0;
+  border-top:1px solid var(--hair);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+}
+.chap__index li+li{border-left:1px solid var(--hair2)}
+.chap__index a{
+  display:flex;flex-direction:column;gap:.45rem;padding:1.5rem 1.1rem 1.65rem;
+  text-decoration:none;transition:background .28s var(--ez),color .28s var(--ez);
+}
+.chap__index em{
+  font:600 .58rem/1 'DM Sans',sans-serif;font-style:normal;letter-spacing:.2em;color:var(--faint);
+  font-variant-numeric:tabular-nums;transition:color .28s var(--ez);
+}
+.chap__index span{
+  font-family:'Zilla Slab',Georgia,serif;font-weight:600;font-size:1.02rem;
+  letter-spacing:-.01em;color:var(--ink);
+}
+.chap__index a:hover{background:var(--wash)}
+.chap__index a:hover em{color:var(--acc)}
+.chap__index .is-here a{background:var(--wash)}
+.chap__index .is-here em,.chap__index .is-here span{color:var(--acc)}
+
+/* ============================== BLAÐFÆTUR ================================ */
+.chap .chap__pager{
+  display:flex;justify-content:space-between;gap:1.2rem;flex-wrap:wrap;
+  margin:clamp(40px,6vh,80px) 0 clamp(58px,9vh,120px);padding-top:1.6rem;
+  border-top:1px solid var(--hair);
+}
+.chap__pager a{
+  display:inline-flex;flex-direction:column;gap:.4rem;text-decoration:none;
+  transition:transform .3s var(--ez);
+}
+.chap__pager a.is-next{align-items:flex-end;text-align:right}
+.chap__pager small{
+  font:600 .6rem/1 'DM Sans',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);
+}
+.chap__pager b{
+  font-family:'Zilla Slab',Georgia,serif;font-weight:600;font-size:clamp(1.2rem,2.4vw,1.75rem);
+  letter-spacing:-.02em;color:var(--ink);
+}
+.chap__pager a:hover{transform:translateY(-2px)}
+.chap__pager a.is-prev:hover{transform:translateX(-3px)}
+.chap__pager a.is-next:hover{transform:translateX(3px)}
+
+/* =============================== SÍMI ==================================== */
+@media (max-width:900px){
+  .chap__open{
+    grid-template-columns:1fr;row-gap:clamp(26px,4vh,40px);
+    min-height:0;padding-top:clamp(104px,15vh,150px);align-items:start;
+  }
+  .chap__slice .cut{aspect-ratio:4/3;max-height:none}
+  .chap__body{margin-left:0;max-width:none}
+  .chap__body:has(p+p) p::before{position:static;display:block;margin-bottom:.35rem}
+  .rail__ch{top:88px;font-size:.86rem}
+  .rail__ch i{display:none}
+  .rail__brand{display:none}
+  .chap{--rtop:126px;--rbot:60px}
+  .chap[data-lvl="off"]{--rtop:160px}
+  .rail__ticks i::after{right:16px;font-size:.5rem;letter-spacing:.1em}
+  .rail__lab{display:none}
+}
+@media (max-width:560px){
+  .chap__ledger{grid-template-columns:1fr}
+  .chap__ledger li:first-child{border-top:0}
+  .chap__plate .cut{aspect-ratio:4/3}
+}
+
+/* ============================= INNKOMA =================================== */
+.js-chap .chap__plate,.js-chap .chap__ledger,.js-chap .chap__index{
+  opacity:0;transform:translateY(16px);
+  transition:opacity .8s var(--ez),transform .8s var(--ez);
+}
+.js-chap .chap__plate.is-open,.js-chap .chap__ledger.is-open,.js-chap .chap__index.is-open{
+  opacity:1;transform:none}
+.js-chap .chap__plate .cut img{
+  transform:scale(calc(var(--zoom,1) * 1.06)) translate(var(--tx,0),var(--ty,0));
+  transition:transform 1.4s var(--ez)}
+.js-chap .chap__plate.is-open .cut img{transform:scale(var(--zoom,1)) translate(var(--tx,0),var(--ty,0))}
+
+@media (prefers-reduced-motion:reduce){
+  .chap__title,.chap__kick::before{animation:none}
+  .chap__pager a:hover{transform:none}
+  .js-chap .chap__plate,.js-chap .chap__ledger,.js-chap .chap__index{
+    opacity:1;transform:none;transition:none}
+  .js-chap .chap__plate .cut img,.js-chap .chap__plate.is-open .cut img{
+    transform:scale(var(--zoom,1)) translate(var(--tx,0),var(--ty,0));transition:none}
+}
