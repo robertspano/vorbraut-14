@@ -178,10 +178,10 @@ for m in (500, 1000, 1500):
     lx = W / 2 + r * 0.7071
     ly = H * CY - r * 0.7071
     lab = "500 m" if m < 1000 else ("1 km" if m == 1000 else "1,5 km")
-    wdt = 74 if m < 1000 else (62 if m == 1000 else 84)
+    wdt = 92 if m < 1000 else (78 if m == 1000 else 106)
     A(f'<g class="kort__hringmerki" transform="translate({lx:.0f},{ly:.0f})">'
-      f'<rect x="{-wdt/2:.0f}" y="-15" width="{wdt}" height="30" rx="15"/>'
-      f'<text y="6">{lab}</text></g>')
+      f'<rect x="{-wdt/2:.0f}" y="-19" width="{wdt}" height="38" rx="19"/>'
+      f'<text y="8">{lab}</text></g>')
 A("</g>")  # clip
 
 PLACEHOLDER_MARKERS = "<!--MARKERS-->"
@@ -223,10 +223,10 @@ for _ in range(220):
             a, b = pos[keys[i]], pos[keys[j]]
             dx, dy = b[0] - a[0], b[1] - a[1]
             dd = math.hypot(dx, dy)
-            if dd < 37:
+            if dd < 44:
                 if dd < 0.01:
                     dx, dy, dd = 1.0, 0.6, 1.17
-                push = (37 - dd) / 2
+                push = (44 - dd) / 2
                 ux, uy = dx / dd, dy / dd
                 a[0] -= ux * push; a[1] -= uy * push
                 b[0] += ux * push; b[1] += uy * push
@@ -252,8 +252,8 @@ for heiti, slug in FLOKKAR:
                          f'x2="{x:.1f}" y2="{y:.1f}"/>')
         marks.append(
             f'<g class="kort__m" data-f="{slug}" data-nr="{n}" transform="translate({x:.1f},{y:.1f})">'
-            f'<rect x="-15" y="-15" width="30" height="30" rx="5"/>'
-            f'<text y="6">{n}</text></g>'
+            f'<rect x="-18" y="-18" width="36" height="36" rx="6"/>'
+            f'<text y="8">{n}</text></g>'
         )
         km = f'{s["m"]/1000:.1f}'.replace(".", ",") + " km" if s["m"] >= 950 else f'{s["m"]} m'
         legend.append(
@@ -264,8 +264,8 @@ for heiti, slug in FLOKKAR:
 hx, hy = xy(*HOME)
 marks.append(
     f'<g class="kort__heim" transform="translate({hx:.1f},{hy:.1f})">'
-    f'<rect x="-12" y="-12" width="24" height="24" rx="3" transform="rotate(45)"/>'
-    f'<text y="-26">VORBRAUT 14</text></g>'
+    f'<rect x="-15" y="-15" width="30" height="30" rx="4" transform="rotate(45)"/>'
+    f'<text y="-32">VORBRAUT 14</text></g>'
 )
 
 svg = svg.replace(PLACEHOLDER_MARKERS, "\n".join(marks))

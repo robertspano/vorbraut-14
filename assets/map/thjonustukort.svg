@@ -2396,42 +2396,42 @@
 <circle cx="575" cy="440" r="321" fill="none" stroke="#A79C8C" stroke-width="1.2" stroke-dasharray="7 6"/>
 <circle cx="575" cy="440" r="481" fill="none" stroke="#fff" stroke-width="3"/>
 <circle cx="575" cy="440" r="481" fill="none" stroke="#A79C8C" stroke-width="1.2" stroke-dasharray="7 6"/>
-<g class="kort__hringmerki" transform="translate(688,327)"><rect x="-37" y="-15" width="74" height="30" rx="15"/><text y="6">500 m</text></g>
-<g class="kort__hringmerki" transform="translate(802,213)"><rect x="-31" y="-15" width="62" height="30" rx="15"/><text y="6">1 km</text></g>
-<g class="kort__hringmerki" transform="translate(915,100)"><rect x="-42" y="-15" width="84" height="30" rx="15"/><text y="6">1,5 km</text></g>
+<g class="kort__hringmerki" transform="translate(688,327)"><rect x="-46" y="-19" width="92" height="38" rx="19"/><text y="8">500 m</text></g>
+<g class="kort__hringmerki" transform="translate(802,213)"><rect x="-39" y="-19" width="78" height="38" rx="19"/><text y="8">1 km</text></g>
+<g class="kort__hringmerki" transform="translate(915,100)"><rect x="-53" y="-19" width="106" height="38" rx="19"/><text y="8">1,5 km</text></g>
 </g>
-<g class="kort__m" data-f="skoli" data-nr="1" transform="translate(638.7,246.6)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">1</text></g>
-<g class="kort__m" data-f="skoli" data-nr="2" transform="translate(693.3,179.0)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">2</text></g>
-<g class="kort__m" data-f="skoli" data-nr="3" transform="translate(890.5,469.9)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">3</text></g>
-<g class="kort__m" data-f="skoli" data-nr="4" transform="translate(218.3,326.3)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">4</text></g>
-<g class="kort__m" data-f="skoli" data-nr="5" transform="translate(146.7,363.6)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">5</text></g>
-<line class="kort__leggur" x1="320.7" y1="793.2" x2="327.0" y2="794.9"/>
-<g class="kort__m" data-f="skoli" data-nr="6" transform="translate(327.0,794.9)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">6</text></g>
-<line class="kort__leggur" x1="297.6" y1="786.7" x2="291.4" y2="785.0"/>
-<g class="kort__m" data-f="skoli" data-nr="7" transform="translate(291.4,785.0)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">7</text></g>
-<g class="kort__m" data-f="skoli" data-nr="8" transform="translate(98.5,381.9)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">8</text></g>
-<g class="kort__m" data-f="utivist" data-nr="9" transform="translate(398.1,618.1)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">9</text></g>
-<g class="kort__m" data-f="utivist" data-nr="10" transform="translate(890.3,432.9)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">10</text></g>
-<g class="kort__m" data-f="utivist" data-nr="11" transform="translate(826.7,679.1)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">11</text></g>
-<g class="kort__m" data-f="utivist" data-nr="12" transform="translate(248.6,760.0)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">12</text></g>
-<g class="kort__m" data-f="utivist" data-nr="13" transform="translate(626.8,897.6)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">13</text></g>
-<line class="kort__leggur" x1="572.3" y1="199.7" x2="550.7" y2="213.3"/>
-<g class="kort__m" data-f="matur" data-nr="14" transform="translate(550.7,213.3)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">14</text></g>
-<line class="kort__leggur" x1="577.0" y1="196.4" x2="583.9" y2="197.0"/>
-<g class="kort__m" data-f="matur" data-nr="15" transform="translate(583.9,197.0)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">15</text></g>
-<line class="kort__leggur" x1="593.9" y1="183.6" x2="608.6" y2="169.4"/>
-<g class="kort__m" data-f="matur" data-nr="16" transform="translate(608.6,169.4)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">16</text></g>
-<g class="kort__m" data-f="matur" data-nr="17" transform="translate(342.2,267.3)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">17</text></g>
-<g class="kort__m" data-f="verslun" data-nr="18" transform="translate(619.2,110.8)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">18</text></g>
-<g class="kort__m" data-f="verslun" data-nr="19" transform="translate(452.2,119.3)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">19</text></g>
-<g class="kort__m" data-f="verslun" data-nr="20" transform="translate(597.1,69.5)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">20</text></g>
-<g class="kort__m" data-f="verslun" data-nr="21" transform="translate(511.9,60.7)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">21</text></g>
-<g class="kort__m" data-f="verslun" data-nr="22" transform="translate(516.1,24.0)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">22</text></g>
-<line class="kort__leggur" x1="824.7" y1="377.7" x2="814.4" y2="384.2"/>
-<g class="kort__m" data-f="thjonusta" data-nr="23" transform="translate(814.4,384.2)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">23</text></g>
-<line class="kort__leggur" x1="835.3" y1="371.0" x2="845.6" y2="364.4"/>
-<g class="kort__m" data-f="thjonusta" data-nr="24" transform="translate(845.6,364.4)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">24</text></g>
-<g class="kort__m" data-f="thjonusta" data-nr="25" transform="translate(395.5,102.6)"><rect x="-15" y="-15" width="30" height="30" rx="5"/><text y="6">25</text></g>
-<g class="kort__heim" transform="translate(575.0,440.0)"><rect x="-12" y="-12" width="24" height="24" rx="3" transform="rotate(45)"/><text y="-26">VORBRAUT 14</text></g>
+<g class="kort__m" data-f="skoli" data-nr="1" transform="translate(638.7,246.6)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">1</text></g>
+<g class="kort__m" data-f="skoli" data-nr="2" transform="translate(693.3,179.0)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">2</text></g>
+<g class="kort__m" data-f="skoli" data-nr="3" transform="translate(890.5,473.4)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">3</text></g>
+<g class="kort__m" data-f="skoli" data-nr="4" transform="translate(218.3,326.3)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">4</text></g>
+<g class="kort__m" data-f="skoli" data-nr="5" transform="translate(146.7,363.6)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">5</text></g>
+<line class="kort__leggur" x1="320.7" y1="793.2" x2="330.4" y2="795.9"/>
+<g class="kort__m" data-f="skoli" data-nr="6" transform="translate(330.4,795.9)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">6</text></g>
+<line class="kort__leggur" x1="297.6" y1="786.7" x2="288.0" y2="784.0"/>
+<g class="kort__m" data-f="skoli" data-nr="7" transform="translate(288.0,784.0)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">7</text></g>
+<g class="kort__m" data-f="skoli" data-nr="8" transform="translate(98.5,381.9)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">8</text></g>
+<g class="kort__m" data-f="utivist" data-nr="9" transform="translate(398.1,618.1)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">9</text></g>
+<g class="kort__m" data-f="utivist" data-nr="10" transform="translate(890.3,429.4)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">10</text></g>
+<g class="kort__m" data-f="utivist" data-nr="11" transform="translate(826.7,679.1)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">11</text></g>
+<g class="kort__m" data-f="utivist" data-nr="12" transform="translate(248.6,760.0)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">12</text></g>
+<g class="kort__m" data-f="utivist" data-nr="13" transform="translate(626.8,897.6)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">13</text></g>
+<line class="kort__leggur" x1="572.3" y1="199.7" x2="546.7" y2="213.7"/>
+<g class="kort__m" data-f="matur" data-nr="14" transform="translate(546.7,213.7)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">14</text></g>
+<line class="kort__leggur" x1="577.0" y1="196.4" x2="589.4" y2="203.2"/>
+<g class="kort__m" data-f="matur" data-nr="15" transform="translate(589.4,203.2)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">15</text></g>
+<line class="kort__leggur" x1="593.9" y1="183.6" x2="607.1" y2="162.9"/>
+<g class="kort__m" data-f="matur" data-nr="16" transform="translate(607.1,162.9)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">16</text></g>
+<g class="kort__m" data-f="matur" data-nr="17" transform="translate(342.2,267.3)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">17</text></g>
+<g class="kort__m" data-f="verslun" data-nr="18" transform="translate(619.2,110.8)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">18</text></g>
+<g class="kort__m" data-f="verslun" data-nr="19" transform="translate(452.2,119.3)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">19</text></g>
+<g class="kort__m" data-f="verslun" data-nr="20" transform="translate(597.1,69.5)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">20</text></g>
+<g class="kort__m" data-f="verslun" data-nr="21" transform="translate(511.5,64.2)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">21</text></g>
+<g class="kort__m" data-f="verslun" data-nr="22" transform="translate(516.5,20.5)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">22</text></g>
+<line class="kort__leggur" x1="824.7" y1="377.7" x2="811.4" y2="386.1"/>
+<g class="kort__m" data-f="thjonusta" data-nr="23" transform="translate(811.4,386.1)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">23</text></g>
+<line class="kort__leggur" x1="835.3" y1="371.0" x2="848.6" y2="362.6"/>
+<g class="kort__m" data-f="thjonusta" data-nr="24" transform="translate(848.6,362.6)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">24</text></g>
+<g class="kort__m" data-f="thjonusta" data-nr="25" transform="translate(395.5,102.6)"><rect x="-18" y="-18" width="36" height="36" rx="6"/><text y="8">25</text></g>
+<g class="kort__heim" transform="translate(575.0,440.0)"><rect x="-15" y="-15" width="30" height="30" rx="4" transform="rotate(45)"/><text y="-32">VORBRAUT 14</text></g>
 <rect x="0.5" y="0.5" width="1149" height="999" fill="none" stroke="#E8E7E8"/>
 </svg>

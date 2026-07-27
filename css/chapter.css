@@ -378,8 +378,9 @@ body.is-chapter .lang{color:#262522}
   color:var(--ink);margin:0 0 .7rem}
 .kort__sub{margin:0;font-size:.95rem;line-height:1.6;color:var(--dim)}
 
-/* kortið í fulla breidd svo tölurnar á merkjunum lesist, skráin í dálkum undir */
-.kort__grid{display:block}
+/* kortið og skráin hlið við hlið; skráin í tveimur dálkum svo hæðin passi */
+.kort__grid{display:grid;grid-template-columns:minmax(0,1.16fr) minmax(0,1fr);
+  gap:clamp(24px,3vw,52px);align-items:start}
 .kort__mynd{margin:0;background:#FBFAF8;border:1px solid var(--hair);overflow:hidden}
 .kort__svg{display:block;width:100%;height:auto}
 
@@ -391,14 +392,14 @@ body.is-chapter .lang{color:#262522}
 .kort__m[data-f="matur"]     rect{fill:#B5643C}
 .kort__m[data-f="verslun"]   rect{fill:#8A7F72}
 .kort__m[data-f="thjonusta"] rect{fill:#6B665F}
-.kort__m text{fill:#fff;font:600 17px 'DM Sans',sans-serif;text-anchor:middle;
+.kort__m text{fill:#fff;font:600 22px 'DM Sans',sans-serif;text-anchor:middle;
   font-variant-numeric:tabular-nums;pointer-events:none}
 .kort__leggur{stroke:#B9B0A3;stroke-width:1.4}
 .kort__heim rect{fill:var(--acc)}
-.kort__heim text{fill:var(--ink);font:700 18px 'DM Sans',sans-serif;text-anchor:middle;
+.kort__heim text{fill:var(--ink);font:700 21px 'DM Sans',sans-serif;text-anchor:middle;
   letter-spacing:.14em;paint-order:stroke;stroke:#fff;stroke-width:4}
 .kort__hringmerki rect{fill:#fff;stroke:#CFC6B8;stroke-width:1.4}
-.kort__hringmerki text{fill:#6b665f;font:600 17px 'DM Sans',sans-serif;letter-spacing:.08em;
+.kort__hringmerki text{fill:#6b665f;font:600 21px 'DM Sans',sans-serif;letter-spacing:.08em;
   text-anchor:middle;font-variant-numeric:tabular-nums}
 
 /* upplýst þegar bent er á í skránni */
@@ -406,16 +407,15 @@ body.is-chapter .lang{color:#262522}
 .kort__m.is-on text{fill:#fff}
 
 /* skráin */
-.kort__skra{columns:3;column-gap:clamp(24px,3vw,56px);font-family:'DM Sans',sans-serif;
-  margin-top:clamp(26px,3.5vh,44px);padding-top:clamp(22px,3vh,36px);border-top:1px solid var(--hair)}
+.kort__skra{columns:2;column-gap:clamp(18px,2.2vw,36px);font-family:'DM Sans',sans-serif}
 .kort__flokkur{break-inside:avoid;-webkit-column-break-inside:avoid}
 .kort__flokkur+.kort__flokkur{margin-top:1.5rem}
 .kort__flokkur h3{margin:0 0 .5rem;font-family:'Zilla Slab',Georgia,serif;font-weight:600;
   font-size:1.02rem;letter-spacing:-.01em;color:var(--ink)}
 .kort__flokkur ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair2)}
-.kort__flokkur li{display:flex;align-items:baseline;gap:.7rem;padding:.44rem 0;
-  border-bottom:1px solid var(--hair2);font-size:.88rem;line-height:1.35;color:var(--ink)}
-.kort__flokkur li i{flex:none;width:1.55rem;height:1.55rem;border-radius:3px;
+.kort__flokkur li{display:flex;align-items:baseline;gap:.6rem;padding:.42rem 0;
+  border-bottom:1px solid var(--hair2);font-size:.84rem;line-height:1.32;color:var(--ink)}
+.kort__flokkur li i{flex:none;width:1.42rem;height:1.42rem;border-radius:3px;
   display:inline-flex;align-items:center;justify-content:center;align-self:center;
   font:600 .62rem/1 'DM Sans',sans-serif;font-style:normal;color:#fff;
   font-variant-numeric:tabular-nums;background:#8A7F72}
@@ -425,15 +425,18 @@ body.is-chapter .lang{color:#262522}
 .kort__flokkur[data-f="verslun"]   li i{background:#8A7F72}
 .kort__flokkur[data-f="thjonusta"] li i{background:#6B665F}
 .kort__flokkur li span{flex:1 1 auto;min-width:0}
-.kort__flokkur li b{flex:none;font:500 .74rem/1 'DM Sans',sans-serif;letter-spacing:.06em;
+.kort__flokkur li b{flex:none;margin-left:auto;font:500 .71rem/1 'DM Sans',sans-serif;letter-spacing:.04em;
   color:var(--faint);font-variant-numeric:tabular-nums}
 .kort__flokkur li.is-on{background:#fff}
 .kort__flokkur li.is-on b{color:var(--acc)}
 
 @media (max-width:980px){
-  .kort__skra{columns:2;column-gap:clamp(18px,3vw,38px)}
+  .kort__grid{grid-template-columns:1fr;gap:clamp(22px,3.5vh,34px)}
+  .kort__skra{columns:3;column-gap:clamp(18px,3vw,38px)}
   .kort__flokkur+.kort__flokkur{margin-top:1.3rem}
 }
+@media (max-width:760px){.kort__skra{columns:2}}
+@media (max-width:520px){.kort__skra{columns:1}}
 /* Sími: kortið skreppur annars svo mikið saman að tölurnar á merkjunum
    verða ólæsilegar (4 px). Það heldur læsilegri stærð og rúllar til hliðar. */
 @media (max-width:760px){
