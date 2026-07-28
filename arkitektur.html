@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=240" />
-  <link rel="stylesheet" href="css/chapter.css?v=240" />
+  <link rel="stylesheet" href="css/styles.css?v=248" />
+  <link rel="stylesheet" href="css/chapter.css?v=246" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
 <body class="is-chapter">
@@ -64,18 +64,27 @@
             <p class="chap__pull" data-i18n="st.arch.pull">Fágað form í samhljómi við Hnoðraholt</p>
             <p class="chap__lvl" data-i18n="st.arch.lvl">&nbsp;</p>
           </div>
+          <!-- alvöru ljósmynd af framhliðinni (ekkert Tölvumynd-merki) -->
           <figure class="chap__slice">
-            <span class="cut" style="--zoom:1.02;--tx:0%;--ty:0%"><img data-img="arkitektur.slice" src="assets/renders/front.webp?v=240" alt="" width="1920" height="1080" loading="eager" decoding="async"></span>
-            <figcaption data-viz="1"><em data-i18n="fig.viz">Tölvumynd</em><b><span data-i18n="fig.label">Mynd</span> 02·A</b> <span data-i18n="st.arch.cap">&nbsp;</span></figcaption>
+            <span class="cut" style="--zoom:1.02;--tx:0%;--ty:0%"><img data-img="arkitektur.slice" src="assets/renders/foto-fram.webp?v=241" alt="" width="1920" height="1080" loading="eager" decoding="async"></span>
+            <figcaption><b><span data-i18n="fig.label">Mynd</span> 02·A</b> <span data-i18n="st.arch.cap">&nbsp;</span></figcaption>
           </figure>
         </header>
         <div class="chap__read">
           <div class="chap__body"><p data-i18n="st.arch.b1">Arkitektúr Vorbrautar 14 er yfirvegaður og stílhreinn, þar sem skýr áhersla er lögð á fágað yfirbragð og samhljóm við nærumhverfið. Byggingin, sem er verk Guðmundar Gunnlaugssonar arkitekts hjá Archus, er nátengd landslagi Hnoðraholts, dregur dám af útsýninu og fellur vel að þeirri uppbyggingu sem á sér stað á svæðinu. Húsið skartar fáguðu, kröftugu og nútímalegu útliti þar sem formrænn hreinleiki, efnisval og áferð mynda sannfærandi heild. Ytra byrði byggingarinnar er varið vandaðri álklæðningu þar sem flötum er brotið upp með mismunandi áferð til að gefa ásýndinni aukna dýpt. Inndregin efsta hæð gefur húsinu léttara yfirbragð á sama tíma og hún skapar svigrúm fyrir einkar glæsilegar þaksvalir. Á þennan hátt er víðáttumikið útsýnið nýtt til fulls og gert að óaðskiljanlegum hluta af híbýlum íbúanna. Hönnunin byggir á því að draga fram kosti staðhátta, en niðurstaðan er mannvirki sem einkennist af efnislegum gæðum, fágun og yfirvegandi virðuleika.</p></div>
-          <ul class="chap__ledger"><li data-i18n="st.arch.c1">Álklæðning</li><li data-i18n="st.arch.c2">Inndregin efsta hæð</li><li data-i18n="st.arch.c3">Archus</li><li data-i18n="st.arch.c4">Guðmundur Gunnlaugsson</li></ul>
+          <!-- hönnuður hússins — mínimalískt; portrettið birtist sjálfkrafa þegar assets/agents/gudmundur.jpg er komin -->
+          <aside class="story__arch" aria-label="Hönnuður hússins">
+            <img class="story__archface" src="assets/agents/gudmundur.jpg" alt="Guðmundur Gunnlaugsson" loading="lazy" onerror="this.remove()">
+            <div class="story__archinfo">
+              <b data-i18n="arch.name">Guðmundur Gunnlaugsson</b>
+              <span><span data-i18n="arch.role">Arkitekt hússins</span> · ARCHUS arkitektar</span>
+            </div>
+          </aside>
         </div>
       </div>
-      <figure class="chap__plate">
-        <span class="cut" style="--zoom:1.10;--tx:0%;--ty:4%"><img data-img="arkitektur.plate" src="assets/renders/foto-bak.webp?v=240" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
+      <!-- skissan af húsinu (frá ARCHUS) sem breiða myndin — sýnd í heild á pappírstóni -->
+      <figure class="chap__plate chap__plate--sketch">
+        <span class="cut" style="--zoom:1;--tx:0%;--ty:0%"><img data-img="arkitektur.plate" src="assets/renders/skissa.jpg?v=242" alt="Skissa af Vorbraut 14" width="1200" height="896" loading="lazy" decoding="async"></span>
         <figcaption><b><span data-i18n="fig.label">Mynd</span> 02·B</b> <span data-i18n="st.arch.cap2">&nbsp;</span></figcaption>
       </figure>
       <div class="chap__wrap">
@@ -104,7 +113,7 @@
       </nav>
     </div>
   </footer>
-  <script defer src="js/content.js?v=240"></script>
+  <script defer src="js/content.js?v=247"></script>
   <script defer src="js/supabase-config.js?v=240"></script>
   <script defer src="js/vbsupa.js?v=240"></script>
   <script defer src="js/page.js?v=240"></script>

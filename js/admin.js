@@ -24,7 +24,7 @@
     return ALLOW.indexOf(e) !== -1 || new RegExp('@' + DOMAIN.replace('.', '\\.') + '$', 'i').test(e);
   };
 
-  const STATUSES = [['available', 'Til sölu'], ['reserved', 'Með fyrirvara'], ['sold', 'Selt']];
+  const STATUSES = [['available', 'Til sölu'], ['reserved', 'Selt með fyrirvara'], ['sold', 'Selt']];
   const label = (v) => (STATUSES.find((s) => s[0] === v) || [, v])[1];
 
   function msg(m, isErr, isInfo) {
@@ -151,7 +151,7 @@
     sub: 'Undirtexti', tag: 'Slagorð', hint: 'Vísbending', note: 'Athugasemd', name: 'Nafn',
     phone: 'Sími', email: 'Netfang', pull: 'Tilvitnun', desc: 'Lýsing', size: 'Stærð', floor: 'Hæð',
     rooms: 'Herbergi', logo: 'Merki', count: 'Teljari', empty: 'Tómt-skilaboð', architect: 'Arkitekt',
-    available: 'Til sölu', reserved: 'Frátekin', sold: 'Selt', parking: 'Bílastæði', storage: 'Geymsla',
+    available: 'Til sölu', reserved: 'Selt með fyrirvara', sold: 'Selt', parking: 'Bílastæði', storage: 'Geymsla',
     ceiling: 'Lofthæð', balcony: 'Svalir', front: 'Framan', back: 'Aftan', prev: 'Fyrri', next: 'Næsti',
     home: 'Forsíða', view: 'Skoða', reset: 'Hreinsa', all: 'Allar', book: 'Bóka', contact: 'Samband',
     no: 'Númer', landnr: 'Landeignarnúmer', addr1: 'Heimilisfang (lína 1)', addr2: 'Heimilisfang (lína 2)',

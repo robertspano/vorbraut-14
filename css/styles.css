@@ -113,17 +113,19 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .navdrop__caret{width:0;height:0;border-left:3.3px solid transparent;border-right:3.3px solid transparent;
   border-top:4px solid currentColor;opacity:.55;transition:transform .25s var(--ease),opacity .25s}
 .navdrop:hover .navdrop__caret,.navdrop:focus-within .navdrop__caret{opacity:1;transform:rotate(180deg)}
+/* hvítur felli-kassi með dökku letri — sami á öllum síðum (ljóst útlit) */
 .navdrop__menu{position:absolute;top:100%;left:50%;margin-top:13px;transform:translateX(-50%) translateY(8px);
   display:flex;flex-direction:column;gap:.1rem;min-width:180px;padding:.5rem;
-  background:rgba(14,15,16,.97);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
-  border:1px solid rgba(255,255,255,.1);border-radius:13px;box-shadow:0 20px 44px rgba(0,0,0,.42);
+  background:#fff;
+  border:1px solid var(--line);border-radius:13px;box-shadow:0 20px 44px rgba(0,0,0,.14);
   opacity:0;visibility:hidden;pointer-events:none;
   transition:opacity .2s var(--ease),transform .2s var(--ease),visibility .2s}
 .navdrop__menu::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px}  /* hover-brú yfir bilið */
 .navdrop:hover .navdrop__menu,.navdrop:focus-within .navdrop__menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0)}
-.navdrop__menu a.navdrop__item{display:block;padding:.52rem .85rem;border-radius:9px;font-size:.95rem;opacity:.82;letter-spacing:.01em;transition:.16s}
+.navdrop__menu a.navdrop__item{display:block;padding:.52rem .85rem;border-radius:9px;font-size:.95rem;
+  color:var(--ink);opacity:.85;letter-spacing:.01em;transition:.16s}
 .navdrop__menu a.navdrop__item::after{display:none}
-.navdrop__menu a.navdrop__item:hover{opacity:1;background:rgba(255,255,255,.07)}
+.navdrop__menu a.navdrop__item:hover{opacity:1;background:rgba(58,61,64,.06)}
 .navdrop__menu a.navdrop__item.is-current{opacity:1;color:var(--tan)}
 .lang{display:inline-flex;align-items:center;gap:.46rem;font-size:1.12rem;letter-spacing:.01em;font-weight:400;
   border:0;border-radius:0;padding:0;background:none;opacity:.9;transition:.25s}
@@ -267,7 +269,11 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
   cursor:pointer;transition:background .15s}
 .select__fbtn:hover{background:#EFE9DE;border-color:#C0BBB5}
 .select__fbtn.is-on{background:#C0BBB5;border-color:#C0BBB5}
-.select__diagram{background:transparent;border:0;padding:0;max-width:520px}
+/* Keilurnar sitja rétt utan við grunnmyndina, svo svg-ið má flæða út fyrir sig.
+   Reiturinn klippir samt af: annars getur keila með ranghnit (t.d. dregin of
+   langt í ?conedit) teiknast upp yfir fyrirsögnina "Vorbraut 14". */
+.select__diagram{background:transparent;border:0;max-width:520px;
+  overflow:hidden;padding:clamp(40px,9%,68px) clamp(46px,11%,84px)}
 .select__diagram svg{width:100%;height:auto;display:block;overflow:visible}
 .select__legend{list-style:none;display:flex;flex-wrap:wrap;gap:.7rem 1.9rem;margin:1.6rem 0 0;padding:0}
 .select__leg{display:inline-flex;align-items:center;gap:.55rem;font-size:.84rem;line-height:1;
@@ -801,19 +807,28 @@ body.is-page{background:#4E443A}
 @media (max-width:1080px){
   .nav__links,.nav__right .nav__link,.nav__right .nav__contact{display:none}
   .burger{display:flex;position:relative;z-index:62;background:none;border:0;cursor:pointer;color:#fff}
-  .navmenu{display:flex;position:fixed;inset:0;z-index:58;flex-direction:column;
-    align-items:center;justify-content:center;gap:clamp(1rem,2.4vh,1.7rem);
-    padding:84px var(--pad) 48px;text-align:center;
-    background:rgba(8,9,10,.975);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  /* hvít yfirlagsvalmynd með dökku letri — í takt við ljósa hausinn.
+     100svh (ekki 100%) svo hún fylli skjáinn þótt veffangastikan á síma
+     renni til; overscroll-behavior heldur skruni inni í valmyndinni. */
+  .navmenu{display:flex;position:fixed;inset:0;height:100svh;z-index:58;flex-direction:column;
+    align-items:center;justify-content:center;gap:clamp(.85rem,2.2vh,1.6rem);
+    padding:max(84px,env(safe-area-inset-top,0px) + 76px) var(--pad) max(48px,env(safe-area-inset-bottom,0px) + 32px);
+    text-align:center;overflow-y:auto;overscroll-behavior:contain;
+    background:#fff;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
     opacity:0;visibility:hidden;transition:opacity .32s var(--ease),visibility .32s var(--ease)}
   .nav.open .navmenu{opacity:1;visibility:visible}
-  .navmenu a{color:rgba(255,255,255,.92);font-family:var(--display);font-weight:300;
-    font-size:clamp(1.5rem,6vw,2.1rem);line-height:1.1;letter-spacing:-.01em}
-  .navmenu a.is-current{color:var(--tan)}
-  .navmenu .navmenu__sub{font-size:clamp(1.02rem,4.2vw,1.42rem);opacity:.66;font-weight:300}
+  /* litur settur með nægri sértækni til að slá út body.home/.is-chapter .nav a */
+  .navmenu a,body.home .navmenu a,body.is-chapter .navmenu a{
+    color:#262522;font-family:var(--display);font-weight:300;
+    font-size:clamp(1.45rem,5.6vw,2.1rem);line-height:1.12;letter-spacing:-.01em}
+  .navmenu a.is-current,body.home .navmenu a.is-current,body.is-chapter .navmenu a.is-current{color:#aa8765}
+  .navmenu .navmenu__sub{font-size:clamp(1rem,4vw,1.36rem);opacity:.62;font-weight:300}
   .navmenu .navmenu__sub.is-current{opacity:1}
-  .navmenu hr{width:46px;border:0;border-top:1px solid rgba(255,255,255,.2);margin:.4rem 0}
-  .navmenu .navmenu__action{font-size:clamp(1rem,4vw,1.2rem);color:rgba(244,242,236,.66);font-family:var(--font)}
+  .navmenu hr{width:46px;border:0;border-top:1px solid rgba(38,37,34,.16);margin:.4rem 0}
+  .navmenu .navmenu__action,body.home .navmenu .navmenu__action,body.is-chapter .navmenu .navmenu__action{
+    font-size:clamp(.98rem,3.8vw,1.2rem);color:rgba(38,37,34,.62);font-family:var(--font)}
+  /* opin valmynd: hausinn gegnsær svo hvíti flöturinn nái alveg upp */
+  .nav.open,body.home .nav.open,body.is-chapter .nav.open{background:transparent;border-bottom-color:transparent;box-shadow:none}
   body.navopen{overflow:hidden}
   .nav.open .burger span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
   .nav.open .burger span:nth-child(2){opacity:0}
@@ -857,7 +872,7 @@ body.is-page{background:#4E443A}
 /* ===================== SÍMI (phone) — heildaryfirferð ===================== */
 @media (max-width:640px){
   /* haus — passar á síma (vörumerki + Hafa samband + hnöttur) */
-  .nav{padding:0 18px;height:64px;background:linear-gradient(180deg,rgba(0,0,0,.42) 0%,rgba(0,0,0,0) 100%)}
+  .nav{padding:0 18px;height:64px}   /* bakgrunnur kemur frá ljósu haus-reglunum */
   .nav__logo{font-size:1.04rem;letter-spacing:.12em}
   .nav__right{gap:.95rem}
   .nav__contact,.lang{font-size:.92rem}
@@ -903,7 +918,12 @@ body.is-page{background:#4E443A}
   .shero{min-height:88svh}
   .shero__text{padding:clamp(30px,5vh,48px) var(--pad)}
   .shero__media{height:auto;max-height:none}
-  .facade__sides{top:.8rem}
+  /* Takkarnir mega ALDREI fara út fyrir skjáinn: hópurinn var 463px breiður,
+     festur við hægri brún, svo "Bakhlið" (og "Framhlið" á mjórri símum) lenti
+     utan skjás og varð ósmellanlegt. Nú spannar hópurinn breidd myndarinnar
+     og brýtur sig í tvær raðir ef hann kemst ekki fyrir í einni. */
+  .facade__sides{top:.7rem;right:.7rem;left:.7rem;flex-wrap:wrap;justify-content:flex-end;gap:.4rem}
+  .facade__sidebtn{font-size:.72rem;letter-spacing:.03em;padding:.62rem .82rem;min-height:40px}
   .select__fbtn{width:44px;height:44px}     /* snertimörk ≥44px */
 }
 /* ===== Story-sections á síma: stafla mynd yfir texta, styttri immersive hetjur ===== */
@@ -923,7 +943,11 @@ body.is-page{background:#4E443A}
    navið þegar hann skrunar upp undir það (z-index 60 > hero 3; vandinn var bara
    hálfgegnsær bakgrunnur). Tryggir engin skörun óháð render-tímasetningu. */
 @media (max-width:860px){
-  body:not(.is-page):not(.is-contact):not(.is-chapter) .nav{background:#453B31}
+  /* Hausinn er ljós á öllum síðum — dökka útgáfan var arfur frá gamla
+     dökka hero-inu og skildi eftir brúnan borða yfir ljósri forsíðu. */
+  body:not(.is-page):not(.is-contact):not(.is-chapter) .nav{
+    background:linear-gradient(180deg,rgba(255,255,255,.97) 0%,rgba(255,255,255,.86) 62%,rgba(255,255,255,0) 100%)}
+  body:not(.is-page):not(.is-contact):not(.is-chapter) .nav--solid{background:rgba(255,255,255,.985)}
 }
 
 /* Sími: snerti-orðalag ("Ýttu eða smelltu") í stað "Færðu músina yfir" (engin mús á síma).
@@ -963,6 +987,22 @@ body.is-page{background:var(--bone)}
 .story--page .story__chips{margin-top:1.9rem}
 .story--page .story__chips li{color:var(--charcoal);
   border:1px solid rgba(126,154,82,.42);background:rgba(126,154,82,.10)}
+
+/* skissa: sýna alla teikninguna á pappírstóni (ekki klippa með cover) */
+.story__shot--sketch img{object-fit:contain;background:#f6f4ee}
+.story__shot--sketch figcaption{color:var(--charcoal);background:linear-gradient(0deg,rgba(246,244,238,.92),transparent)}
+
+/* Arkitektúr: skissan (4:3) í breiðu plötunni (21/9) — öll teikningin sýnd á pappírstóni */
+.chap__plate--sketch .cut{background:#f6f4ee}
+.chap__plate--sketch .cut img{object-fit:contain}
+
+/* hönnuður hússins — mínimalískt: portrett (ef til) + nafn, engin umgjörð */
+.story__arch{display:flex;align-items:center;gap:1rem;margin-top:2.4rem}
+.story__archface{width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none;display:block}
+.story__archinfo{display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.story__archinfo b{font-weight:500;color:var(--charcoal);font-size:.95rem;letter-spacing:.01em}
+.story__archinfo span{font-size:.78rem;color:var(--muted)}
+.story--page .story__below:has(.story__shot) .story__arch{grid-column:1 / -1}
 
 .story--page .story__pager{border-top-color:rgba(44,46,48,.14)}
 .story--page .story__pager a{color:rgba(44,46,48,.6)}
