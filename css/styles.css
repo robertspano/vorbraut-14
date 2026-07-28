@@ -1016,3 +1016,11 @@ body.is-page{background:var(--bone)}
   .story--page .story__below:has(.story__shot){grid-template-columns:1fr;gap:clamp(24px,6vw,38px)}
   .story__shot img{min-height:240px}
 }
+
+/* hunangsgildra — ósýnileg mönnum, vélmenni fylla hana út og fyrirspurnin
+   er þá hunsuð þegjandi. Ekki display:none (sum vélmenni sleppa slíkum reitum). */
+.cform__hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.cform__note[data-gerd="ok"]{color:#0D710A}
+.cform__note[data-gerd="villa"]{color:#8a5a3c}
+.cform__note[data-gerd="bid"]{opacity:.7}
+.cform__submit[disabled]{opacity:.55;cursor:progress}

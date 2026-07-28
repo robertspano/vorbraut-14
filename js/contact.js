@@ -28,22 +28,64 @@
   // Fyrirspurnarform — opnar tölvupóstforrit notandans með útfylltri fyrirspurn.
   const cform = $('#contactForm');
   if (cform) {
-    cform.addEventListener('submit', (e) => {
+    const note = $('#cformNote');
+    const btn  = $('.cform__submit', cform);
+    const segja = (lykill, gerd) => {
+      if (!note) return;
+      note.textContent = t(lykill);
+      note.dataset.gerd = gerd;          // 'ok' | 'villa' | 'bid'
+      note.hidden = false;
+    };
+    // Varaleið ef sendingin næst ekki: opna póstforritið eins og áður, en
+    // AÐEINS þá — og segja það hreint út í stað þess að þykjast hafa sent.
+    const mailtoVaraleid = (nafn, netfang, simi, skilabod) => {
+      const efni = 'Fyrirspurn – Vorbraut 14';
+      const texti = [
+        'Nafn: ' + nafn,
+        'Netfang: ' + netfang,
+        simi ? 'Símanúmer: ' + simi : null,
+        '',
+        skilabod,
+      ].filter((x) => x !== null).join('\n');
+      window.location.href = 'mailto:miklaborg@miklaborg.is?subject='
+        + encodeURIComponent(efni) + '&body=' + encodeURIComponent(texti);
+    };
+
+    cform.addEventListener('submit', async (e) => {
       e.preventDefault();
       const val = (n) => (cform.elements[n] ? cform.elements[n].value.trim() : '');
-      const name = val('name'), email = val('email'), phone = val('phone'), message = val('message');
-      const subj = 'Fyrirspurn – Vorbraut 14';
-      const body = [
-        `Nafn: ${name}`,
-        `Netfang: ${email}`,
-        phone ? `Símanúmer: ${phone}` : null,
-        '',
-        message,
-      ].filter((x) => x !== null).join('\n');
-      window.location.href = `mailto:miklaborg@miklaborg.is?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
-      const note = $('#cformNote');
-      if (note) { note.textContent = t('ct.sent'); note.hidden = false; }
-      cform.reset();
+      const nafn = val('name'), netfang = val('email'),
+            simi = val('phone'), skilabod = val('message');
+      if (!nafn || !netfang || !skilabod) return;
+
+      if (btn) { btn.disabled = true; }
+      segja('ct.sending', 'bid');
+
+      try {
+        const svar = await fetch('/api/fyrirspurn', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nafn, netfang, simi, skilabod, vefsida: val('vefsida') }),
+        });
+        const d = await svar.json().catch(() => ({}));
+
+        if (svar.ok && d.ok) {
+          segja('ct.sent', 'ok');            // sannarlega sent
+          cform.reset();
+        } else if (svar.status === 429) {
+          segja('ct.ofhratt', 'villa');
+        } else {
+          // 404 (t.d. á GitHub Pages þar sem þjónustuföll keyra ekki),
+          // 503 (lykill ekki uppsettur) eða 502 (Resend hafnaði) -> mailto
+          segja('ct.mailto', 'villa');
+          mailtoVaraleid(nafn, netfang, simi, skilabod);
+        }
+      } catch (_) {
+        segja('ct.mailto', 'villa');
+        mailtoVaraleid(nafn, netfang, simi, skilabod);
+      } finally {
+        if (btn) { btn.disabled = false; }
+      }
     });
   }
 
