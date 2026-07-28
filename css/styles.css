@@ -234,8 +234,17 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
   }
 @media(max-width:900px){
   .shero{padding-top:calc(64px + 12px)}
-  .shero__stage{grid-template-columns:1fr}
-  .shero__media{order:-1;margin-left:0;margin-bottom:clamp(18px,4vw,28px)}
+  /* Myndbandið situr Á MILLI fyrirsagnarinnar og inngangstextans.
+     .shero__text er eigin kassi, svo börnin hans yrðu annars föst saman;
+     display:contents leysir þau upp í stafla-flæðið og þá má raða þeim. */
+  /* align-items:center úr rúðunetinu myndi miðja textann í staflanum -> stretch */
+  .shero__stage{display:flex;flex-direction:column;align-items:stretch;grid-template-columns:none}
+  .shero__text{display:contents}
+  .shero__eyebrow{order:1}
+  .shero__title{order:2}
+  .shero__media{order:3;margin:clamp(18px,4vw,28px) 0}
+  .shero__lead{order:4}
+  .shero__cta{order:5}
   .shero__frame{display:none}
   .shero__l3{white-space:normal;padding:0;background:none}
   .shero__l2{margin-left:clamp(16px,6vw,40px)}
@@ -880,7 +889,7 @@ body.is-page{background:#4E443A}
   .lang__globe{width:20px;height:20px}
 
   /* hero texti passi á símaskjá — var of hár svo titillinn skaraðist við navið */
-  .shero__text{padding-top:calc(64px + 3vh)}
+  .shero__stage{padding-top:3vh}
   .hero__title{font-size:clamp(2.4rem,9vw,3.4rem)}
   .hero__tag{font-size:1.04rem;margin-top:.6rem;max-width:26ch}
   .hero__sub{font-size:.9rem;margin-top:.55rem;line-height:1.5}
@@ -916,7 +925,8 @@ body.is-page{background:#4E443A}
 /* ===== Sími/spjaldtölva: hero staflast (texti fyrst, mynd undir) ===== */
 @media (max-width:860px){
   .shero{min-height:88svh}
-  .shero__text{padding:clamp(30px,5vh,48px) var(--pad)}
+  /* fyllingin færist á staflann því .shero__text er display:contents hér */
+  .shero__stage{padding:clamp(30px,5vh,48px) 0}
   .shero__media{height:auto;max-height:none}
   /* Takkarnir mega ALDREI fara út fyrir skjáinn: hópurinn var 463px breiður,
      festur við hægri brún, svo "Bakhlið" (og "Framhlið" á mjórri símum) lenti
