@@ -4,29 +4,39 @@ Formið á `hafa-samband.html` sendir núna fyrirspurnir gegnum **Resend**.
 Þrjú skref eftir, og þau þarf Róbert að gera sjálfur því þau krefjast
 reiknings og leynilykils.
 
-## 1. Resend-reikningur og lén
+## 1. DNS — ⏳ ÞETTA ER EFTIR, OG ÞETTA EITT STÖÐVAR SENDINGU
 
-1. Stofnaðu reikning á [resend.com](https://resend.com).
-2. **Domains → Add Domain → `vorbraut14.is`.**
-3. Resend gefur þér nokkrar DNS-færslur (SPF, DKIM og DMARC). Settu þær inn
-   hjá þeim sem hýsir lénið. Staðfesting tekur yfirleitt nokkrar mínútur.
+`fyrirspurn.vorbraut14.is` er þegar skráð í Resend en stendur á **pending**:
+engin af DNS-færslunum þremur er komin inn. Ég staðfesti með uppflettingu
+að þær séu allar ósettar.
 
-Án staðfests léns er aðeins hægt að senda á netfangið sem á
-Resend-reikninginn — þá kemst ekkert til Miklaborgar.
+DNS fyrir `vorbraut14.is` er hjá **ISNIC** (`forwarding00/01.isnic.is`).
+Settu þessar þrjár færslur inn þar:
 
-## 2. Lykill inn á Vercel
+| Tegund | Nafn | Gildi |
+|---|---|---|
+| `TXT` | `resend._domainkey.fyrirspurn` | DKIM-gildið úr Resend (langur `p=MIGfMA0…` strengur) |
+| `MX`  | `send.fyrirspurn` | `feedback-smtp.eu-west-1.amazonses.com` (forgangur 10) |
+| `TXT` | `send.fyrirspurn` | `v=spf1 include:amazonses.com ~all` |
 
-1. Resend → **API Keys → Create API Key** (nægir `Sending access`).
-2. Vercel → verkefnið → **Settings → Environment Variables**:
+Nákvæmu gildin eru í Resend → Domains → `fyrirspurn.vorbraut14.is`.
+Þegar þær eru komnar inn ýtirðu á **Verify** þar (eða lætur mig gera það).
 
-   | Breyta | Gildi | Skylda |
-   |---|---|---|
-   | `RESEND_API_KEY` | lykillinn frá Resend | **já** |
-   | `FYRIRSPURN_TIL` | `miklaborg@miklaborg.is` (fleiri aðskildir með kommu) | nei |
-   | `FYRIRSPURN_FRA` | `Vorbraut 14 <vefur@vorbraut14.is>` | nei |
+Þangað til lénið er staðfest hafnar Resend hverri sendingu og formið
+fellur á póstforrit gestsins.
 
-3. Veldu öll umhverfin (Production, Preview, Development) og **endurbirtu**
-   vefinn svo breyturnar taki gildi.
+## 2. Lykill inn á Vercel — ✅ KLÁRAÐ
+
+Breyturnar eru komnar inn á Vercel-verkefnið `vorbraut-14`, bæði í
+Production og Preview:
+
+| Breyta | Gildi |
+|---|---|
+| `RESEND_API_KEY` | (dulkóðaður) |
+| `FYRIRSPURN_TIL` | `miklaborg@miklaborg.is` |
+| `FYRIRSPURN_FRA` | `Vorbraut 14 <fyrirspurn@fyrirspurn.vorbraut14.is>` |
+
+Vefurinn þarf **endurbirtingu** til að þær taki gildi.
 
 **Lykillinn má aldrei fara í kóðann.** Hann er lesinn í `api/fyrirspurn.js`,
 sem keyrir á þjóni Vercel — gestir sjá hann aldrei.

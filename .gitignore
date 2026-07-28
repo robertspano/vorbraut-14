@@ -22,3 +22,5 @@ venv/
 
 # Node (unused but safe)
 node_modules/
+.vercel
+.env*
