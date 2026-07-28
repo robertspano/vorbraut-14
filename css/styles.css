@@ -872,7 +872,7 @@ body.is-page{background:#4E443A}
 /* ===================== SÍMI (phone) — heildaryfirferð ===================== */
 @media (max-width:640px){
   /* haus — passar á síma (vörumerki + Hafa samband + hnöttur) */
-  .nav{padding:0 18px;height:64px;background:linear-gradient(180deg,rgba(0,0,0,.42) 0%,rgba(0,0,0,0) 100%)}
+  .nav{padding:0 18px;height:64px}   /* bakgrunnur kemur frá ljósu haus-reglunum */
   .nav__logo{font-size:1.04rem;letter-spacing:.12em}
   .nav__right{gap:.95rem}
   .nav__contact,.lang{font-size:.92rem}
@@ -918,7 +918,12 @@ body.is-page{background:#4E443A}
   .shero{min-height:88svh}
   .shero__text{padding:clamp(30px,5vh,48px) var(--pad)}
   .shero__media{height:auto;max-height:none}
-  .facade__sides{top:.8rem}
+  /* Takkarnir mega ALDREI fara út fyrir skjáinn: hópurinn var 463px breiður,
+     festur við hægri brún, svo "Bakhlið" (og "Framhlið" á mjórri símum) lenti
+     utan skjás og varð ósmellanlegt. Nú spannar hópurinn breidd myndarinnar
+     og brýtur sig í tvær raðir ef hann kemst ekki fyrir í einni. */
+  .facade__sides{top:.7rem;right:.7rem;left:.7rem;flex-wrap:wrap;justify-content:flex-end;gap:.4rem}
+  .facade__sidebtn{font-size:.72rem;letter-spacing:.03em;padding:.62rem .82rem;min-height:40px}
   .select__fbtn{width:44px;height:44px}     /* snertimörk ≥44px */
 }
 /* ===== Story-sections á síma: stafla mynd yfir texta, styttri immersive hetjur ===== */
@@ -938,7 +943,11 @@ body.is-page{background:#4E443A}
    navið þegar hann skrunar upp undir það (z-index 60 > hero 3; vandinn var bara
    hálfgegnsær bakgrunnur). Tryggir engin skörun óháð render-tímasetningu. */
 @media (max-width:860px){
-  body:not(.is-page):not(.is-contact):not(.is-chapter) .nav{background:#453B31}
+  /* Hausinn er ljós á öllum síðum — dökka útgáfan var arfur frá gamla
+     dökka hero-inu og skildi eftir brúnan borða yfir ljósri forsíðu. */
+  body:not(.is-page):not(.is-contact):not(.is-chapter) .nav{
+    background:linear-gradient(180deg,rgba(255,255,255,.97) 0%,rgba(255,255,255,.86) 62%,rgba(255,255,255,0) 100%)}
+  body:not(.is-page):not(.is-contact):not(.is-chapter) .nav--solid{background:rgba(255,255,255,.985)}
 }
 
 /* Sími: snerti-orðalag ("Ýttu eða smelltu") í stað "Færðu músina yfir" (engin mús á síma).
