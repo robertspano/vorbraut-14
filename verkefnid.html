@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css?v=243" />
-  <link rel="stylesheet" href="css/chapter.css?v=245" />
+  <link rel="stylesheet" href="css/chapter.css?v=246" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
 <body class="is-chapter">
@@ -64,8 +64,9 @@
             <p class="chap__pull" data-i18n="st.intro.pull">Birta, víðsýni og náttúra í Garðabæ</p>
             <p class="chap__lvl" data-i18n="st.intro.lvl">&nbsp;</p>
           </div>
-          <figure class="chap__slice">
-            <span class="cut" style="--zoom:1.04;--tx:0%;--ty:1%"><img data-img="verkefnid.slice" src="assets/renders/foto-bak.webp?v=245" alt="" width="1920" height="1080" loading="eager" decoding="async"></span>
+          <!-- línuteikning af húsinu á pappírstóni -->
+          <figure class="chap__slice chap__slice--draw">
+            <span class="cut" style="--zoom:1;--tx:0%;--ty:0%"><img data-img="verkefnid.slice" src="assets/renders/teikning.webp?v=246" alt="Línuteikning af Vorbraut 14" width="1920" height="1434" loading="eager" decoding="async"></span>
             <figcaption><b><span data-i18n="fig.label">Mynd</span> 01·A</b> <span data-i18n="st.intro.cap">&nbsp;</span></figcaption>
           </figure>
         </header>
@@ -74,10 +75,17 @@
           <ul class="chap__ledger"><li data-i18n="st.intro.c1">14 íbúðir</li><li data-i18n="st.intro.c2">Fjórar hæðir</li><li data-i18n="st.intro.c3">Hnoðraholt, Garðabær</li><li data-i18n="st.intro.c4">Dagsbirta og útsýni</li></ul>
         </div>
       </div>
-      <figure class="chap__plate">
-        <span class="cut" style="--zoom:1.04;--tx:0%;--ty:2%"><img data-img="verkefnid.plate" src="assets/renders/foto-holtid.webp?v=245" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
-        <figcaption><b><span data-i18n="fig.label">Mynd</span> 01·B</b> <span data-i18n="st.intro.cap2">&nbsp;</span></figcaption>
-      </figure>
+      <!-- tvær loftmyndir af framkvæmdinni, hlið við hlið -->
+      <div class="chap__pair">
+        <figure>
+          <span class="cut"><img data-img="verkefnid.pair1" src="assets/renders/foto-bygg1.webp?v=246" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
+          <figcaption><b><span data-i18n="fig.label">Mynd</span> 01·B</b> <span data-i18n="st.intro.cap2">&nbsp;</span></figcaption>
+        </figure>
+        <figure>
+          <span class="cut"><img data-img="verkefnid.pair2" src="assets/renders/foto-bygg2.webp?v=246" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
+          <figcaption><b><span data-i18n="fig.label">Mynd</span> 01·C</b> <span data-i18n="st.intro.cap3">&nbsp;</span></figcaption>
+        </figure>
+      </div>
       <div class="chap__wrap">
         <nav class="chap__pager"><a class="is-prev" href="index.html"><small>← <span data-i18n="pager.prev">Fyrra</span></small><b data-i18n="pager.home">Forsíða</b></a><a class="is-next" href="arkitektur.html"><small><span data-i18n="pager.next">Næsta</span> →</small><b data-i18n="nav.arkitektur">Arkitektúr</b></a></nav>
       </div>
@@ -104,7 +112,7 @@
       </nav>
     </div>
   </footer>
-  <script defer src="js/content.js?v=245"></script>
+  <script defer src="js/content.js?v=246"></script>
   <script defer src="js/supabase-config.js?v=240"></script>
   <script defer src="js/vbsupa.js?v=240"></script>
   <script defer src="js/page.js?v=240"></script>
