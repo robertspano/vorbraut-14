@@ -148,8 +148,18 @@ body.is-chapter .lang{color:#262522}
 /* myndbandsplata — sama form og myndaplatan, dekkri grunnur meðan hleðst */
 .chap__film{width:100%;height:100%;object-fit:cover;display:block;background:var(--wash2)}
 .chap__plate--film .cut{background:var(--wash2)}
-/* myndbandssneið — víðara snið en myndasneiðin svo dróna-víðmyndin klippist ekki um of */
-.chap__slice--film .cut{aspect-ratio:4/5;background:var(--wash2)}
+/* MYNDBANDSSNEIÐ.
+   Dróna-klippurnar eru 1280x720 (16:9). Ramminn var 4/5 (lóðréttur) með
+   object-fit:cover, sem klippti 55% af BREIDDINNI burt — myndbandið sást
+   varla. Ramminn fylgir nú hlutfalli klippunnar, svo ekkert er klippt. */
+.chap__slice--film .cut{aspect-ratio:16/9;max-height:none;background:var(--wash2)}
+/* og myndbandið fær meira pláss í opnunni en kyrrmynd myndi fá.
+   ATH: verður að vera INNI í min-width — sérhæfni :has() (0,2,0) slær út
+   sím-regluna .chap__open{grid-template-columns:1fr} (0,1,0) annars, og þá
+   situr opnan í tveimur dálkum á síma með 192 px breitt myndband. */
+@media (min-width:901px){
+  .chap__open:has(.chap__slice--film){grid-template-columns:minmax(0,4.6fr) minmax(0,7.4fr)}
+}
 /* teikningarsneið — öll teikningin sýnd á pappírstóni, ekkert klippt */
 .chap__slice--draw .cut{aspect-ratio:4/3;background:#f6f4ee;box-shadow:inset 0 0 0 1px var(--hair)}
 .chap__slice--draw .cut img{object-fit:contain}
@@ -231,6 +241,7 @@ body.is-chapter .lang{color:#262522}
     min-height:0;padding-top:clamp(104px,15vh,150px);align-items:start;
   }
   .chap__slice .cut{aspect-ratio:4/3;max-height:none}
+  .chap__slice--film .cut{aspect-ratio:16/9}   /* myndbandið er 16:9 — ekkert klipp */
   .chap__read{grid-template-columns:1fr;row-gap:clamp(26px,4vh,42px);margin-left:0}
   .chap__body{max-width:none}
   .chap__body:has(p+p) p::before{position:static;display:block;margin-bottom:.35rem}
