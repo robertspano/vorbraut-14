@@ -1,4 +1,4 @@
-name: Forskoðun á GitHub Pages
+name: Forskodun a GitHub Pages
 
 on:
   push:
@@ -22,14 +22,34 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Stilla Pages (kveikir a theim ef slokkt)
+
+      # Pages verdur ad vera kveikt handvirkt einu sinni:
+      # Settings -> Pages -> Source: GitHub Actions
+      - name: Athuga hvort kveikt se a Pages
+        id: check
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages")
+          if [ "$code" = "200" ]; then
+            echo "on=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "on=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Pages er ekki kveikt. Farðu i Settings -> Pages og veldu Source: GitHub Actions. Their eftir birtist sidan sjalfkrafa."
+          fi
+
+      - name: Stilla Pages
+        if: steps.check.outputs.on == 'true'
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
+
       - name: Pakka sidunni
+        if: steps.check.outputs.on == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
+
       - name: Birta
         id: deployment
+        if: steps.check.outputs.on == 'true'
         uses: actions/deploy-pages@v4
