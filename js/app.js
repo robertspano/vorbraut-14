@@ -714,8 +714,9 @@
 
   function renderSelLegend() {
     if (!selLegendEl) return;
-    const present = new Set(APARTMENTS.map((a) => a.status));
-    selLegendEl.innerHTML = ['available', 'reserved', 'sold'].filter((s) => present.has(s))
+    // allar þrjár stöðurnar alltaf sýndar — skýringin á að vera heil lesning
+    // á litakerfinu, líka þegar engin íbúð er í tiltekinni stöðu þá stundina.
+    selLegendEl.innerHTML = ['available', 'reserved', 'sold']
       .map((s) => `<li class="select__leg select__leg--${s}"><i aria-hidden="true"></i>${statusLabel(s)}</li>`).join('');
   }
 

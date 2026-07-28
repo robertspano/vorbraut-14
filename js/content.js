@@ -254,7 +254,7 @@ const STR = {
     'out.svalir': 'Svalir',
     'out.thaksvalir': 'Þaksvalir',
     'st.available': 'Til sölu',
-    'st.reserved': 'Frátekin',
+    'st.reserved': 'Selt með fyrirvara',
     'st.sold': 'Seld',
     'spec.ceiling': 'Salarhæð',
     'spec.area': 'Birt stærð',

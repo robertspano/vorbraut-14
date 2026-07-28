@@ -269,7 +269,11 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
   cursor:pointer;transition:background .15s}
 .select__fbtn:hover{background:#EFE9DE;border-color:#C0BBB5}
 .select__fbtn.is-on{background:#C0BBB5;border-color:#C0BBB5}
-.select__diagram{background:transparent;border:0;padding:0;max-width:520px}
+/* Keilurnar sitja rétt utan við grunnmyndina, svo svg-ið má flæða út fyrir sig.
+   Reiturinn klippir samt af: annars getur keila með ranghnit (t.d. dregin of
+   langt í ?conedit) teiknast upp yfir fyrirsögnina "Vorbraut 14". */
+.select__diagram{background:transparent;border:0;max-width:520px;
+  overflow:hidden;padding:clamp(40px,9%,68px) clamp(46px,11%,84px)}
 .select__diagram svg{width:100%;height:auto;display:block;overflow:visible}
 .select__legend{list-style:none;display:flex;flex-wrap:wrap;gap:.7rem 1.9rem;margin:1.6rem 0 0;padding:0}
 .select__leg{display:inline-flex;align-items:center;gap:.55rem;font-size:.84rem;line-height:1;
@@ -803,19 +807,28 @@ body.is-page{background:#4E443A}
 @media (max-width:1080px){
   .nav__links,.nav__right .nav__link,.nav__right .nav__contact{display:none}
   .burger{display:flex;position:relative;z-index:62;background:none;border:0;cursor:pointer;color:#fff}
-  .navmenu{display:flex;position:fixed;inset:0;z-index:58;flex-direction:column;
-    align-items:center;justify-content:center;gap:clamp(1rem,2.4vh,1.7rem);
-    padding:84px var(--pad) 48px;text-align:center;
-    background:rgba(8,9,10,.975);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  /* hvít yfirlagsvalmynd með dökku letri — í takt við ljósa hausinn.
+     100svh (ekki 100%) svo hún fylli skjáinn þótt veffangastikan á síma
+     renni til; overscroll-behavior heldur skruni inni í valmyndinni. */
+  .navmenu{display:flex;position:fixed;inset:0;height:100svh;z-index:58;flex-direction:column;
+    align-items:center;justify-content:center;gap:clamp(.85rem,2.2vh,1.6rem);
+    padding:max(84px,env(safe-area-inset-top,0px) + 76px) var(--pad) max(48px,env(safe-area-inset-bottom,0px) + 32px);
+    text-align:center;overflow-y:auto;overscroll-behavior:contain;
+    background:#fff;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
     opacity:0;visibility:hidden;transition:opacity .32s var(--ease),visibility .32s var(--ease)}
   .nav.open .navmenu{opacity:1;visibility:visible}
-  .navmenu a{color:rgba(255,255,255,.92);font-family:var(--display);font-weight:300;
-    font-size:clamp(1.5rem,6vw,2.1rem);line-height:1.1;letter-spacing:-.01em}
-  .navmenu a.is-current{color:var(--tan)}
-  .navmenu .navmenu__sub{font-size:clamp(1.02rem,4.2vw,1.42rem);opacity:.66;font-weight:300}
+  /* litur settur með nægri sértækni til að slá út body.home/.is-chapter .nav a */
+  .navmenu a,body.home .navmenu a,body.is-chapter .navmenu a{
+    color:#262522;font-family:var(--display);font-weight:300;
+    font-size:clamp(1.45rem,5.6vw,2.1rem);line-height:1.12;letter-spacing:-.01em}
+  .navmenu a.is-current,body.home .navmenu a.is-current,body.is-chapter .navmenu a.is-current{color:#aa8765}
+  .navmenu .navmenu__sub{font-size:clamp(1rem,4vw,1.36rem);opacity:.62;font-weight:300}
   .navmenu .navmenu__sub.is-current{opacity:1}
-  .navmenu hr{width:46px;border:0;border-top:1px solid rgba(255,255,255,.2);margin:.4rem 0}
-  .navmenu .navmenu__action{font-size:clamp(1rem,4vw,1.2rem);color:rgba(244,242,236,.66);font-family:var(--font)}
+  .navmenu hr{width:46px;border:0;border-top:1px solid rgba(38,37,34,.16);margin:.4rem 0}
+  .navmenu .navmenu__action,body.home .navmenu .navmenu__action,body.is-chapter .navmenu .navmenu__action{
+    font-size:clamp(.98rem,3.8vw,1.2rem);color:rgba(38,37,34,.62);font-family:var(--font)}
+  /* opin valmynd: hausinn gegnsær svo hvíti flöturinn nái alveg upp */
+  .nav.open,body.home .nav.open,body.is-chapter .nav.open{background:transparent;border-bottom-color:transparent;box-shadow:none}
   body.navopen{overflow:hidden}
   .nav.open .burger span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
   .nav.open .burger span:nth-child(2){opacity:0}

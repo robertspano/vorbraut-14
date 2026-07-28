@@ -144,17 +144,19 @@ try {
 const VIEWS = [
   { id: 'aftan',    label: 'Bakhlið',      img: 'assets/renders/foto-bak.webp',      zones: true },
   { id: 'framan',   label: 'Framhlið',     img: 'assets/renders/foto-fram.webp' },
-  { id: 'hlid',     label: 'Hliðin',       img: 'assets/renders/foto-hlid.webp' },
-  { id: 'kjallari', label: 'Bílakjallari', img: 'assets/renders/foto-kjallari.webp' },
+  { id: 'hlid',     label: 'Hliðin',       img: 'assets/renders/foto-ska.webp' },
+  { id: 'kjallari', label: 'Bílakjallari', img: 'assets/renders/foto-rampur.webp' },
 ];
 
 /* Útsýnis-keilur á hæðarkortinu (sjónarhornin sem skipta um mynd af húsinu).
    x/y eru í hnitakerfi hæðarkortsins, deg = snúningur (0 = vísar upp), s = stærð.
    Hægt er að draga þær til með ?conedit og vista varanlega hér. */
+/* Ein keila á hvert sjónarhorn, staðsett rétt utan við grunnmyndina (viewBox 300×181).
+   Hnit verða að haldast nálægt kassanum — keila langt fyrir utan hann teiknast yfir
+   fyrirsögnina fyrir ofan (sjá .select__diagram sem klippir af til öryggis). */
 const VIEW_CONES = [
   { side: 'framan',   x: 152.4, y:  -31.9, deg: 181, s: 0.80 },
   { side: 'aftan',    x: 152.1, y:  228.5, deg:   0, s: 0.80 },
-  { side: 'aftan',    x: 127.5, y: -320.7, deg: 178, s: 0.80 },
   { side: 'kjallari', x: -45.6, y:  135.3, deg:  56, s: 0.80 },
   { side: 'hlid',     x: 347.8, y:  219.1, deg: 309, s: 0.80 },
 ];
