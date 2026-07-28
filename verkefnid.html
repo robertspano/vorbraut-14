@@ -8,11 +8,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=192" />
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=240" />
+  <link rel="stylesheet" href="css/chapter.css?v=240" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
-<body class="is-page">
+<body class="is-chapter">
   <header class="nav" id="nav">
     <div class="nav__left">
       <a href="index.html" class="nav__logo" data-i18n="brand.logo">VORBRAUT&nbsp;14</a>
@@ -34,8 +35,8 @@
     </div>
     <div class="nav__right">
       <a href="index.html#soluadilar" class="nav__link" data-i18n="sellers.title">Söluaðilar</a>
-      <a href="hafa-samband.html" class="nav__contact" data-i18n="nav.contact">Hafa samband</a>
       <button class="lang" id="langBtn" aria-label="Language"><svg class="lang__globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 2.6 15.5 0 18M12 3c-2.6 2.5-2.6 15.5 0 18"/></svg><span id="langLabel">English</span></button>
+      <a href="hafa-samband.html" class="nav__contact" data-i18n="nav.contact">Hafa samband</a>
       <button class="burger" id="burger" aria-label="Valmynd" aria-controls="navmenu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
     <nav class="navmenu" id="navmenu" aria-label="Valmynd">
@@ -53,21 +54,32 @@
     </nav>
   </header>
   <main>
-    <article class="story story--immersive story--page reveal" id="st-intro" aria-labelledby="st-intro-h">
-      <div class="story__inner">
-        <div class="story__hero" style="background-image:url('assets/renders/aerial.webp?v=192')" role="img" aria-label="Heillandi búseta í Garðabæ — Vorbraut 14">
-          <div class="story__heroinner reveal">
-            <p class="kicker kicker--light" data-i18n="st.intro.kick">01 · Vorbraut 14</p>
-            <h1 class="story__title" id="st-intro-h" data-i18n="st.intro.title">Heillandi búseta í Garðabæ</h1>
-            <p class="story__pull" data-i18n="st.intro.pull">Birta, víðsýni og náttúra í Garðabæ</p>
+    <article class="chap" id="st-intro" data-ch="01" data-plate="wide" aria-labelledby="st-intro-h">
+      <div class="chap__wrap">
+        <header class="chap__open">
+          <div class="chap__head">
+            <p class="chap__kick" data-i18n="st.intro.kick">01 · Vorbraut 14</p>
+            <h1 class="chap__title" id="st-intro-h" data-i18n="st.intro.title">Heillandi búseta í Garðabæ</h1>
+            <div class="chap__rule"></div>
+            <p class="chap__pull" data-i18n="st.intro.pull">Birta, víðsýni og náttúra í Garðabæ</p>
+            <p class="chap__lvl" data-i18n="st.intro.lvl">&nbsp;</p>
           </div>
+          <figure class="chap__slice">
+            <span class="cut" style="--zoom:1.04;--tx:0%;--ty:1%"><img data-img="verkefnid.slice" src="assets/renders/foto-fram.webp?v=240" alt="" width="1920" height="1080" loading="eager" decoding="async"></span>
+            <figcaption><b><span data-i18n="fig.label">Mynd</span> 01·A</b> <span data-i18n="st.intro.cap">&nbsp;</span></figcaption>
+          </figure>
+        </header>
+        <div class="chap__read">
+          <div class="chap__body"><p data-i18n="st.intro.b1">Við Vorbraut 14 í Hnoðraholti í Garðabæ rís vandað fjögurra hæða fjölbýlishús sem hýsir 14 fjölbreyttar íbúðir ásamt bílakjallara og ríkulegum stoðrýmum. Verkefnið leggur ríka áherslu á dagsbirtu, útsýni, fyrirmyndar aðgengi og heilsteypta hönnun, enda nýtur byggingin einstakrar staðsetningar ofarlega í landslaginu. Húsið stendur á friðsælum og eftirsóknarverðum stað þar sem nálægð við ósnortna náttúru, fjölbreytta þjónustu og helstu samgönguæðar rennur saman í eina heild. Hér gefst tækifæri á framtíðarheimili þar sem ríkidæmi hversdagsins endurspeglast í hugvitsamlegu skipulagi, vönduðum útirýmum og nútímaþægindum. Vorbraut 14 er kjörinn kostur fyrir þá sem gera miklar kröfur til búsetu í Garðabæ, þar sem víðsýni og birta eru í fyrirrúmi, en þjónusta og útivist aldrei langt undan.</p></div>
+          <ul class="chap__ledger"><li data-i18n="st.intro.c1">14 íbúðir</li><li data-i18n="st.intro.c2">Fjórar hæðir</li><li data-i18n="st.intro.c3">Hnoðraholt, Garðabær</li><li data-i18n="st.intro.c4">Dagsbirta og útsýni</li></ul>
         </div>
-        <div class="story__below reveal">
-          <div class="story__body"><p data-i18n="st.intro.b1">Við Vorbraut 14 í Hnoðraholti í Garðabæ rís vandað fjögurra hæða fjölbýlishús sem hýsir 14 fjölbreyttar íbúðir ásamt bílakjallara og ríkulegum stoðrýmum. Verkefnið leggur ríka áherslu á dagsbirtu, útsýni, fyrirmyndar aðgengi og heilsteypta hönnun, enda nýtur byggingin einstakrar staðsetningar ofarlega í landslaginu. Húsið stendur á friðsælum og eftirsóknarverðum stað þar sem nálægð við ósnortna náttúru, fjölbreytta þjónustu og helstu samgönguæðar rennur saman í eina heild. Hér gefst tækifæri á framtíðarheimili þar sem ríkidæmi hversdagsins endurspeglast í hugvitsamlegu skipulagi, vönduðum útirýmum og nútímaþægindum. Vorbraut 14 er kjörinn kostur fyrir þá sem gera miklar kröfur til búsetu í Garðabæ, þar sem víðsýni og birta eru í fyrirrúmi, en þjónusta og útivist aldrei langt undan.</p></div>
-          <figure class="story__shot"><img src="assets/renders/birdseye.webp?v=192" alt="Yfirlit yfir Vorbraut 14" loading="lazy"><figcaption>Yfirlit yfir svæðið</figcaption></figure>
-          <ul class="story__chips"><li data-i18n="st.intro.c1">14 íbúðir</li><li data-i18n="st.intro.c2">Fjórar hæðir</li><li data-i18n="st.intro.c3">Hnoðraholt, Garðabær</li><li data-i18n="st.intro.c4">Dagsbirta og útsýni</li></ul>
-          <nav class="story__pager"><a class="is-prev" href="index.html"><small>← <span data-i18n="pager.prev">Fyrra</span></small><b data-i18n="pager.home">Forsíða</b></a><a class="is-next" href="arkitektur.html"><small><span data-i18n="pager.next">Næsta</span> →</small><b data-i18n="nav.arkitektur">Arkitektúr</b></a></nav>
-        </div>
+      </div>
+      <figure class="chap__plate">
+        <span class="cut" style="--zoom:1.04;--tx:0%;--ty:-3%"><img data-img="verkefnid.plate" src="assets/renders/aerial.webp?v=240" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
+        <figcaption data-viz="1"><em data-i18n="fig.viz">Tölvumynd</em><b><span data-i18n="fig.label">Mynd</span> 01·B</b> <span data-i18n="st.intro.cap2">&nbsp;</span></figcaption>
+      </figure>
+      <div class="chap__wrap">
+        <nav class="chap__pager"><a class="is-prev" href="index.html"><small>← <span data-i18n="pager.prev">Fyrra</span></small><b data-i18n="pager.home">Forsíða</b></a><a class="is-next" href="arkitektur.html"><small><span data-i18n="pager.next">Næsta</span> →</small><b data-i18n="nav.arkitektur">Arkitektúr</b></a></nav>
       </div>
     </article>
   </main>
@@ -92,9 +104,10 @@
       </nav>
     </div>
   </footer>
-  <script defer src="js/content.js?v=192"></script>
-  <script defer src="js/supabase-config.js?v=192"></script>
-  <script defer src="js/vbsupa.js?v=192"></script>
-  <script defer src="js/page.js?v=192"></script>
+  <script defer src="js/content.js?v=240"></script>
+  <script defer src="js/supabase-config.js?v=240"></script>
+  <script defer src="js/vbsupa.js?v=240"></script>
+  <script defer src="js/page.js?v=240"></script>
+  <script defer src="js/chapter.js?v=240"></script>
 </body>
 </html>

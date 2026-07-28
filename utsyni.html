@@ -8,11 +8,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=192" />
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=240" />
+  <link rel="stylesheet" href="css/chapter.css?v=240" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
-<body class="is-page">
+<body class="is-chapter">
   <header class="nav" id="nav">
     <div class="nav__left">
       <a href="index.html" class="nav__logo" data-i18n="brand.logo">VORBRAUT&nbsp;14</a>
@@ -34,8 +35,8 @@
     </div>
     <div class="nav__right">
       <a href="index.html#soluadilar" class="nav__link" data-i18n="sellers.title">Söluaðilar</a>
-      <a href="hafa-samband.html" class="nav__contact" data-i18n="nav.contact">Hafa samband</a>
       <button class="lang" id="langBtn" aria-label="Language"><svg class="lang__globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 2.6 15.5 0 18M12 3c-2.6 2.5-2.6 15.5 0 18"/></svg><span id="langLabel">English</span></button>
+      <a href="hafa-samband.html" class="nav__contact" data-i18n="nav.contact">Hafa samband</a>
       <button class="burger" id="burger" aria-label="Valmynd" aria-controls="navmenu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
     <nav class="navmenu" id="navmenu" aria-label="Valmynd">
@@ -53,21 +54,32 @@
     </nav>
   </header>
   <main>
-    <article class="story story--immersive story--page reveal" id="st-view" aria-labelledby="st-view-h">
-      <div class="story__inner">
-        <div class="story__hero" style="background-image:url('assets/cine2/f060.webp?v=192')" role="img" aria-label="Útsýni — Vorbraut 14">
-          <div class="story__heroinner reveal">
-            <p class="kicker kicker--light" data-i18n="st.view.kick">04 · Sjónarhorn</p>
-            <h1 class="story__title" id="st-view-h" data-i18n="st.view.title">Útsýni</h1>
-            <p class="story__pull" data-i18n="st.view.pull">Útsýnið opnast eftir því sem ofar dregur</p>
+    <article class="chap" id="st-view" data-ch="04" data-plate="wide" aria-labelledby="st-view-h">
+      <div class="chap__wrap">
+        <header class="chap__open">
+          <div class="chap__head">
+            <p class="chap__kick" data-i18n="st.view.kick">04 · Sjónarhorn</p>
+            <h1 class="chap__title" id="st-view-h" data-i18n="st.view.title">Útsýni</h1>
+            <div class="chap__rule"></div>
+            <p class="chap__pull" data-i18n="st.view.pull">Útsýnið opnast eftir því sem ofar dregur</p>
+            <p class="chap__lvl" data-i18n="st.view.lvl">&nbsp;</p>
           </div>
+          <figure class="chap__slice">
+            <span class="cut" style="--zoom:1.06;--tx:0%;--ty:2%"><img data-img="utsyni.slice" src="assets/cine2/f060.webp?v=240" alt="" width="1920" height="1080" loading="eager" decoding="async"></span>
+            <figcaption><b><span data-i18n="fig.label">Mynd</span> 04·A</b> <span data-i18n="st.view.cap">&nbsp;</span></figcaption>
+          </figure>
+        </header>
+        <div class="chap__read">
+          <div class="chap__body"><p data-i18n="st.view.b1">Hæðótt og opin staðsetning Vorbrautar 14 er ótvíræður kostur verksins. Húsið býður upp á víðáttumikla og fagra sjón yfir bæinn og aðliggjandi náttúru, og sýnin opnast enn frekar eftir því sem ofar dregur. Arkitektúr hússins tekur djúpt mið af þessum sérstöku gæðum. Stórir gluggar og svalir ramma inn umhverfið þannig að samband við náttúruna, birtuna og útsýnið fléttast inn í tilveru dagsins í dag. Víðsýnið færir híbýlunum ómetanlegan fjársjóð og undirstrikar þá tilfinningu að rými heimilanna takmarkist ekki einungis af veggjum þeirra.</p></div>
+          <ul class="chap__ledger"><li data-i18n="st.view.c1">Víðáttumikið útsýni</li><li data-i18n="st.view.c2">Útsýni yfir bæinn</li><li data-i18n="st.view.c3">Svalir</li><li data-i18n="st.view.c4">Hæðótt landslag</li></ul>
         </div>
-        <div class="story__below reveal">
-          <div class="story__body"><p data-i18n="st.view.b1">Hæðótt og opin staðsetning Vorbrautar 14 er ótvíræður kostur verksins. Húsið býður upp á víðáttumikla og fagra sjón yfir bæinn og aðliggjandi náttúru, og sýnin opnast enn frekar eftir því sem ofar dregur. Arkitektúr hússins tekur djúpt mið af þessum sérstöku gæðum. Stórir gluggar og svalir ramma inn umhverfið þannig að samband við náttúruna, birtuna og útsýnið fléttast inn í tilveru dagsins í dag. Víðsýnið færir híbýlunum ómetanlegan fjársjóð og undirstrikar þá tilfinningu að rými heimilanna takmarkist ekki einungis af veggjum þeirra.</p></div>
-          <figure class="story__shot"><img src="assets/renders/aerial.webp?v=192" alt="Útsýni yfir byggðina frá Vorbraut 14" loading="lazy"><figcaption>Útsýni yfir byggðina</figcaption></figure>
-          <ul class="story__chips"><li data-i18n="st.view.c1">Víðáttumikið útsýni</li><li data-i18n="st.view.c2">Útsýni yfir bæinn</li><li data-i18n="st.view.c3">Svalir</li><li data-i18n="st.view.c4">Hæðótt landslag</li></ul>
-          <nav class="story__pager"><a class="is-prev" href="husid.html"><small>← <span data-i18n="pager.prev">Fyrra</span></small><b data-i18n="nav.husid">Húsið</b></a><a class="is-next" href="utirymi.html"><small><span data-i18n="pager.next">Næsta</span> →</small><b data-i18n="nav.utirymi">Útirými</b></a></nav>
-        </div>
+      </div>
+      <figure class="chap__plate">
+        <span class="cut" style="--zoom:1.04;--tx:0%;--ty:8%"><img data-img="utsyni.plate" src="assets/renders/foto-holtid.webp?v=240" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
+        <figcaption><b><span data-i18n="fig.label">Mynd</span> 04·B</b> <span data-i18n="st.view.cap2">&nbsp;</span></figcaption>
+      </figure>
+      <div class="chap__wrap">
+        <nav class="chap__pager"><a class="is-prev" href="husid.html"><small>← <span data-i18n="pager.prev">Fyrra</span></small><b data-i18n="nav.husid">Húsið</b></a><a class="is-next" href="utirymi.html"><small><span data-i18n="pager.next">Næsta</span> →</small><b data-i18n="nav.utirymi">Útirými</b></a></nav>
       </div>
     </article>
   </main>
@@ -92,9 +104,10 @@
       </nav>
     </div>
   </footer>
-  <script defer src="js/content.js?v=192"></script>
-  <script defer src="js/supabase-config.js?v=192"></script>
-  <script defer src="js/vbsupa.js?v=192"></script>
-  <script defer src="js/page.js?v=192"></script>
+  <script defer src="js/content.js?v=240"></script>
+  <script defer src="js/supabase-config.js?v=240"></script>
+  <script defer src="js/vbsupa.js?v=240"></script>
+  <script defer src="js/page.js?v=240"></script>
+  <script defer src="js/chapter.js?v=240"></script>
 </body>
 </html>

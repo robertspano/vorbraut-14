@@ -8,11 +8,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=192" />
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=240" />
+  <link rel="stylesheet" href="css/chapter.css?v=240" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
-<body class="is-page">
+<body class="is-chapter">
   <header class="nav" id="nav">
     <div class="nav__left">
       <a href="index.html" class="nav__logo" data-i18n="brand.logo">VORBRAUT&nbsp;14</a>
@@ -34,8 +35,8 @@
     </div>
     <div class="nav__right">
       <a href="index.html#soluadilar" class="nav__link" data-i18n="sellers.title">Söluaðilar</a>
-      <a href="hafa-samband.html" class="nav__contact" data-i18n="nav.contact">Hafa samband</a>
       <button class="lang" id="langBtn" aria-label="Language"><svg class="lang__globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 2.6 15.5 0 18M12 3c-2.6 2.5-2.6 15.5 0 18"/></svg><span id="langLabel">English</span></button>
+      <a href="hafa-samband.html" class="nav__contact" data-i18n="nav.contact">Hafa samband</a>
       <button class="burger" id="burger" aria-label="Valmynd" aria-controls="navmenu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
     <nav class="navmenu" id="navmenu" aria-label="Valmynd">
@@ -53,21 +54,32 @@
     </nav>
   </header>
   <main>
-    <article class="story story--immersive story--page reveal" id="st-outdoor" aria-labelledby="st-outdoor-h">
-      <div class="story__inner">
-        <div class="story__hero" style="background-image:url('assets/renders/birdseye.webp?v=192')" role="img" aria-label="Útirými — Vorbraut 14">
-          <div class="story__heroinner reveal">
-            <p class="kicker kicker--light" data-i18n="st.outdoor.kick">05 · Náttúran</p>
-            <h1 class="story__title" id="st-outdoor-h" data-i18n="st.outdoor.title">Útirými</h1>
-            <p class="story__pull" data-i18n="st.outdoor.pull">Útirýmin stækka heimilið og færa náttúruna nær</p>
+    <article class="chap" id="st-outdoor" data-ch="05" data-plate="wide" aria-labelledby="st-outdoor-h">
+      <div class="chap__wrap">
+        <header class="chap__open">
+          <div class="chap__head">
+            <p class="chap__kick" data-i18n="st.outdoor.kick">05 · Náttúran</p>
+            <h1 class="chap__title" id="st-outdoor-h" data-i18n="st.outdoor.title">Útirými</h1>
+            <div class="chap__rule"></div>
+            <p class="chap__pull" data-i18n="st.outdoor.pull">Útirýmin stækka heimilið og færa náttúruna nær</p>
+            <p class="chap__lvl" data-i18n="st.outdoor.lvl">&nbsp;</p>
           </div>
+          <figure class="chap__slice">
+            <span class="cut" style="--zoom:1.04;--tx:2%;--ty:0%"><img data-img="utirymi.slice" src="assets/renders/birdseye.webp?v=240" alt="" width="1920" height="1080" loading="eager" decoding="async"></span>
+            <figcaption data-viz="1"><em data-i18n="fig.viz">Tölvumynd</em><b><span data-i18n="fig.label">Mynd</span> 05·A</b> <span data-i18n="st.outdoor.cap">&nbsp;</span></figcaption>
+          </figure>
+        </header>
+        <div class="chap__read">
+          <div class="chap__body"><p data-i18n="st.outdoor.b1">Útirými eignarinnar gegna lykilhlutverki í búsetugæðum Vorbrautar 14. Þeir sem búa á jarðhæð eiga þess kost að njóta dvalar á sérafnotareitum sem skapa nálægð og góð tengsl við gróskumikið umhverfið. Sömuleiðis skapa svalir og þaksvalir efri hæða tækifæri til að njóta bæði fersks lofts og óviðjafnanlegs útsýnis. Á hluta þaksins er komið fyrir gróðurþekju sem mildar yfirbragð mannvirkisins og tónar fallega við náttúruleg einkenni holtsins. Lóðin nýtir jafnframt blágrænar lausnir til ofanvatnsmeðhöndlunar sem fellur afar vel að snyrtilegri ásýnd svæðisins. Þannig stækka útirýmin heimilið og styrkja lífsgæðin með því að færa umhverfið nær íbúum.</p></div>
+          <ul class="chap__ledger"><li data-i18n="st.outdoor.c1">Sérafnotareitir</li><li data-i18n="st.outdoor.c2">Gróðurþekja</li><li data-i18n="st.outdoor.c3">Blágrænar lausnir</li><li data-i18n="st.outdoor.c4">Ofanvatnsmeðhöndlun</li></ul>
         </div>
-        <div class="story__below reveal">
-          <div class="story__body"><p data-i18n="st.outdoor.b1">Útirými eignarinnar gegna lykilhlutverki í búsetugæðum Vorbrautar 14. Þeir sem búa á jarðhæð eiga þess kost að njóta dvalar á sérafnotareitum sem skapa nálægð og góð tengsl við gróskumikið umhverfið. Sömuleiðis skapa svalir og þaksvalir efri hæða tækifæri til að njóta bæði fersks lofts og óviðjafnanlegs útsýnis. Á hluta þaksins er komið fyrir gróðurþekju sem mildar yfirbragð mannvirkisins og tónar fallega við náttúruleg einkenni holtsins. Lóðin nýtir jafnframt blágrænar lausnir til ofanvatnsmeðhöndlunar sem fellur afar vel að snyrtilegri ásýnd svæðisins. Þannig stækka útirýmin heimilið og styrkja lífsgæðin með því að færa umhverfið nær íbúum.</p></div>
-          <figure class="story__shot"><img src="assets/renders/entrance.webp?v=192" alt="Garður og inngangur Vorbraut 14" loading="lazy"><figcaption>Garður og inngangur</figcaption></figure>
-          <ul class="story__chips"><li data-i18n="st.outdoor.c1">Sérafnotareitir</li><li data-i18n="st.outdoor.c2">Gróðurþekja</li><li data-i18n="st.outdoor.c3">Blágrænar lausnir</li><li data-i18n="st.outdoor.c4">Ofanvatnsmeðhöndlun</li></ul>
-          <nav class="story__pager"><a class="is-prev" href="utsyni.html"><small>← <span data-i18n="pager.prev">Fyrra</span></small><b data-i18n="nav.utsyni">Útsýni</b></a><a class="is-next" href="adgengi.html"><small><span data-i18n="pager.next">Næsta</span> →</small><b data-i18n="nav.adgengi">Aðgengi</b></a></nav>
-        </div>
+      </div>
+      <figure class="chap__plate">
+        <span class="cut" style="--zoom:1.04;--tx:0%;--ty:2%"><img data-img="utirymi.plate" src="assets/renders/entrance.webp?v=240" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
+        <figcaption data-viz="1"><em data-i18n="fig.viz">Tölvumynd</em><b><span data-i18n="fig.label">Mynd</span> 05·B</b> <span data-i18n="st.outdoor.cap2">&nbsp;</span></figcaption>
+      </figure>
+      <div class="chap__wrap">
+        <nav class="chap__pager"><a class="is-prev" href="utsyni.html"><small>← <span data-i18n="pager.prev">Fyrra</span></small><b data-i18n="nav.utsyni">Útsýni</b></a><a class="is-next" href="adgengi.html"><small><span data-i18n="pager.next">Næsta</span> →</small><b data-i18n="nav.adgengi">Aðgengi</b></a></nav>
       </div>
     </article>
   </main>
@@ -92,9 +104,10 @@
       </nav>
     </div>
   </footer>
-  <script defer src="js/content.js?v=192"></script>
-  <script defer src="js/supabase-config.js?v=192"></script>
-  <script defer src="js/vbsupa.js?v=192"></script>
-  <script defer src="js/page.js?v=192"></script>
+  <script defer src="js/content.js?v=240"></script>
+  <script defer src="js/supabase-config.js?v=240"></script>
+  <script defer src="js/vbsupa.js?v=240"></script>
+  <script defer src="js/page.js?v=240"></script>
+  <script defer src="js/chapter.js?v=240"></script>
 </body>
 </html>

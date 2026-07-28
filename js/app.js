@@ -28,46 +28,108 @@
   });
 
   /* ------------------------- nav / scrolling ---------------------------- */
-  const scroller = $('#scroller');
+  // Skjalið sjálft er skrunflöturinn (var áður main#scroller — sjá css/styles.css).
+  const scroller = document.scrollingElement || document.documentElement;
   const nav = $('#nav');
 
   function onScroll() {
     nav.classList.toggle('nav--solid', scroller.scrollTop > window.innerHeight * 0.72);
     nav.classList.toggle('nav--scrolled', scroller.scrollTop > 8);
   }
-  scroller.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
   // Animated section jump via rAF. Native smooth scrolling is unreliable with
   // `scroll-snap-type:mandatory` (and disabled under reduced-motion), so we
   // animate scrollTop ourselves with snap momentarily off, then restore it.
-  let scrollAnim, scrollSafety;
+  let scrollAnim, scrollSafety, dropAbort = null;
   const easeInOut = (p) => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2);
   function goToSection(top) {
+    if (dropAbort) dropAbort();
     if (scrollAnim) cancelAnimationFrame(scrollAnim);
     clearTimeout(scrollSafety);
     const start = scroller.scrollTop;
     const dist = top - start;
     if (Math.abs(dist) < 2) return;
-    const finish = () => {
+
+    const stop = () => {
       if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
-      scroller.scrollTo({ top, behavior: 'instant' });
+      clearTimeout(scrollSafety);
       scroller.style.scrollSnapType = '';
+      if (dropAbort) dropAbort();
     };
+    const finish = () => { stop(); scroller.scrollTo({ top, behavior: 'instant' }); };
+
     if (matchMedia('(prefers-reduced-motion:reduce)').matches) { finish(); return; }
+
+    // Notandinn á ALLTAF að ráða. Snerti hann hjólið, lyklaborðið eða skjáinn
+    // á meðan mjúka skrunið keyrir hættir það strax — annars berjast þau um
+    // sömu skrunstöðuna og hann kippist svo aftur á áfangastað þegar það lýkur.
+    const bail = () => stop();
+    const opts = { passive: true };
+    window.addEventListener('wheel', bail, opts);
+    window.addEventListener('touchstart', bail, opts);
+    window.addEventListener('keydown', bail, opts);
+    dropAbort = () => {
+      window.removeEventListener('wheel', bail, opts);
+      window.removeEventListener('touchstart', bail, opts);
+      window.removeEventListener('keydown', bail, opts);
+      dropAbort = null;
+    };
+
     scroller.style.scrollSnapType = 'none';
     const dur = Math.min(900, Math.max(420, Math.abs(dist) * 0.42));
-    scrollSafety = setTimeout(finish, dur + 250); // guard if rAF is throttled
+    scrollSafety = setTimeout(finish, dur + 250); // öryggisnet ef rAF er hemlað
     let t0 = null;
     const step = (ts) => {
       if (t0 == null) t0 = ts;
       const p = Math.min(1, (ts - t0) / dur);
       scroller.scrollTo({ top: start + dist * easeInOut(p), behavior: 'instant' });
       if (p < 1) scrollAnim = requestAnimationFrame(step);
-      else { scrollAnim = null; clearTimeout(scrollSafety); finish(); }
+      else finish();
     };
     scrollAnim = requestAnimationFrame(step);
   }
+  /* ---- Hero: fíngerð músar-parallax á myndbandsspjaldinu ---- */
+  (function heroExtras() {
+    // parallax: spjaldið hallar örlítið að músinni (ekki á snerti/reduced-motion)
+    const panel = $('.shero__panel'), heroSec = $('.shero');
+    if (panel && heroSec && matchMedia('(pointer:fine)').matches
+        && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
+      // rAF-hemlað: mousemove getur komið 100+ sinnum á sekúndu og hver skrif í
+      // style.transform neyða fram endurútreikning. Eitt skrif á ramma dugar.
+      let mx = 0, my = 0, pending = false;
+      const paint = () => {
+        pending = false;
+        panel.style.transform = `translate(${(mx * 10).toFixed(1)}px, ${(my * 8).toFixed(1)}px)`;
+      };
+      heroSec.addEventListener('mousemove', (e) => {
+        const r = heroSec.getBoundingClientRect();
+        mx = (e.clientX - r.left) / r.width - 0.5;
+        my = (e.clientY - r.top) / r.height - 0.5;
+        if (!pending) { pending = true; requestAnimationFrame(paint); }
+      }, { passive: true });
+      // will-change aðeins á meðan músin er yfir hetjunni — annars situr
+      // myndbandslagið í eigin lagi allan tímann og étur minni að óþörfu.
+      heroSec.addEventListener('mouseenter', () => { panel.style.willChange = 'transform'; });
+      heroSec.addEventListener('mouseleave', () => {
+        panel.style.transform = '';
+        panel.style.willChange = '';
+      });
+    }
+  })();
+
+  // hlekkir eiga að lenda UNDIR föstu valmyndinni (annars klippist toppur kaflans)
+  const goToAnchor = (el) => {
+    const navH = nav ? nav.offsetHeight : 84;
+    goToSection(Math.max(0, el.offsetTop - navH));
+  };
+  // Eitt skrunkerfi fyrir alla síðuna. Innfelldu hnapparnir neðst í index.html
+  // notuðu áður sitt eigið scrollTo({behavior:'smooth'}) — tvö kerfi sem gátu
+  // bæði verið að skruna sama flötinn samtímis og toguðust á.
+  window.VB.goToSection = goToSection;
+  window.VB.goToAnchor = goToAnchor;
+
   $$('[data-scroll]').forEach((a) => {
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');
@@ -76,7 +138,7 @@
       if (!target) return;
       e.preventDefault();
       nav.classList.remove('open');
-      goToSection(target.offsetTop);
+      goToAnchor(target);
     });
   });
 
@@ -97,7 +159,7 @@
     a.addEventListener('click', (e) => {
       const hash = href.split('#')[1]; const target = hash && $('#' + hash);
       if (!target) return;
-      e.preventDefault(); closeMenu(); goToSection(target.offsetTop);
+      e.preventDefault(); closeMenu(); goToAnchor(target);
     });
   });
   // vörumerki á forsíðu -> efst (ekki endurhlaða)
@@ -105,7 +167,7 @@
   if (navLogo) navLogo.addEventListener('click', (e) => { e.preventDefault(); closeMenu(); goToSection(0); });
   // lentum á forsíðu með #hash frá undirsíðu
   if (location.hash && $(location.hash)) {
-    setTimeout(() => { const tgt = $(location.hash); if (tgt) goToSection(tgt.offsetTop); }, 120);
+    setTimeout(() => { const tgt = $(location.hash); if (tgt) goToAnchor(tgt); }, 120);
   }
 
   // active nav link
@@ -118,15 +180,17 @@
         const a = navMap[en.target.id]; if (a) a.classList.add('active');
       }
     });
-  }, { root: scroller, threshold: 0.5 });
+  }, { threshold: 0.5 });
   ['stadsetning','ibudir','val','yfirlit','honnun','gaedi','hverfi','hafa-samband']
     .forEach((id) => { const s = $('#' + id); if (s) navObserver.observe(s); });
 
   /* --------------------------- reveal anim ------------------------------ */
   const revealObs = new IntersectionObserver((entries) => {
     entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); revealObs.unobserve(en.target); } });
-  }, { root: scroller, threshold: 0.16 });
+  }, { threshold: 0.16 });
   $$('.reveal').forEach((el, i) => { el.dataset.d = (i % 3); revealObs.observe(el); });
+
+  const PLANV = '?r=9';        // útgáfumerki grunnmynda — hækka þegar teikningum er skipt út
 
   /* --------------------------- helpers ---------------------------------- */
   const fmtArea = (n) => n.toLocaleString('is-IS', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -295,7 +359,8 @@
       </tr>`;
     }).join('');
     if (gridEmpty) gridEmpty.hidden = list.length > 0;
-    $$('.aptrow', grid).forEach((r) => r.addEventListener('click', () => openModal(aptById[r.dataset.id])));
+    // „Skoða" í verðskránni: upp í teikningarkaflann undir veljaranum (ekki popup)
+    $$('.aptrow', grid).forEach((r) => r.addEventListener('click', () => selectApt(r.dataset.id)));
   }
 
   // dual-range sliðrar (Birt stærð / Hæð / Herbergi)
@@ -316,6 +381,15 @@
     const down = (e, w) => { drag = w; try { e.target.setPointerCapture(e.pointerId); } catch (x) {} e.preventDefault(); };
     hLo.addEventListener('pointerdown', (e) => down(e, 0));
     hHi.addEventListener('pointerdown', (e) => down(e, 1));
+    // smellur á línuna: næsta doppa stekkur þangað — og eltir músina sé haldið niðri
+    track.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.rng__h')) return;               // doppurnar sjá um sig sjálfar
+      const v = valAt(e.clientX), r = state[key];
+      const w = Math.abs(v - r[0]) <= Math.abs(v - r[1]) ? 0 : 1;
+      if (w === 0) r[0] = Math.min(v, r[1]); else r[1] = Math.max(v, r[0]);
+      draw(); buildGrid(); syncFacade();
+      down(e, w);
+    });
     window.addEventListener('pointermove', (e) => { if (drag == null) return; const v = valAt(e.clientX), r = state[key]; if (drag === 0) r[0] = Math.min(v, r[1]); else r[1] = Math.max(v, r[0]); draw(); buildGrid(); syncFacade(); });
     window.addEventListener('pointerup', () => { drag = null; });
     el._draw = draw; draw();
@@ -534,7 +608,7 @@
   function applyPlanView() {
     const a = currentApt; if (!a) return;
     if (planView === 'tex' && a.tex) planImg.src = 'assets/plans_tex/' + a.tex + '?r=2';
-    else { planView = 'line'; planImg.src = 'assets/plans/' + a.plan + '?r=7'; }
+    else { planView = 'line'; planImg.src = 'assets/plans/' + a.plan + PLANV; }
     if (planView_el) $$('.aptm__pvbtn', planView_el).forEach((b) => b.classList.toggle('is-on', b.dataset.view === planView));
     requestAnimationFrame(() => setPlanFrame(a.id));
   }
@@ -666,31 +740,26 @@
     $('#avSpecs').innerHTML = rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
 
     const plan = $('#avPlan');
-    plan.src = 'assets/plans/' + a.plan;
+    plan.src = 'assets/plans/' + a.plan + PLANV;
     plan.alt = (lang === 'is' ? 'Grunnmynd íbúðar ' : 'Floor plan ') + a.id;
-    plan.onclick = () => openModal(a);        // smella á teikningu -> hærri upplausn
-
-    $('#avCta').innerHTML =
-      `<button type="button" class="btn" data-av-open>${t('sel.open')}</button>`;
-    const ob = $('[data-av-open]', avEl);
-    if (ob) ob.addEventListener('click', () => openModal(a));
+    // smella á teikningu -> myndin ein opnast í fullri upplausn (nýr flipi)
+    plan.onclick = () => window.open('assets/plans/' + a.plan + PLANV, '_blank', 'noopener');
 
     avEl.hidden = false;
     // setTimeout (ekki rAF) — rAF keyrir ekki í földum/óvirkum flipum
     setTimeout(() => {
       avEl.classList.add('is-in');
       // .select er position:relative, svo offsetTop dugar ekki — reikna út frá skrunstöðu
-      const sr = scroller.getBoundingClientRect(), er = avEl.getBoundingClientRect();
-      const NAV = 84;                                   // fasta valmyndin efst
-      const top = scroller.scrollTop + (er.top - sr.top) - NAV - 12;
+      const er = avEl.getBoundingClientRect();
+      const NAV = nav ? nav.offsetHeight : 84;          // fasta valmyndin efst
+      const top = scroller.scrollTop + er.top - NAV - 12;
       goToSection(Math.max(0, top));                    // sama mjúka skrunið og annars staðar
     }, 30);
   }
 
   function renderSelInfo() {
     if (!selInfoEl) return;
-    // Þegar íbúð er valin birtast upplýsingarnar FYRIR NEÐAN (.aptview) — ekki tvítaka þær hér.
-    selInfoEl.innerHTML = selApt ? '' : `<p class="select__hint">${t('sel.empty')}</p>`;
+    selInfoEl.innerHTML = '';   // upplýsingarnar birtast fyrir neðan (.aptview)
   }
 
 

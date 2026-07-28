@@ -33,15 +33,23 @@
     });
 
     // lock the view onto the held front frame (the interactive facade)
-    const scroller = document.getElementById('scroller');
+    // Skrunið er á skjalinu sjálfu (main.snap er ekki lengur eigin skrunflötur),
+    // og window.__cine er löngu farið með scroll-hetjunni. Læsum bara á framhliðina.
+    const scroller = document.scrollingElement || document.documentElement;
     const cine = document.getElementById('cine');
     const lock = () => {
-      const c = window.__cine, mid = (c.D + c.F) / 2;
-      scroller.scrollTo({ top: cine.offsetTop + (cine.offsetHeight - innerHeight) * mid, behavior: 'instant' });
-      window.__cine.render();
+      const c = window.__cine;
+      if (c && cine) {
+        const mid = (c.D + c.F) / 2;
+        scroller.scrollTo({ top: cine.offsetTop + (cine.offsetHeight - innerHeight) * mid, behavior: 'instant' });
+        if (c.render) c.render();
+      } else {
+        const f = document.getElementById('facade-section');
+        if (f) scroller.scrollTo({ top: Math.max(0, f.offsetTop - 84), behavior: 'instant' });
+      }
     };
     lock();
-    scroller.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
     // frames load async — the final frame may not be ready yet, so re-draw
     // once it has loaded (and a few safety passes as frames stream in).
     const finalFrame = new Image();
