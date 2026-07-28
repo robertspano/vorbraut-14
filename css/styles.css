@@ -968,6 +968,10 @@ body.is-page{background:var(--bone)}
 .story__shot--sketch img{object-fit:contain;background:#f6f4ee}
 .story__shot--sketch figcaption{color:var(--charcoal);background:linear-gradient(0deg,rgba(246,244,238,.92),transparent)}
 
+/* Arkitektúr: skissan (4:3) í breiðu plötunni (21/9) — öll teikningin sýnd á pappírstóni */
+.chap__plate--sketch .cut{background:#f6f4ee}
+.chap__plate--sketch .cut img{object-fit:contain}
+
 /* hönnuður hússins — mínimalískt: portrett (ef til) + nafn, engin umgjörð */
 .story__arch{display:flex;align-items:center;gap:1rem;margin-top:2.4rem}
 .story__archface{width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none;display:block}
