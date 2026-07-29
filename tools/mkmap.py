@@ -108,6 +108,53 @@ def saekja(nafn, siur, box, hvild=6):
     return []
 
 
+NOMINATIM = "https://nominatim.openstreetmap.org/search"
+
+
+def hnitaleit(stadir, throttle=1.2):
+    """Flettir upp hnitum fyrir staði sem vantar þau og skrifar þau í skrána.
+
+    Nominatim leyfir eina fyrirspurn á sekúndu — hvíldin er skilyrði, ekki kurteisi.
+    Niðurstaðan er prentuð svo hægt sé að sjá hvað fannst og leiðrétta
+    leitarstrenginn í kort-stadir.json ef uppflettingin lenti á vitlausum stað.
+    """
+    vantar = [s for s in stadir if not (s.get("lat") and s.get("lon"))]
+    if not vantar:
+        return 0
+    print(f"\nFletti upp hnitum fyrir {len(vantar)} staði:")
+    fundnir = 0
+    for s in vantar:
+        leit = s.get("leitarstrengur") or s["nafn"] + ", Iceland"
+        slod = NOMINATIM + "?" + urllib.parse.urlencode(
+            {"q": leit, "format": "json", "limit": 1, "countrycodes": "is"})
+        try:
+            beidni = urllib.request.Request(
+                slod, headers={"User-Agent": "Vorbraut14-kort/1.0 (thjonustukort)"})
+            with urllib.request.urlopen(beidni, timeout=60) as svar:
+                nidurstada = json.load(svar)
+        except (urllib.error.URLError, TimeoutError, OSError, ValueError) as e:
+            print(f"  {s['nafn'][:34]:34s} VILLA ({e})")
+            time.sleep(throttle)
+            continue
+        if not nidurstada:
+            print(f"  {s['nafn'][:34]:34s} FANNST EKKI — lagfærðu leitarstrenginn")
+            time.sleep(throttle)
+            continue
+        t = nidurstada[0]
+        s["lat"] = float(t["lat"])
+        s["lon"] = float(t["lon"])
+        s["osm"] = t.get("display_name", "")[:70]
+        fjarlaegd = round(metrar(s["lat"], s["lon"]))
+        print(f"  {s['nafn'][:34]:34s} {fjarlaegd:5d} m  <- {s['osm'][:46]}")
+        fundnir += 1
+        time.sleep(throttle)
+    if fundnir:
+        with open(os.path.join(TOOLS, "kort-stadir.json"), "w", encoding="utf-8") as f:
+            json.dump(stadir, f, ensure_ascii=False, indent=1)
+        print(f"  ({fundnir} hnit vistuð í kort-stadir.json)")
+    return fundnir
+
+
 def hnitalistar(e):
     """Hnitalistar hlutar — bæði fyrir way og relation."""
     if e.get("geometry"):
@@ -265,6 +312,7 @@ def smida(radius, an_vegalengda):
 
     with open(os.path.join(TOOLS, "kort-stadir.json"), encoding="utf-8") as f:
         st = json.load(f)
+    hnitaleit(st)                                      # fyllir í það sem vantar
     an_hnita = [s["nafn"] for s in st if not (s.get("lat") and s.get("lon"))]
     st = [s for s in st if s.get("lat") and s.get("lon")]
     for s in st:
@@ -356,9 +404,9 @@ def skipta(texti, byrjun, endir, nytt, skra):
 
 def main():
     p = argparse.ArgumentParser(description="Smíðar þjónustukortið fyrir Vorbraut 14.")
-    # 2700 m nær yfir Garðatorg og Ásgarð, sem eru ysta þjónustan sem hnit eru til fyrir
-    p.add_argument("--radius", type=int, default=2700,
-                   help="sýnilegur radíus í metrum (sjálfgefið 2700)")
+    # 3000 m nær yfir Garðatorg, Ásgarð og Kjóavelli — sama umfang og kortið sem beðið var um
+    p.add_argument("--radius", type=int, default=3000,
+                   help="sýnilegur radíus í metrum (sjálfgefið 3000)")
     p.add_argument("--an-vegalengda", action="store_true",
                    help="sleppa metratölunum aftast í skránni")
     p.add_argument("--ut", metavar="MAPPA",
