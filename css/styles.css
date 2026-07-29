@@ -173,8 +173,10 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 /* Hver kafli = ein "glæra": skrunið lendir alltaf á heilum kafla (eins og vesturvin.is) */
 
 /* ===== HERO — „editorial overlap": risa-týpógrafía sker sig inn yfir myndbandið ===== */
-.shero{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;
-  text-align:center;padding:clamp(90px,12vh,140px) clamp(20px,5vw,80px) clamp(60px,10vh,120px);
+/* Nafnið situr í neðri þriðjungnum, ekki á miðjum skjá: flex-end og rúm
+   neðanfylling ráða hæðinni, svo landslagið í myndbandinu fái miðjuna. */
+.shero{position:relative;min-height:100svh;display:flex;align-items:flex-end;justify-content:center;
+  text-align:center;padding:clamp(90px,12vh,140px) clamp(20px,5vw,80px) clamp(72px,15vh,160px);
   overflow:hidden;background:#262522}
 
 /* MYNDBANDIÐ ER BAKGRUNNURINN — fyllir allan skjáinn */

@@ -115,6 +115,9 @@ body.is-chapter .lang{color:#262522}
   padding:clamp(38px,6vh,74px) 0 clamp(30px,5vh,58px);
   border-top:1px solid var(--hair);
 }
+/* Þegar enginn ledger-listi fylgir stæði 3fr-dálkurinn auður — lesmálið tekur
+   þá alla breiddina. 58ch-þakið á .chap__body heldur línulengdinni í skefjum. */
+.chap__read:not(:has(.chap__ledger)){grid-template-columns:minmax(0,1fr)}
 .chap__body{max-width:58ch;margin:0;padding:0}
 .chap__body p{
   position:relative;margin:0;
@@ -383,10 +386,12 @@ body.is-chapter .lang{color:#262522}
 .chap--cover .chap__cover{position:absolute;inset:0;z-index:0}
 .chap--cover .chap__cover img,
 .chap--cover .chap__cover video{width:100%;height:100%;object-fit:cover;display:block}
+/* Miðbandið var nær tært (.12) og dugði á dökkum forsíðumyndum. Aðgengi er
+   nú ljós húsgafl og fyrirsögnin situr einmitt þar — bandið þarf því meiri þyngd. */
 .chap--cover .chap__cover::after{
   content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(20,19,17,.40) 0%,rgba(20,19,17,.12) 42%,
-             rgba(20,19,17,.44) 100%);
+  background:linear-gradient(180deg,rgba(20,19,17,.44) 0%,rgba(20,19,17,.30) 42%,
+             rgba(20,19,17,.48) 100%);
 }
 .chap--cover .chap__head{
   position:relative;z-index:1;min-height:100svh;
