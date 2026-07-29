@@ -24,3 +24,6 @@ venv/
 node_modules/
 .vercel
 .env*
+
+# Sótt OSM-gögn fyrir þjónustukortið — sækjast aftur með tools/mkmap.py
+tools/osm-cache/

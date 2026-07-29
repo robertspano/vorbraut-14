@@ -313,6 +313,32 @@ def smida(radius, an_vegalengda):
     with open(os.path.join(TOOLS, "kort-stadir.json"), encoding="utf-8") as f:
         st = json.load(f)
     hnitaleit(st)                                      # fyllir í það sem vantar
+
+    # Sumir staðir eru flötur, ekki heimilisfang — golfvellirnir í Vetrarmýri eiga
+    # ekkert götunúmer til að fletta upp. Fyrir þá er punkturinn tekinn úr OSM-laginu
+    # sjálfu: miðja þess flatar sem næstur er Vorbraut 14. Það er ekki vistað í
+    # kort-stadir.json, því flöturinn kemur upp á nýtt í hverri framköllun.
+    for s in st:
+        if s.get("lat") and s.get("lon"):
+            continue
+        hlutir = lag.get(s.get("midja_ur_lagi") or "")
+        if not hlutir:
+            continue
+        bestu = None
+        for e in hlutir:
+            for g in hnitalistar(e):
+                if len(g) < 3:
+                    continue
+                la = sum(p["lat"] for p in g) / len(g)
+                lo = sum(p["lon"] for p in g) / len(g)
+                d = metrar(la, lo)
+                if bestu is None or d < bestu[0]:
+                    bestu = (d, la, lo)
+        if bestu:
+            s["lat"], s["lon"] = bestu[1], bestu[2]
+            s["osm"] = f"miðja flatar úr OSM-laginu '{s['midja_ur_lagi']}'"
+            print(f"  {s['nafn'][:34]:34s} {bestu[0]:5.0f} m  <- {s['osm']}")
+
     an_hnita = [s["nafn"] for s in st if not (s.get("lat") and s.get("lon"))]
     st = [s for s in st if s.get("lat") and s.get("lon")]
     for s in st:
