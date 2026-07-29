@@ -198,7 +198,7 @@
   }, { threshold: 0.16 });
   $$('.reveal').forEach((el, i) => { el.dataset.d = (i % 3); revealObs.observe(el); });
 
-  const PLANV = '?r=10';        // útgáfumerki grunnmynda — hækka þegar teikningum er skipt út
+  const PLANV = VB.PLANV;       // útgáfumerki grunnmynda — skráð í js/data.js
 
   /* --------------------------- helpers ---------------------------------- */
   const fmtArea = (n) => n.toLocaleString('is-IS', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -851,7 +851,9 @@
       $('#avKjTxt').innerHTML =
         (st.length
           ? lina('staedi', t('av.kjStaedi'), st.join(' · '))
-          : '<span class="kj-lina kj-ekkert">' + t('av.kjEkkert') + '</span>') +
+          // EKKI kj-lina hér: display:contents myndi drepa reitinn og þar með
+          // grid-column:1/-1, svo setningin lenti í fyrsta dálki og merkið við hlið hennar.
+          : '<span class="kj-ekkert">' + t('av.kjEkkert') + '</span>') +
         (k.geymsla ? lina('geymsla', t('av.kjGeymsla'), a.id) : '');
       // Kjallarinn liggur FYRIR NEÐAN grunnmyndina en er falinn þar til ýtt er
       // á takkann — þá opnast hann og síðan skrunar mjúklega niður á hann.

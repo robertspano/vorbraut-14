@@ -1075,12 +1075,11 @@ html.ritill-virkur .shero__btn{display:none}
   align-items:center;gap:.5rem .7rem}
 .kj-lina{display:contents}
 .kj-gildi{letter-spacing:.02em}
-.kj-ekkert{grid-column:1/-1}
 .kj-p{font:600 .62rem/1 var(--font);letter-spacing:.12em;text-transform:uppercase;
   padding:.3rem .5rem;border-radius:2px;color:#fff}
 .kj-p--staedi{background:#aa8765}
 .kj-p--geymsla{background:#0D710A}
-.kj-ekkert{color:#8a5a3c}
+.kj-ekkert{display:block;grid-column:1/-1;color:#8a5a3c}
 /* Stæðismerkið eins og á aðaluppdrættinum: ófyllt, punktalína, fyllir stæðið.
    Stæði ÞESSARAR íbúðar fá áherslulitinn og þykkari línu. */
 .kj-thri{fill:none;stroke:rgba(38,37,34,.45);stroke-width:2;stroke-dasharray:10 8;
@@ -1089,11 +1088,17 @@ html.ritill-virkur .shero__btn{display:none}
 
 /* --- ?kjedit : reitaritill fyrir bílakjallarann ---------------------------
    Sami svipur og útlínu-ritillinn (#maskPanel) — sama borð, sömu takkar. */
-/* Flöturinn nemur staðar fyrir ofan borðið svo uppdrátturinn hverfi ekki
-   undir það; sé borðið fellt saman fær hann plássið til baka. */
-.kje__svg{position:fixed;left:0;right:0;top:0;bottom:152px;z-index:9000;
-  background:#1a1b1c;touch-action:none}
-body.kjedit--felld .kje__svg{bottom:46px}
+/* Flöturinn nemur staðar við borðið svo uppdrátturinn hverfi ekki undir það —
+   hvort sem borðið er niðri eða uppi (⇅) — og fær plássið til baka sé það
+   fellt saman. Hæðin er skráð einu sinni. */
+body.kjedit{--kje-bord:152px}
+body.kjedit--felld{--kje-bord:46px}
+/* <svg> er replaced element: top+bottom ræður EKKI hæðinni, hún fellur á
+   eigin hlutföll myndarinnar (1506:840 -> 803 px) og neðsti hlutinn hvarf
+   undir borðið. Hæðin er því gefin beint. */
+.kje__svg{position:fixed;left:0;top:0;width:100vw;height:calc(100vh - var(--kje-bord));
+  z-index:9000;background:#1a1b1c;touch-action:none}
+body.kjedit--uppi .kje__svg{top:var(--kje-bord)}
 body.kjedit{overflow:hidden}
 .kje-r{fill:rgba(170,135,101,.18);stroke:rgba(255,255,255,.55);stroke-width:1.2;
   vector-effect:non-scaling-stroke;cursor:move}
@@ -1114,7 +1119,7 @@ body.kjedit{overflow:hidden}
   font:inherit;padding:.3rem .6rem;border-radius:6px;cursor:pointer}
 #kjePanel button:hover{border-color:#fff}
 #kjePanel .mk__legend button.on{background:#aa8765;border-color:#aa8765}
-#kjePanel .kje__flokkur:last-child .mk__legend button.on{background:#0D710A;border-color:#0D710A}
+#kjePanel .mk__legend[data-teg="g"] button.on{background:#0D710A;border-color:#0D710A}
 .kje__flokkur{display:flex;align-items:center;gap:.5rem;margin-top:.4rem}
 .kje__heiti{font:600 .62rem/1 var(--font);letter-spacing:.12em;text-transform:uppercase;
   color:rgba(255,255,255,.55);min-width:5.6rem}

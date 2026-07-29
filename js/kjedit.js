@@ -67,7 +67,7 @@
     stillaView();
 
     var bg = document.createElementNS(NS, 'image');
-    bg.setAttribute('href', K.mynd);
+    bg.setAttribute('href', K.mynd + (VB.PLANV || ''));   // sami stimpill og síðan
     bg.setAttribute('x', 0); bg.setAttribute('y', 0);
     bg.setAttribute('width', IW); bg.setAttribute('height', IH);
     svg.appendChild(bg);
@@ -259,8 +259,11 @@
       if (!b) return;
       var a = b.dataset.act;
       if (a === 'close') {
+        window.removeEventListener('keydown', aLykli);
+        window.removeEventListener('keyup', afLykli);
+        valid = null; drag = null; spaceDown = false;
         panel.remove(); svg.remove();
-        document.body.classList.remove('kjedit', 'kjedit--felld');
+        document.body.classList.remove('kjedit', 'kjedit--felld', 'kjedit--uppi');
       } else if (a === 'reset') {
         // KJALLARI.grunnur heldur skráargildunum — KJALLARI sjálft er þegar
         // búið að taka við vistuðum breytingum, svo það dygði ekki hér.
@@ -281,11 +284,15 @@
         b.textContent = min ? '▴' : '▾';
         teikna();                                               // handföng fylgja nýjum kvarða
       } else if (a === 'top') {
-        panel.classList.toggle('mk--top');
+        var uppi = panel.classList.toggle('mk--top');
+        document.body.classList.toggle('kjedit--uppi', uppi);
+        teikna();                                             // nýr kvarði -> ný handföng
       }
     });
 
-    window.addEventListener('keydown', function (e) {
+    // Nefnd föll — „Loka“ verður að geta tekið þau af aftur, annars héldu
+    // örvatakkarnir áfram að færa reiti og vista þótt ritillinn væri farinn.
+    function aLykli(e) {
       if (e.key === ' ' && !drag) { spaceDown = true; svg.style.cursor = 'grab'; return; }
       if (!valid || !/^Arrow/.test(e.key)) return;
       var d = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
@@ -295,10 +302,12 @@
       var b = reitur(valid);
       setjaReit(valid, [b[0] + d[0] * s, b[1] + d[1] * s, b[2] + d[0] * s, b[3] + d[1] * s]);
       teikna(); vista();
-    });
-    window.addEventListener('keyup', function (e) {
+    }
+    function afLykli(e) {
       if (e.key === ' ') { spaceDown = false; svg.style.cursor = ''; }
-    });
+    }
+    window.addEventListener('keydown', aLykli);
+    window.addEventListener('keyup', afLykli);
 
     /* --- kóði út --------------------------------------------------------- */
     function afritaKoda() {
@@ -328,7 +337,7 @@
       var t = document.createElement('div');
       t.className = 'mk__toast';
       t.textContent = m;
-      panel.appendChild(t);
+      document.body.appendChild(t);        // ekki í borðið — þau eru position:fixed
       setTimeout(function () { t.remove(); }, 2400);
     }
 

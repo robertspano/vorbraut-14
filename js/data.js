@@ -168,6 +168,11 @@ FACADE.zonesFraman = {
 /* BÍLAKJALLARINN — lesið af aðaluppdrættinum (assets/plans/bilakjallari.png,
    1506x1010). Hver íbúð á sína geymslu; sex eiga eitt stæði, 0401 og 0402
    eiga tvö hvor. 0102/0103/0202/0203/0302/0303 eiga ekkert stæði. */
+/* Útgáfumerki grunnmynda — hækka þegar teikningum er skipt út. Býr hér svo
+   app.js OG ritlarnir sæki sama stimpil; annars sæti ritillinn uppi með
+   gamla mynd úr skyndiminni meðan síðan sýnir þá nýju. */
+const PLANV = '?r=10';
+
 const KJALLARI = {
   mynd: 'assets/plans/bilakjallari.png',
   w: 1506, h: 840,
@@ -306,4 +311,4 @@ const SKILALYSING = null;
 });
 
 window.VB = {
-  KJALLARI, APARTMENTS, FACADE, FLOOR_SHAPES, FS_VERSION, PLAN_ADJ, SKILALYSING, VIEW_CONES, VIEWS };
+  KJALLARI, PLANV, APARTMENTS, FACADE, FLOOR_SHAPES, FS_VERSION, PLAN_ADJ, SKILALYSING, VIEW_CONES, VIEWS };
