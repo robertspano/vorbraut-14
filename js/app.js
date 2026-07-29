@@ -800,6 +800,11 @@
                a.price ? fmtKr(a.price) : statusLabel(a.status)]);
     $('#avSpecs').innerHTML = rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
 
+    // Fyrirspurnarhnappurinn tekur íbúðina með sér — hafa-samband.html les
+    // ?ibud og fyllir skilaboðin sjálfkrafa.
+    const cta = $('#avCta', avEl);
+    if (cta) cta.setAttribute('href', 'hafa-samband.html?ibud=' + encodeURIComponent(a.id));
+
     const plan = $('#avPlan');
     plan.src = 'assets/plans/' + a.plan + PLANV;
     plan.alt = (lang === 'is' ? 'Grunnmynd íbúðar ' : 'Floor plan ') + a.id;

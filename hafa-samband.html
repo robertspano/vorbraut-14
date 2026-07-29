@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=301" />
+  <link rel="stylesheet" href="css/styles.css?v=302" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
 <body class="is-contact">
@@ -57,8 +57,9 @@
   <main class="kontakt" id="hafa-samband">
     <div class="kontakt__inner">
       <div class="kontakt__intro">
-        <p class="kicker kicker--light" data-i18n="ct.kicker">Hafa samband</p>
+        <p class="kicker" data-i18n="ct.kicker">Hafa samband</p>
         <h1 class="kontakt__title" data-i18n="ct.title">Sendu fyrirspurn</h1>
+        <p class="kontakt__ibud" id="ctIbud" hidden></p>
         <p class="kontakt__lead" data-i18n="ct.body"></p>
         <div class="kontakt__direct">
           <span class="kontakt__directlabel" data-i18n="ct.orDirect">Eða hafðu beint samband</span>
@@ -97,32 +98,10 @@
     </div>
   </main>
 
-  <!-- ====================== FOOTER ====================== -->
-  <footer class="sitefoot">
-    <div class="sitefoot__inner">
-      <div class="sitefoot__left">
-        <a href="index.html" class="sitefoot__logo">VORBRAUT&nbsp;14</a>
-        <div class="sitefoot__col">
-          <span data-i18n="foot.addr1">Vorbraut 14, Hnoðraholt</span>
-          <span data-i18n="foot.addr2">210 Garðabær</span>
-          <span class="sitefoot__muted"><span data-i18n="ct.landLabel">Landeignarnúmer</span> <span data-i18n="foot.landnr">L232219</span></span>
-        </div>
-      </div>
-      <div class="sitefoot__mid">
-        <a href="mailto:miklaborg@miklaborg.is" data-i18n="foot.email">miklaborg@miklaborg.is</a>
-        <a href="tel:+3545697000" data-i18n="foot.phone">S: 569 7000</a>
-      </div>
-      <nav class="sitefoot__links">
-        <a href="index.html#ibudir" data-i18n="cta.ibudir">Skoða íbúðir</a>
-        <a href="index.html#soluadilar" data-i18n="sellers.title">Söluaðilar</a>
-        <a href="hafa-samband.html" data-i18n="nav.contact">Hafa samband</a>
-      </nav>
-    </div>
-  </footer>
 
-  <script defer src="js/content.js?v=301"></script>
-  <script defer src="js/supabase-config.js?v=301"></script>
-  <script defer src="js/vbsupa.js?v=301"></script>
-  <script defer src="js/contact.js?v=301"></script>
+  <script defer src="js/content.js?v=302"></script>
+  <script defer src="js/supabase-config.js?v=302"></script>
+  <script defer src="js/vbsupa.js?v=302"></script>
+  <script defer src="js/contact.js?v=302"></script>
 </body>
 </html>

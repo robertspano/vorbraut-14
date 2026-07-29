@@ -11,11 +11,42 @@
   let lang = localStorage.getItem('vb-lang') || 'is';
   const t = (k) => (STR[lang] && STR[lang][k] != null ? STR[lang][k] : (STR.is[k] ?? k));
 
+  /* Kom gesturinn af tiltekinni íbúð? Þá segir ?ibud til um hverja.
+     Aðeins þessi fjórtán auðkenni eru tekin gild — annað úr slóðinni fer
+     hvergi inn á síðuna. */
+  const IBUD = (function () {
+    const v = new URLSearchParams(location.search).get('ibud') || '';
+    return /^(0[1-3]0[1-4]|040[12])$/.test(v) ? v : null;
+  })();
+  const bordi = $('#ctIbud');
+  const skilabodReitur = $('#cf-message');
+  let sjalfvirkTexti = null;             // það sem VIÐ settum síðast
+
+  function fyllaSkilabod() {
+    if (!IBUD || !skilabodReitur) return;
+    const nyr = t('ct.ibudSkilabod').replace('{ibud}', IBUD);
+    // Ekki skrifa yfir það sem gesturinn hefur sjálfur slegið inn — aðeins
+    // auðan reit, eða okkar eigin texta þegar skipt er um tungumál.
+    const nu = skilabodReitur.value.trim();
+    if (nu && nu !== sjalfvirkTexti) return;
+    skilabodReitur.value = nyr;
+    sjalfvirkTexti = nyr;
+  }
+
   function applyLang() {
     document.documentElement.lang = lang;
     $$('[data-i18n]').forEach((el) => { const v = t(el.dataset.i18n); if (v !== undefined) el.textContent = v; });
     if (window.VB && window.VB.syncContactLinks) window.VB.syncContactLinks();
     const label = $('#langLabel'); if (label) label.textContent = lang === 'is' ? 'English' : 'Íslenska';
+    if (IBUD && bordi) {
+      bordi.innerHTML = '';
+      bordi.appendChild(document.createTextNode(t('ct.ibudBordi') + ' '));
+      const b = document.createElement('b');
+      b.textContent = IBUD;
+      bordi.appendChild(b);
+      bordi.hidden = false;
+    }
+    fyllaSkilabod();
   }
 
   const langBtn = $('#langBtn');
