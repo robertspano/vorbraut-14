@@ -74,6 +74,11 @@
     }
   }
   const ids = Object.keys(zones).sort();
+  // Listinn sýndi hráa auðkennið ("kjallari"). Sýnum mannamál þar sem það er til.
+  const mkHeiti = (id) => {
+    const S = (VB.STR && (VB.STR[localStorage.getItem('vb-lang') || 'is'] || VB.STR.is)) || {};
+    return S['facade.' + id] || id;
+  };
   let selId = ids[0], mode = 'move', drag = null, spaceDown = false;
   let view = { x: 0, y: 0, w: IW, h: IH };
 
@@ -163,7 +168,7 @@
       ids.forEach((id) => { const c = centroid(zones[id]); html += `<text class="mk-lbl" data-id="${id}" x="${c[0]}" y="${c[1]}" dy=".34em" style="font-size:${13 * zfac()}px">${id}</text>`; });
       if (selId && zones[selId]) zones[selId].forEach((p, i) => { html += `<circle class="mk-h" data-i="${i}" cx="${p[0]}" cy="${p[1]}" r="${r}"/>`; });
       layer.innerHTML = html;
-      legendEl.innerHTML = ids.map((id) => `<button class="${id === selId ? 'on' : ''}" data-leg="${id}">${id}</button>`).join('');
+      legendEl.innerHTML = ids.map((id) => `<button class="${id === selId ? 'on' : ''}" data-leg="${id}">${mkHeiti(id)}</button>`).join('');
     }
 
     function insertPoint(xy) {

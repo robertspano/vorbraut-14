@@ -144,7 +144,9 @@ try {
 /* Smellisvæði á FRAMHLIÐINNI — handkvörðuð af Róberti í ?mask=framan.
    Bakhliðin er í FACADE.zones hér að ofan. */
 FACADE.zonesHlid = {};        /* kvarðað í ?mask=hlid */
-FACADE.zonesKjallari = {};    /* EITT svæði, ekki íbúðir — kvarðað í ?mask=kjallari */
+FACADE.zonesKjallari = {    /* EITT svæði, ekki íbúðir — handkvarðað í ?mask=kjallari */
+    'kjallari': [[271,457],[602,349],[611,350],[612,342],[825,372],[825,382],[837,384],[837,420],[787,470],[784,479],[570,630],[277,547]],
+};    /* EITT svæði, ekki íbúðir — kvarðað í ?mask=kjallari */
 
 FACADE.zonesFraman = {
     '0101': [[354,493],[552,494],[554,554],[469,553],[468,546],[359,545]],
