@@ -6,16 +6,26 @@
    • „Bæta punkti“ = smelltu á línu íbúðar. „Eyða punkti“ = smelltu á punkt.
    • SKRUNA = þysja inn/út (á músarbendli). BILSLÁ + draga = færa myndina.
    • Punktar smella saman við nágranna. Shift = enginn snap. Örvatakkar fínstilla.
-   • Allt vistast strax; „Afrita kóða“ gefur FACADE.zones — sendu mér til að vista.
+   • Allt vistast strax; „Afrita kóða“ gefur svæðasett virka sjónarhornsins — sendu mér til að vista.
    ========================================================================== */
 (function () {
   'use strict';
   if (!/[?&]mask\b/.test(location.search)) return;
   const VB = window.VB; if (!VB || !VB.FACADE || !VB.FACADE.zones) return;
+  /* Hvaða sjónarhorn er virkt? Bakhlið og framhlið hafa sitt hvort svæðasettið,
+     svo ritillinn verður að vinna á því sem sést — annars fínstillir maður
+     bakhliðina á meðan framhliðin er á skjánum. */
+  const virktView = (document.getElementById('facade') || {}).dataset
+    ? (document.getElementById('facade').dataset.view || 'aftan') : 'aftan';
+  const vSkil = (VB.VIEWS || []).find((v) => v.id === virktView);
+  const SETT = (vSkil && typeof vSkil.zones === 'string')
+    ? 'zones' + vSkil.zones.charAt(0).toUpperCase() + vSkil.zones.slice(1) : 'zones';
+  const GEYMSLA = SETT === 'zones' ? 'vb-facadezones' : 'vb-facadezones-' + virktView;
+  if (!VB.FACADE[SETT]) return;
   const IW = 1280, IH = 720, NS = 'http://www.w3.org/2000/svg';
   const round = (n) => Math.round(n);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-  let zones = JSON.parse(JSON.stringify(VB.FACADE.zones));
+  let zones = JSON.parse(JSON.stringify(VB.FACADE[SETT]));
   const ids = Object.keys(zones).sort();
   let selId = ids[0], mode = 'move', drag = null, spaceDown = false;
   let view = { x: 0, y: 0, w: IW, h: IH };
@@ -80,7 +90,7 @@
     const hr = () => clamp(7 / scl(), 0.8, 12);                        // ~7px handfang óháð þysjun
     function snap(xy, exId, exI) { const th = 9 / scl(); let best = xy, bd = th; for (const id in zones) zones[id].forEach((p, i) => { if (id === exId && i === exI) return; const d = Math.hypot(p[0] - xy[0], p[1] - xy[1]); if (d < bd) { bd = d; best = [p[0], p[1]]; } }); return best; }
     function distToSeg(p, a, b) { const dx = b[0] - a[0], dy = b[1] - a[1], l2 = dx * dx + dy * dy; let t = l2 ? ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l2 : 0; t = clamp(t, 0, 1); return Math.hypot(p[0] - (a[0] + t * dx), p[1] - (a[1] + t * dy)); }
-    const save = () => { try { localStorage.setItem('vb-facadezones', JSON.stringify(zones)); } catch (e) {} };
+    const save = () => { try { localStorage.setItem(GEYMSLA, JSON.stringify(zones)); } catch (e) {} };
 
     function applyView() { svg.setAttribute('viewBox', `${view.x} ${view.y} ${view.w} ${view.h}`); }
     function setZoom(nw, cx, cy) {                                    // cx,cy = miðja þysjunar í user-coords
@@ -144,7 +154,7 @@
     panel.querySelector('.mk__row').addEventListener('click', (e) => {
       const b = e.target.closest('button[data-act]'); if (!b) return;
       if (b.dataset.act === 'close') { panel.remove(); svg.remove(); document.body.classList.remove('maskedit'); scroller.style.overflow = ''; if (live) live.style.pointerEvents = ''; }
-      else if (b.dataset.act === 'reset') { zones[selId] = clone(VB.FACADE.zones[selId]); save(); render(); }
+      else if (b.dataset.act === 'reset') { zones[selId] = clone(VB.FACADE[SETT][selId]); save(); render(); }
       else if (b.dataset.act === 'copy') { copyCode(); }
       // fella borðið saman -> jarðhæðin sést; ⇅ færir það upp/niður á skjánum
       else if (b.dataset.act === 'fold') {

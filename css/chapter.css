@@ -296,28 +296,30 @@ body.is-chapter .lang{color:#262522}
 .kort__mynd{margin:0;background:#FBFAF8;border:1px solid var(--hair);overflow:hidden}
 .kort__svg{display:block;width:100%;height:auto}
 
-/* kortamerkin */
+/* kortamerkin — mýkri litir og rúnnuð form */
 .kort__m{cursor:default}
-.kort__m rect{fill:#8A7F72;transition:fill .18s var(--ez)}
-.kort__m[data-f="skoli"]     rect{fill:#4A6C8C}
-.kort__m[data-f="utivist"]   rect{fill:#7A8B5F}
-.kort__m[data-f="matur"]     rect{fill:#B5643C}
-.kort__m[data-f="verslun"]   rect{fill:#8A7F72}
-.kort__m[data-f="thjonusta"] rect{fill:#6B665F}
-.kort__m text{fill:#fff;font:600 22px 'DM Sans',sans-serif;text-anchor:middle;
+.kort__m circle{fill:#8C8175;transition:fill .18s var(--ez),r .18s var(--ez)}
+.kort__m[data-f="skoli"]     circle{fill:#5B7B99}
+.kort__m[data-f="utivist"]   circle{fill:#7F9469}
+.kort__m[data-f="matur"]     circle{fill:#BE7150}
+.kort__m[data-f="verslun"]   circle{fill:#9A8C7B}
+.kort__m[data-f="thjonusta"] circle{fill:#71695F}
+.kort__m text{fill:#fff;font:600 20px 'DM Sans',sans-serif;text-anchor:middle;
   font-variant-numeric:tabular-nums;pointer-events:none}
-.kort__leggur{stroke:#B9B0A3;stroke-width:1.4}
-.kort__heim rect{fill:var(--acc)}
+.kort__leggur{stroke:#BEB4A6;stroke-width:1.4}
+.kort__heim circle{fill:var(--acc)}
+.kort__heim circle.kort__heimkjarni{fill:#fff}
 .kort__heim text{fill:var(--ink);font:700 21px 'DM Sans',sans-serif;text-anchor:middle;
-  letter-spacing:.14em;paint-order:stroke;stroke:#fff;stroke-width:4}
+  letter-spacing:.14em;paint-order:stroke;stroke:#fff;stroke-width:5}
+
 /* hringirnir: heilir, brúnir og áberandi */
-.kort__hringur{fill:none;stroke:var(--acc);stroke-width:3;opacity:.9}
+.kort__hringur{fill:none;stroke:var(--acc);stroke-width:3;opacity:.85}
 .kort__hringmerki rect{fill:var(--acc);stroke:none}
 .kort__hringmerki text{fill:#fff;font:700 21px 'DM Sans',sans-serif;letter-spacing:.08em;
   text-anchor:middle;font-variant-numeric:tabular-nums}
 
 /* upplýst þegar bent er á í skránni */
-.kort__m.is-on rect{fill:var(--acc)}
+.kort__m.is-on circle{fill:var(--acc);r:23}
 .kort__m.is-on text{fill:#fff}
 
 /* skráin */
@@ -329,15 +331,15 @@ body.is-chapter .lang{color:#262522}
 .kort__flokkur ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair2)}
 .kort__flokkur li{display:flex;align-items:baseline;gap:.6rem;padding:.42rem 0;
   border-bottom:1px solid var(--hair2);font-size:.84rem;line-height:1.32;color:var(--ink)}
-.kort__flokkur li i{flex:none;width:1.42rem;height:1.42rem;border-radius:3px;
+.kort__flokkur li i{flex:none;width:1.5rem;height:1.5rem;border-radius:50%;
   display:inline-flex;align-items:center;justify-content:center;align-self:center;
   font:600 .62rem/1 'DM Sans',sans-serif;font-style:normal;color:#fff;
-  font-variant-numeric:tabular-nums;background:#8A7F72}
-.kort__flokkur[data-f="skoli"]     li i{background:#4A6C8C}
-.kort__flokkur[data-f="utivist"]   li i{background:#7A8B5F}
-.kort__flokkur[data-f="matur"]     li i{background:#B5643C}
-.kort__flokkur[data-f="verslun"]   li i{background:#8A7F72}
-.kort__flokkur[data-f="thjonusta"] li i{background:#6B665F}
+  font-variant-numeric:tabular-nums;background:#9A8C7B}
+.kort__flokkur[data-f="skoli"]     li i{background:#5B7B99}
+.kort__flokkur[data-f="utivist"]   li i{background:#7F9469}
+.kort__flokkur[data-f="matur"]     li i{background:#BE7150}
+.kort__flokkur[data-f="verslun"]   li i{background:#9A8C7B}
+.kort__flokkur[data-f="thjonusta"] li i{background:#71695F}
 .kort__flokkur li span{flex:1 1 auto;min-width:0}
 .kort__flokkur li b{flex:none;margin-left:auto;font:500 .71rem/1 'DM Sans',sans-serif;letter-spacing:.04em;
   color:var(--faint);font-variant-numeric:tabular-nums}
@@ -367,3 +369,79 @@ body.is-chapter .lang{color:#262522}
 .kort__swipe{display:none;margin:.7rem 0 0;font:500 .74rem/1.4 'DM Sans',sans-serif;
   letter-spacing:.04em;color:var(--faint);text-align:center}
 @media (max-width:760px){.kort__swipe{display:block}}
+
+/* ==========================================================================
+   HEILSKJÁS-OPNA — mynd eða myndband fyllir skjáinn, hvítur texti ofan á.
+   Notað á Arkitektúr, Húsið, Aðgengi og Hverfið.
+   ========================================================================== */
+.chap--cover .chap__open{
+  display:block;position:relative;min-height:100svh;
+  padding:0;margin:0;
+  width:100vw;margin-left:calc(50% - 50vw);
+  overflow:hidden;background:#262522;
+}
+.chap--cover .chap__cover{position:absolute;inset:0;z-index:0}
+.chap--cover .chap__cover img,
+.chap--cover .chap__cover video{width:100%;height:100%;object-fit:cover;display:block}
+.chap--cover .chap__cover::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(20,19,17,.40) 0%,rgba(20,19,17,.12) 42%,
+             rgba(20,19,17,.44) 100%);
+}
+.chap--cover .chap__head{
+  position:relative;z-index:1;min-height:100svh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:clamp(14px,2.4vh,26px);
+  padding:clamp(90px,12vh,140px) clamp(20px,5vw,80px) clamp(50px,9vh,110px);
+}
+.chap--cover .chap__kick{margin:0;color:rgba(255,255,255,.9)}
+.chap--cover .chap__kick::before{background:rgba(255,255,255,.7);animation:none;transform:none}
+.chap--cover .chap__title{
+  margin:0;max-width:none;color:#fff;font-style:normal;
+  font-size:clamp(2.7rem,8.5vw,6.4rem);line-height:1.02;letter-spacing:.02em;
+  text-shadow:0 2px 30px rgba(20,19,17,.3);animation:none;
+}
+.chap--cover .chap__rule{display:none}
+.chap--cover .chap__pull{
+  margin:0;max-width:34ch;color:rgba(255,255,255,.94);
+  font-style:normal;font-size:clamp(1.05rem,1.7vw,1.42rem);
+}
+/* örin niður — segir að það sé meira fyrir neðan */
+.chap--cover .chap__nidur{
+  position:absolute;left:50%;bottom:clamp(22px,4vh,44px);transform:translateX(-50%);
+  z-index:1;width:26px;height:26px;stroke:rgba(255,255,255,.8);stroke-width:1.4;fill:none;
+  animation:chapNidur 2.4s ease-in-out infinite;
+}
+@keyframes chapNidur{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,7px)}}
+@media (prefers-reduced-motion:reduce){.chap--cover .chap__nidur{animation:none}}
+
+/* ====================== SAMANBURÐARSLEÐI (fyrir/eftir) ==================== */
+.swipe{max-width:1500px;margin:0 auto;padding:clamp(30px,5vh,58px) var(--gut) 0}
+.swipe__box{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--wash2);
+  box-shadow:inset 0 0 0 1px var(--hair);--p:50%}
+.swipe__box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.swipe__clip{position:absolute;inset:0;overflow:hidden;width:var(--p)}
+.swipe__clip img{width:100vw;max-width:none}
+/* myndin til hægri er klippt eftir stöðu sleðans; sú vinstri liggur undir */
+.swipe__handfang{position:absolute;top:0;bottom:0;left:var(--p);width:2px;
+  background:#fff;box-shadow:0 0 0 1px rgba(38,37,34,.18);transform:translateX(-1px);
+  pointer-events:none}
+.swipe__handfang span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:44px;height:44px;border-radius:50%;background:#fff;
+  box-shadow:0 4px 16px rgba(38,37,34,.28)}
+.swipe__handfang span::before,.swipe__handfang span::after{
+  content:"";position:absolute;top:50%;width:0;height:0;border:5px solid transparent}
+.swipe__handfang span::before{left:9px;transform:translateY(-50%);border-right-color:#262522}
+.swipe__handfang span::after{right:9px;transform:translateY(-50%);border-left-color:#262522}
+.swipe__range{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;
+  cursor:ew-resize;appearance:none;background:none}
+.swipe__range::-webkit-slider-thumb{appearance:none;width:56px;height:100%}
+.swipe__range::-moz-range-thumb{width:56px;height:100%;border:0;background:none}
+
+/* framhaldskafli (útirými inni á Útsýni) */
+.chap__read--framhald{border-top:1px solid var(--hair2)}
+.chap__undirtitill{margin:0 0 clamp(14px,2vh,22px);
+  font-family:'Zilla Slab',Georgia,serif;font-weight:600;
+  font-size:clamp(1.5rem,2.8vw,2.2rem);line-height:1.06;letter-spacing:-.02em;color:var(--ink)}
+.chap__read--framhald .chap__body p::first-letter{float:none;font-size:inherit;
+  font-family:inherit;font-weight:inherit;color:inherit;margin:0;line-height:inherit}

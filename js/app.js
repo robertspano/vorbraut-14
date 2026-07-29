@@ -207,29 +207,42 @@
   const aptById = Object.fromEntries(APARTMENTS.map((a) => [a.id, a]));
   const SVGNS = 'http://www.w3.org/2000/svg';
 
-  Object.entries(FACADE.zones).forEach(([id, pts]) => {
-    const poly = document.createElementNS(SVGNS, 'polygon');
-    poly.setAttribute('points', pts.map((p) => p.join(',')).join(' '));
-    poly.dataset.id = id;
-    poly.setAttribute('tabindex', '0');
-    poly.setAttribute('role', 'button');
-    const apt = aptById[id];
-    if (apt && apt.status !== 'available') poly.style.fill = statusFill(apt.status);
-    poly.addEventListener('mousemove', (e) => moveTip(e, id));
-    poly.addEventListener('mouseenter', () => {
-      showTip(id);
-      // grunnmyndin hægra megin fer á hæð íbúðarinnar — og situr þar áfram
-      const a = aptById[id];
-      if (a) { hoverApt = a; planFloor = a.floor; renderSelector(); }
+  function byggjaSvaedi(sett) {
+    [...svg.querySelectorAll('polygon')].forEach((p) => p.remove());
+    Object.entries(sett || {}).forEach(([id, pts]) => {
+      const poly = document.createElementNS(SVGNS, 'polygon');
+      poly.setAttribute('points', pts.map((p) => p.join(',')).join(' '));
+      poly.dataset.id = id;
+      poly.setAttribute('tabindex', '0');
+      poly.setAttribute('role', 'button');
+      const apt = aptById[id];
+      if (apt && apt.status !== 'available') poly.style.fill = statusFill(apt.status);
+      poly.addEventListener('mousemove', (e) => moveTip(e, id));
+      poly.addEventListener('mouseenter', () => {
+        showTip(id);
+        const a = aptById[id];
+        if (a) { hoverApt = a; planFloor = a.floor; renderSelector(); }
+      });
+      poly.addEventListener('mouseleave', () => {
+        hideTip();
+        if (hoverApt) { hoverApt = null; renderSelector(); }
+      });
+      poly.addEventListener('click', () => selectApt(id));
+      poly.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectApt(id); } });
+      svg.appendChild(poly);
     });
-    poly.addEventListener('mouseleave', () => {
-      hideTip();
-      if (hoverApt) { hoverApt = null; renderSelector(); }
-    });
-    poly.addEventListener('click', () => selectApt(id));
-    poly.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectApt(id); } });
-    svg.appendChild(poly);
-  });
+    if (typeof syncZoneAria === 'function') syncZoneAria();
+  }
+  // sjónarhorn -> svæðasett. 'true' = gamla bakhliðarsettið, strengur = FACADE.zones<Nafn>
+  function svaediFyrir(vid) {
+    const v = (window.VB.VIEWS || []).find((x) => x.id === vid);
+    if (!v || !v.zones) return null;
+    if (v.zones === true) return FACADE.zones;
+    const lykill = 'zones' + v.zones.charAt(0).toUpperCase() + v.zones.slice(1);
+    return FACADE[lykill] || null;
+  }
+  byggjaSvaedi(FACADE.zones);
+
   // aria-lýsingar á íbúða-svæðunum (uppfærist við tungumála- og stöðubreytingar)
   function syncZoneAria() {
     $$('polygon', svg).forEach((p) => {
@@ -265,6 +278,8 @@
     if (!VIEWS.some((v) => v.id === side)) return;
     curView = side;
     facadeFig.setAttribute('data-view', side);
+    // smellisvæðin fylgja sjónarhorninu (bakhlið og framhlið hafa sitt hvort settið)
+    byggjaSvaedi(svaediFyrir(side));
     $$('.facade__img', facadeViews).forEach((im) => im.classList.toggle('is-on', im.dataset.view === side));
     $$('.facade__sidebtn', facadeSides).forEach((x) => {
       const on = x.dataset.side === side;

@@ -95,4 +95,14 @@
     midja();
     window.addEventListener('resize', midja, { passive: true });
   }
+
+  /* --- samanburðarsleði: myndin til hægri klippist eftir stöðu hans ------- */
+  document.querySelectorAll('[data-swipe]').forEach(function (sw) {
+    var box = sw.querySelector('.swipe__box');
+    var inp = sw.querySelector('.swipe__range');
+    if (!box || !inp) return;
+    var setja = function () { box.style.setProperty('--p', inp.value + '%'); };
+    inp.addEventListener('input', setja);
+    setja();
+  });
 })();
