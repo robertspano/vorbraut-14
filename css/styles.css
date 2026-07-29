@@ -1074,3 +1074,6 @@ html.ritill-virkur .shero__btn{display:none}
 .kj-p--staedi{background:#aa8765}
 .kj-p--geymsla{background:#0D710A}
 .kj-ekkert{color:#8a5a3c}
+/* þríhyrningur í hverju bílastæði — hlutlaus, og í áherslulit á stæði íbúðarinnar */
+.kj-thri{fill:rgba(38,37,34,.20);stroke:none}
+.kj-thri.is-min{fill:#aa8765}

@@ -821,6 +821,18 @@
         '<rect class="' + cls + '" x="' + r[0] + '" y="' + r[1] +
         '" width="' + (r[2] - r[0]) + '" height="' + (r[3] - r[1]) + '" rx="4"/>';
       let mm = '';
+      // Þríhyrningur í hvert stæði — sama form og keilurnar á hæðakortinu.
+      // Efri röðin snýr upp að vegg, neðri röðin niður.
+      const min = k.staedi || [];
+      Object.entries(K.staediReitir || {}).forEach(([nafn, r]) => {
+        const mx = (r[0] + r[2]) / 2, my = (r[1] + r[3]) / 2;
+        const h = Math.min(34, (r[3] - r[1]) * 0.42);
+        const upp = my < K.h / 2;                       // efri röðin
+        const d = upp
+          ? `M${mx} ${my - h} L${mx - h * 0.72} ${my + h * 0.55} L${mx + h * 0.72} ${my + h * 0.55} Z`
+          : `M${mx} ${my + h} L${mx - h * 0.72} ${my - h * 0.55} L${mx + h * 0.72} ${my - h * 0.55} Z`;
+        mm += `<path class="kj-thri${min.indexOf(nafn) >= 0 ? ' is-min' : ''}" d="${d}"/>`;
+      });
       (k.reitir || []).forEach((r) => { mm += reitur(r, 'kj-staedi'); });
       if (k.geymsla) mm += reitur(k.geymsla, 'kj-geymsla');
       svgEl.innerHTML = mm;
