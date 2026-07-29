@@ -78,7 +78,11 @@ h3{font-size:1.35rem}
   display:flex;align-items:center;justify-content:space-between;
   padding:0 var(--pad);height:84px;
   background:linear-gradient(180deg,rgba(0,0,0,.34) 0%,rgba(0,0,0,0) 100%);
-  transition:.4s var(--ease);
+  /* AÐEINS ódýru eiginleikarnir fá umbreytingu. Stytta útgáfan (.4s á allt)
+     hreyfði líka HÆÐINA 84->74 px í 400 ms þegar skipt er um ham í miðju
+     skruni — 24 rammar af umbroti og endurteiknun á föstum haus, sem fannst
+     sem hnykkur í hvert sinn sem farið var yfir mörkin. Hæðin smellur núna. */
+  transition:background-color .4s var(--ease),color .3s var(--ease);
   color:#fff;
 }
 .nav--solid{height:74px}

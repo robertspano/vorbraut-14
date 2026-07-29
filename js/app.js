@@ -37,12 +37,10 @@
   // Nú er aðeins skrifað þegar ástandið breytist í raun.
   // (Ekki rAF-þröttlun: rAF er sett á pásu í földum flipum og valmyndin sæti
   //  þá eftir í röngu ástandi þegar maður kæmi til baka.)
-  let erSolid = null, erScrolled = null;
+  let erSolid = null;
   function onScroll() {
-    const y = scroller.scrollTop;
-    const solid = y > window.innerHeight * 0.72, scrolled = y > 8;
+    const solid = scroller.scrollTop > window.innerHeight * 0.72;
     if (solid !== erSolid) { nav.classList.toggle('nav--solid', solid); erSolid = solid; }
-    if (scrolled !== erScrolled) { nav.classList.toggle('nav--scrolled', scrolled); erScrolled = scrolled; }
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
@@ -266,13 +264,23 @@
           poly.style.stroke = statusFill(apt.status);
         }
         poly.addEventListener('mousemove', (e) => moveTip(e, id));
+        // Sveim má EKKI endursmíða veljarann: vafrinn endurreiknar hover í
+        // hverjum skrunramma, svo brún sem rennur undir kyrrstæðan bendil
+        // kveikti enter+leave — og tvær heilar endursmíðar — í miðju skruni.
+        // Klassar á núverandi hnútum duga; aðeins hæðarskipti þurfa teikningu,
+        // og hún er sameinuð á skjáramma (bidjaUmSelector).
         poly.addEventListener('mouseenter', () => {
           showTip(id);
-          hoverApt = apt; planFloor = apt.floor; renderSelector();
+          hoverApt = apt;
+          if (planFloor !== apt.floor) { planFloor = apt.floor; bidjaUmSelector(); }
+          else merkjaIDiagram(apt.id);
         });
         poly.addEventListener('mouseleave', () => {
           hideTip();
-          if (hoverApt) { hoverApt = null; renderSelector(); }
+          if (hoverApt) {
+            hoverApt = null;
+            merkjaIDiagram(selApt ? selApt.id : null);
+          }
         });
         poly.addEventListener('click', () => selectApt(id));
         poly.addEventListener('keydown', (e) => {
@@ -386,7 +394,21 @@
   const selDiagramSvg = $('#selDiagram');
   const inConeEdit = /[?&]conedit\b/.test(location.search);   // í ritli: draga, ekki skipta
   if (selDiagramSvg && !inConeEdit) {
+    let pcX = null, pcY = null;
     const pickCone = (e) => {
+      // Skrun undir kyrrstæðum bendli sendir over/move MEÐ ÓBREYTTUM hnitum —
+      // keila sem rennur þá framhjá skipti um húshlið í miðju skruni (heil
+      // endursmíði + hálf sekúnda af þverblöndun). Aðeins raunveruleg
+      // músarhreyfing (ný hnit) fær að skipta; smellur og snerting alltaf.
+      if (e.type === 'mousemove' || e.type === 'mouseover') {
+        if (e.clientX === pcX && e.clientY === pcY) return;
+        const fyrsti = pcX === null;
+        pcX = e.clientX; pcY = e.clientY;
+        // Fyrsta over-ið getur líka verið skrun-undir-bendli (engin saga til að
+        // bera saman við). Raunveruleg músarhreyfing fylgir alltaf eftir með
+        // mousemove og NÝJUM hnitum — hún fær að skipta, fyrsta over-ið ekki.
+        if (fyrsti && e.type === 'mouseover') return;
+      }
       const c = e.target.closest && e.target.closest('.dg-cone');
       if (c && c.dataset.side && c.dataset.side !== curView) setSide(c.dataset.side);
     };
@@ -563,10 +585,17 @@
     renderDiagramInto($('#mDiagram'), floor, selId, (id) => openModal(aptById[id]));
   }
   // teiknar hæðarkort inn í hvaða svg sem er; onPick keyrir við smell/Enter á íbúð
+  let dgEpoch = 0;                 // hækkar þegar gögnin sjálf breytast (Supabase)
   function renderDiagramInto(svg, floor, selId, onPick) {
     if (!svg) return;
     const F = FLOOR_SHAPES.floors[floor];
     if (!F) { svg.innerHTML = ''; return; }
+    // Sama hæð, sama merking, sama hlið, sama mál, sömu gögn -> ekkert að gera.
+    // (?conedit þarf alltaf að teikna — þar er verið að draga keilurnar til.)
+    const teiknLykill = [floor, selId || '', (facadeFig && facadeFig.getAttribute('data-view')) || '',
+                         lang, dgEpoch].join('|');
+    if (!inConeEdit && svg.__teiknLykill === teiknLykill) return;
+    svg.__teiknLykill = teiknLykill;
     // FASTUR rammi um hæðina — hann breytist ALDREI þótt keilurnar séu dregnar til,
     // svo grunnmyndin haldist kyrr. Keilur utan rammans sjást samt (svg er overflow:visible).
     const vb = (FLOOR_SHAPES.viewBox || '0 0 300 181').split(/\s+/).map(Number);
@@ -800,7 +829,7 @@
           renderSelector();
         });
         // sveim yfir hæð -> grunnmyndin sýnir þá hæð (og situr þar áfram)
-        const show = () => { if (planFloor !== f) { planFloor = f; renderSelector(); } };
+        const show = () => { if (planFloor !== f) { planFloor = f; bidjaUmSelector(); } };
         b.addEventListener('mouseenter', show);
         b.addEventListener('focus', show);
       });
@@ -1029,6 +1058,22 @@
   }
   window.VB.renderSelector = renderSelector;   // ?conedit teiknar upp á nýtt eftir drag
 
+  // Sveim-merki án endursmíði: klassarnir einir hreyfast.
+  function merkjaIDiagram(id) {
+    if (selDiagramEl) {
+      $$('.dg-apt', selDiagramEl).forEach((g) => g.classList.toggle('is-sel', g.dataset.id === id));
+    }
+    syncFacade();
+    renderSelInfo();
+  }
+  // Í mesta lagi ein endursmíði á skjáramma þótt atburðir komi þéttar.
+  let selTeiknBidur = false;
+  function bidjaUmSelector() {
+    if (selTeiknBidur) return;
+    selTeiknBidur = true;
+    requestAnimationFrame(() => { selTeiknBidur = false; renderSelector(); });
+  }
+
   /* ----- staða íbúða úr Supabase (lifandi: grænt/gult/rautt) ----------- */
   if (window.VB && typeof VB.getStatuses === 'function') {
     VB.getStatuses().then((m) => {
@@ -1040,7 +1085,12 @@
         p.style.fill = litur;
         p.style.stroke = litur;
       });
-      buildGrid(); syncZoneAria(); renderSelector(); syncFacade();
+      dgEpoch++;                              // teikningin má ekki sitja á gömlu stöðunni
+      // Endursmíðin má ekki lenda ofan í skruni rétt eftir hleðslu — hún má bíða
+      // eftir hvíld (með þaki svo staðan birtist aldrei seinna en 1,5 s).
+      const keyra = () => { buildGrid(); syncZoneAria(); renderSelector(); syncFacade(); };
+      if ('requestIdleCallback' in window) requestIdleCallback(keyra, { timeout: 1500 });
+      else setTimeout(keyra, 0);
     }).catch(() => {});
   }
 
