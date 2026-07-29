@@ -115,9 +115,14 @@ body.is-chapter .lang{color:#262522}
   padding:clamp(38px,6vh,74px) 0 clamp(30px,5vh,58px);
   border-top:1px solid var(--hair);
 }
-/* Þegar enginn ledger-listi fylgir stæði 3fr-dálkurinn auður — lesmálið tekur
-   þá alla breiddina. 58ch-þakið á .chap__body heldur línulengdinni í skefjum. */
-.chap__read:not(:has(.chap__ledger)){grid-template-columns:minmax(0,1fr)}
+/* Þegar hvorki ledger-listi né hönnuðarkort fylgir stæði 3fr-dálkurinn auður —
+   lesmálið tekur þá alla breiddina. 58ch-þakið á .chap__body heldur
+   línulengdinni í skefjum. */
+.chap__read:not(:has(.chap__ledger)):not(:has(.story__arch)){grid-template-columns:minmax(0,1fr)}
+/* Hönnuðarkortið á Arkitektúr skipar hliðardálkinn sem listinn fyllir annars
+   staðar. Dálkurinn er þröngur, svo myndin fer upp fyrir nafnið í stað þess
+   að standa við hlið þess. */
+.chap__read .story__arch{flex-direction:column;align-items:flex-start;gap:.9rem;margin-top:0}
 .chap__body{max-width:58ch;margin:0;padding:0}
 .chap__body p{
   position:relative;margin:0;
