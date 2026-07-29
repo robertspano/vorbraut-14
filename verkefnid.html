@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=258" />
-  <link rel="stylesheet" href="css/chapter.css?v=258" />
+  <link rel="stylesheet" href="css/styles.css?v=261" />
+  <link rel="stylesheet" href="css/chapter.css?v=261" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
 <body class="is-chapter">
@@ -24,8 +24,7 @@
           <a href="husid.html" class="navdrop__trigger" data-i18n="nav.husid">Húsið</a>
           <span class="navdrop__caret" aria-hidden="true"></span>
           <span class="navdrop__menu" role="group" aria-label="Húsið">
-            <a href="utsyni.html" class="navdrop__item" data-i18n="nav.utsyni">Útsýni</a>
-            <a href="utirymi.html" class="navdrop__item" data-i18n="nav.utirymi">Útirými</a>
+            <a href="utsyni.html" class="navdrop__item" data-i18n="nav.utsyni">Útsýni og útirými</a>
             <a href="adgengi.html" class="navdrop__item" data-i18n="nav.adgengi">Aðgengi</a>
           </span>
         </span>
@@ -43,8 +42,7 @@
       <a href="verkefnid.html" class="is-current" aria-current="page" data-i18n="nav.verkefnid">Verkefnið</a>
       <a href="arkitektur.html" data-i18n="nav.arkitektur">Arkitektúr</a>
       <a href="husid.html" data-i18n="nav.husid">Húsið</a>
-      <a href="utsyni.html" class="navmenu__sub" data-i18n="nav.utsyni">Útsýni</a>
-      <a href="utirymi.html" class="navmenu__sub" data-i18n="nav.utirymi">Útirými</a>
+      <a href="utsyni.html" class="navmenu__sub" data-i18n="nav.utsyni">Útsýni og útirými</a>
       <a href="adgengi.html" class="navmenu__sub" data-i18n="nav.adgengi">Aðgengi</a>
       <a href="hverfid.html" data-i18n="nav.hverfid">Hverfið</a>
       <a href="index.html#ibudir" data-i18n="nav.ibudir">Íbúðir</a>
@@ -65,7 +63,7 @@
           </div>
           <!-- línuteikning af húsinu á pappírstóni -->
           <figure class="chap__slice chap__slice--draw">
-            <span class="cut" style="--zoom:1;--tx:0%;--ty:0%"><img data-img="verkefnid.slice" src="assets/renders/teikning.webp?v=258" alt="Línuteikning af Vorbraut 14" width="1920" height="1434" loading="eager" decoding="async"></span>
+            <span class="cut" style="--zoom:1;--tx:0%;--ty:0%"><img data-img="verkefnid.slice" src="assets/renders/teikning.webp?v=261" alt="Línuteikning af Vorbraut 14" width="1920" height="1434" loading="eager" decoding="async"></span>
             
           </figure>
         </header>
@@ -75,15 +73,14 @@
         </div>
       </div>
       <!-- tvær loftmyndir af framkvæmdinni, hlið við hlið -->
-      <div class="chap__pair">
-        <figure>
-          <span class="cut"><img data-img="verkefnid.pair1" src="assets/renders/foto-bygg1.webp?v=258" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
-          
-        </figure>
-        <figure>
-          <span class="cut"><img data-img="verkefnid.pair2" src="assets/renders/foto-bygg2.webp?v=258" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
-          
-        </figure>
+      <div class="swipe" data-swipe>
+        <div class="swipe__box">
+          <img class="swipe__a" data-img="verkefnid.pair1" src="assets/renders/foto-bygg1.webp?v=261" alt="Vorbraut 14 í byggingu" width="1920" height="1080" loading="lazy" decoding="async">
+          <div class="swipe__clip"><img class="swipe__b" data-img="verkefnid.pair2" src="assets/renders/foto-bygg2.webp?v=261" alt="Vorbraut 14 fullbyggt" width="1920" height="1080" loading="lazy" decoding="async"></div>
+          <div class="swipe__handfang" aria-hidden="true"><span></span></div>
+          <input class="swipe__range" type="range" min="0" max="100" value="50"
+                 aria-label="Renndu til að bera saman myndirnar tvær">
+        </div>
       </div>
       <div class="chap__wrap">
         <nav class="chap__pager"><a class="is-prev" href="index.html"><small>← <span data-i18n="pager.prev">Fyrra</span></small><b data-i18n="pager.home">Forsíða</b></a><a class="is-next" href="arkitektur.html"><small><span data-i18n="pager.next">Næsta</span> →</small><b data-i18n="nav.arkitektur">Arkitektúr</b></a></nav>
@@ -111,10 +108,10 @@
       </nav>
     </div>
   </footer>
-  <script defer src="js/content.js?v=258"></script>
-  <script defer src="js/supabase-config.js?v=258"></script>
-  <script defer src="js/vbsupa.js?v=258"></script>
-  <script defer src="js/page.js?v=258"></script>
-  <script defer src="js/chapter.js?v=258"></script>
+  <script defer src="js/content.js?v=261"></script>
+  <script defer src="js/supabase-config.js?v=261"></script>
+  <script defer src="js/vbsupa.js?v=261"></script>
+  <script defer src="js/page.js?v=261"></script>
+  <script defer src="js/chapter.js?v=261"></script>
 </body>
 </html>

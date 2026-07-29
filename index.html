@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;600&family=Inter:wght@300;400;500;600&family=Zilla+Slab:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="assets/cine/f001.webp" fetchpriority="high" />
-  <link rel="stylesheet" href="css/styles.css?v=258" />
+  <link rel="stylesheet" href="css/styles.css?v=261" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
 <body class="home">
@@ -26,8 +26,7 @@
           <a href="husid.html" class="navdrop__trigger" data-i18n="nav.husid">Húsið</a>
           <span class="navdrop__caret" aria-hidden="true"></span>
           <span class="navdrop__menu" role="group" aria-label="Húsið">
-            <a href="utsyni.html" class="navdrop__item" data-i18n="nav.utsyni">Útsýni</a>
-            <a href="utirymi.html" class="navdrop__item" data-i18n="nav.utirymi">Útirými</a>
+            <a href="utsyni.html" class="navdrop__item" data-i18n="nav.utsyni">Útsýni og útirými</a>
             <a href="adgengi.html" class="navdrop__item" data-i18n="nav.adgengi">Aðgengi</a>
           </span>
         </span>
@@ -45,8 +44,7 @@
       <a href="verkefnid.html" data-i18n="nav.verkefnid">Verkefnið</a>
       <a href="arkitektur.html" data-i18n="nav.arkitektur">Arkitektúr</a>
       <a href="husid.html" data-i18n="nav.husid">Húsið</a>
-      <a href="utsyni.html" class="navmenu__sub" data-i18n="nav.utsyni">Útsýni</a>
-      <a href="utirymi.html" class="navmenu__sub" data-i18n="nav.utirymi">Útirými</a>
+      <a href="utsyni.html" class="navmenu__sub" data-i18n="nav.utsyni">Útsýni og útirými</a>
       <a href="adgengi.html" class="navmenu__sub" data-i18n="nav.adgengi">Aðgengi</a>
       <a href="hverfid.html" data-i18n="nav.hverfid">Hverfið</a>
       <a href="index.html#ibudir" data-i18n="nav.ibudir">Íbúðir</a>
@@ -62,8 +60,8 @@
     <section class="shero" id="hero">
       <div class="shero__bg" aria-hidden="true">
         <video class="shero__video" autoplay muted loop playsinline preload="metadata"
-               poster="assets/video/hero-poster.jpg?v=258">
-          <source src="assets/video/hero.mp4?v=258" type="video/mp4">
+               poster="assets/video/hero-poster.jpg?v=261">
+          <source src="assets/video/hero.mp4?v=261" type="video/mp4">
         </video>
         <span class="shero__skuggi"></span>
       </div>
@@ -105,6 +103,10 @@
           <div class="aptview__side">
             <h3 class="aptview__title" id="avTitle"></h3>
             <dl class="aptview__specs" id="avSpecs"></dl>
+            <div class="aptview__cta">
+              <a class="btn btn--solid" href="hafa-samband.html" data-i18n="av.cta">Senda fyrirspurn um þessa íbúð</a>
+              <a class="aptview__sim" href="tel:+3545697000"><span data-i18n="av.call">Eða hringdu</span> <b>569 7000</b></a>
+            </div>
           </div>
           <figure class="aptview__plan">
             <img id="avPlan" alt="" decoding="async">
@@ -187,33 +189,33 @@
         </div>
         <div class="sellers__main">
           <div class="sellers__brand">
-            <img class="sellers__logo" loading="lazy" decoding="async" src="assets/logos/miklaborg.svg?v=258" alt="Fasteignasalan Miklaborg" onerror="this.closest('.sellers__brand').classList.add('no-logo');this.remove()" />
+            <img class="sellers__logo" loading="lazy" decoding="async" src="assets/logos/miklaborg.svg?v=261" alt="Fasteignasalan Miklaborg" onerror="this.closest('.sellers__brand').classList.add('no-logo');this.remove()" />
             <span class="sellers__brandtxt"><span data-i18n="sellers.brand1">Fasteignasalan</span><b data-i18n="sellers.brand2">MIKLABORG</b></span>
           </div>
           <div class="sellers__grid" data-block="agents">
             <article class="agent" data-block="agent1">
-              <div class="agent__avatar"><img data-img="img.ag1" loading="lazy" decoding="async" src="assets/agents/steinn.webp?v=258" alt="Steinn Andri Viðarsson" /></div>
+              <div class="agent__avatar"><img data-img="img.ag1" loading="lazy" decoding="async" src="assets/agents/steinn.webp?v=261" alt="Steinn Andri Viðarsson" /></div>
               <h3 class="agent__name" data-i18n="ag.1.name">Steinn Andri Viðarsson</h3>
               <p class="agent__title" data-i18n="ag.1.title">Löggiltur fasteigna- og skipasali</p>
               <a class="agent__line" data-i18n="ag.1.phone" href="tel:+3547751477">775‑1477</a>
               <a class="agent__line" data-i18n="ag.1.email" href="mailto:steinn@miklaborg.is">steinn@miklaborg.is</a>
             </article>
             <article class="agent" data-block="agent2">
-              <div class="agent__avatar"><img data-img="img.ag2" loading="lazy" decoding="async" src="assets/agents/gudrun.webp?v=258" alt="Guðrún Gonnigan Daníelsdóttir" /></div>
+              <div class="agent__avatar"><img data-img="img.ag2" loading="lazy" decoding="async" src="assets/agents/gudrun.webp?v=261" alt="Guðrún Gonnigan Daníelsdóttir" /></div>
               <h3 class="agent__name" data-i18n="ag.2.name">Guðrún Gonnigan Daníelsdóttir</h3>
               <p class="agent__title" data-i18n="ag.2.title">Löggiltur fasteignasali</p>
               <a class="agent__line" data-i18n="ag.2.phone" href="tel:+3548971161">897‑1161</a>
               <a class="agent__line" data-i18n="ag.2.email" href="mailto:gudrun@miklaborg.is">gudrun@miklaborg.is</a>
             </article>
             <article class="agent" data-block="agent3">
-              <div class="agent__avatar"><img data-img="img.ag3" loading="lazy" decoding="async" src="assets/agents/kjartan.webp?v=258" alt="Kjartan Ísak Guðmundsson" /></div>
+              <div class="agent__avatar"><img data-img="img.ag3" loading="lazy" decoding="async" src="assets/agents/kjartan.webp?v=261" alt="Kjartan Ísak Guðmundsson" /></div>
               <h3 class="agent__name" data-i18n="ag.3.name">Kjartan Ísak Guðmundsson</h3>
               <p class="agent__title" data-i18n="ag.3.title">Löggiltur fasteignasali</p>
               <a class="agent__line" data-i18n="ag.3.phone" href="tel:+3546634392">663‑4392</a>
               <a class="agent__line" data-i18n="ag.3.email" href="mailto:kjartan@miklaborg.is">kjartan@miklaborg.is</a>
             </article>
             <article class="agent" data-block="agent4">
-              <div class="agent__avatar"><img data-img="img.ag4" loading="lazy" decoding="async" src="assets/agents/kristin.webp?v=258" alt="Kristín Pétursdóttir" /></div>
+              <div class="agent__avatar"><img data-img="img.ag4" loading="lazy" decoding="async" src="assets/agents/kristin.webp?v=261" alt="Kristín Pétursdóttir" /></div>
               <h3 class="agent__name" data-i18n="ag.4.name">Kristín Pétursdóttir</h3>
               <p class="agent__title" data-i18n="ag.4.title">Löggiltur fasteigna- og skipasali</p>
               <a class="agent__line" data-i18n="ag.4.phone" href="tel:+3548241965">824‑1965</a>
@@ -298,11 +300,11 @@
     <img id="planZoomImg" decoding="async" src="" alt="" />
   </div>
 
-  <script defer src="js/data.js?v=258"></script>
-  <script defer src="js/content.js?v=258"></script>
-  <script defer src="js/supabase-config.js?v=258"></script>
-  <script defer src="js/vbsupa.js?v=258"></script>
-  <script defer src="js/app.js?v=258"></script>
+  <script defer src="js/data.js?v=261"></script>
+  <script defer src="js/content.js?v=261"></script>
+  <script defer src="js/supabase-config.js?v=261"></script>
+  <script defer src="js/vbsupa.js?v=261"></script>
+  <script defer src="js/app.js?v=261"></script>
   <script>
   /* forsíðuhnappar (áður í cine.js): „Skoða íbúðir“ → framhlið · footer-logo → toppur */
   (function(){
@@ -325,6 +327,6 @@
   })();
   </script>
   <!-- þróunartól (facade-/grunnmynda-ritlar) hlaðast AÐEINS þegar eigandinn bætir ?edit/?planedit/?mask við slóðina — gestir sækja ekkert -->
-  <script>[['edit','calibrate'],['planedit','planedit'],['mask','maskedit'],['conedit','conedit']].forEach(function(p){if(new RegExp('[?&]'+p[0]+'\\b').test(location.search)){var s=document.createElement('script');s.src='js/'+p[1]+'.js?v=258';document.body.appendChild(s);}});</script>
+  <script>[['edit','calibrate'],['planedit','planedit'],['mask','maskedit'],['conedit','conedit']].forEach(function(p){if(new RegExp('[?&]'+p[0]+'\\b').test(location.search)){var s=document.createElement('script');s.src='js/'+p[1]+'.js?v=261';document.body.appendChild(s);}});</script>
 </body>
 </html>
