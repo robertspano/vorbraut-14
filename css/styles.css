@@ -1015,3 +1015,9 @@ body.home .nav:not(.nav--solid){background:linear-gradient(180deg,rgba(20,19,17,
 .aptview__sim b{font-weight:600;color:#262522}
 .aptview__sim:hover b{color:#aa8765}
 .aptview__side{display:flex;flex-direction:column}
+
+/* Ritlar (?mask, ?edit, ?planedit, ?conedit): heroið er heilskjár og fer í
+   veginn — við föllum það saman svo veljarinn sé strax á skjánum. */
+html.ritill-virkur .shero{min-height:42vh;padding-bottom:clamp(24px,4vh,48px)}
+html.ritill-virkur .shero__title{font-size:clamp(1.6rem,3.4vw,2.6rem)}
+html.ritill-virkur .shero__btn{display:none}
