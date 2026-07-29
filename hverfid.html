@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=281" />
-  <link rel="stylesheet" href="css/chapter.css?v=281" />
+  <link rel="stylesheet" href="css/styles.css?v=282" />
+  <link rel="stylesheet" href="css/chapter.css?v=282" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
 <body class="is-chapter">
@@ -54,7 +54,9 @@
   <main>
     <article class="chap chap--cover" id="st-hood" data-ch="07" data-plate="wide" aria-labelledby="st-hood-h">
       <header class="chap__open">
-        <span class="chap__cover"><video class="chap__film" muted loop playsinline autoplay preload="metadata" poster="assets/video/hverfid-poster.jpg?v=281"><source src="assets/video/hverfid.mp4?v=281" type="video/mp4"></video></span>
+        <!-- Kyrrmynd í stað myndbandsins: sama drónaskot, en 1280x720 uppskalað í
+               fulla skjábreidd varð flöktandi og óskýrt. Ábending frá Gumma. -->
+          <span class="chap__cover"><img src="assets/renders/foto-holtid.webp?v=282" alt="" style="--zoom:1.02;--tx:0%;--ty:0%" width="1280" height="720" loading="eager" fetchpriority="high" decoding="async"></span>
         <div class="chap__head">
           <p class="chap__kick" data-i18n="st.hood.kick">07 · Staðsetning</p>
           <h1 class="chap__title" id="st-hood-h" data-i18n="st.hood.title">Hverfið</h1>
@@ -70,9 +72,9 @@
       </div>
       <figure class="chap__plate chap__plate--film">
         <span class="cut"><video class="chap__film" muted loop playsinline preload="none"
-               poster="assets/video/hverfid-poster.jpg?v=281" width="1280" height="720"
+               poster="assets/video/hverfid-poster.jpg?v=282" width="1280" height="720"
                aria-label="Hnoðraholt, Vífilsstaðavatn og GKG úr lofti">
-          <source src="assets/video/hverfid.mp4?v=281" type="video/mp4">
+          <source src="assets/video/hverfid.mp4?v=282" type="video/mp4">
         </video></span>
         
       </figure>
@@ -85,6 +87,7 @@
           </header>
           <div class="kort__grid">
             <figure class="kort__mynd">
+              <!--KORT:SVG--><!-- smíðað af tools/mkmap.py — ekki handbreyta -->
               <svg class="kort__svg" viewBox="0 0 1150 1000" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="kortTitill">
               <title id="kortTitill">Þjónustukort — Vorbraut 14 og nágrenni</title>
               <defs><clipPath id="kortRammi"><rect x="0" y="0" width="1150" height="1000" rx="2"/></clipPath></defs>
@@ -2522,9 +2525,11 @@
               <g class="kort__heim" transform="translate(575.0,440.0)"><circle r="15"/><circle class="kort__heimkjarni" r="6"/><text y="-32">VORBRAUT 14</text></g>
               <rect x="0.5" y="0.5" width="1149" height="999" fill="none" stroke="#E8E7E8"/>
               </svg>
+              <!--/KORT:SVG-->
             </figure>
             <p class="kort__swipe" data-i18n="kort.swipe">Strjúktu til hliðar til að skoða kortið.</p>
             <div class="kort__skra">
+              <!--KORT:SKRA--><!-- smíðað af tools/mkmap.py — ekki handbreyta -->
               <div class="kort__flokkur" data-f="skoli">
               <h3>Skólar</h3><ol>
               <li data-nr="1"><i>1</i><span>Leikskólinn Dalur</span><b>635 m</b></li>
@@ -2565,8 +2570,12 @@
               <li data-nr="24"><i>24</i><span>Apótekarinn Salavegi</span><b>839 m</b></li>
               <li data-nr="25"><i>25</i><span>Heilsugæslan Hvammi</span><b>1,2 km</b></li>
               </ol></div>
+              <!--/KORT:SKRA-->
             </div>
           </div>
+          <!-- Kortagögnin eru undir ODbL-leyfi, sem krefst þess að upprunans sé
+               getið. Textinn er því fluttur hingað niður í stað þess að falla brott. -->
+          <p class="kort__credit" data-i18n="kort.credit">Kortagögn © OpenStreetMap-höfundar</p>
         </div>
       </section>
       <div class="chap__wrap">
@@ -2595,10 +2604,10 @@
       </nav>
     </div>
   </footer>
-  <script defer src="js/content.js?v=281"></script>
-  <script defer src="js/supabase-config.js?v=281"></script>
-  <script defer src="js/vbsupa.js?v=281"></script>
-  <script defer src="js/page.js?v=281"></script>
-  <script defer src="js/chapter.js?v=281"></script>
+  <script defer src="js/content.js?v=282"></script>
+  <script defer src="js/supabase-config.js?v=282"></script>
+  <script defer src="js/vbsupa.js?v=282"></script>
+  <script defer src="js/page.js?v=282"></script>
+  <script defer src="js/chapter.js?v=282"></script>
 </body>
 </html>

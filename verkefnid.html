@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=281" />
-  <link rel="stylesheet" href="css/chapter.css?v=281" />
+  <link rel="stylesheet" href="css/styles.css?v=282" />
+  <link rel="stylesheet" href="css/chapter.css?v=282" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
 <body class="is-chapter">
@@ -54,7 +54,7 @@
   <main>
     <article class="chap chap--cover" id="st-intro" data-ch="01" data-plate="wide" aria-labelledby="st-intro-h">
       <header class="chap__open">
-        <span class="chap__cover"><img src="assets/renders/foto-ska.webp?v=281" alt="" style="--zoom:1.04;--tx:0%;--ty:0%" width="1920" height="1080" loading="eager" fetchpriority="high" decoding="async"></span>
+        <span class="chap__cover"><img src="assets/renders/foto-ska.webp?v=282" alt="" style="--zoom:1.04;--tx:0%;--ty:0%" width="1920" height="1080" loading="eager" fetchpriority="high" decoding="async"></span>
         <div class="chap__head">
           <p class="chap__kick" data-i18n="st.intro.kick">01 · Vorbraut 14</p>
           <h1 class="chap__title" id="st-intro-h" data-i18n="st.intro.title">Heillandi búseta í Garðabæ</h1>
@@ -68,16 +68,21 @@
           <ul class="chap__ledger"><li data-i18n="st.intro.c1">14 íbúðir</li><li data-i18n="st.intro.c2">Fjórar hæðir</li><li data-i18n="st.intro.c3">Hnoðraholt, Garðabær</li><li data-i18n="st.intro.c4">Dagsbirta og útsýni</li></ul>
         </div>
       </div>
-      <!-- tvær loftmyndir af framkvæmdinni, hlið við hlið -->
-      <div class="swipe" data-swipe>
+      <!-- Áður/eftir úr sama sjónarhorni: drónamyndin af framkvæmdinni og
+           tölvumyndin af fullbyggðu húsinu. Myndirnar eru klipptar þannig að
+           húsið liggi á sama stað í báðum, annars stekkur það til við rennsli. -->
+      <figure class="swipe" data-swipe>
         <div class="swipe__box">
-          <img class="swipe__a" data-img="verkefnid.pair1" src="assets/renders/foto-bygg1.webp?v=281" alt="Vorbraut 14 í byggingu" width="1920" height="1080" loading="lazy" decoding="async">
-          <div class="swipe__clip"><img class="swipe__b" data-img="verkefnid.pair2" src="assets/renders/foto-bygg2.webp?v=281" alt="Vorbraut 14 fullbyggt" width="1920" height="1080" loading="lazy" decoding="async"></div>
+          <img class="swipe__a" data-img="verkefnid.eftir" src="assets/renders/foto-eftir.webp?v=282" alt="Vorbraut 14 fullbyggt" width="2400" height="1350" loading="lazy" decoding="async">
+          <div class="swipe__clip"><img class="swipe__b" data-img="verkefnid.adur" src="assets/renders/foto-adur.webp?v=282" alt="Vorbraut 14 í byggingu" width="2400" height="1350" loading="lazy" decoding="async"></div>
+          <span class="swipe__merki swipe__merki--adur" data-i18n="swipe.adur">Áður</span>
+          <span class="swipe__merki swipe__merki--eftir" data-i18n="swipe.eftir">Eftir</span>
           <div class="swipe__handfang" aria-hidden="true"><span></span></div>
           <input class="swipe__range" type="range" min="0" max="100" value="50"
                  aria-label="Renndu til að bera saman myndirnar tvær">
         </div>
-      </div>
+        <figcaption data-viz="1"><em data-i18n="fig.viz">Tölvumynd</em><b><span data-i18n="fig.label">Mynd</span> 01·B</b> <span data-i18n="st.intro.cap2">&nbsp;</span></figcaption>
+      </figure>
       <div class="chap__wrap">
         <nav class="chap__pager"><a class="is-prev" href="index.html"><small>← <span data-i18n="pager.prev">Fyrra</span></small><b data-i18n="pager.home">Forsíða</b></a><a class="is-next" href="arkitektur.html"><small><span data-i18n="pager.next">Næsta</span> →</small><b data-i18n="nav.arkitektur">Arkitektúr</b></a></nav>
       </div>
@@ -104,10 +109,10 @@
       </nav>
     </div>
   </footer>
-  <script defer src="js/content.js?v=281"></script>
-  <script defer src="js/supabase-config.js?v=281"></script>
-  <script defer src="js/vbsupa.js?v=281"></script>
-  <script defer src="js/page.js?v=281"></script>
-  <script defer src="js/chapter.js?v=281"></script>
+  <script defer src="js/content.js?v=282"></script>
+  <script defer src="js/supabase-config.js?v=282"></script>
+  <script defer src="js/vbsupa.js?v=282"></script>
+  <script defer src="js/page.js?v=282"></script>
+  <script defer src="js/chapter.js?v=282"></script>
 </body>
 </html>

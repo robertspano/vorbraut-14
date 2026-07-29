@@ -173,8 +173,10 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 /* Hver kafli = ein "glæra": skrunið lendir alltaf á heilum kafla (eins og vesturvin.is) */
 
 /* ===== HERO — „editorial overlap": risa-týpógrafía sker sig inn yfir myndbandið ===== */
-.shero{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;
-  text-align:center;padding:clamp(90px,12vh,140px) clamp(20px,5vw,80px) clamp(60px,10vh,120px);
+/* Nafnið situr í neðri þriðjungnum, ekki á miðjum skjá: flex-end og rúm
+   neðanfylling ráða hæðinni, svo landslagið í myndbandinu fái miðjuna. */
+.shero{position:relative;min-height:100svh;display:flex;align-items:flex-end;justify-content:center;
+  text-align:center;padding:clamp(90px,12vh,140px) clamp(20px,5vw,80px) clamp(48px,9vh,100px);
   overflow:hidden;background:#262522}
 
 /* MYNDBANDIÐ ER BAKGRUNNURINN — fyllir allan skjáinn */
@@ -191,6 +193,9 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .shero__title{
   margin:0;font-family:'Zilla Slab',Georgia,serif;font-weight:600;font-style:normal;
   font-size:clamp(2.7rem,9vw,7rem);line-height:1;letter-spacing:.06em;
+  /* .06em bætist líka aftan við orðabilið, svo "14" sat laust frá nafninu og
+     leit út eins og sjálfstæð eining. Þetta dregur bilið aftur að stafarytmanum. */
+  word-spacing:-.09em;
   text-transform:uppercase;color:#fff;
   text-shadow:0 2px 30px rgba(20,19,17,.32);
 }
@@ -853,7 +858,7 @@ body.is-page{background:#4E443A}
   .lang__globe{width:20px;height:20px}
 
   /* hero texti passi á símaskjá — var of hár svo titillinn skaraðist við navið */
-  .shero__text{padding-top:calc(64px + 3vh)}
+  .shero__stage{padding-top:3vh}
   .hero__title{font-size:clamp(2.4rem,9vw,3.4rem)}
   .hero__tag{font-size:1.04rem;margin-top:.6rem;max-width:26ch}
   .hero__sub{font-size:.9rem;margin-top:.55rem;line-height:1.5}
@@ -889,7 +894,8 @@ body.is-page{background:#4E443A}
 /* ===== Sími/spjaldtölva: hero staflast (texti fyrst, mynd undir) ===== */
 @media (max-width:860px){
   .shero{min-height:88svh}
-  .shero__text{padding:clamp(30px,5vh,48px) var(--pad)}
+  /* fyllingin færist á staflann því .shero__text er display:contents hér */
+  .shero__stage{padding:clamp(30px,5vh,48px) 0}
   .shero__media{height:auto;max-height:none}
   /* Takkarnir mega ALDREI fara út fyrir skjáinn: hópurinn var 463px breiður,
      festur við hægri brún, svo "Bakhlið" (og "Framhlið" á mjórri símum) lenti
@@ -1001,9 +1007,14 @@ body.is-page{background:var(--bone)}
 .cform__note[data-gerd="bid"]{opacity:.7}
 .cform__submit[disabled]{opacity:.55;cursor:progress}
 
-/* Forsíðuvalmynd liggur nú ofan á myndbandi — hvít þar til skrunað er niður */
+/* Forsíðuvalmynd liggur nú ofan á myndbandi — hvít þar til skrunað er niður.
+   Aðeins hlekkirnir sem liggja Á myndbandinu verða hvítir. Fellikassinn undir
+   "Húsið" er hvítur kassi, svo '.nav__links a' hefði litað letrið í honum hvítt
+   líka og hann orðið auður — þess vegna '>' og trigger-inn sérstaklega. */
 body.home .nav:not(.nav--solid) .nav__logo,
-body.home .nav:not(.nav--solid) .nav__links a,
+body.home .nav:not(.nav--solid) .nav__links>a,
+body.home .nav:not(.nav--solid) .navdrop,
+body.home .nav:not(.nav--solid) .navdrop__trigger,
 body.home .nav:not(.nav--solid) .nav__right .nav__link,
 body.home .nav:not(.nav--solid) .lang{color:#fff}
 body.home .nav:not(.nav--solid) .lang__globe{stroke:#fff}
