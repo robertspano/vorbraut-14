@@ -176,7 +176,7 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 /* Nafnið situr í neðri þriðjungnum, ekki á miðjum skjá: flex-end og rúm
    neðanfylling ráða hæðinni, svo landslagið í myndbandinu fái miðjuna. */
 .shero{position:relative;min-height:100svh;display:flex;align-items:flex-end;justify-content:center;
-  text-align:center;padding:clamp(90px,12vh,140px) clamp(20px,5vw,80px) clamp(72px,15vh,160px);
+  text-align:center;padding:clamp(90px,12vh,140px) clamp(20px,5vw,80px) clamp(48px,9vh,100px);
   overflow:hidden;background:#262522}
 
 /* MYNDBANDIÐ ER BAKGRUNNURINN — fyllir allan skjáinn */
@@ -193,6 +193,9 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .shero__title{
   margin:0;font-family:'Zilla Slab',Georgia,serif;font-weight:600;font-style:normal;
   font-size:clamp(2.7rem,9vw,7rem);line-height:1;letter-spacing:.06em;
+  /* .06em bætist líka aftan við orðabilið, svo "14" sat laust frá nafninu og
+     leit út eins og sjálfstæð eining. Þetta dregur bilið aftur að stafarytmanum. */
+  word-spacing:-.09em;
   text-transform:uppercase;color:#fff;
   text-shadow:0 2px 30px rgba(20,19,17,.32);
 }

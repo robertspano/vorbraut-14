@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=266" />
-  <link rel="stylesheet" href="css/chapter.css?v=266" />
+  <link rel="stylesheet" href="css/styles.css?v=267" />
+  <link rel="stylesheet" href="css/chapter.css?v=267" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
 <body class="is-chapter">
@@ -55,7 +55,9 @@
     <article class="chap chap--cover" id="st-hood" data-ch="07" data-plate="wide" aria-labelledby="st-hood-h">
       <div class="chap__wrap">
         <header class="chap__open">
-          <span class="chap__cover"><video class="chap__film" muted loop playsinline autoplay preload="metadata" poster="assets/video/hverfid-poster.jpg?v=264"><source src="assets/video/hverfid.mp4?v=264" type="video/mp4"></video></span>
+          <!-- Kyrrmynd í stað myndbandsins: sama drónaskot, en myndbandið er 720p á
+               ~8 KB/ramma og varð flöktandi og óskýrt í fullri skjábreidd. -->
+          <span class="chap__cover"><img src="assets/renders/foto-holtid.webp?v=267" alt="" style="--zoom:1.02;--tx:0%;--ty:0%" width="1280" height="720" loading="eager" fetchpriority="high" decoding="async"></span>
           <div class="chap__head">
             <p class="chap__kick" data-i18n="st.hood.kick">07 · Staðsetning</p>
             <h1 class="chap__title" id="st-hood-h" data-i18n="st.hood.title">Hverfið</h1>
@@ -2571,6 +2573,9 @@
               <!--/KORT:SKRA-->
             </div>
           </div>
+          <!-- Kortagögnin eru undir ODbL-leyfi, sem krefst þess að upprunans sé
+               getið. Textinn er því fluttur hingað niður í stað þess að falla brott. -->
+          <p class="kort__credit" data-i18n="kort.credit">Kortagögn © OpenStreetMap-höfundar</p>
         </div>
       </section>
       <div class="chap__wrap">
@@ -2599,7 +2604,7 @@
       </nav>
     </div>
   </footer>
-  <script defer src="js/content.js?v=264"></script>
+  <script defer src="js/content.js?v=267"></script>
   <script defer src="js/supabase-config.js?v=264"></script>
   <script defer src="js/vbsupa.js?v=264"></script>
   <script defer src="js/page.js?v=264"></script>
