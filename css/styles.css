@@ -1068,13 +1068,54 @@ html.ritill-virkur .shero__btn{display:none}
 .aptview__kjsvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .kj-staedi{fill:rgba(170,135,101,.42);stroke:#aa8765;stroke-width:4;vector-effect:non-scaling-stroke}
 .kj-geymsla{fill:rgba(13,113,10,.26);stroke:#0D710A;stroke-width:4;vector-effect:non-scaling-stroke}
-.aptview__kjtxt{margin:.8rem 0 0;font-size:.86rem;color:#6b665f;display:flex;
-  flex-wrap:wrap;align-items:center;gap:.4rem .7rem}
+/* Tvær línur, hvor undir annarri. Grid (ekki flex) svo merkin og gildin
+   raðist í tvo dálka og stillist saman óháð lengd orðanna. */
+.aptview__kjtxt{margin:1rem 0 0;font-size:.86rem;color:#6b665f;
+  display:grid;grid-template-columns:auto auto;justify-content:start;
+  align-items:center;gap:.5rem .7rem}
+.kj-lina{display:contents}
+.kj-gildi{letter-spacing:.02em}
+.kj-ekkert{grid-column:1/-1}
 .kj-p{font:600 .62rem/1 var(--font);letter-spacing:.12em;text-transform:uppercase;
   padding:.3rem .5rem;border-radius:2px;color:#fff}
 .kj-p--staedi{background:#aa8765}
 .kj-p--geymsla{background:#0D710A}
 .kj-ekkert{color:#8a5a3c}
-/* þríhyrningur í hverju bílastæði — hlutlaus, og í áherslulit á stæði íbúðarinnar */
-.kj-thri{fill:rgba(38,37,34,.20);stroke:none}
-.kj-thri.is-min{fill:#aa8765}
+/* Stæðismerkið eins og á aðaluppdrættinum: ófyllt, punktalína, fyllir stæðið.
+   Stæði ÞESSARAR íbúðar fá áherslulitinn og þykkari línu. */
+.kj-thri{fill:none;stroke:rgba(38,37,34,.45);stroke-width:2;stroke-dasharray:10 8;
+  stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.kj-thri.is-min{stroke:#aa8765;stroke-width:3;stroke-dasharray:12 8}
+
+/* --- ?kjedit : reitaritill fyrir bílakjallarann ---------------------------
+   Sami svipur og útlínu-ritillinn (#maskPanel) — sama borð, sömu takkar. */
+/* Flöturinn nemur staðar fyrir ofan borðið svo uppdrátturinn hverfi ekki
+   undir það; sé borðið fellt saman fær hann plássið til baka. */
+.kje__svg{position:fixed;left:0;right:0;top:0;bottom:152px;z-index:9000;
+  background:#1a1b1c;touch-action:none}
+body.kjedit--felld .kje__svg{bottom:46px}
+body.kjedit{overflow:hidden}
+.kje-r{fill:rgba(170,135,101,.18);stroke:rgba(255,255,255,.55);stroke-width:1.2;
+  vector-effect:non-scaling-stroke;cursor:move}
+.kje-r--g{fill:rgba(13,113,10,.20)}
+.kje-r.sel{fill:rgba(170,135,101,.45);stroke:#fff;stroke-width:2}
+.kje-r--g.sel{fill:rgba(13,113,10,.48)}
+.kje-h{fill:#fff;stroke:#aa8765;stroke-width:2;vector-effect:non-scaling-stroke;cursor:nwse-resize}
+.kje-lbl{fill:#fff;font:600 14px var(--font);text-anchor:middle;paint-order:stroke;
+  stroke:rgba(0,0,0,.55);stroke-width:3px;pointer-events:none}
+#kjePanel{position:fixed;left:0;right:0;bottom:0;z-index:9001;background:rgba(15,16,17,.94);
+  color:#fff;padding:.7rem 1rem .85rem;font:500 .8rem/1.35 var(--font);
+  transition:transform .18s ease}
+#kjePanel.mk--min{transform:translateY(calc(100% - 46px))}
+#kjePanel.mk--min .mk__hint,#kjePanel.mk--min .kje__flokkur{opacity:0;pointer-events:none}
+#kjePanel.mk--top{bottom:auto;top:0;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+#kjePanel.mk--top.mk--min{transform:translateY(calc(-100% + 46px))}
+#kjePanel button{border:1px solid rgba(255,255,255,.26);background:transparent;color:#fff;
+  font:inherit;padding:.3rem .6rem;border-radius:6px;cursor:pointer}
+#kjePanel button:hover{border-color:#fff}
+#kjePanel .mk__legend button.on{background:#aa8765;border-color:#aa8765}
+#kjePanel .kje__flokkur:last-child .mk__legend button.on{background:#0D710A;border-color:#0D710A}
+.kje__flokkur{display:flex;align-items:center;gap:.5rem;margin-top:.4rem}
+.kje__heiti{font:600 .62rem/1 var(--font);letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.55);min-width:5.6rem}
+#kjePanel #kjeZ{font-size:.74rem;min-width:46px;text-align:center;color:rgba(255,255,255,.85)}

@@ -821,27 +821,38 @@
         '<rect class="' + cls + '" x="' + r[0] + '" y="' + r[1] +
         '" width="' + (r[2] - r[0]) + '" height="' + (r[3] - r[1]) + '" rx="4"/>';
       let mm = '';
-      // Þríhyrningur í hvert stæði — sama form og keilurnar á hæðakortinu.
-      // Efri röðin snýr upp að vegg, neðri röðin niður.
+      // Þríhyrningur í hvert stæði, eins og strikaða merkið á aðaluppdrættinum:
+      // ófylltur, punktalína, og fyllir stæðið. Oddurinn snýr að útveggnum —
+      // efri röðin upp, neðri röðin niður — svo hann vísi eins og nef bílsins.
       const min = k.staedi || [];
       Object.entries(K.staediReitir || {}).forEach(([nafn, r]) => {
-        const mx = (r[0] + r[2]) / 2, my = (r[1] + r[3]) / 2;
-        const h = Math.min(34, (r[3] - r[1]) * 0.42);
-        const upp = my < K.h / 2;                       // efri röðin
+        const bw = r[2] - r[0], bh = r[3] - r[1];
+        const ix = bw * 0.13, iy = bh * 0.12;           // loft inni í stæðinu
+        const v = r[0] + ix, h = r[2] - ix;             // vinstri/hægri
+        const mx = (r[0] + r[2]) / 2;
+        const upp = (r[1] + r[3]) / 2 < K.h / 2;        // efri röðin
         const d = upp
-          ? `M${mx} ${my - h} L${mx - h * 0.72} ${my + h * 0.55} L${mx + h * 0.72} ${my + h * 0.55} Z`
-          : `M${mx} ${my + h} L${mx - h * 0.72} ${my - h * 0.55} L${mx + h * 0.72} ${my - h * 0.55} Z`;
+          ? `M${mx} ${r[1] + iy} L${h} ${r[3] - iy} L${v} ${r[3] - iy} Z`
+          : `M${mx} ${r[3] - iy} L${h} ${r[1] + iy} L${v} ${r[1] + iy} Z`;
         mm += `<path class="kj-thri${min.indexOf(nafn) >= 0 ? ' is-min' : ''}" d="${d}"/>`;
       });
-      (k.reitir || []).forEach((r) => { mm += reitur(r, 'kj-staedi'); });
+      // Reitirnir um stæði ÞESSARAR íbúðar eru hrein afleiða af staedi-listanum.
+      (k.staedi || []).forEach((nafn) => {
+        const r = (K.staediReitir || {})[nafn];
+        if (r) mm += reitur(r, 'kj-staedi');
+      });
       if (k.geymsla) mm += reitur(k.geymsla, 'kj-geymsla');
       svgEl.innerHTML = mm;
       const st = k.staedi || [];
+      // Ein lína á hvorn lið, hvor undir öðrum — ekki hlið við hlið.
+      const lina = (cls, merki, gildi) =>
+        '<span class="kj-lina"><b class="kj-p kj-p--' + cls + '">' + merki + '</b>' +
+        '<span class="kj-gildi">' + gildi + '</span></span>';
       $('#avKjTxt').innerHTML =
         (st.length
-          ? '<b class="kj-p kj-p--staedi">' + t('av.kjStaedi') + '</b> ' + st.join(' · ')
-          : '<span class="kj-ekkert">' + t('av.kjEkkert') + '</span>') +
-        (k.geymsla ? ' <b class="kj-p kj-p--geymsla">' + t('av.kjGeymsla') + '</b> ' + a.id : '');
+          ? lina('staedi', t('av.kjStaedi'), st.join(' · '))
+          : '<span class="kj-lina kj-ekkert">' + t('av.kjEkkert') + '</span>') +
+        (k.geymsla ? lina('geymsla', t('av.kjGeymsla'), a.id) : '');
       // Kjallarinn liggur FYRIR NEÐAN grunnmyndina en er falinn þar til ýtt er
       // á takkann — þá opnast hann og síðan skrunar mjúklega niður á hann.
       // (CSS: .aptview__plan img hafði display:block sem sló út [hidden].)

@@ -185,22 +185,49 @@ const KJALLARI = {
     'B10': [1282, 495, 1405, 600],
   },
   ibudir: {
-      '0101': { staedi: ['B10'], geymsla: [1282, 688, 1405, 810], reitir: [[1282, 495, 1405, 600]] },
-      '0102': { staedi: [], geymsla: [478, 752, 590, 810] },
-      '0103': { staedi: [], geymsla: [478, 688, 590, 748] },
-      '0104': { staedi: ['B09'], geymsla: [1135, 688, 1278, 810], reitir: [[1137, 495, 1278, 600]] },
-      '0201': { staedi: ['B08'], geymsla: [1003, 688, 1131, 810], reitir: [[1004, 495, 1133, 600]] },
-      '0202': { staedi: [], geymsla: [478, 618, 590, 678] },
-      '0203': { staedi: [], geymsla: [478, 552, 590, 615] },
-      '0204': { staedi: ['B07'], geymsla: [860, 688, 1000, 810], reitir: [[862, 495, 1000, 600]] },
-      '0301': { staedi: ['B06'], geymsla: [715, 688, 856, 810], reitir: [[720, 495, 858, 600]] },
-      '0302': { staedi: [], geymsla: [712, 158, 828, 215] },
-      '0303': { staedi: [], geymsla: [905, 143, 1020, 215] },
-      '0304': { staedi: ['B05'], geymsla: [598, 688, 712, 810], reitir: [[590, 495, 716, 600]] },
-      '0401': { staedi: ['B03', 'B04'], geymsla: [1022, 30, 1133, 150], reitir: [[1136, 200, 1278, 310], [1282, 200, 1405, 310]] },
-      '0402': { staedi: ['B01', 'B02'], geymsla: [315, 30, 443, 110], reitir: [[448, 200, 585, 310], [590, 200, 708, 310]] },
+    '0101': { staedi: ['B10'], geymsla: [1282, 688, 1405, 810] },
+    '0102': { staedi: [], geymsla: [478, 752, 590, 810] },
+    '0103': { staedi: [], geymsla: [478, 688, 590, 748] },
+    '0104': { staedi: ['B09'], geymsla: [1135, 688, 1278, 810] },
+    '0201': { staedi: ['B08'], geymsla: [1003, 688, 1131, 810] },
+    '0202': { staedi: [], geymsla: [478, 618, 590, 678] },
+    '0203': { staedi: [], geymsla: [478, 552, 590, 615] },
+    '0204': { staedi: ['B07'], geymsla: [860, 688, 1000, 810] },
+    '0301': { staedi: ['B06'], geymsla: [715, 688, 856, 810] },
+    '0302': { staedi: [], geymsla: [712, 158, 828, 215] },
+    '0303': { staedi: [], geymsla: [905, 143, 1020, 215] },
+    '0304': { staedi: ['B05'], geymsla: [598, 688, 712, 810] },
+    '0401': { staedi: ['B03', 'B04'], geymsla: [1022, 30, 1133, 150] },
+    '0402': { staedi: ['B01', 'B02'], geymsla: [315, 30, 443, 110] },
   },
 };
+
+/* Handvirkar lagfæringar úr ?kjedit lifa í localStorage þar til þær eru
+   settar hér inn fyrir fullt og allt. Aðeins reitir sem eiga sér samsvörun
+   hér að ofan eru teknir gildir — annars sætu gamlar vistanir eftir. */
+/* Hrein afrit EINS OG ÞAU STANDA Í SKRÁNNI, tekin áður en vistanir eru lesnar.
+   Án þeirra hefði „Núllstilla reit“ í ritlinum aðeins skilað síðustu vistun. */
+KJALLARI.grunnur = {
+  staediReitir: Object.fromEntries(
+    Object.entries(KJALLARI.staediReitir).map(([n, r]) => [n, r.slice()])),
+  geymslur: Object.fromEntries(
+    Object.entries(KJALLARI.ibudir)
+      .filter(([, v]) => v.geymsla)
+      .map(([id, v]) => [id, v.geymsla.slice()])),
+};
+
+try {
+  const g = JSON.parse(localStorage.getItem('vb-kjallari') || 'null');
+  const gildur = (r) => Array.isArray(r) && r.length === 4 && r.every((n) => typeof n === 'number');
+  if (g && typeof g === 'object') {
+    Object.entries(g.staediReitir || {}).forEach(([n, r]) => {
+      if (KJALLARI.staediReitir[n] && gildur(r)) KJALLARI.staediReitir[n] = r;
+    });
+    Object.entries(g.geymslur || {}).forEach(([id, r]) => {
+      if (KJALLARI.ibudir[id] && gildur(r)) KJALLARI.ibudir[id].geymsla = r;
+    });
+  }
+} catch (e) {}
 
 const VIEWS = [
   { id: 'aftan',    label: 'Bakhlið',      img: 'assets/renders/foto-bak.webp',      zones: true },
