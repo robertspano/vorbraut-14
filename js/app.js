@@ -842,21 +842,27 @@
           ? '<b class="kj-p kj-p--staedi">' + t('av.kjStaedi') + '</b> ' + st.join(' · ')
           : '<span class="kj-ekkert">' + t('av.kjEkkert') + '</span>') +
         (k.geymsla ? ' <b class="kj-p kj-p--geymsla">' + t('av.kjGeymsla') + '</b> ' + a.id : '');
-      // Fliparnir SKIPTA milli teikninganna; kjallarinn sést aðeins þegar
-      // ýtt er á hann. (CSS þurfti að styðja þetta — .aptview__plan img
-      // hafði display:block sem sló út [hidden] og því sáust báðar áður.)
-      const cap = $('.aptview__cap', avEl);
-      const synaFlipa = (hvad) => {
+      // Kjallarinn liggur FYRIR NEÐAN grunnmyndina en er falinn þar til ýtt er
+      // á takkann — þá opnast hann og síðan skrunar mjúklega niður á hann.
+      // (CSS: .aptview__plan img hafði display:block sem sló út [hidden].)
+      const skrunaAd = (el) => {
+        if (window.VB.stopScroll) window.VB.stopScroll();   // stöðva sjálfvirka skrunið
+        const NAV = nav ? nav.offsetHeight : 84;
+        const mark = scroller.scrollTop + el.getBoundingClientRect().top - NAV - 20;
+        goToSection(Math.max(0, mark));
+      };
+      const synaFlipa = (hvad, skruna) => {
         flipar.forEach((b) => {
           const on = b.dataset.flipi === hvad;
           b.classList.toggle('is-on', on);
           b.setAttribute('aria-selected', on ? 'true' : 'false');
         });
-        plan.hidden = hvad !== 'ibud';
-        boxEl.hidden = hvad !== 'kjallari';
-        if (cap) cap.hidden = hvad !== 'ibud';
+        boxEl.hidden = hvad !== 'kjallari';                 // grunnmyndin stendur alltaf
+        if (!skruna) return;
+        // rendera fyrst, skruna svo — annars mælum við ranga stöðu
+        setTimeout(() => skrunaAd(hvad === 'kjallari' ? boxEl : plan), 30);
       };
-      flipar.forEach((b) => { b.onclick = () => synaFlipa(b.dataset.flipi); });
+      flipar.forEach((b) => { b.onclick = () => synaFlipa(b.dataset.flipi, true); });
       synaFlipa('ibud');
 
       // smella á kjallarateikninguna -> full upplausn í nýjum flipa, eins og íbúðin
