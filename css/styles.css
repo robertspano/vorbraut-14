@@ -1021,3 +1021,6 @@ body.home .nav:not(.nav--solid){background:linear-gradient(180deg,rgba(20,19,17,
 html.ritill-virkur .shero{min-height:42vh;padding-bottom:clamp(24px,4vh,48px)}
 html.ritill-virkur .shero__title{font-size:clamp(1.6rem,3.4vw,2.6rem)}
 html.ritill-virkur .shero__btn{display:none}
+/* stakt svæði (bílakjallarinn í heild) — sami stíll og íbúðasvæðin en hlutlaus */
+.facade__zone--stakt{fill:rgba(255,255,255,.14);stroke:rgba(255,255,255,.85)}
+.facade__zone--stakt:hover{fill:rgba(170,135,101,.34);cursor:pointer}

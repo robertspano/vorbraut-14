@@ -144,7 +144,7 @@ try {
 /* Smellisvæði á FRAMHLIÐINNI — handkvörðuð af Róberti í ?mask=framan.
    Bakhliðin er í FACADE.zones hér að ofan. */
 FACADE.zonesHlid = {};        /* kvarðað í ?mask=hlid */
-FACADE.zonesKjallari = {};    /* kvarðað í ?mask=kjallari */
+FACADE.zonesKjallari = {};    /* EITT svæði, ekki íbúðir — kvarðað í ?mask=kjallari */
 
 FACADE.zonesFraman = {
     '0101': [[354,493],[552,494],[554,554],[469,553],[468,546],[359,545]],
@@ -167,7 +167,8 @@ const VIEWS = [
   { id: 'aftan',    label: 'Bakhlið',      img: 'assets/renders/foto-bak.webp',      zones: true },
   { id: 'framan',   label: 'Framhlið',     img: 'assets/renders/foto-fram.webp', zones: 'framan' },
   { id: 'hlid',     label: 'Hliðin',       img: 'assets/renders/foto-ska.webp', zones: 'hlid' },
-  { id: 'kjallari', label: 'Bílakjallari', img: 'assets/renders/foto-rampur.webp', zones: 'kjallari' },
+  { id: 'kjallari', label: 'Bílakjallari', img: 'assets/renders/foto-rampur.webp',
+    zones: 'kjallari', zoneList: ['kjallari'], zoneHref: 'adgengi.html' },
 ];
 
 /* Útsýnis-keilur á hæðarkortinu (sjónarhornin sem skipta um mynd af húsinu).

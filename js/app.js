@@ -216,19 +216,37 @@
       poly.setAttribute('tabindex', '0');
       poly.setAttribute('role', 'button');
       const apt = aptById[id];
-      if (apt && apt.status !== 'available') poly.style.fill = statusFill(apt.status);
-      poly.addEventListener('mousemove', (e) => moveTip(e, id));
-      poly.addEventListener('mouseenter', () => {
-        showTip(id);
-        const a = aptById[id];
-        if (a) { hoverApt = a; planFloor = a.floor; renderSelector(); }
-      });
-      poly.addEventListener('mouseleave', () => {
-        hideTip();
-        if (hoverApt) { hoverApt = null; renderSelector(); }
-      });
-      poly.addEventListener('click', () => selectApt(id));
-      poly.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectApt(id); } });
+      if (apt) {
+        if (apt.status !== 'available') poly.style.fill = statusFill(apt.status);
+        poly.addEventListener('mousemove', (e) => moveTip(e, id));
+        poly.addEventListener('mouseenter', () => {
+          showTip(id);
+          hoverApt = apt; planFloor = apt.floor; renderSelector();
+        });
+        poly.addEventListener('mouseleave', () => {
+          hideTip();
+          if (hoverApt) { hoverApt = null; renderSelector(); }
+        });
+        poly.addEventListener('click', () => selectApt(id));
+        poly.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectApt(id); }
+        });
+      } else {
+        // Svæði sem stendur ekki fyrir íbúð — t.d. bílakjallarinn í heild.
+        const v = VIEWS.find((x) => x.id === curView) || {};
+        const merki = t('facade.' + id);
+        poly.classList.add('facade__zone--stakt');
+        poly.addEventListener('mousemove', (e) => moveTipTexti(e, merki));
+        poly.addEventListener('mouseenter', () => showTipTexti(merki));
+        poly.addEventListener('mouseleave', hideTip);
+        if (v.zoneHref) {
+          const fara = () => { window.location.href = v.zoneHref; };
+          poly.addEventListener('click', fara);
+          poly.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fara(); }
+          });
+        }
+      }
       svg.appendChild(poly);
     });
     if (typeof syncZoneAria === 'function') syncZoneAria();
@@ -245,6 +263,19 @@
   facadeFig.setAttribute('data-zones', Object.keys(FACADE.zones).length ? '1' : '0');
 
   // aria-lýsingar á íbúða-svæðunum (uppfærist við tungumála- og stöðubreytingar)
+  function showTipTexti(txt) {
+    if (!tip) return;
+    tip.innerHTML = '<b>' + txt + '</b>';
+    tip.hidden = false;
+  }
+  function moveTipTexti(e, txt) {
+    if (!tip) return;
+    if (tip.hidden) showTipTexti(txt);
+    const r = svg.getBoundingClientRect();
+    tip.style.left = (e.clientX - r.left) + 'px';
+    tip.style.top = (e.clientY - r.top) + 'px';
+  }
+
   function syncZoneAria() {
     $$('polygon', svg).forEach((p) => {
       const a = aptById[p.dataset.id]; if (!a) return;
