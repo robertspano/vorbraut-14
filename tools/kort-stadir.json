@@ -162,6 +162,7 @@
   "leitarstrengur": "Golfklúbbur Kópavogs og Garðabæjar, Vetrarmýri, 210 Garðabær, Iceland",
   "vaegi": "kjarni",
   "um_km": 0.8,
+  "midja_ur_lagi": "golf",
   "lat": null,
   "lon": null,
   "m": null
@@ -476,5 +477,111 @@
   "lon": -21.9184163,
   "osm": "Bókasafn Garðabæjar, 7, Garðatorg, Garðabær, Höfuðborgarsvæðið, 210, Í",
   "m": 2120
+ },
+
+ {
+  "nafn": "Leikskólinn Akrar",
+  "flokkur": "Skólar",
+  "leitarstrengur": "Leikskólinn Akrar, Garðabær, Iceland",
+  "vaegi": "kjarni",
+  "lat": null,
+  "lon": null
+ },
+ {
+  "nafn": "Leikskólinn Lundaból",
+  "flokkur": "Skólar",
+  "leitarstrengur": "Leikskólinn Lundaból, Garðabær, Iceland",
+  "vaegi": "kjarni",
+  "lat": null,
+  "lon": null
+ },
+ {
+  "nafn": "Leikskólinn Kirkjuból",
+  "flokkur": "Skólar",
+  "leitarstrengur": "Leikskólinn Kirkjuból, Garðabær, Iceland",
+  "vaegi": "kjarni",
+  "lat": null,
+  "lon": null
+ },
+ {
+  "nafn": "Ærslabelgurinn",
+  "flokkur": "Afþreying",
+  "leitarstrengur": "Ærslabelgur, Garðabær, Iceland",
+  "vaegi": "auka",
+  "lat": null,
+  "lon": null
+ },
+ {
+  "nafn": "Vífilsstaðavöllur",
+  "flokkur": "Afþreying",
+  "leitarstrengur": "Vífilsstaðavöllur, Garðabær, Iceland",
+  "vaegi": "auka",
+  "lat": null,
+  "lon": null
+ },
+ {
+  "nafn": "Hönnunarsafn Íslands",
+  "flokkur": "Afþreying",
+  "heimilisfang": "Garðatorg 1, 210 Garðabær",
+  "leitarstrengur": "Hönnunarsafn Íslands, Garðatorg 1, 210 Garðabær, Iceland",
+  "vaegi": "kjarni",
+  "lat": null,
+  "lon": null
+ },
+ {
+  "nafn": "Hestamannafélagið Sprettur",
+  "flokkur": "Afþreying",
+  "leitarstrengur": "Hestamannafélagið Sprettur, Kjóavellir, Iceland",
+  "vaegi": "auka",
+  "lat": null,
+  "lon": null
+ },
+ {
+  "nafn": "Italiano Pizzeria",
+  "flokkur": "Veitingar",
+  "leitarstrengur": "Italiano Pizzeria, Kópavogur, Iceland",
+  "vaegi": "auka",
+  "lat": null,
+  "lon": null
+ },
+ {
+  "nafn": "Domino's Pizza",
+  "flokkur": "Veitingar",
+  "leitarstrengur": "Domino's Pizza, Smáratorg, Kópavogur, Iceland",
+  "vaegi": "auka",
+  "lat": null,
+  "lon": null
+ },
+ {
+  "nafn": "Te & Kaffi",
+  "flokkur": "Veitingar",
+  "leitarstrengur": "Te & Kaffi, Smáralind, Kópavogur, Iceland",
+  "vaegi": "auka",
+  "lat": null,
+  "lon": null
+ },
+ {
+  "nafn": "Ego Dekor",
+  "flokkur": "Verslanir",
+  "leitarstrengur": "Ego Dekor, Kópavogur, Iceland",
+  "vaegi": "auka",
+  "lat": null,
+  "lon": null
+ },
+ {
+  "nafn": "Lindin bílaþvottastöð",
+  "flokkur": "Þjónusta",
+  "leitarstrengur": "Lindin bílaþvottastöð, Kópavogur, Iceland",
+  "vaegi": "auka",
+  "lat": null,
+  "lon": null
+ },
+ {
+  "nafn": "Vífilshöll",
+  "flokkur": "Afþreying",
+  "leitarstrengur": "Vífilshöll, Garðabær, Iceland",
+  "vaegi": "kjarni",
+  "lat": null,
+  "lon": null
  }
 ]
