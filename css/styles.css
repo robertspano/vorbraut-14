@@ -997,9 +997,14 @@ body.is-page{background:var(--bone)}
 .cform__note[data-gerd="bid"]{opacity:.7}
 .cform__submit[disabled]{opacity:.55;cursor:progress}
 
-/* Forsíðuvalmynd liggur nú ofan á myndbandi — hvít þar til skrunað er niður */
+/* Forsíðuvalmynd liggur nú ofan á myndbandi — hvít þar til skrunað er niður.
+   Aðeins hlekkirnir sem liggja Á myndbandinu verða hvítir. Fellikassinn undir
+   "Húsið" er hvítur kassi, svo '.nav__links a' hefði litað letrið í honum hvítt
+   líka og hann orðið auður — þess vegna '>' og trigger-inn sérstaklega. */
 body.home .nav:not(.nav--solid) .nav__logo,
-body.home .nav:not(.nav--solid) .nav__links a,
+body.home .nav:not(.nav--solid) .nav__links>a,
+body.home .nav:not(.nav--solid) .navdrop,
+body.home .nav:not(.nav--solid) .navdrop__trigger,
 body.home .nav:not(.nav--solid) .nav__right .nav__link,
 body.home .nav:not(.nav--solid) .lang{color:#fff}
 body.home .nav:not(.nav--solid) .lang__globe{stroke:#fff}
