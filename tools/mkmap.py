@@ -112,11 +112,11 @@ A('<title id="kortTitill">Þjónustukort — Vorbraut 14 og nágrenni</title>')
 A('<defs><clipPath id="kortRammi"><rect x="0" y="0" '
   f'width="{W}" height="{H}" rx="2"/></clipPath></defs>')
 A('<g clip-path="url(#kortRammi)">')
-A(f'<rect x="0" y="0" width="{W}" height="{H}" fill="#FBFAF8"/>')
+A(f'<rect x="0" y="0" width="{W}" height="{H}" fill="#FDFBF7"/>')
 
 # grænir fletir
 if green:
-    A('<g fill="#E4E8DC" stroke="none">')
+    A('<g fill="#E8EADF" stroke="none">')
     for e in green:
         d = path(e["geometry"], 2.4, close=True)
         if d:
@@ -125,7 +125,7 @@ if green:
 
 # golfvellirnir í Vetrarmýri
 if golf:
-    A('<g fill="#DBE4CD" stroke="none">')
+    A('<g fill="#DFE7D0" stroke="none">')
     for e in golf:
         d = path(e["geometry"], 1.6, close=True)
         if d:
@@ -134,7 +134,7 @@ if golf:
 
 # vatn
 if water:
-    A('<g fill="#CBD9E1" stroke="none">')
+    A('<g fill="#C3D6E2" stroke="none">')
     for e in water:
         d = path(e["geometry"], 1.6, close=True)
         if d:
@@ -143,7 +143,7 @@ if water:
 
 # götur
 if minor:
-    A('<g fill="none" stroke="#E0DBD3" stroke-width="1.5" stroke-linecap="round" '
+    A('<g fill="none" stroke="#EDE7DE" stroke-width="1.8" stroke-linecap="round" '
       'stroke-linejoin="round">')
     for e in minor:
         d = path(e["geometry"], 1.7)
@@ -151,7 +151,7 @@ if minor:
             A(f'<path d="{d}"/>')
     A("</g>")
 if major:
-    A('<g fill="none" stroke="#CEC7BB" stroke-width="3.6" stroke-linecap="round" '
+    A('<g fill="none" stroke="#DCD3C6" stroke-width="4.2" stroke-linecap="round" '
       'stroke-linejoin="round">')
     for e in major:
         d = path(e["geometry"], 1.3)
@@ -254,7 +254,7 @@ for heiti, slug in FLOKKAR:
                          f'x2="{x:.1f}" y2="{y:.1f}"/>')
         marks.append(
             f'<g class="kort__m" data-f="{slug}" data-nr="{n}" transform="translate({x:.1f},{y:.1f})">'
-            f'<rect x="-18" y="-18" width="36" height="36" rx="6"/>'
+            f'<circle r="19"/>'
             f'<text y="8">{n}</text></g>'
         )
         km = f'{s["m"]/1000:.1f}'.replace(".", ",") + " km" if s["m"] >= 950 else f'{s["m"]} m'
@@ -266,7 +266,7 @@ for heiti, slug in FLOKKAR:
 hx, hy = xy(*HOME)
 marks.append(
     f'<g class="kort__heim" transform="translate({hx:.1f},{hy:.1f})">'
-    f'<rect x="-15" y="-15" width="30" height="30" rx="4" transform="rotate(45)"/>'
+    f'<circle r="15"/><circle class="kort__heimkjarni" r="6"/>'
     f'<text y="-32">VORBRAUT 14</text></g>'
 )
 

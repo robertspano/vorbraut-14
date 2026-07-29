@@ -141,9 +141,29 @@ try {
    label   – texti á takkanum (i18n lykill 'facade.<id>' hefur forgang ef til)
    img     – mynd í assets/
    zones   – true = gagnvirku íbúðasvæðin virka á þessari mynd (aðeins bakhliðin er kvörðuð) */
+/* Smellisvæði á FRAMHLIÐINNI. Þetta er GRÓF fyrsta ágiskun, reiknuð út frá
+   sýnilegum ramma hússins á myndinni — ekki handkvörðuð eins og bakhliðin.
+   Fínstilltu í ?mask: veldu Framhlið og dragðu til. */
+FACADE.zonesFraman = {
+    '0101': [[356,503],[504,503],[504,575],[356,575]],
+    '0102': [[512,503],[661,503],[661,575],[512,575]],
+    '0103': [[669,503],[818,503],[818,575],[669,575]],
+    '0104': [[826,503],[974,503],[974,575],[826,575]],
+    '0201': [[356,428],[504,428],[504,497],[356,497]],
+    '0202': [[512,428],[661,428],[661,497],[512,497]],
+    '0203': [[669,428],[818,428],[818,497],[669,497]],
+    '0204': [[826,428],[974,428],[974,497],[826,497]],
+    '0301': [[356,355],[504,355],[504,422],[356,422]],
+    '0302': [[512,355],[661,355],[661,422],[512,422]],
+    '0303': [[669,355],[818,355],[818,422],[669,422]],
+    '0304': [[826,355],[974,355],[974,422],[826,422]],
+    '0401': [[356,291],[661,291],[661,349],[356,349]],
+    '0402': [[669,291],[974,291],[974,349],[669,349]],
+};
+
 const VIEWS = [
   { id: 'aftan',    label: 'Bakhlið',      img: 'assets/renders/foto-bak.webp',      zones: true },
-  { id: 'framan',   label: 'Framhlið',     img: 'assets/renders/foto-fram.webp' },
+  { id: 'framan',   label: 'Framhlið',     img: 'assets/renders/foto-fram.webp', zones: 'framan' },
   { id: 'hlid',     label: 'Hliðin',       img: 'assets/renders/foto-ska.webp' },
   { id: 'kjallari', label: 'Bílakjallari', img: 'assets/renders/foto-rampur.webp' },
 ];
@@ -193,4 +213,10 @@ try {
 /* Útbreidd til allra mála */
 /* Skilalýsing-PDF (kemur frá Robert) — settu slóð hér til að sýna „Skilalýsing" tengilinn í popup. */
 const SKILALYSING = null;
+/* Handstillt svæði úr ?mask lifa í localStorage þar til þau eru vistuð hér. */
+try {
+  var _fz = localStorage.getItem('vb-facadezones-framan');
+  if (_fz) { var _p = JSON.parse(_fz); if (_p && typeof _p === 'object') FACADE.zonesFraman = _p; }
+} catch (e) {}
+
 window.VB = { APARTMENTS, FACADE, FLOOR_SHAPES, FS_VERSION, PLAN_ADJ, SKILALYSING, VIEW_CONES, VIEWS };

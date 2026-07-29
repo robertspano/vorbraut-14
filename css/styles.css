@@ -273,8 +273,10 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
   opacity:0;visibility:hidden;transition:opacity .5s ease,visibility 0s linear .5s}
 .facade__img.is-on{opacity:1;visibility:visible;transition:opacity .5s ease,visibility 0s}
 /* smellisvæðin eiga aðeins við bakhliðina (þar eru þau kvörðuð) */
-.facade:not([data-view="aftan"]) .facade__svg{opacity:0;pointer-events:none}
-.facade:not([data-view="aftan"]) .select__head{opacity:0;pointer-events:none;transition:opacity .5s ease}
+.facade[data-view="hlid"] .facade__svg,
+.facade[data-view="kjallari"] .facade__svg{opacity:0;pointer-events:none}
+.facade[data-view="hlid"] .select__head,
+.facade[data-view="kjallari"] .select__head{opacity:0;pointer-events:none;transition:opacity .5s ease}
 /* ===== VALIN ÍBÚÐ — teikning fyrir neðan veljarann (pixel-eftirlíking vorbrautin.is) ===== */
 .aptview{background:#fff;
   opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}

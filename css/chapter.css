@@ -296,28 +296,30 @@ body.is-chapter .lang{color:#262522}
 .kort__mynd{margin:0;background:#FBFAF8;border:1px solid var(--hair);overflow:hidden}
 .kort__svg{display:block;width:100%;height:auto}
 
-/* kortamerkin */
+/* kortamerkin — mýkri litir og rúnnuð form */
 .kort__m{cursor:default}
-.kort__m rect{fill:#8A7F72;transition:fill .18s var(--ez)}
-.kort__m[data-f="skoli"]     rect{fill:#4A6C8C}
-.kort__m[data-f="utivist"]   rect{fill:#7A8B5F}
-.kort__m[data-f="matur"]     rect{fill:#B5643C}
-.kort__m[data-f="verslun"]   rect{fill:#8A7F72}
-.kort__m[data-f="thjonusta"] rect{fill:#6B665F}
-.kort__m text{fill:#fff;font:600 22px 'DM Sans',sans-serif;text-anchor:middle;
+.kort__m circle{fill:#8C8175;transition:fill .18s var(--ez),r .18s var(--ez)}
+.kort__m[data-f="skoli"]     circle{fill:#5B7B99}
+.kort__m[data-f="utivist"]   circle{fill:#7F9469}
+.kort__m[data-f="matur"]     circle{fill:#BE7150}
+.kort__m[data-f="verslun"]   circle{fill:#9A8C7B}
+.kort__m[data-f="thjonusta"] circle{fill:#71695F}
+.kort__m text{fill:#fff;font:600 20px 'DM Sans',sans-serif;text-anchor:middle;
   font-variant-numeric:tabular-nums;pointer-events:none}
-.kort__leggur{stroke:#B9B0A3;stroke-width:1.4}
-.kort__heim rect{fill:var(--acc)}
+.kort__leggur{stroke:#BEB4A6;stroke-width:1.4}
+.kort__heim circle{fill:var(--acc)}
+.kort__heim circle.kort__heimkjarni{fill:#fff}
 .kort__heim text{fill:var(--ink);font:700 21px 'DM Sans',sans-serif;text-anchor:middle;
-  letter-spacing:.14em;paint-order:stroke;stroke:#fff;stroke-width:4}
+  letter-spacing:.14em;paint-order:stroke;stroke:#fff;stroke-width:5}
+
 /* hringirnir: heilir, brúnir og áberandi */
-.kort__hringur{fill:none;stroke:var(--acc);stroke-width:3;opacity:.9}
+.kort__hringur{fill:none;stroke:var(--acc);stroke-width:3;opacity:.85}
 .kort__hringmerki rect{fill:var(--acc);stroke:none}
 .kort__hringmerki text{fill:#fff;font:700 21px 'DM Sans',sans-serif;letter-spacing:.08em;
   text-anchor:middle;font-variant-numeric:tabular-nums}
 
 /* upplýst þegar bent er á í skránni */
-.kort__m.is-on rect{fill:var(--acc)}
+.kort__m.is-on circle{fill:var(--acc);r:23}
 .kort__m.is-on text{fill:#fff}
 
 /* skráin */
@@ -329,15 +331,15 @@ body.is-chapter .lang{color:#262522}
 .kort__flokkur ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair2)}
 .kort__flokkur li{display:flex;align-items:baseline;gap:.6rem;padding:.42rem 0;
   border-bottom:1px solid var(--hair2);font-size:.84rem;line-height:1.32;color:var(--ink)}
-.kort__flokkur li i{flex:none;width:1.42rem;height:1.42rem;border-radius:3px;
+.kort__flokkur li i{flex:none;width:1.5rem;height:1.5rem;border-radius:50%;
   display:inline-flex;align-items:center;justify-content:center;align-self:center;
   font:600 .62rem/1 'DM Sans',sans-serif;font-style:normal;color:#fff;
-  font-variant-numeric:tabular-nums;background:#8A7F72}
-.kort__flokkur[data-f="skoli"]     li i{background:#4A6C8C}
-.kort__flokkur[data-f="utivist"]   li i{background:#7A8B5F}
-.kort__flokkur[data-f="matur"]     li i{background:#B5643C}
-.kort__flokkur[data-f="verslun"]   li i{background:#8A7F72}
-.kort__flokkur[data-f="thjonusta"] li i{background:#6B665F}
+  font-variant-numeric:tabular-nums;background:#9A8C7B}
+.kort__flokkur[data-f="skoli"]     li i{background:#5B7B99}
+.kort__flokkur[data-f="utivist"]   li i{background:#7F9469}
+.kort__flokkur[data-f="matur"]     li i{background:#BE7150}
+.kort__flokkur[data-f="verslun"]   li i{background:#9A8C7B}
+.kort__flokkur[data-f="thjonusta"] li i{background:#71695F}
 .kort__flokkur li span{flex:1 1 auto;min-width:0}
 .kort__flokkur li b{flex:none;margin-left:auto;font:500 .71rem/1 'DM Sans',sans-serif;letter-spacing:.04em;
   color:var(--faint);font-variant-numeric:tabular-nums}
