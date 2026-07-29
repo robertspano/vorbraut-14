@@ -170,7 +170,7 @@ FACADE.zonesFraman = {
    eiga tvö hvor. 0102/0103/0202/0203/0302/0303 eiga ekkert stæði. */
 const KJALLARI = {
   mynd: 'assets/plans/bilakjallari.png',
-  w: 1506, h: 1010,
+  w: 1506, h: 840,
   ibudir: {
       '0101': { staedi: ['B10'], geymsla: [1282, 688, 1405, 810], reitir: [[1282, 495, 1405, 600]] },
       '0102': { staedi: [], geymsla: [478, 752, 590, 810] },

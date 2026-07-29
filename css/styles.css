@@ -1024,6 +1024,14 @@ body.home .nav:not(.nav--solid) .burger span{background:#fff}
 body.home .nav:not(.nav--solid){background:linear-gradient(180deg,rgba(20,19,17,.34),transparent)}
 
 /* CTA undir upplýsingunum um íbúðina — næsta skref beint í flæðinu */
+/* Loft milli teikninganna tveggja — þær sátu alveg upp við hvor aðra.
+   scroll-margin-top heldur þeim frá föstu valmyndinni þegar flipinn skrunar. */
+.aptview__plan img{scroll-margin-top:110px}
+.aptview__kjallari{margin-top:clamp(70px,10vh,140px);padding-top:clamp(40px,5vh,64px);
+  border-top:1px solid #E8E7E8;scroll-margin-top:110px}
+.aptview__kjallari::before{content:attr(data-heiti);display:block;margin-bottom:1rem;
+  font:600 .66rem/1 var(--font);letter-spacing:.2em;text-transform:uppercase;color:#aa8765}
+
 .aptview__cta{margin-top:auto;padding-top:clamp(18px,2.6vh,30px);
   display:flex;flex-direction:column;align-items:flex-start;gap:.7rem}
 .aptview__cta .btn{width:100%;justify-content:center;text-align:center}

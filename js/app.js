@@ -129,6 +129,14 @@
   // bæði verið að skruna sama flötinn samtímis og toguðust á.
   window.VB.goToSection = goToSection;
   window.VB.goToAnchor = goToAnchor;
+  // Stöðva mjúka skrunið utan frá. Án þessa klárar sjálfvirka skrunið, sem
+  // keyrir þegar íbúð er valin, sig og kippir manni til baka ofan í hvert
+  // skrun sem hefst á meðan (t.d. þegar ýtt er á bílakjallara-flipann).
+  window.VB.stopScroll = () => {
+    if (typeof dropAbort === 'function' && dropAbort) dropAbort();
+    if (scrollAnim) { cancelAnimationFrame(scrollAnim); scrollAnim = null; }
+    clearTimeout(scrollSafety);
+  };
 
   $$('[data-scroll]').forEach((a) => {
     a.addEventListener('click', (e) => {
@@ -190,7 +198,7 @@
   }, { threshold: 0.16 });
   $$('.reveal').forEach((el, i) => { el.dataset.d = (i % 3); revealObs.observe(el); });
 
-  const PLANV = '?r=9';        // útgáfumerki grunnmynda — hækka þegar teikningum er skipt út
+  const PLANV = '?r=10';        // útgáfumerki grunnmynda — hækka þegar teikningum er skipt út
 
   /* --------------------------- helpers ---------------------------------- */
   const fmtArea = (n) => n.toLocaleString('is-IS', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -805,6 +813,7 @@
       const flipar = $$('.aptview__flipi', avEl);
       if (!K || !boxEl || !flipar.length) return;
       const k = K.ibudir[a.id] || {};
+      imgEl.loading = 'eager';
       imgEl.src = K.mynd + PLANV;
       imgEl.alt = (lang === 'is' ? 'Bílakjallari — íbúð ' : 'Parking garage — apartment ') + a.id;
       svgEl.setAttribute('viewBox', '0 0 ' + K.w + ' ' + K.h);
@@ -821,19 +830,44 @@
           ? '<b class="kj-p kj-p--staedi">' + t('av.kjStaedi') + '</b> ' + st.join(' · ')
           : '<span class="kj-ekkert">' + t('av.kjEkkert') + '</span>') +
         (k.geymsla ? ' <b class="kj-p kj-p--geymsla">' + t('av.kjGeymsla') + '</b> ' + a.id : '');
-      const synaFlipa = (hvad) => {
+      // Báðar teikningarnar sjást; fliparnir eru stökkhlekkir sem skruna að
+      // þeirri réttu. (Að fela með [hidden] virkaði ekki hvort eð er —
+      // .aptview__plan img{display:block} slær eigindið út.)
+      boxEl.hidden = false;
+      const markmid = (hvad) => (hvad === 'kjallari' ? boxEl : plan);
+      const synaFlipa = (hvad, skruna) => {
         flipar.forEach((b) => {
           const on = b.dataset.flipi === hvad;
           b.classList.toggle('is-on', on);
           b.setAttribute('aria-selected', on ? 'true' : 'false');
         });
-        plan.hidden = hvad !== 'ibud';
-        boxEl.hidden = hvad !== 'kjallari';
-        const cap = $('.aptview__cap', avEl);
-        if (cap) cap.hidden = hvad !== 'ibud';
+        if (!skruna) return;
+        const el = markmid(hvad);
+        // Skrunkerfi síðunnar sjálfrar frekar en scrollIntoView({smooth}) —
+        // það hefur öryggisnet ef rAF er hemlað og virðir reduced-motion.
+        const fara = () => {
+          const navH = nav ? nav.offsetHeight : 84;
+          const y = el.getBoundingClientRect().top + window.scrollY - navH - 26;
+          goToSection(Math.max(0, y));
+        };
+        // Kjallaramyndin er lazy: ef hún er ekki hlaðin er síðan styttri og
+        // skrunið stoppar of snemma. Bíðum eftir henni og skrunum þá aftur.
+        fara();
+        if (hvad === 'kjallari' && imgEl && !imgEl.complete) {
+          imgEl.addEventListener('load', () => setTimeout(fara, 60), { once: true });
+        }
       };
-      flipar.forEach((b) => { b.onclick = () => synaFlipa(b.dataset.flipi); });
-      synaFlipa('ibud');
+      flipar.forEach((b) => { b.onclick = () => synaFlipa(b.dataset.flipi, true); });
+      synaFlipa('ibud', false);
+      // flipinn fylgir því sem er á skjánum þegar skrunað er handvirkt
+      if (window.IntersectionObserver) {
+        const sjon = new IntersectionObserver((es) => {
+          es.forEach((e) => {
+            if (e.isIntersecting) synaFlipa(e.target === boxEl ? 'kjallari' : 'ibud', false);
+          });
+        }, { threshold: 0.45 });
+        sjon.observe(plan); sjon.observe(boxEl);
+      }
     })();
 
     avEl.hidden = false;
