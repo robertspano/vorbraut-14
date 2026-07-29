@@ -12,7 +12,7 @@
   <link rel="preload" as="image" href="assets/cine/f001.webp" fetchpriority="high" />
   <link rel="stylesheet" href="css/styles.css?v=305" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
-</head>
+<style id="__nt">*,*::before,*::after{transition:none!important;animation:none!important}</style></head>
 <body class="home">
 
   <!-- ============================ NAV ============================ -->
@@ -120,7 +120,7 @@
             <div id="avKjallari" class="aptview__kjallari" hidden>
               <div class="aptview__kjmynd">
                 <img id="avKjPlan" alt="" decoding="async" loading="lazy">
-                <svg id="avKjSvg" class="aptview__kjsvg" viewBox="0 0 1506 840" aria-hidden="true"></svg>
+                <svg id="avKjSvg" class="aptview__kjsvg" viewBox="0 0 1506 1010" aria-hidden="true"></svg>
               </div>
               <p class="aptview__kjtxt" id="avKjTxt"></p>
             </div>
@@ -362,5 +362,27 @@
     setTimeout(faera,120);
   })();
   </script>
+
+<pre id="__out" style="position:fixed;bottom:0;left:0;z-index:99999;background:#ff0;font:10px monospace">pending</pre>
+<script>
+window.addEventListener('load', function(){
+  setTimeout(function(){
+    var nav=document.getElementById('nav')||document.querySelector('.nav');
+    nav.classList.add('nav--solid'); nav.classList.add('open');
+    document.body.classList.add('navopen');
+    setTimeout(function(){
+      var cs=getComputedStyle(nav), r=nav.getBoundingClientRect();
+      var m=document.getElementById('navmenu'), ms=m?getComputedStyle(m):null;
+      // marker: green if a visible hairline colour is computed, else blue
+      document.getElementById('__out').textContent=JSON.stringify({
+        tag:nav.tagName, id:nav.id, cls:nav.className, body:document.body.className,
+        rect:[Math.round(r.top),Math.round(r.bottom),Math.round(r.height)],
+        bg:cs.backgroundColor, bb:cs.borderBottomWidth+' '+cs.borderBottomStyle+' '+cs.borderBottomColor,
+        z:cs.zIndex, menu:ms?[ms.zIndex,ms.backgroundColor,ms.visibility,ms.opacity]:null
+      });
+    },300);
+  },600);
+});
+</script>
 </body>
 </html>

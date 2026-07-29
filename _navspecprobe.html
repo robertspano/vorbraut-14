@@ -1,0 +1,72 @@
+<meta charset="utf-8">
+<title>navspec</title>
+<iframe id="a" src="/index.html" style="width:375px;height:700px"></iframe>
+<iframe id="b" src="/hafa-samband.html" style="width:375px;height:700px"></iframe>
+<pre id="out">bidur</pre>
+<script>
+function leita(doc, hluti){
+  var fundnar = [], talid = 0;
+  for (var i=0;i<doc.styleSheets.length;i++){
+    var ss = doc.styleSheets[i], reglur;
+    try { reglur = ss.cssRules; } catch(e){ fundnar.push('LOKAD: '+ss.href); continue; }
+    (function ganga(list){
+      for (var j=0;j<list.length;j++){
+        var r = list[j];
+        talid++;
+        if (r.cssRules) { ganga(r.cssRules); continue; }
+        if (r.selectorText && r.selectorText.indexOf(hluti) > -1) fundnar.push(r.selectorText);
+      }
+    })(reglur);
+  }
+  return {n:talid, s:fundnar};
+}
+function maeling(doc, merki){
+  var nav = doc.querySelector('.nav');
+  if(!nav) return merki+': ENGIN NAV\n';
+  var s = '';
+  nav.style.transition = 'none';
+  nav.classList.remove('nav--solid');
+  var c1 = doc.defaultView.getComputedStyle(nav);
+  s += merki+' [ekki solid] img='+c1.backgroundImage.slice(0,80)+' | col='+c1.backgroundColor+'\n';
+  nav.classList.add('nav--solid');
+  var c2 = doc.defaultView.getComputedStyle(nav);
+  s += merki+' [solid]      img='+c2.backgroundImage.slice(0,80)+' | col='+c2.backgroundColor+'\n';
+  nav.classList.remove('nav--solid');
+  return s;
+}
+function tiltekt(doc){
+  var n = 0;
+  for (var i=0;i<doc.styleSheets.length;i++){
+    var ss = doc.styleSheets[i], reglur;
+    try { reglur = ss.cssRules; } catch(e){ continue; }
+    (function ganga(list){
+      for (var j=0;j<list.length;j++){
+        var r = list[j];
+        if (r.cssRules) { ganga(r.cssRules); continue; }
+        if (r.selectorText && r.selectorText.indexOf(':not(.is-page)') > -1){
+          try { r.selectorText = r.selectorText.split(':not(.is-page)').join(''); n++; } catch(e){}
+        }
+      }
+    })(reglur);
+  }
+  return n;
+}
+var texti = '';
+function klarad(){
+  var da = document.getElementById('a').contentDocument;
+  var db = document.getElementById('b').contentDocument;
+  var l = leita(db, ':not(.is-page)');
+  texti += 'stylesheets(b)='+db.styleSheets.length+' reglur='+l.n+'\n';
+  texti += 'selectors med :not(.is-page): '+JSON.stringify(l.s)+'\n';
+  texti += 'is-page selectors: '+JSON.stringify(leita(db,'is-page').s)+'\n';
+  texti += '=== NUVERANDI CSS ===\n';
+  texti += maeling(da,'index       ');
+  texti += maeling(db,'hafa-samband');
+  var na = tiltekt(da), nb = tiltekt(db);
+  texti += '=== EFTIR TILTEKT ('+na+'/'+nb+' reglur breyttar) ===\n';
+  texti += maeling(da,'index       ');
+  texti += maeling(db,'hafa-samband');
+  document.getElementById('out').textContent = texti;
+}
+window.addEventListener('load', function(){ setTimeout(klarad, 2000); });
+</script>

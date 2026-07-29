@@ -20,17 +20,17 @@
   })();
   const bordi = $('#ctIbud');
   const skilabodReitur = $('#cf-message');
-  let sjalfvirkTexti = null;             // það sem VIÐ settum síðast
+  // Hafi gesturinn snert reitinn er hann hans — líka þótt hann hafi hreinsað
+  // hann. (Að lesa 'tómur' sem 'ósnertur' skilaði textanum aftur inn þegar
+  // ritstýrður texti hleðst inn eða skipt er um tungumál.)
+  let gesturSnerti = false;
+  if (skilabodReitur) {
+    skilabodReitur.addEventListener('input', () => { gesturSnerti = true; });
+  }
 
   function fyllaSkilabod() {
-    if (!IBUD || !skilabodReitur) return;
-    const nyr = t('ct.ibudSkilabod').replace('{ibud}', IBUD);
-    // Ekki skrifa yfir það sem gesturinn hefur sjálfur slegið inn — aðeins
-    // auðan reit, eða okkar eigin texta þegar skipt er um tungumál.
-    const nu = skilabodReitur.value.trim();
-    if (nu && nu !== sjalfvirkTexti) return;
-    skilabodReitur.value = nyr;
-    sjalfvirkTexti = nyr;
+    if (!IBUD || !skilabodReitur || gesturSnerti) return;
+    skilabodReitur.value = t('ct.ibudSkilabod').replace('{ibud}', IBUD);
   }
 
   function applyLang() {
@@ -70,8 +70,9 @@
     // Varaleið ef sendingin næst ekki: opna póstforritið eins og áður, en
     // AÐEINS þá — og segja það hreint út í stað þess að þykjast hafa sent.
     const mailtoVaraleid = (nafn, netfang, simi, skilabod) => {
-      const efni = 'Fyrirspurn – Vorbraut 14';
+      const efni = IBUD ? 'Fyrirspurn – Vorbraut 14 – íbúð ' + IBUD : 'Fyrirspurn – Vorbraut 14';
       const texti = [
+        IBUD ? 'Íbúð: ' + IBUD : null,
         'Nafn: ' + nafn,
         'Netfang: ' + netfang,
         simi ? 'Símanúmer: ' + simi : null,
@@ -96,7 +97,10 @@
         const svar = await fetch('/api/fyrirspurn', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nafn, netfang, simi, skilabod, vefsida: val('vefsida') }),
+          // Íbúðin fer með sem eigið gildi. Væri hún aðeins í skilaboðatextanum
+          // hyrfi hún um leið og gesturinn skrifar sitt eigið erindi.
+          body: JSON.stringify({ nafn, netfang, simi, skilabod, ibud: IBUD || '',
+                                 vefsida: val('vefsida') }),
         });
         const d = await svar.json().catch(() => ({}));
 

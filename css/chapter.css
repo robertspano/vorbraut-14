@@ -301,8 +301,11 @@ body.is-chapter .lang{color:#262522}
   color:var(--ink);margin:0 0 .7rem}
 .kort__sub{margin:0;font-size:.95rem;line-height:1.6;color:var(--dim)}
 /* Leyfisskylda tilvísunin — hógvær, neðst, ekki hluti af inngangstextanum. */
-.kort__credit{margin:clamp(14px,2vh,22px) 0 0;font-size:.76rem;letter-spacing:.02em;
-  color:var(--dim);opacity:.72}
+/* Kortagögnin eru undir ODbL, sem KREFST þess að upprunans sé getið — textinn
+   má því ekki hverfa. Hann er hins vegar smækkaður og daufur og hægra megin,
+   svo hann trufli ekki lesturinn. */
+.kort__credit{margin:clamp(8px,1.2vh,14px) 0 0;font-size:.56rem;letter-spacing:.01em;
+  color:var(--dim);opacity:.34;text-align:right;user-select:none}
 
 /* kortið og skráin hlið við hlið; skráin í tveimur dálkum svo hæðin passi */
 .kort__grid{display:grid;grid-template-columns:minmax(0,1.16fr) minmax(0,1fr);
@@ -311,8 +314,9 @@ body.is-chapter .lang{color:#262522}
 .kort__svg{display:block;width:100%;height:auto}
 
 /* kortamerkin — mýkri litir og rúnnuð form */
-.kort__m{cursor:default}
-.kort__m circle{fill:#8C8175;transition:fill .18s var(--ez),r .18s var(--ez)}
+.kort__m{cursor:default;transition:opacity .18s var(--ez)}
+.kort__m circle{fill:#8C8175;
+  transition:fill .18s var(--ez),transform .18s var(--ez),stroke-width .18s var(--ez)}
 .kort__m[data-f="skoli"]     circle{fill:#5B7B99}
 .kort__m[data-f="utivist"]   circle{fill:#7F9469}
 .kort__m[data-f="matur"]     circle{fill:#BE7150}
@@ -332,9 +336,20 @@ body.is-chapter .lang{color:#262522}
 .kort__hringmerki text{fill:#fff;font:700 21px 'DM Sans',sans-serif;letter-spacing:.08em;
   text-anchor:middle;font-variant-numeric:tabular-nums}
 
-/* upplýst þegar bent er á í skránni */
-.kort__m.is-on circle{fill:var(--acc);r:23}
-.kort__m.is-on text{fill:#fff}
+/* Upplýst þegar bent er á í skránni. Áður stækkaði punkturinn úr 19 í 23 og
+   skipti um lit — það sást varla innan um 24 aðra. Núna stækkar hann verulega,
+   fær hvítan hring utan um sig og hinir dofna, svo augað finni hann strax. */
+/* ATH: CSS-eiginleikinn `r` er EKKI virtur hér (jafnvel inline style.r skilaði
+   sér ekki — punkturinn heldur r-eigindinu, 19). Stækkunin er því gerð með
+   transform, sem virkar alls staðar og er auk þess samsett (engin endurmótun).
+   Hringurinn situr í (0,0) — translate er á <g> — svo hann stækkar um miðju. */
+.kort__m circle{transform-box:fill-box;transform-origin:center}
+.kort__m.is-on circle{fill:var(--acc);stroke:#fff;stroke-width:5px;paint-order:stroke;
+  transform:scale(1.62)}
+.kort__m.is-on text{fill:#fff;font-size:26px;transform:translateY(2.5px)}
+.kort__m.is-on{filter:drop-shadow(0 3px 10px rgba(38,37,34,.45))}
+.kort__mynd:has(.kort__m.is-on) .kort__m:not(.is-on){opacity:.28}
+.kort__mynd:has(.kort__m.is-on) .kort__leggur{opacity:.4}
 
 /* skráin */
 .kort__skra{columns:2;column-gap:clamp(18px,2.2vw,36px);font-family:'DM Sans',sans-serif}
@@ -357,8 +372,10 @@ body.is-chapter .lang{color:#262522}
 .kort__flokkur li span{flex:1 1 auto;min-width:0}
 .kort__flokkur li b{flex:none;margin-left:auto;font:500 .71rem/1 'DM Sans',sans-serif;letter-spacing:.04em;
   color:var(--faint);font-variant-numeric:tabular-nums}
-.kort__flokkur li.is-on{background:#fff}
+.kort__flokkur li.is-on{background:#fff;box-shadow:inset 2px 0 0 var(--acc)}
 .kort__flokkur li.is-on b{color:var(--acc)}
+.kort__flokkur li.is-on i{transform:scale(1.14)}
+.kort__flokkur li i{transition:transform .18s var(--ez)}
 
 @media (max-width:980px){
   .kort__grid{grid-template-columns:1fr;gap:clamp(22px,3.5vh,34px)}
@@ -439,8 +456,13 @@ body.is-chapter .lang{color:#262522}
 .swipe__box{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--wash2);
   box-shadow:inset 0 0 0 1px var(--hair);--p:50%}
 .swipe__box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.swipe__clip{position:absolute;inset:0;overflow:hidden;width:var(--p)}
-.swipe__clip img{width:100vw;max-width:none}
+/* Áður var breidd klippunnar sjálf hreyfð (width:var(--p)) — það neyddi
+   vafrann til að endurmóta og endurteikna í HVERJUM ramma, sem er hökktið.
+   clip-path snertir hvorki umbrot né stærð myndarinnar; hún er aðeins klippt.
+   Um leið fellur 100vw-hakkið brott, sem hafði kvarðað vinstri myndina rangt. */
+.swipe__clip{position:absolute;inset:0;width:100%;
+  clip-path:inset(0 calc(100% - var(--p)) 0 0);will-change:clip-path}
+.swipe__clip img{width:100%;max-width:none}
 /* myndin til hægri er klippt eftir stöðu sleðans; sú vinstri liggur undir */
 /* Án merkinga veit enginn hvor helmingurinn er hvað. Þau sitja hvort í sínu
    horni svo handfangið gangi framhjá þeim án þess að rekast á. */
@@ -458,10 +480,13 @@ body.is-chapter .lang{color:#262522}
 .swipe figcaption b{flex:none;font:600 .6rem/1.9 'DM Sans',sans-serif;letter-spacing:.18em;
   text-transform:uppercase;color:var(--acc)}
 @media (max-width:560px){.swipe figcaption em{order:0;margin-left:0}}
-.swipe__handfang{position:absolute;top:0;bottom:0;left:var(--p);width:2px;
-  background:#fff;box-shadow:0 0 0 1px rgba(38,37,34,.18);transform:translateX(-1px);
-  pointer-events:none}
-.swipe__handfang span{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+/* Handfangið er heil breidd og fært með transform — prósentan miðast þá við
+   eigin breidd, sem er nákvæmlega breidd rammans. left: hefði kostað umbrot. */
+.swipe__handfang{position:absolute;top:0;bottom:0;left:0;width:100%;
+  transform:translateX(var(--p));will-change:transform;pointer-events:none;z-index:2}
+.swipe__handfang::before{content:"";position:absolute;top:0;bottom:0;left:-1px;width:2px;
+  background:#fff;box-shadow:0 0 0 1px rgba(38,37,34,.18)}
+.swipe__handfang span{position:absolute;top:50%;left:0;transform:translate(-50%,-50%);
   width:44px;height:44px;border-radius:50%;background:#fff;
   box-shadow:0 4px 16px rgba(38,37,34,.28)}
 .swipe__handfang span::before,.swipe__handfang span::after{
@@ -485,5 +510,9 @@ body.is-chapter .lang{color:#262522}
 .kjkafli{background:var(--wash);border-top:1px solid var(--hair);
   padding:clamp(46px,7vh,92px) 0 clamp(46px,7vh,92px)}
 .kjkafli__haus{margin:0 0 clamp(24px,3.6vh,40px);max-width:56ch}
-.kjkafli__mynd{margin:0;background:#fff;border:1px solid var(--hair);overflow:hidden}
+.kjkafli__mynd{position:relative;margin:0;background:#fff;border:1px solid var(--hair);overflow:hidden}
 .kjkafli__mynd img{width:100%;height:auto;display:block}
+/* stæðismerkin ofan á teikningunni — sömu og á íbúðasíðunni */
+.kjkafli__svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.kjkafli__svg path{fill:none;stroke:rgba(38,37,34,.45);stroke-width:2;stroke-dasharray:10 8;
+  stroke-linejoin:round;vector-effect:non-scaling-stroke}

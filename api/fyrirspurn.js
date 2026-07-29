@@ -12,7 +12,7 @@
                       staðfest í Resend. Sjálfgildi: vefur@vorbraut14.is
    ========================================================================== */
 
-const HAMARK = { nafn: 120, netfang: 160, simi: 40, skilabod: 4000 };
+const HAMARK = { nafn: 120, netfang: 160, simi: 40, skilabod: 4000, ibud: 8 };
 const TIL_SJALFGILDI = 'miklaborg@miklaborg.is';
 const FRA_SJALFGILDI = 'Vorbraut 14 <vefur@vorbraut14.is>';
 
@@ -63,6 +63,10 @@ module.exports = async function handler(req, res) {
   const netfang = hreinsa(g.netfang ?? g.email, HAMARK.netfang);
   const simi = hreinsa(g.simi ?? g.phone, HAMARK.simi);
   const skilabod = hreinsa(g.skilabod ?? g.message, HAMARK.skilabod);
+  // Íbúðin sem fyrirspurnin varðar (kemur af ?ibud). Aðeins fjögurra stafa
+  // auðkenni er tekið gilt — annað er hunsað þegjandi.
+  const ibudHratt = hreinsa(g.ibud, HAMARK.ibud);
+  const ibud = /^(0[1-3]0[1-4]|040[12])$/.test(ibudHratt) ? ibudHratt : '';
 
   if (!nafn || !netfang || !skilabod) return res.status(400).json({ ok: false, villa: 'vantar' });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(netfang)) return res.status(400).json({ ok: false, villa: 'netfang' });
@@ -74,6 +78,7 @@ module.exports = async function handler(req, res) {
   const fra = process.env.FYRIRSPURN_FRA || FRA_SJALFGILDI;
 
   const linur = [
+    ibud ? `Íbúð: ${ibud}` : null,
     `Nafn: ${nafn}`,
     `Netfang: ${netfang}`,
     simi ? `Símanúmer: ${simi}` : null,
@@ -84,6 +89,7 @@ module.exports = async function handler(req, res) {
   const html = `<div style="font-family:system-ui,sans-serif;font-size:15px;line-height:1.6;color:#262522">
     <p style="margin:0 0 4px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#aa8765">Fyrirspurn af vorbraut14.is</p>
     <table style="border-collapse:collapse;margin:14px 0">
+      ${ibud ? `<tr><td style="padding:3px 18px 3px 0;color:#6b665f">Íbúð</td><td><b>${flotta(ibud)}</b></td></tr>` : ''}
       <tr><td style="padding:3px 18px 3px 0;color:#6b665f">Nafn</td><td><b>${flotta(nafn)}</b></td></tr>
       <tr><td style="padding:3px 18px 3px 0;color:#6b665f">Netfang</td><td><a href="mailto:${flotta(netfang)}">${flotta(netfang)}</a></td></tr>
       ${simi ? `<tr><td style="padding:3px 18px 3px 0;color:#6b665f">Sími</td><td>${flotta(simi)}</td></tr>` : ''}
@@ -99,7 +105,9 @@ module.exports = async function handler(req, res) {
         from: fra,
         to: til,
         reply_to: netfang,            // svar fer beint á fyrirspyrjanda
-        subject: `Fyrirspurn – Vorbraut 14 – ${nafn}`,
+        subject: ibud
+        ? `Fyrirspurn – Vorbraut 14 – íbúð ${ibud} – ${nafn}`
+        : `Fyrirspurn – Vorbraut 14 – ${nafn}`,
         text: linur.join('\n'),
         html,
       }),

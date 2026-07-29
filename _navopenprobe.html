@@ -1,0 +1,45 @@
+<meta charset="utf-8">
+<title>probe</title>
+<style>iframe{width:390px;height:780px;border:0;display:block}</style>
+<pre id="out">running...</pre>
+<div id="frames"></div>
+<script>
+const pages = ['hafa-samband.html','index.html','utsyni.html'];
+const lines = [];
+function load(src){
+  return new Promise((res)=>{
+    const f = document.createElement('iframe');
+    f.src = 'http://localhost:5173/' + src;
+    f.onload = () => setTimeout(()=>res(f), 900);
+    document.getElementById('frames').appendChild(f);
+  });
+}
+(async () => {
+  for (const p of pages){
+    const f = await load(p);
+    const d = f.contentDocument, w = f.contentWindow;
+    const nav = d.getElementById('nav') || d.querySelector('.nav');
+    const burger = d.getElementById('burger');
+    const bodyCls = d.body.className;
+    const scroller = d.querySelector('.snap') || null;
+    w.scrollTo(0, 400);
+    if (scroller) scroller.scrollTop = scroller.clientHeight * 1.5;
+    await new Promise(r=>setTimeout(r,400));
+    const solidBefore = nav.className;
+    if (burger) burger.click(); else nav.classList.add('open');
+    await new Promise(r=>setTimeout(r,900));
+    const cs = w.getComputedStyle(nav);
+    const menu = d.getElementById('navmenu');
+    const ms = menu ? w.getComputedStyle(menu) : null;
+    const r = nav.getBoundingClientRect();
+    lines.push(JSON.stringify({
+      page:p, body:bodyCls, navClass:nav.className, before:solidBefore,
+      bg:cs.backgroundColor, bgImg:cs.backgroundImage.slice(0,70),
+      bbW:cs.borderBottomWidth, bbC:cs.borderBottomColor, bbS:cs.borderBottomStyle,
+      shadow:cs.boxShadow, navZ:cs.zIndex, navH:Math.round(r.height), navBottom:Math.round(r.bottom),
+      menuZ: ms?ms.zIndex:null, menuBg: ms?ms.backgroundColor:null, menuVis: ms?ms.visibility:null, menuOpacity: ms?ms.opacity:null
+    }));
+  }
+  document.getElementById('out').textContent = lines.join('\n----\n');
+})();
+</script>

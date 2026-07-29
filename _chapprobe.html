@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Heillandi búseta í Garðabæ — Vorbraut 14</title>
-  <meta name="description" content="Birta, víðsýni og náttúra í Garðabæ — Vorbraut 14, Hnoðraholt, Garðabær." />
+  <title>Útsýni og útirými — Vorbraut 14</title>
+  <meta name="description" content="Útsýnið opnast eftir því sem ofar dregur — Vorbraut 14, Hnoðraholt, Garðabær." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
@@ -18,13 +18,13 @@
     <div class="nav__left">
       <a href="index.html" class="nav__logo" data-i18n="brand.logo">VORBRAUT&nbsp;14</a>
       <nav class="nav__links" aria-label="Aðalvalmynd">
-        <a href="verkefnid.html" class="is-current" aria-current="page" data-i18n="nav.verkefnid">Verkefnið</a>
+        <a href="verkefnid.html" data-i18n="nav.verkefnid">Verkefnið</a>
         <a href="arkitektur.html" data-i18n="nav.arkitektur">Arkitektúr</a>
         <span class="navdrop">
-          <a href="husid.html" class="navdrop__trigger" data-i18n="nav.husid">Húsið</a>
+          <a href="husid.html" class="navdrop__trigger is-current" data-i18n="nav.husid">Húsið</a>
           <span class="navdrop__caret" aria-hidden="true"></span>
           <span class="navdrop__menu" role="group" aria-label="Húsið">
-            <a href="utsyni.html" class="navdrop__item" data-i18n="nav.utsyni">Útsýni og útirými</a>
+            <a href="utsyni.html" class="navdrop__item is-current" aria-current="page" data-i18n="nav.utsyni">Útsýni og útirými</a>
             <a href="adgengi.html" class="navdrop__item" data-i18n="nav.adgengi">Aðgengi</a>
           </span>
         </span>
@@ -39,10 +39,10 @@
       <button class="burger" id="burger" aria-label="Valmynd" aria-controls="navmenu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
     <nav class="navmenu" id="navmenu" aria-label="Valmynd">
-      <a href="verkefnid.html" class="is-current" aria-current="page" data-i18n="nav.verkefnid">Verkefnið</a>
+      <a href="verkefnid.html" data-i18n="nav.verkefnid">Verkefnið</a>
       <a href="arkitektur.html" data-i18n="nav.arkitektur">Arkitektúr</a>
       <a href="husid.html" data-i18n="nav.husid">Húsið</a>
-      <a href="utsyni.html" class="navmenu__sub" data-i18n="nav.utsyni">Útsýni og útirými</a>
+      <a href="utsyni.html" class="navmenu__sub is-current" data-i18n="nav.utsyni">Útsýni og útirými</a>
       <a href="adgengi.html" class="navmenu__sub" data-i18n="nav.adgengi">Aðgengi</a>
       <a href="hverfid.html" data-i18n="nav.hverfid">Hverfið</a>
       <a href="index.html#ibudir" data-i18n="nav.ibudir">Íbúðir</a>
@@ -52,45 +52,41 @@
     </nav>
   </header>
   <main>
-    <article class="chap" id="st-intro" data-ch="01" data-plate="wide" aria-labelledby="st-intro-h">
+    <article class="chap" id="st-view" data-ch="04" data-plate="wide" aria-labelledby="st-view-h">
       <div class="chap__wrap">
-        <!-- Ekki chap--cover hér: uppdrátturinn er ljós línuvinna og hvít
-             yfirlögð fyrirsögn myndi hverfa ofan í hann. Tveggja dálka opnan
-             gefur teikningunni eigin ramma og heldur titlinum læsilegum. -->
         <header class="chap__open">
           <div class="chap__head">
-            <p class="chap__kick" data-i18n="st.intro.kick">01 · Vorbraut 14</p>
-            <h1 class="chap__title" id="st-intro-h" data-i18n="st.intro.title">Heillandi búseta í Garðabæ</h1>
+            <p class="chap__kick" data-i18n="st.view.kick">04 · Sjónarhorn</p>
+            <h1 class="chap__title" id="st-view-h" data-i18n="st.view.title">Útsýni</h1>
             <div class="chap__rule"></div>
-            <p class="chap__pull" data-i18n="st.intro.pull">Birta, víðsýni og náttúra í Garðabæ</p>
+            <p class="chap__pull" data-i18n="st.view.pull">Útsýnið opnast eftir því sem ofar dregur</p>
           </div>
-          <!-- uppdráttur af framhliðinni úr líkaninu, á pappírstóni -->
-          <figure class="chap__slice chap__slice--draw">
-            <span class="cut" style="--zoom:1;--tx:0%;--ty:0%"><img data-img="verkefnid.slice" src="assets/renders/uppdrattur.webp?v=305" alt="Framhlið Vorbrautar 14 — uppdráttur úr líkani" width="2000" height="1017" loading="eager" decoding="async"></span>
+          <!-- dróna-myndband: hverfið og golfvöllurinn úr lofti -->
+          <figure class="chap__slice chap__slice--film">
+            <span class="cut"><video class="chap__film" muted loop playsinline preload="none"
+                   poster="assets/video/hverfid-poster.jpg?v=305" width="1280" height="720"
+                   aria-label="Hnoðraholt, Vífilsstaðavatn og GKG úr lofti">
+              <source src="assets/video/hverfid.mp4?v=305" type="video/mp4">
+            </video></span>
+            
           </figure>
         </header>
         <div class="chap__read">
-          <div class="chap__body"><p data-i18n="st.intro.b1">Við Vorbraut 14 í Hnoðraholti í Garðabæ rís vandað fjögurra hæða fjölbýlishús sem hýsir 14 fjölbreyttar íbúðir ásamt bílakjallara og ríkulegum stoðrýmum. Verkefnið leggur ríka áherslu á dagsbirtu, útsýni, fyrirmyndar aðgengi og heilsteypta hönnun, enda nýtur byggingin einstakrar staðsetningar ofarlega í landslaginu. Húsið stendur á friðsælum og eftirsóknarverðum stað þar sem nálægð við ósnortna náttúru, fjölbreytta þjónustu og helstu samgönguæðar rennur saman í eina heild. Hér gefst tækifæri á framtíðarheimili þar sem ríkidæmi hversdagsins endurspeglast í hugvitsamlegu skipulagi, vönduðum útirýmum og nútímaþægindum. Vorbraut 14 er kjörinn kostur fyrir þá sem gera miklar kröfur til búsetu í Garðabæ, þar sem víðsýni og birta eru í fyrirrúmi, en þjónusta og útivist aldrei langt undan.</p></div>
-          <ul class="chap__ledger"><li data-i18n="st.intro.c1">14 íbúðir</li><li data-i18n="st.intro.c2">Fjórar hæðir</li><li data-i18n="st.intro.c3">Hnoðraholt, Garðabær</li></ul>
+          <div class="chap__body"><p data-i18n="st.view.b1">Hæðótt og opin staðsetning Vorbrautar 14 er ótvíræður kostur verksins. Húsið býður upp á víðáttumikla og fagra sjón yfir bæinn og aðliggjandi náttúru, og sýnin opnast enn frekar eftir því sem ofar dregur. Arkitektúr hússins tekur djúpt mið af þessum sérstöku gæðum. Stórir gluggar og svalir ramma inn umhverfið þannig að samband við náttúruna, birtuna og útsýnið fléttast inn í tilveru dagsins í dag. Víðsýnið færir híbýlunum ómetanlegan fjársjóð og undirstrikar þá tilfinningu að rými heimilanna takmarkist ekki einungis af veggjum þeirra.</p></div>
+        </div>
+        <div class="chap__read chap__read--framhald">
+          <div class="chap__body">
+            <h2 class="chap__undirtitill" data-i18n="st.outdoor.title">Útirými</h2>
+            <p data-i18n="st.outdoor.b1">Útirými eignarinnar gegna lykilhlutverki í búsetugæðum Vorbrautar 14. Þeir sem búa á jarðhæð eiga þess kost að njóta dvalar á sérafnotareitum sem skapa nálægð og góð tengsl við gróskumikið umhverfið. Sömuleiðis skapa svalir og þaksvalir efri hæða tækifæri til að njóta bæði fersks lofts og óviðjafnanlegs útsýnis. Á hluta þaksins er komið fyrir gróðurþekju sem mildar yfirbragð mannvirkisins og tónar fallega við náttúruleg einkenni holtsins. Lóðin nýtir jafnframt blágrænar lausnir til ofanvatnsmeðhöndlunar sem fellur afar vel að snyrtilegri ásýnd svæðisins. Þannig stækka útirýmin heimilið og styrkja lífsgæðin með því að færa umhverfið nær íbúum.</p>
+          </div>
         </div>
       </div>
-      <!-- Áður/eftir úr sama sjónarhorni: drónamyndin af framkvæmdinni og
-           tölvumyndin af fullbyggðu húsinu. Myndirnar eru klipptar þannig að
-           húsið liggi á sama stað í báðum, annars stekkur það til við rennsli. -->
-      <figure class="swipe" data-swipe>
-        <div class="swipe__box">
-          <img class="swipe__a" data-img="verkefnid.eftir" src="assets/renders/foto-eftir.webp?v=305" alt="Vorbraut 14 fullbyggt" width="2400" height="1350" loading="lazy" decoding="async">
-          <div class="swipe__clip"><img class="swipe__b" data-img="verkefnid.adur" src="assets/renders/foto-adur.webp?v=305" alt="Vorbraut 14 í byggingu" width="2400" height="1350" loading="lazy" decoding="async"></div>
-          <span class="swipe__merki swipe__merki--adur" data-i18n="swipe.adur">Áður</span>
-          <span class="swipe__merki swipe__merki--eftir" data-i18n="swipe.eftir">Eftir</span>
-          <div class="swipe__handfang" aria-hidden="true"><span></span></div>
-          <input class="swipe__range" type="range" min="0" max="100" value="50"
-                 aria-label="Renndu til að bera saman myndirnar tvær">
-        </div>
-        <figcaption data-viz="1"><em data-i18n="fig.viz">Tölvumynd</em><b><span data-i18n="fig.label">Mynd</span> 01·B</b> <span data-i18n="st.intro.cap2">&nbsp;</span></figcaption>
+      <figure class="chap__plate">
+        <span class="cut" style="--zoom:1;--tx:0%;--ty:0%"><img data-img="utsyni.plate" src="assets/renders/foto-golf.webp?v=305" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
+        
       </figure>
       <div class="chap__wrap">
-        <nav class="chap__pager"><a class="is-prev" href="index.html"><small>← <span data-i18n="pager.prev">Fyrra</span></small><b data-i18n="pager.home">Forsíða</b></a><a class="is-next" href="arkitektur.html"><small><span data-i18n="pager.next">Næsta</span> →</small><b data-i18n="nav.arkitektur">Arkitektúr</b></a></nav>
+        <nav class="chap__pager"><a class="is-prev" href="husid.html"><small>← <span data-i18n="pager.prev">Fyrra</span></small><b data-i18n="nav.husid">Húsið</b></a><a class="is-next" href="adgengi.html"><small><span data-i18n="pager.next">Næsta</span> →</small><b data-i18n="nav.adgengi">Aðgengi</b></a></nav>
       </div>
     </article>
   </main>
@@ -120,5 +116,29 @@
   <script defer src="js/vbsupa.js?v=305"></script>
   <script defer src="js/page.js?v=305"></script>
   <script defer src="js/chapter.js?v=305"></script>
+
+<pre id="__out" style="position:fixed;bottom:0;left:0;z-index:99999;background:#ff0;font:11px monospace">pending</pre>
+<script>
+window.addEventListener('load', function(){
+  setTimeout(function(){
+    var nav=document.getElementById('nav')||document.querySelector('.nav');
+    var log=[];
+    window.scrollTo(0,400);
+    window.dispatchEvent(new Event('scroll'));
+    log.push('afterScroll cls='+nav.className+' y='+window.scrollY);
+    var b=document.getElementById('burger'); if(b) b.click();
+    log.push('afterClick cls='+nav.className+' y='+window.scrollY+' body='+document.body.className);
+    setTimeout(function(){
+      log.push('t+400 cls='+nav.className+' y='+window.scrollY);
+      setTimeout(function(){
+        log.push('t+1200 cls='+nav.className+' y='+window.scrollY);
+        var cs=getComputedStyle(nav);
+        log.push('computed bg='+cs.backgroundColor+' bb='+cs.borderBottomWidth+' '+cs.borderBottomStyle+' '+cs.borderBottomColor);
+        document.getElementById('__out').textContent=JSON.stringify(log);
+      },800);
+    },400);
+  },600);
+});
+</script>
 </body>
 </html>

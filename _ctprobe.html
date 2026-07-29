@@ -103,5 +103,29 @@
   <script defer src="js/supabase-config.js?v=305"></script>
   <script defer src="js/vbsupa.js?v=305"></script>
   <script defer src="js/contact.js?v=305"></script>
+
+<pre id="__out" style="position:fixed;bottom:0;left:0;z-index:99999;background:#ff0;font:11px monospace">pending</pre>
+<script>
+window.addEventListener('load', function(){
+  setTimeout(function(){
+    var nav=document.getElementById('nav')||document.querySelector('.nav');
+    var log=[];
+    window.scrollTo(0,400);
+    window.dispatchEvent(new Event('scroll'));
+    log.push('afterScroll cls='+nav.className+' y='+window.scrollY);
+    var b=document.getElementById('burger'); if(b) b.click();
+    log.push('afterClick cls='+nav.className+' y='+window.scrollY+' body='+document.body.className);
+    setTimeout(function(){
+      log.push('t+400 cls='+nav.className+' y='+window.scrollY);
+      setTimeout(function(){
+        log.push('t+1200 cls='+nav.className+' y='+window.scrollY);
+        var cs=getComputedStyle(nav);
+        log.push('computed bg='+cs.backgroundColor+' bb='+cs.borderBottomWidth+' '+cs.borderBottomStyle+' '+cs.borderBottomColor);
+        document.getElementById('__out').textContent=JSON.stringify(log);
+      },800);
+    },400);
+  },600);
+});
+</script>
 </body>
 </html>

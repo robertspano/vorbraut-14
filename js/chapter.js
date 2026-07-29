@@ -96,6 +96,27 @@
     window.addEventListener('resize', midja, { passive: true });
   }
 
+  /* --- bílakjallari: strikuðu stæðismerkin ofan á grunnmyndina -------------
+     Sömu reitir og íbúðasíðan notar, svo teikningarnar tvær segi það sama. */
+  var kjSvg = document.getElementById('kjkafliSvg');
+  var K = window.VB && window.VB.KJALLARI;
+  if (kjSvg && K && K.staediReitir) {
+    kjSvg.setAttribute('viewBox', '0 0 ' + K.w + ' ' + K.h);
+    var d = '';
+    Object.keys(K.staediReitir).forEach(function (nafn) {
+      var r = K.staediReitir[nafn];
+      var ix = (r[2] - r[0]) * 0.13, iy = (r[3] - r[1]) * 0.12;
+      var v = r[0] + ix, h = r[2] - ix, mx = (r[0] + r[2]) / 2;
+      var upp = (r[1] + r[3]) / 2 < K.h / 2;              // efri röðin
+      d += upp
+        ? '<path d="M' + mx + ' ' + (r[1] + iy) + ' L' + h + ' ' + (r[3] - iy) +
+          ' L' + v + ' ' + (r[3] - iy) + ' Z"/>'
+        : '<path d="M' + mx + ' ' + (r[3] - iy) + ' L' + h + ' ' + (r[1] + iy) +
+          ' L' + v + ' ' + (r[1] + iy) + ' Z"/>';
+    });
+    kjSvg.innerHTML = d;
+  }
+
   /* --- samanburðarsleði: myndin til hægri klippist eftir stöðu hans ------- */
   document.querySelectorAll('[data-swipe]').forEach(function (sw) {
     var box = sw.querySelector('.swipe__box');

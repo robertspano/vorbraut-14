@@ -1,0 +1,28 @@
+<meta charset="utf-8">
+<title>probe2</title>
+<style>html,body{margin:0}iframe{border:0;display:block}</style>
+<pre id="out">running…</pre>
+<iframe id="wide" src="/index.html" style="width:1280px;height:600px"></iframe>
+<iframe id="narrow" src="/index.html" style="width:390px;height:600px"></iframe>
+<script>
+const out=document.getElementById('out'); const lines=[];
+function log(s){lines.push(s); out.textContent=lines.join('\n');}
+function probe(id,label,css){
+  const f=document.getElementById(id), d=f.contentDocument, w=f.contentWindow;
+  if(css){ const l=[...d.querySelectorAll('link[rel=stylesheet]')].find(x=>/styles\.css|_old\.css/.test(x.getAttribute('href'))); l.setAttribute('href',css); return; }
+  const nav=d.getElementById('nav'), cs=w.getComputedStyle(nav);
+  log(label+' w='+w.innerWidth
+    +'\n   navBG   = '+cs.backgroundImage
+    +'\n   logo    = '+w.getComputedStyle(d.querySelector('.nav__logo')).color
+    +'\n   burger  = '+(d.querySelector('.burger span')?w.getComputedStyle(d.querySelector('.burger span')).backgroundColor:'n/a')
+    +'\n   heroTag = '+(d.querySelector('.hero video')?'video':(d.querySelector('.hero img')?'img':'?')));
+}
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    probe('wide','DESKTOP current');
+    probe('narrow','MOBILE  current');
+    probe('wide',null,'/_old.css'); probe('narrow',null,'/_old.css');
+    setTimeout(()=>{ probe('wide','DESKTOP old'); probe('narrow','MOBILE  old'); },2500);
+  },3000);
+});
+</script>

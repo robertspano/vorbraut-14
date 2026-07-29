@@ -250,8 +250,12 @@
         poly.addEventListener('mousemove', (e) => moveTipTexti(e, merki));
         poly.addEventListener('mouseenter', () => showTipTexti(merki));
         poly.addEventListener('mouseleave', hideTip);
-        if (v.zoneHref) {
-          const fara = () => { window.location.href = v.zoneHref; };
+        // Bílakjallarinn opnast NEÐAN VIÐ veljarann, eins og íbúðirnar, í stað
+        // þess að hoppa á aðra síðu. Aðrir stakir reitir fylgja zoneHref áfram.
+        const fara = (id === 'kjallari' && window.VB.showKjallaraView)
+          ? () => window.VB.showKjallaraView()
+          : (v.zoneHref ? () => { window.location.href = v.zoneHref; } : null);
+        if (fara) {
           poly.addEventListener('click', fara);
           poly.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fara(); }
@@ -783,8 +787,125 @@
   /* ---- Valin íbúð: teikning + upplýsingar birtast FYRIR NEÐAN veljarann ----
      Engin popup — kaflinn opnast mjúklega og síðan rennur sjálfkrafa niður (vorbrautin-stíll). */
   const avEl = $('#aptview');
+
+  /* Teiknar bílakjallarauppdráttinn með merkingum.
+     ibudId = null -> engin merking, aðeins stæðin sjálf (þegar kjallarinn er
+     skoðaður einn og sér af framhliðinni). */
+  function teiknaKjallara(ibudId) {
+    const K = window.VB.KJALLARI;
+    const imgEl = $('#avKjPlan'), svgEl = $('#avKjSvg'), txtEl = $('#avKjTxt');
+    if (!K || !imgEl || !svgEl) return;
+    const k = (ibudId && K.ibudir[ibudId]) || {};
+    imgEl.loading = 'eager';
+    imgEl.src = K.mynd + PLANV;
+    imgEl.alt = ibudId
+      ? (lang === 'is' ? 'Bílakjallari — íbúð ' : 'Parking garage — apartment ') + ibudId
+      : t('facade.kjallari');
+    imgEl.style.cursor = 'zoom-in';
+    imgEl.onclick = () => window.open(K.mynd + PLANV, '_blank', 'noopener');
+    svgEl.setAttribute('viewBox', '0 0 ' + K.w + ' ' + K.h);
+
+    const reitur = (r, cls) =>
+      '<rect class="' + cls + '" x="' + r[0] + '" y="' + r[1] +
+      '" width="' + (r[2] - r[0]) + '" height="' + (r[3] - r[1]) + '" rx="4"/>';
+    let mm = '';
+    // Þríhyrningur í hvert stæði, eins og strikaða merkið á aðaluppdrættinum:
+    // ófylltur, punktalína, og fyllir stæðið. Oddurinn snýr að útveggnum —
+    // efri röðin upp, neðri röðin niður — svo hann vísi eins og nef bílsins.
+    const min = k.staedi || [];
+    Object.entries(K.staediReitir || {}).forEach(([nafn, r]) => {
+      const bw = r[2] - r[0], bh = r[3] - r[1];
+      const ix = bw * 0.13, iy = bh * 0.12;           // loft inni í stæðinu
+      const v = r[0] + ix, h = r[2] - ix;             // vinstri/hægri
+      const mx = (r[0] + r[2]) / 2;
+      const upp = (r[1] + r[3]) / 2 < K.h / 2;        // efri röðin
+      const d = upp
+        ? `M${mx} ${r[1] + iy} L${h} ${r[3] - iy} L${v} ${r[3] - iy} Z`
+        : `M${mx} ${r[3] - iy} L${h} ${r[1] + iy} L${v} ${r[1] + iy} Z`;
+      mm += `<path class="kj-thri${min.indexOf(nafn) >= 0 ? ' is-min' : ''}" d="${d}"/>`;
+    });
+    // Reitirnir um stæði ÞESSARAR íbúðar eru hrein afleiða af staedi-listanum.
+    (k.staedi || []).forEach((nafn) => {
+      const r = (K.staediReitir || {})[nafn];
+      if (r) mm += reitur(r, 'kj-staedi');
+    });
+    if (k.geymsla) mm += reitur(k.geymsla, 'kj-geymsla');
+    svgEl.innerHTML = mm;
+
+    if (!txtEl) return;
+    if (!ibudId) { txtEl.innerHTML = ''; txtEl.hidden = true; return; }
+    txtEl.hidden = false;
+    const st = k.staedi || [];
+    // Ein lína á hvorn lið, hvor undir öðrum — ekki hlið við hlið.
+    const lina = (cls, merki, gildi) =>
+      '<span class="kj-lina"><b class="kj-p kj-p--' + cls + '">' + merki + '</b>' +
+      '<span class="kj-gildi">' + gildi + '</span></span>';
+    txtEl.innerHTML =
+      (st.length
+        ? lina('staedi', t('av.kjStaedi'), st.join(' · '))
+        // EKKI kj-lina hér: display:contents myndi drepa reitinn og þar með
+        // grid-column:1/-1, svo setningin lenti í fyrsta dálki og merkið við hlið hennar.
+        : '<span class="kj-ekkert">' + t('av.kjEkkert') + '</span>') +
+      (k.geymsla ? lina('geymsla', t('av.kjGeymsla'), ibudId) : '');
+  }
+
+  /* Bílakjallarinn skoðaður EINN OG SÉR — smellt á hann á framhliðinni.
+     Sami kafli og íbúðirnar nota, svo hegðunin sé eins: hann opnast fyrir
+     neðan veljarann og síðan rennur sjálfkrafa niður á hann. */
+  let kjallaraHamur = false;
+  function showKjallaraView() {
+    if (!avEl) return;
+    const K = window.VB.KJALLARI;
+    if (!K) { window.location.href = 'adgengi.html'; return; }
+    kjallaraHamur = true;
+    avEl.dataset.hamur = 'kjallari';
+    selApt = null;                       // engin íbúð valin á meðan
+    renderSelector();
+
+    $('#avTitle').textContent = t('facade.kjallari');
+    const fjStaedi = Object.keys(K.staediReitir || {}).length;
+    const fjGeymslur = Object.values(K.ibudir || {}).filter((x) => x.geymsla).length;
+    $('#avSpecs').innerHTML = [
+      [t('kj.flatarmal'), '345,0 m²'],
+      [t('av.kjStaedi'), String(fjStaedi)],
+      [t('kj.geymslur'), String(fjGeymslur)],
+      [t('kj.adgengi'), t('kj.adgengiGildi')],
+    ].map(([k2, v]) => `<div><dt>${k2}</dt><dd>${v}</dd></div>`).join('');
+
+    const cta = $('#avCta', avEl);
+    if (cta) { cta.setAttribute('href', 'adgengi.html'); cta.textContent = t('kj.cta'); }
+
+    // fliparnir og íbúðarteikningin eiga ekki við hér
+    const flipar = $('.aptview__flipar', avEl);
+    if (flipar) flipar.hidden = true;
+    const plan = $('#avPlan');
+    if (plan) { plan.hidden = true; plan.removeAttribute('src'); }
+    const cap = $('.aptview__plan > .aptview__cap', avEl);
+    if (cap) cap.hidden = false;
+    const boxEl = $('#avKjallari');
+    if (boxEl) boxEl.hidden = false;
+
+    teiknaKjallara(null);
+
+    avEl.hidden = false;
+    setTimeout(() => {
+      avEl.classList.add('is-in');
+      const NAV = nav ? nav.offsetHeight : 84;
+      const top = scroller.scrollTop + avEl.getBoundingClientRect().top - NAV - 12;
+      goToSection(Math.max(0, top));
+    }, 30);
+  }
+  window.VB.showKjallaraView = showKjallaraView;
+
   function showAptView(a) {
     if (!avEl || !a) return;
+    if (kjallaraHamur) {                 // koma til baka úr kjallarahamnum
+      kjallaraHamur = false;
+      delete avEl.dataset.hamur;
+      const fl = $('.aptview__flipar', avEl); if (fl) fl.hidden = false;
+      const ct = $('#avCta', avEl); if (ct) ct.textContent = t('av.cta');
+      const pl = $('#avPlan'); if (pl) pl.hidden = false;
+    }
     $('#avTitle').textContent = (lang === 'is' ? 'Íbúð ' : 'Apartment ') + a.id;
 
     // sömu reitir og á vorbrautin.is: heimilisfang, hæð, herb., birt stærð, geymsla, verð
@@ -812,54 +933,11 @@
     plan.onclick = () => window.open('assets/plans/' + a.plan + PLANV, '_blank', 'noopener');
 
     // ---- bílakjallari: stæði og geymsla þessarar íbúðar merkt á uppdrættinum ----
+    teiknaKjallara(a.id);
     (function kjallari() {
-      const K = window.VB.KJALLARI;
-      const boxEl = $('#avKjallari'), imgEl = $('#avKjPlan'), svgEl = $('#avKjSvg');
+      const boxEl = $('#avKjallari');
       const flipar = $$('.aptview__flipi', avEl);
-      if (!K || !boxEl || !flipar.length) return;
-      const k = K.ibudir[a.id] || {};
-      imgEl.loading = 'eager';
-      imgEl.src = K.mynd + PLANV;
-      imgEl.alt = (lang === 'is' ? 'Bílakjallari — íbúð ' : 'Parking garage — apartment ') + a.id;
-      svgEl.setAttribute('viewBox', '0 0 ' + K.w + ' ' + K.h);
-      const reitur = (r, cls) =>
-        '<rect class="' + cls + '" x="' + r[0] + '" y="' + r[1] +
-        '" width="' + (r[2] - r[0]) + '" height="' + (r[3] - r[1]) + '" rx="4"/>';
-      let mm = '';
-      // Þríhyrningur í hvert stæði, eins og strikaða merkið á aðaluppdrættinum:
-      // ófylltur, punktalína, og fyllir stæðið. Oddurinn snýr að útveggnum —
-      // efri röðin upp, neðri röðin niður — svo hann vísi eins og nef bílsins.
-      const min = k.staedi || [];
-      Object.entries(K.staediReitir || {}).forEach(([nafn, r]) => {
-        const bw = r[2] - r[0], bh = r[3] - r[1];
-        const ix = bw * 0.13, iy = bh * 0.12;           // loft inni í stæðinu
-        const v = r[0] + ix, h = r[2] - ix;             // vinstri/hægri
-        const mx = (r[0] + r[2]) / 2;
-        const upp = (r[1] + r[3]) / 2 < K.h / 2;        // efri röðin
-        const d = upp
-          ? `M${mx} ${r[1] + iy} L${h} ${r[3] - iy} L${v} ${r[3] - iy} Z`
-          : `M${mx} ${r[3] - iy} L${h} ${r[1] + iy} L${v} ${r[1] + iy} Z`;
-        mm += `<path class="kj-thri${min.indexOf(nafn) >= 0 ? ' is-min' : ''}" d="${d}"/>`;
-      });
-      // Reitirnir um stæði ÞESSARAR íbúðar eru hrein afleiða af staedi-listanum.
-      (k.staedi || []).forEach((nafn) => {
-        const r = (K.staediReitir || {})[nafn];
-        if (r) mm += reitur(r, 'kj-staedi');
-      });
-      if (k.geymsla) mm += reitur(k.geymsla, 'kj-geymsla');
-      svgEl.innerHTML = mm;
-      const st = k.staedi || [];
-      // Ein lína á hvorn lið, hvor undir öðrum — ekki hlið við hlið.
-      const lina = (cls, merki, gildi) =>
-        '<span class="kj-lina"><b class="kj-p kj-p--' + cls + '">' + merki + '</b>' +
-        '<span class="kj-gildi">' + gildi + '</span></span>';
-      $('#avKjTxt').innerHTML =
-        (st.length
-          ? lina('staedi', t('av.kjStaedi'), st.join(' · '))
-          // EKKI kj-lina hér: display:contents myndi drepa reitinn og þar með
-          // grid-column:1/-1, svo setningin lenti í fyrsta dálki og merkið við hlið hennar.
-          : '<span class="kj-ekkert">' + t('av.kjEkkert') + '</span>') +
-        (k.geymsla ? lina('geymsla', t('av.kjGeymsla'), a.id) : '');
+      if (!boxEl || !flipar.length) return;
       // Kjallarinn liggur FYRIR NEÐAN grunnmyndina en er falinn þar til ýtt er
       // á takkann — þá opnast hann og síðan skrunar mjúklega niður á hann.
       // (CSS: .aptview__plan img hafði display:block sem sló út [hidden].)
@@ -883,9 +961,6 @@
       flipar.forEach((b) => { b.onclick = () => synaFlipa(b.dataset.flipi, true); });
       synaFlipa('ibud');
 
-      // smella á kjallarateikninguna -> full upplausn í nýjum flipa, eins og íbúðin
-      imgEl.style.cursor = 'zoom-in';
-      imgEl.onclick = () => window.open(K.mynd + PLANV, '_blank', 'noopener');
     })();
 
     avEl.hidden = false;

@@ -120,7 +120,7 @@
             <div id="avKjallari" class="aptview__kjallari" hidden>
               <div class="aptview__kjmynd">
                 <img id="avKjPlan" alt="" decoding="async" loading="lazy">
-                <svg id="avKjSvg" class="aptview__kjsvg" viewBox="0 0 1506 840" aria-hidden="true"></svg>
+                <svg id="avKjSvg" class="aptview__kjsvg" viewBox="0 0 1506 1010" aria-hidden="true"></svg>
               </div>
               <p class="aptview__kjtxt" id="avKjTxt"></p>
             </div>
@@ -362,5 +362,35 @@
     setTimeout(faera,120);
   })();
   </script>
+
+<pre id="__out" style="position:fixed;bottom:0;left:0;z-index:99999;background:#ff0;font:11px monospace">pending</pre>
+<script>
+window.addEventListener('load', function(){
+  setTimeout(function(){
+    var nav=document.getElementById('nav')||document.querySelector('.nav');
+    window.scrollTo(0,400);
+    setTimeout(function(){
+      var afterScroll=nav.className, sy=window.scrollY;
+      var b=document.getElementById('burger'); if(b) b.click();
+      setTimeout(function(){
+        var st=document.createElement('style');
+        st.textContent='*,*::before,*::after{transition:none!important}';
+        document.head.appendChild(st);
+        setTimeout(function(){
+          var cs=getComputedStyle(nav), r=nav.getBoundingClientRect();
+          var m=document.getElementById('navmenu'), ms=m?getComputedStyle(m):null;
+          document.getElementById('__out').textContent=JSON.stringify({
+            w:innerWidth, scrollY:sy, afterScroll:afterScroll,
+            body:document.body.className, navClass:nav.className,
+            bg:cs.backgroundColor, bb:cs.borderBottomWidth+' '+cs.borderBottomStyle+' '+cs.borderBottomColor,
+            navBottom:Math.round(r.bottom),
+            menu:{z:ms&&ms.zIndex,bg:ms&&ms.backgroundColor,vis:ms&&ms.visibility,op:ms&&ms.opacity}
+          });
+        },100);
+      },600);
+    },500);
+  },500);
+});
+</script>
 </body>
 </html>

@@ -84,20 +84,19 @@ h3{font-size:1.35rem}
 .nav--solid{height:74px}
 /* Forsíðan: hero-textinn er á hvítum grunni -> dökk valmynd svo hún sjáist.
    (Undirsíður halda ljósu valmyndinni ofan á dökkri hero-mynd.) */
-body.home .nav,body.is-chapter .nav,body.is-contact .nav{background:linear-gradient(180deg,rgba(255,255,255,.96) 0%,rgba(255,255,255,.82) 62%,rgba(255,255,255,0) 100%);
+body.home .nav,body.is-chapter .nav{background:linear-gradient(180deg,rgba(255,255,255,.96) 0%,rgba(255,255,255,.82) 62%,rgba(255,255,255,0) 100%);
   color:#262522}
-body.home .nav a,body.home .nav button,body.is-chapter .nav a,body.is-chapter .nav button,
-body.is-contact .nav a,body.is-contact .nav button{color:#262522}
-body.home .nav__contact,body.is-chapter .nav__contact,body.is-contact .nav__contact{border:1px solid #C0BBB5;border-radius:999px;padding:.5rem 1.15rem;color:#262522}
-body.home .nav__contact:hover,body.is-chapter .nav__contact:hover,body.is-contact .nav__contact:hover{background:#FBFAF8;border-color:#aa8765;color:#aa8765}
+body.home .nav a,body.home .nav button,body.is-chapter .nav a,body.is-chapter .nav button{color:#262522}
+body.home .nav__contact,body.is-chapter .nav__contact{border:1px solid #C0BBB5;border-radius:999px;padding:.5rem 1.15rem;color:#262522}
+body.home .nav__contact:hover,body.is-chapter .nav__contact:hover{background:#FBFAF8;border-color:#aa8765;color:#aa8765}
 /* ATH: hér var backdrop-filter:blur(10px). Það neyddi vafrann til að endurmóða
    svæðið á bak við valmyndina í hverjum einasta skrunramma — sýnilegt hökt.
    Bakgrunnurinn er 96% ógegnsær hvort eð er, svo móðan sást ekki. */
-body.home .nav--solid,body.is-chapter .nav--solid,body.is-contact .nav--solid{background:rgba(255,255,255,.985);
+body.home .nav--solid,body.is-chapter .nav--solid{background:rgba(255,255,255,.985);
   border-bottom:1px solid #E8E7E8}
-body.home .burger span,body.is-chapter .burger span,body.is-contact .burger span{background:#262522}
+body.home .burger span,body.is-chapter .burger span{background:#262522}
 /* undirsíður: dekkri haus þegar skrunað er (forsíðan helst gegnsæ) */
-body.is-page .nav--solid{background:rgba(11,12,13,.86);
+body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.86);
   -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.07)}
 .nav__left{display:flex;align-items:center;gap:clamp(1.8rem,3.2vw,3rem)}
 .nav__logo{font-weight:600;letter-spacing:.15em;font-size:1.32rem;white-space:nowrap}
@@ -309,11 +308,8 @@ body.is-page .nav--solid{background:rgba(11,12,13,.86);
   display:block;margin:0 auto;cursor:zoom-in}
 /* display:block hér að ofan sló út [hidden]-eigindið, svo báðar teikningarnar
    sáust alltaf. Þetta verður að standa á eftir. */
-/* display:flex/block hér að ofan slá út [hidden]-eigindið — verða að standa á eftir. */
 .aptview__plan img[hidden],
 .aptview__kjallari[hidden],
-.aptview__flipar[hidden],
-.aptview__kjtxt[hidden],
 .aptview__cap[hidden]{display:none!important}
 .aptview__cap{margin:1.4rem 0 0;text-align:center;color:#7C7064;font-size:.86rem}
 @media(max-width:900px){
@@ -689,54 +685,44 @@ body.conedit .dg-cone.is-active:hover path,body.conedit .dg-cone.is-active:hover
 .planzoom img{max-width:96vw;max-height:94vh;object-fit:contain;background:#fff;border-radius:0;
   box-shadow:0 30px 80px rgba(0,0,0,.5)}
 
-/* ===== Hafa samband — sér síða (hafa-samband.html), ljóst þema ===== */
-body.is-contact{background:#fff;color:#262522}
-.kontakt{min-height:100svh;display:flex;align-items:center;background:#fff;color:#262522;
+/* ===== Hafa samband — sér síða (hafa-samband.html), dökkt þema, ferkantað form ===== */
+body.is-contact{background:#262522}
+.kontakt{min-height:100svh;display:flex;align-items:center;background:#262522;color:#fff;
   padding:clamp(4rem,10vh,7rem) clamp(24px,6vw,120px)}
 .kontakt__inner{max-width:1180px;width:100%;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;
   gap:clamp(2.4rem,5vw,6rem);align-items:center;animation:kontaktIn .8s var(--ease) both}
 @keyframes kontaktIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.kontakt__title{font-family:var(--display);font-weight:300;color:#262522;
+.kontakt__title{font-family:var(--display);font-weight:300;color:#fff;
   font-size:clamp(2.2rem,4.4vw,3.4rem);line-height:1.04;margin:.6rem 0 1.1rem;letter-spacing:-.01em}
-.kontakt__lead{color:#6b665f;font-size:1.14rem;line-height:1.7;max-width:40ch}
-.kontakt__direct{margin-top:2.2rem;padding-top:1.5rem;border-top:1px solid #E8E7E8;
+.kontakt__lead{color:rgba(255,255,255,.72);font-size:1.14rem;line-height:1.7;max-width:40ch}
+.kontakt__direct{margin-top:2.2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.14);
   display:flex;flex-direction:column;gap:.5rem;font-size:1.04rem}
-.kontakt__directlabel{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#6b665f}
-.kontakt__direct a{color:#262522;text-decoration:none;width:fit-content;border-bottom:1px solid transparent;transition:border-color .25s var(--ease)}
-.kontakt__direct a:hover{border-bottom-color:#aa8765;color:#aa8765}
-
-/* Ef komið er af íbúð: lítill borði sem segir hvaða íbúð fyrirspurnin varðar. */
-.kontakt__ibud{display:inline-flex;align-items:center;gap:.55rem;margin:0 0 1.2rem;
-  padding:.42rem .8rem;border:1px solid #E8E7E8;border-radius:999px;background:#FFFAF2;
-  font-size:.8rem;letter-spacing:.06em;color:#6b665f}
-.kontakt__ibud b{color:#262522;letter-spacing:.1em}
-.kontakt__ibud::before{content:"";width:7px;height:7px;border-radius:50%;background:#aa8765}
-/* display:inline-flex hér að ofan slær út [hidden]-eigindið — verður að standa á eftir. */
-.kontakt__ibud[hidden]{display:none}
-
+.kontakt__directlabel{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.kontakt__direct a{color:#fff;text-decoration:none;width:fit-content;border-bottom:1px solid transparent;transition:border-color .25s var(--ease)}
+.kontakt__direct a:hover{border-bottom-color:rgba(255,255,255,.6)}
 .cform{display:flex;flex-direction:column;gap:1.15rem}
 .cform__row{display:grid;grid-template-columns:1fr 1fr;gap:1.15rem}
 .cform__field{display:flex;flex-direction:column;gap:.5rem}
-.cform__field label{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:#6b665f}
-.cform input,.cform select,.cform textarea{width:100%;font-family:inherit;font-size:1.06rem;color:#262522;
-  background:#fff;border:1px solid #E8E7E8;border-radius:0;padding:.92rem 1rem;
+.cform__field label{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.cform input,.cform select,.cform textarea{width:100%;font-family:inherit;font-size:1.06rem;color:#fff;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.16);border-radius:0;padding:.92rem 1rem;
   -webkit-appearance:none;appearance:none;transition:border-color .3s var(--ease),background .3s var(--ease)}
-.cform input::placeholder,.cform textarea::placeholder{color:#a09a92}
+.cform input::placeholder,.cform textarea::placeholder{color:rgba(255,255,255,.32)}
 .cform textarea{resize:vertical;min-height:124px;line-height:1.55}
 .cform input:focus,.cform select:focus,.cform textarea:focus{outline:none;
-  border-color:#aa8765;background:#FFFDF9}
-.cform select{color:#262522;padding-right:2.4rem;cursor:pointer}
-.cform select option{color:#262522}
+  border-color:rgba(255,255,255,.72);background:rgba(255,255,255,.07)}
+.cform select{color:#fff;padding-right:2.4rem;cursor:pointer}
+.cform select option{color:#111}
 .cform__select{position:relative}
 .cform__select::after{content:"";position:absolute;right:1.05rem;top:50%;width:8px;height:8px;
-  border-right:1.5px solid #a09a92;border-bottom:1.5px solid #a09a92;
+  border-right:1.5px solid rgba(255,255,255,.55);border-bottom:1.5px solid rgba(255,255,255,.55);
   transform:translateY(-70%) rotate(45deg);pointer-events:none}
-.cform__submit{margin-top:.7rem;width:100%;border:0;border-radius:0;cursor:pointer;background:#262522;
-  color:#fff;font-family:inherit;font-size:.88rem;letter-spacing:.18em;text-transform:uppercase;
+.cform__submit{margin-top:.7rem;width:100%;border:0;border-radius:0;cursor:pointer;background:#fff;
+  color:#111;font-family:inherit;font-size:.88rem;letter-spacing:.18em;text-transform:uppercase;
   padding:1.15rem 1.2rem;transition:background .3s var(--ease),transform .3s var(--ease)}
-.cform__submit:hover{background:#3a3833;transform:translateY(-2px)}
+.cform__submit:hover{background:rgba(255,255,255,.86);transform:translateY(-2px)}
 .cform__submit:active{transform:translateY(0)}
-.cform__note{margin:.1rem 0 0;font-size:.88rem;color:#6b665f}
+.cform__note{margin:.1rem 0 0;font-size:.88rem;color:rgba(255,255,255,.85)}
 
 /* ======================= STORY SECTIONS (editorial) ======================= */
 .story{position:relative;background:#4E443A;color:var(--bone);overflow:hidden}
@@ -815,16 +801,14 @@ body.is-page{background:#4E443A}
     opacity:0;visibility:hidden;transition:opacity .32s var(--ease),visibility .32s var(--ease)}
   .nav.open .navmenu{opacity:1;visibility:visible}
   /* litur settur með nægri sértækni til að slá út body.home/.is-chapter .nav a */
-  .navmenu a,body.home .navmenu a,body.is-chapter .navmenu a,body.is-contact .navmenu a{
+  .navmenu a,body.home .navmenu a,body.is-chapter .navmenu a{
     color:#262522;font-family:var(--display);font-weight:300;
     font-size:clamp(1.45rem,5.6vw,2.1rem);line-height:1.12;letter-spacing:-.01em}
-  .navmenu a.is-current,body.home .navmenu a.is-current,body.is-chapter .navmenu a.is-current,
-  body.is-contact .navmenu a.is-current{color:#aa8765}
+  .navmenu a.is-current,body.home .navmenu a.is-current,body.is-chapter .navmenu a.is-current{color:#aa8765}
   .navmenu .navmenu__sub{font-size:clamp(1rem,4vw,1.36rem);opacity:.62;font-weight:300}
   .navmenu .navmenu__sub.is-current{opacity:1}
   .navmenu hr{width:46px;border:0;border-top:1px solid rgba(38,37,34,.16);margin:.4rem 0}
-  .navmenu .navmenu__action,body.home .navmenu .navmenu__action,body.is-chapter .navmenu .navmenu__action,
-  body.is-contact .navmenu .navmenu__action{
+  .navmenu .navmenu__action,body.home .navmenu .navmenu__action,body.is-chapter .navmenu .navmenu__action{
     font-size:clamp(.98rem,3.8vw,1.2rem);color:rgba(38,37,34,.62);font-family:var(--font)}
   /* opin valmynd: hausinn gegnsær svo hvíti flöturinn nái alveg upp */
   .nav.open,body.home .nav.open,body.is-chapter .nav.open{background:transparent;border-bottom-color:transparent;box-shadow:none}
@@ -945,9 +929,9 @@ body.is-page{background:#4E443A}
 @media (max-width:860px){
   /* Hausinn er ljós á öllum síðum — dökka útgáfan var arfur frá gamla
      dökka hero-inu og skildi eftir brúnan borða yfir ljósri forsíðu. */
-  body:not(.is-page):not(.is-chapter) .nav{
+  body:not(.is-page):not(.is-contact):not(.is-chapter) .nav{
     background:linear-gradient(180deg,rgba(255,255,255,.97) 0%,rgba(255,255,255,.86) 62%,rgba(255,255,255,0) 100%)}
-  body:not(.is-page):not(.is-chapter) .nav--solid{background:rgba(255,255,255,.985)}
+  body:not(.is-page):not(.is-contact):not(.is-chapter) .nav--solid{background:rgba(255,255,255,.985)}
 }
 
 /* Sími: snerti-orðalag ("Ýttu eða smelltu") í stað "Færðu músina yfir" (engin mús á síma).
@@ -1024,10 +1008,8 @@ body.is-page{background:var(--bone)}
    er þá hunsuð þegjandi. Ekki display:none (sum vélmenni sleppa slíkum reitum). */
 .cform__hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .cform__note[data-gerd="ok"]{color:#0D710A}
-.cform__note[data-gerd="villa"]{color:#B23A2E}
-/* 'sendi…' var deyft með opacity — það var stillt fyrir gamla dökka þemað og
-   varð of dauft á hvítu. Lituð í stað þess að deyfð. */
-.cform__note[data-gerd="bid"]{color:#5c574f}
+.cform__note[data-gerd="villa"]{color:#8a5a3c}
+.cform__note[data-gerd="bid"]{opacity:.7}
 .cform__submit[disabled]{opacity:.55;cursor:progress}
 
 /* Forsíðuvalmynd liggur nú ofan á myndbandi — hvít þar til skrunað er niður.
