@@ -12,21 +12,73 @@
   'use strict';
   if (!/[?&]mask\b/.test(location.search)) return;
   const VB = window.VB; if (!VB || !VB.FACADE || !VB.FACADE.zones) return;
-  /* Hvaða sjónarhorn er virkt? Bakhlið og framhlið hafa sitt hvort svæðasettið,
-     svo ritillinn verður að vinna á því sem sést — annars fínstillir maður
-     bakhliðina á meðan framhliðin er á skjánum. */
-  const virktView = (document.getElementById('facade') || {}).dataset
-    ? (document.getElementById('facade').dataset.view || 'aftan') : 'aftan';
+  /* HVAÐA SJÓNARHORN Á AÐ RITSTÝRA?
+     Bakhlið og framhlið hafa sitt hvort svæðasettið. Ritillinn les þetta EINU
+     SINNI við hleðslu, svo það dugar ekki að ýta á Framhlið eftir á — sjónarhornið
+     kemur úr slóðinni:  ?mask=framan   (?mask eitt og sér = bakhliðin).
+     Ritillinn skiptir myndinni sjálfur yfir svo maður sjái það sem hann breytir. */
+  const beidni = (location.search.match(/[?&]mask=([a-z]+)/i) || [])[1];
+  const meiSvaedi = (VB.VIEWS || []).filter((v) => v.zones).map((v) => v.id);
+  const virktView = meiSvaedi.includes(beidni) ? beidni : (meiSvaedi[0] || 'aftan');
   const vSkil = (VB.VIEWS || []).find((v) => v.id === virktView);
   const SETT = (vSkil && typeof vSkil.zones === 'string')
     ? 'zones' + vSkil.zones.charAt(0).toUpperCase() + vSkil.zones.slice(1) : 'zones';
   const GEYMSLA = SETT === 'zones' ? 'vb-facadezones' : 'vb-facadezones-' + virktView;
+  // Sýna rétta hlið hússins. Ritillinn er settur inn með dynamískri <script>
+  // (þ.e. async) og getur keyrt ÁÐUR en app.js hefur smíðað hliðartakkana,
+  // svo við reynum þar til þeir eru til.
+  (function stillaHlid(reyna) {
+    const b = document.querySelector('.facade__sidebtn[data-side="' + virktView + '"]');
+    if (b) { b.click(); return; }
+    if ((reyna || 0) < 40) setTimeout(() => stillaHlid((reyna || 0) + 1), 60);
+  })();
   if (!VB.FACADE[SETT]) return;
   const IW = 1280, IH = 720, NS = 'http://www.w3.org/2000/svg';
   const round = (n) => Math.round(n);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   let zones = JSON.parse(JSON.stringify(VB.FACADE[SETT]));
+  // henda öllu sem á ekki heima á þessu sjónarhorni (t.d. gamlar íbúðavistanir
+  // á bílakjallaranum) svo byrjunarreitirnir hér að neðan taki við
+  if (vSkil && vSkil.zoneList) {
+    Object.keys(zones).forEach((k) => {
+      if (vSkil.zoneList.indexOf(k) < 0) delete zones[k];
+    });
+  }
+  // Nýtt sjónarhorn byrjar tómt. Búum til byrjunarreiti — fjórar raðir eftir
+  // hæðum — svo það sé eitthvað til að draga í stað auðs skjás.
+  if (!Object.keys(zones).length) {
+    const X0 = 300, X1 = 980, Y0 = 250, Y1 = 600;
+    if (vSkil && vSkil.zoneList) {
+      // sjónarhorn með sín eigin svæði (t.d. bílakjallarinn í heild) — ekki íbúðir
+      const n = vSkil.zoneList.length, bw = (X1 - X0) / n;
+      vSkil.zoneList.forEach((id, i) => {
+        const a = Math.round(X0 + i * bw + 8), b = Math.round(X0 + (i + 1) * bw - 8);
+        zones[id] = [[a, Y0 + 20], [b, Y0 + 20], [b, Y1 - 20], [a, Y1 - 20]];
+      });
+    } else {
+      const eftirHaed = {};
+      (VB.APARTMENTS || []).forEach((a) => {
+        (eftirHaed[a.floor] = eftirHaed[a.floor] || []).push(a.id);
+      });
+      const haedir = Object.keys(eftirHaed).map(Number).sort((x, y) => y - x);
+      const rh = (Y1 - Y0) / haedir.length;
+      haedir.forEach((h, ri) => {
+        const ids = eftirHaed[h].slice().sort();
+        const bw = (X1 - X0) / ids.length;
+        ids.forEach((id, ci) => {
+          const a = Math.round(X0 + ci * bw + 6), b = Math.round(X0 + (ci + 1) * bw - 6);
+          const t = Math.round(Y0 + ri * rh + 5), n = Math.round(Y0 + (ri + 1) * rh - 5);
+          zones[id] = [[a, t], [b, t], [b, n], [a, n]];
+        });
+      });
+    }
+  }
   const ids = Object.keys(zones).sort();
+  // Listinn sýndi hráa auðkennið ("kjallari"). Sýnum mannamál þar sem það er til.
+  const mkHeiti = (id) => {
+    const S = (VB.STR && (VB.STR[localStorage.getItem('vb-lang') || 'is'] || VB.STR.is)) || {};
+    return S['facade.' + id] || id;
+  };
   let selId = ids[0], mode = 'move', drag = null, spaceDown = false;
   let view = { x: 0, y: 0, w: IW, h: IH };
 
@@ -36,8 +88,15 @@
   // Bakgrunnur ritilsins = NÁKVÆMLEGA sama mynd og veljarinn sýnir (bakhliðin),
   // lesin úr CSS svo hún fylgi sjálfkrafa ef myndinni er skipt út.
   function facadeImageUrl() {
+    // Myndirnar eru <img class="facade__img"> hnútar (voru áður CSS-bakgrunnur).
+    // Lesum þá virku — annars féll þetta á harðkóðaða BAKHLIÐINA og ritillinn
+    // sýndi hana þótt verið væri að ritstýra framhliðinni.
+    const v = (window.VB.VIEWS || []).find((x) => x.id === virktView);
+    if (v && v.img) return v.img;
+    const on = document.querySelector('.facade__img.is-on[src]');
+    if (on) return on.getAttribute('src');
     const el = document.getElementById('facade');
-    const bg = getComputedStyle(el).backgroundImage || '';
+    const bg = el ? (getComputedStyle(el).backgroundImage || '') : '';
     const m = bg.match(/url\(["']?(.*?)["']?\)/);
     return m ? m[1] : 'assets/renders/foto-bak.webp';
   }
@@ -109,7 +168,7 @@
       ids.forEach((id) => { const c = centroid(zones[id]); html += `<text class="mk-lbl" data-id="${id}" x="${c[0]}" y="${c[1]}" dy=".34em" style="font-size:${13 * zfac()}px">${id}</text>`; });
       if (selId && zones[selId]) zones[selId].forEach((p, i) => { html += `<circle class="mk-h" data-i="${i}" cx="${p[0]}" cy="${p[1]}" r="${r}"/>`; });
       layer.innerHTML = html;
-      legendEl.innerHTML = ids.map((id) => `<button class="${id === selId ? 'on' : ''}" data-leg="${id}">${id}</button>`).join('');
+      legendEl.innerHTML = ids.map((id) => `<button class="${id === selId ? 'on' : ''}" data-leg="${id}">${mkHeiti(id)}</button>`).join('');
     }
 
     function insertPoint(xy) {
