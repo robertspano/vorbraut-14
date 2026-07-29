@@ -830,44 +830,26 @@
           ? '<b class="kj-p kj-p--staedi">' + t('av.kjStaedi') + '</b> ' + st.join(' · ')
           : '<span class="kj-ekkert">' + t('av.kjEkkert') + '</span>') +
         (k.geymsla ? ' <b class="kj-p kj-p--geymsla">' + t('av.kjGeymsla') + '</b> ' + a.id : '');
-      // Báðar teikningarnar sjást; fliparnir eru stökkhlekkir sem skruna að
-      // þeirri réttu. (Að fela með [hidden] virkaði ekki hvort eð er —
-      // .aptview__plan img{display:block} slær eigindið út.)
-      boxEl.hidden = false;
-      const markmid = (hvad) => (hvad === 'kjallari' ? boxEl : plan);
-      const synaFlipa = (hvad, skruna) => {
+      // Fliparnir SKIPTA milli teikninganna; kjallarinn sést aðeins þegar
+      // ýtt er á hann. (CSS þurfti að styðja þetta — .aptview__plan img
+      // hafði display:block sem sló út [hidden] og því sáust báðar áður.)
+      const cap = $('.aptview__cap', avEl);
+      const synaFlipa = (hvad) => {
         flipar.forEach((b) => {
           const on = b.dataset.flipi === hvad;
           b.classList.toggle('is-on', on);
           b.setAttribute('aria-selected', on ? 'true' : 'false');
         });
-        if (!skruna) return;
-        const el = markmid(hvad);
-        // Skrunkerfi síðunnar sjálfrar frekar en scrollIntoView({smooth}) —
-        // það hefur öryggisnet ef rAF er hemlað og virðir reduced-motion.
-        const fara = () => {
-          const navH = nav ? nav.offsetHeight : 84;
-          const y = el.getBoundingClientRect().top + window.scrollY - navH - 26;
-          goToSection(Math.max(0, y));
-        };
-        // Kjallaramyndin er lazy: ef hún er ekki hlaðin er síðan styttri og
-        // skrunið stoppar of snemma. Bíðum eftir henni og skrunum þá aftur.
-        fara();
-        if (hvad === 'kjallari' && imgEl && !imgEl.complete) {
-          imgEl.addEventListener('load', () => setTimeout(fara, 60), { once: true });
-        }
+        plan.hidden = hvad !== 'ibud';
+        boxEl.hidden = hvad !== 'kjallari';
+        if (cap) cap.hidden = hvad !== 'ibud';
       };
-      flipar.forEach((b) => { b.onclick = () => synaFlipa(b.dataset.flipi, true); });
-      synaFlipa('ibud', false);
-      // flipinn fylgir því sem er á skjánum þegar skrunað er handvirkt
-      if (window.IntersectionObserver) {
-        const sjon = new IntersectionObserver((es) => {
-          es.forEach((e) => {
-            if (e.isIntersecting) synaFlipa(e.target === boxEl ? 'kjallari' : 'ibud', false);
-          });
-        }, { threshold: 0.45 });
-        sjon.observe(plan); sjon.observe(boxEl);
-      }
+      flipar.forEach((b) => { b.onclick = () => synaFlipa(b.dataset.flipi); });
+      synaFlipa('ibud');
+
+      // smella á kjallarateikninguna -> full upplausn í nýjum flipa, eins og íbúðin
+      imgEl.style.cursor = 'zoom-in';
+      imgEl.onclick = () => window.open(K.mynd + PLANV, '_blank', 'noopener');
     })();
 
     avEl.hidden = false;

@@ -306,6 +306,11 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .aptview__specs dd{text-align:right}
 .aptview__plan img{max-width:100%;max-height:min(72vh,720px);width:auto;height:auto;
   display:block;margin:0 auto;cursor:zoom-in}
+/* display:block hér að ofan sló út [hidden]-eigindið, svo báðar teikningarnar
+   sáust alltaf. Þetta verður að standa á eftir. */
+.aptview__plan img[hidden],
+.aptview__kjallari[hidden],
+.aptview__cap[hidden]{display:none!important}
 .aptview__cap{margin:1.4rem 0 0;text-align:center;color:#7C7064;font-size:.86rem}
 @media(max-width:900px){
   .aptview__inner{grid-template-columns:1fr;gap:26px}
@@ -1027,10 +1032,8 @@ body.home .nav:not(.nav--solid){background:linear-gradient(180deg,rgba(20,19,17,
 /* Loft milli teikninganna tveggja — þær sátu alveg upp við hvor aðra.
    scroll-margin-top heldur þeim frá föstu valmyndinni þegar flipinn skrunar. */
 .aptview__plan img{scroll-margin-top:110px}
-.aptview__kjallari{margin-top:clamp(70px,10vh,140px);padding-top:clamp(40px,5vh,64px);
-  border-top:1px solid #E8E7E8;scroll-margin-top:110px}
-.aptview__kjallari::before{content:attr(data-heiti);display:block;margin-bottom:1rem;
-  font:600 .66rem/1 var(--font);letter-spacing:.2em;text-transform:uppercase;color:#aa8765}
+.aptview__kjallari{margin-top:0;padding-top:0}
+.aptview__kjmynd img{cursor:zoom-in}
 
 .aptview__cta{margin-top:auto;padding-top:clamp(18px,2.6vh,30px);
   display:flex;flex-direction:column;align-items:flex-start;gap:.7rem}
