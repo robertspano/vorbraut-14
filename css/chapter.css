@@ -164,7 +164,10 @@ body.is-chapter .lang{color:#262522}
   .chap__open:has(.chap__slice--film){grid-template-columns:minmax(0,4.6fr) minmax(0,7.4fr)}
 }
 /* teikningarsneið — öll teikningin sýnd á pappírstóni, ekkert klippt */
-.chap__slice--draw .cut{aspect-ratio:4/3;background:#f6f4ee;box-shadow:inset 0 0 0 1px var(--hair)}
+/* Uppdrátturinn af framhliðinni er tæp 2:1. Í 4:3 ramma hefði hann rekið sig
+   í loft og gólf úr tómu plássi og húsið orðið pínulítið — ramminn fylgir
+   myndinni í staðinn. contain heldur öllu húsinu inni, ekkert klippt af endum. */
+.chap__slice--draw .cut{aspect-ratio:2/1;background:#f6f4ee;box-shadow:inset 0 0 0 1px var(--hair)}
 .chap__slice--draw .cut img{object-fit:contain}
 
 /* TVEIR REITIR HLIÐ VIÐ HLIÐ — sama breidd og meginmálið */
