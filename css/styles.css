@@ -1066,8 +1066,9 @@ html.ritill-virkur .shero__btn{display:none}
 .aptview__kjmynd{position:relative;display:block}
 .aptview__kjmynd img{width:100%;height:auto;display:block}
 .aptview__kjsvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.kj-staedi{fill:rgba(170,135,101,.42);stroke:#aa8765;stroke-width:4;vector-effect:non-scaling-stroke}
-.kj-geymsla{fill:rgba(13,113,10,.26);stroke:#0D710A;stroke-width:4;vector-effect:non-scaling-stroke}
+/* Fyllingin ber merkinguna — línan þarf ekki að vera meira en fín umgjörð. */
+.kj-staedi{fill:rgba(170,135,101,.42);stroke:#aa8765;stroke-width:1.5;vector-effect:non-scaling-stroke}
+.kj-geymsla{fill:rgba(13,113,10,.26);stroke:#0D710A;stroke-width:1.5;vector-effect:non-scaling-stroke}
 /* Tvær línur, hvor undir annarri. Grid (ekki flex) svo merkin og gildin
    raðist í tvo dálka og stillist saman óháð lengd orðanna. */
 .aptview__kjtxt{margin:1rem 0 0;font-size:.86rem;color:#6b665f;
