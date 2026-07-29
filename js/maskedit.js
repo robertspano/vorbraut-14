@@ -12,15 +12,26 @@
   'use strict';
   if (!/[?&]mask\b/.test(location.search)) return;
   const VB = window.VB; if (!VB || !VB.FACADE || !VB.FACADE.zones) return;
-  /* Hvaða sjónarhorn er virkt? Bakhlið og framhlið hafa sitt hvort svæðasettið,
-     svo ritillinn verður að vinna á því sem sést — annars fínstillir maður
-     bakhliðina á meðan framhliðin er á skjánum. */
-  const virktView = (document.getElementById('facade') || {}).dataset
-    ? (document.getElementById('facade').dataset.view || 'aftan') : 'aftan';
+  /* HVAÐA SJÓNARHORN Á AÐ RITSTÝRA?
+     Bakhlið og framhlið hafa sitt hvort svæðasettið. Ritillinn les þetta EINU
+     SINNI við hleðslu, svo það dugar ekki að ýta á Framhlið eftir á — sjónarhornið
+     kemur úr slóðinni:  ?mask=framan   (?mask eitt og sér = bakhliðin).
+     Ritillinn skiptir myndinni sjálfur yfir svo maður sjái það sem hann breytir. */
+  const beidni = (location.search.match(/[?&]mask=([a-z]+)/i) || [])[1];
+  const meiSvaedi = (VB.VIEWS || []).filter((v) => v.zones).map((v) => v.id);
+  const virktView = meiSvaedi.includes(beidni) ? beidni : (meiSvaedi[0] || 'aftan');
   const vSkil = (VB.VIEWS || []).find((v) => v.id === virktView);
   const SETT = (vSkil && typeof vSkil.zones === 'string')
     ? 'zones' + vSkil.zones.charAt(0).toUpperCase() + vSkil.zones.slice(1) : 'zones';
   const GEYMSLA = SETT === 'zones' ? 'vb-facadezones' : 'vb-facadezones-' + virktView;
+  // Sýna rétta hlið hússins. Ritillinn er settur inn með dynamískri <script>
+  // (þ.e. async) og getur keyrt ÁÐUR en app.js hefur smíðað hliðartakkana,
+  // svo við reynum þar til þeir eru til.
+  (function stillaHlid(reyna) {
+    const b = document.querySelector('.facade__sidebtn[data-side="' + virktView + '"]');
+    if (b) { b.click(); return; }
+    if ((reyna || 0) < 40) setTimeout(() => stillaHlid((reyna || 0) + 1), 60);
+  })();
   if (!VB.FACADE[SETT]) return;
   const IW = 1280, IH = 720, NS = 'http://www.w3.org/2000/svg';
   const round = (n) => Math.round(n);
