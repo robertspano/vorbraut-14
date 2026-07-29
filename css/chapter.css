@@ -448,3 +448,10 @@ body.is-chapter .lang{color:#262522}
   font-size:clamp(1.5rem,2.8vw,2.2rem);line-height:1.06;letter-spacing:-.02em;color:var(--ink)}
 .chap__read--framhald .chap__body p::first-letter{float:none;font-size:inherit;
   font-family:inherit;font-weight:inherit;color:inherit;margin:0;line-height:inherit}
+
+/* bílakjallarakafli á Húsinu */
+.kjkafli{background:var(--wash);border-top:1px solid var(--hair);
+  padding:clamp(46px,7vh,92px) 0 clamp(46px,7vh,92px)}
+.kjkafli__haus{margin:0 0 clamp(24px,3.6vh,40px);max-width:56ch}
+.kjkafli__mynd{margin:0;background:#fff;border:1px solid var(--hair);overflow:hidden}
+.kjkafli__mynd img{width:100%;height:auto;display:block}
