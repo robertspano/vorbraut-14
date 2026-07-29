@@ -37,6 +37,26 @@
   const round = (n) => Math.round(n);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   let zones = JSON.parse(JSON.stringify(VB.FACADE[SETT]));
+  // Nýtt sjónarhorn byrjar tómt. Búum til byrjunarreiti — fjórar raðir eftir
+  // hæðum — svo það sé eitthvað til að draga í stað auðs skjás.
+  if (!Object.keys(zones).length) {
+    const eftirHaed = {};
+    (VB.APARTMENTS || []).forEach((a) => {
+      (eftirHaed[a.floor] = eftirHaed[a.floor] || []).push(a.id);
+    });
+    const haedir = Object.keys(eftirHaed).map(Number).sort((x, y) => y - x);
+    const X0 = 300, X1 = 980, Y0 = 250, Y1 = 600;
+    const rh = (Y1 - Y0) / haedir.length;
+    haedir.forEach((h, ri) => {
+      const ids = eftirHaed[h].slice().sort();
+      const bw = (X1 - X0) / ids.length;
+      ids.forEach((id, ci) => {
+        const a = Math.round(X0 + ci * bw + 6), b = Math.round(X0 + (ci + 1) * bw - 6);
+        const t = Math.round(Y0 + ri * rh + 5), n = Math.round(Y0 + (ri + 1) * rh - 5);
+        zones[id] = [[a, t], [b, t], [b, n], [a, n]];
+      });
+    });
+  }
   const ids = Object.keys(zones).sort();
   let selId = ids[0], mode = 'move', drag = null, spaceDown = false;
   let view = { x: 0, y: 0, w: IW, h: IH };

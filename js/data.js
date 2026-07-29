@@ -143,6 +143,9 @@ try {
    zones   – true = gagnvirku íbúðasvæðin virka á þessari mynd (aðeins bakhliðin er kvörðuð) */
 /* Smellisvæði á FRAMHLIÐINNI — handkvörðuð af Róberti í ?mask=framan.
    Bakhliðin er í FACADE.zones hér að ofan. */
+FACADE.zonesHlid = {};        /* kvarðað í ?mask=hlid */
+FACADE.zonesKjallari = {};    /* kvarðað í ?mask=kjallari */
+
 FACADE.zonesFraman = {
     '0101': [[354,493],[552,494],[554,554],[469,553],[468,546],[359,545]],
     '0102': [[552,494],[631,494],[631,539],[558,539],[554,554]],
@@ -163,8 +166,8 @@ FACADE.zonesFraman = {
 const VIEWS = [
   { id: 'aftan',    label: 'Bakhlið',      img: 'assets/renders/foto-bak.webp',      zones: true },
   { id: 'framan',   label: 'Framhlið',     img: 'assets/renders/foto-fram.webp', zones: 'framan' },
-  { id: 'hlid',     label: 'Hliðin',       img: 'assets/renders/foto-ska.webp' },
-  { id: 'kjallari', label: 'Bílakjallari', img: 'assets/renders/foto-rampur.webp' },
+  { id: 'hlid',     label: 'Hliðin',       img: 'assets/renders/foto-ska.webp', zones: 'hlid' },
+  { id: 'kjallari', label: 'Bílakjallari', img: 'assets/renders/foto-rampur.webp', zones: 'kjallari' },
 ];
 
 /* Útsýnis-keilur á hæðarkortinu (sjónarhornin sem skipta um mynd af húsinu).
@@ -213,9 +216,15 @@ try {
 /* Skilalýsing-PDF (kemur frá Robert) — settu slóð hér til að sýna „Skilalýsing" tengilinn í popup. */
 const SKILALYSING = null;
 /* Handstillt svæði úr ?mask lifa í localStorage þar til þau eru vistuð hér. */
-try {
-  var _fz = localStorage.getItem('vb-facadezones-framan');
-  if (_fz) { var _p = JSON.parse(_fz); if (_p && typeof _p === 'object') FACADE.zonesFraman = _p; }
-} catch (e) {}
+['framan', 'hlid', 'kjallari'].forEach(function (v) {
+  try {
+    var g = localStorage.getItem('vb-facadezones-' + v);
+    if (!g) return;
+    var p = JSON.parse(g);
+    if (p && typeof p === 'object' && Object.keys(p).length) {
+      FACADE['zones' + v.charAt(0).toUpperCase() + v.slice(1)] = p;
+    }
+  } catch (e) {}
+});
 
 window.VB = { APARTMENTS, FACADE, FLOOR_SHAPES, FS_VERSION, PLAN_ADJ, SKILALYSING, VIEW_CONES, VIEWS };

@@ -242,6 +242,7 @@
     return FACADE[lykill] || null;
   }
   byggjaSvaedi(FACADE.zones);
+  facadeFig.setAttribute('data-zones', Object.keys(FACADE.zones).length ? '1' : '0');
 
   // aria-lýsingar á íbúða-svæðunum (uppfærist við tungumála- og stöðubreytingar)
   function syncZoneAria() {
@@ -278,8 +279,10 @@
     if (!VIEWS.some((v) => v.id === side)) return;
     curView = side;
     facadeFig.setAttribute('data-view', side);
-    // smellisvæðin fylgja sjónarhorninu (bakhlið og framhlið hafa sitt hvort settið)
-    byggjaSvaedi(svaediFyrir(side));
+    // smellisvæðin fylgja sjónarhorninu; hvert getur haft sitt sett
+    const sett = svaediFyrir(side);
+    byggjaSvaedi(sett);
+    facadeFig.setAttribute('data-zones', Object.keys(sett || {}).length ? '1' : '0');
     $$('.facade__img', facadeViews).forEach((im) => im.classList.toggle('is-on', im.dataset.view === side));
     $$('.facade__sidebtn', facadeSides).forEach((x) => {
       const on = x.dataset.side === side;
