@@ -24,25 +24,25 @@ const APARTMENTS = [
   //   area = BIRT STÆRÐ = birt flatarmál (heildarstærð íbúðar MEÐ sérgeymslu), skv. skráningartöflu.
   //   beds = svefnherbergi.  price = ISK (heiltala).
   // ---- 1. hæð (jarðhæð) — sérafnotareitir / verönd ----
-  { id: '0101', floor: 1, area: 127.2, rooms: 4, beds: 3, type: 'fam', outdoor: 'verond', status: 'sold', plan: '0101.png', planExact: true },
-  { id: '0102', floor: 1, area: 70.2,  rooms: 2, beds: 1, type: 'two', outdoor: 'verond', status: 'available', price: 69900000,  plan: '0102.png', planExact: true, parking: 0 },
-  { id: '0103', floor: 1, area: 69.5,  rooms: 2, beds: 1, type: 'two', outdoor: 'verond', status: 'sold', plan: '0103.png', planExact: true, parking: 0 },
-  { id: '0104', floor: 1, area: 115.6, rooms: 3, beds: 2, type: 'fam', outdoor: 'verond', status: 'available', price: 104900000, plan: '0104.png', planExact: true },
+  { id: '0101', floor: 1, area: 127.2, rooms: 4, beds: 3, type: 'fam', outdoor: 'verond', status: 'sold', plan: '0101.png', planExact: true , parking: 1 },
+  { id: '0102', floor: 1, area: 70.2,  rooms: 2, beds: 1, type: 'two', outdoor: 'verond', status: 'available', price: 69900000,  plan: '0102.png', planExact: true , parking: 0 },
+  { id: '0103', floor: 1, area: 69.5,  rooms: 2, beds: 1, type: 'two', outdoor: 'verond', status: 'sold', plan: '0103.png', planExact: true , parking: 0 },
+  { id: '0104', floor: 1, area: 115.6, rooms: 3, beds: 2, type: 'fam', outdoor: 'verond', status: 'available', price: 104900000, plan: '0104.png', planExact: true , parking: 1 },
   // ---- 2. hæð — svalir ----
-  { id: '0201', floor: 2, area: 128.8, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', price: 119900000, plan: '0201.png', planExact: true },
-  { id: '0202', floor: 2, area: 69.5,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 71900000,  plan: '0202.png', planExact: true, parking: 0 },
-  { id: '0203', floor: 2, area: 69.6,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 71900000,  plan: '0203.png', planExact: true, parking: 0 },
-  { id: '0204', floor: 2, area: 131.6, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'available', price: 119900000, plan: '0204.png', planExact: true },
+  { id: '0201', floor: 2, area: 128.8, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', price: 119900000, plan: '0201.png', planExact: true , parking: 1 },
+  { id: '0202', floor: 2, area: 69.5,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 71900000,  plan: '0202.png', planExact: true , parking: 0 },
+  { id: '0203', floor: 2, area: 69.6,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 71900000,  plan: '0203.png', planExact: true , parking: 0 },
+  { id: '0204', floor: 2, area: 131.6, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'available', price: 119900000, plan: '0204.png', planExact: true , parking: 1 },
   // ---- 3. hæð — svalir ----
-  { id: '0301', floor: 3, area: 130.3, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'available', price: 122900000, plan: '0301.png', planExact: true },
-  { id: '0302', floor: 3, area: 70.1,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 73900000,  plan: '0302.png', planExact: true, parking: 0 },
-  { id: '0303', floor: 3, area: 68.6,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 73900000,  plan: '0303.png', planExact: true, parking: 0 },
-  { id: '0304', floor: 3, area: 130.1, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', plan: '0304.png', planExact: true },
+  { id: '0301', floor: 3, area: 130.3, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'available', price: 122900000, plan: '0301.png', planExact: true , parking: 1 },
+  { id: '0302', floor: 3, area: 70.1,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 73900000,  plan: '0302.png', planExact: true , parking: 0 },
+  { id: '0303', floor: 3, area: 68.6,  rooms: 2, beds: 1, type: 'two', outdoor: 'svalir', balcony: 5.9, status: 'available', price: 73900000,  plan: '0303.png', planExact: true , parking: 0 },
+  { id: '0304', floor: 3, area: 130.1, rooms: 4, beds: 3, type: 'fam', outdoor: 'svalir', balcony: 8.1, status: 'sold', plan: '0304.png', planExact: true , parking: 1 },
   // ---- 4. hæð (efsta hæð) — þaksvalir, aukin lofthæð ----
   // Staðfest skv. fasteignasala + skráningartöflu: 0401 = hægri þakíbúð SELD (171,0 m²);
   // 0402 = vinstri þakíbúð TIL SÖLU (167,5 m² / 219,9 m.kr.). Bæði með 2 bílastæði. EKKI víxla aftur.
-  { id: '0401', floor: 4, area: 171.0, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'sold', plan: '0401.png', planExact: true, walk3d: true, parking: 2 },
-  { id: '0402', floor: 4, area: 167.5, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'available', price: 219900000, plan: '0402.png', planExact: true, tex: '0401.png', walk3d: true, parking: 2 },
+  { id: '0401', floor: 4, area: 171.0, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'sold', plan: '0401.png', planExact: true, walk3d: true , parking: 2 },
+  { id: '0402', floor: 4, area: 167.5, rooms: 4, beds: 3, type: 'pent', outdoor: 'thaksvalir', ceiling: '3,45–3,70', status: 'available', price: 219900000, plan: '0402.png', planExact: true, tex: '0401.png', walk3d: true , parking: 2 },
 ];
 
 /* Gagnvirkir hover-fletir á lokaramma kvikmyndarinnar (f096, 1280×720).
@@ -165,6 +165,30 @@ FACADE.zonesFraman = {
     '0402': [[711,304],[719,304],[718,298],[801,298],[808,311],[932,310],[926,382],[805,381],[807,386],[712,385],[711,375]],
 };
 
+/* BÍLAKJALLARINN — lesið af aðaluppdrættinum (assets/plans/bilakjallari.png,
+   1506x1010). Hver íbúð á sína geymslu; sex eiga eitt stæði, 0401 og 0402
+   eiga tvö hvor. 0102/0103/0202/0203/0302/0303 eiga ekkert stæði. */
+const KJALLARI = {
+  mynd: 'assets/plans/bilakjallari.png',
+  w: 1506, h: 1010,
+  ibudir: {
+      '0101': { staedi: ['B10'], geymsla: [1282, 688, 1405, 810], reitir: [[1282, 495, 1405, 600]] },
+      '0102': { staedi: [], geymsla: [478, 752, 590, 810] },
+      '0103': { staedi: [], geymsla: [478, 688, 590, 748] },
+      '0104': { staedi: ['B09'], geymsla: [1135, 688, 1278, 810], reitir: [[1137, 495, 1278, 600]] },
+      '0201': { staedi: ['B08'], geymsla: [1003, 688, 1131, 810], reitir: [[1004, 495, 1133, 600]] },
+      '0202': { staedi: [], geymsla: [478, 618, 590, 678] },
+      '0203': { staedi: [], geymsla: [478, 552, 590, 615] },
+      '0204': { staedi: ['B07'], geymsla: [860, 688, 1000, 810], reitir: [[862, 495, 1000, 600]] },
+      '0301': { staedi: ['B06'], geymsla: [715, 688, 856, 810], reitir: [[720, 495, 858, 600]] },
+      '0302': { staedi: [], geymsla: [712, 158, 828, 215] },
+      '0303': { staedi: [], geymsla: [905, 143, 1020, 215] },
+      '0304': { staedi: ['B05'], geymsla: [598, 688, 712, 810], reitir: [[590, 495, 716, 600]] },
+      '0401': { staedi: ['B03', 'B04'], geymsla: [1022, 30, 1133, 150], reitir: [[1136, 200, 1278, 310], [1282, 200, 1405, 310]] },
+      '0402': { staedi: ['B01', 'B02'], geymsla: [315, 30, 443, 110], reitir: [[448, 200, 585, 310], [590, 200, 708, 310]] },
+  },
+};
+
 const VIEWS = [
   { id: 'aftan',    label: 'Bakhlið',      img: 'assets/renders/foto-bak.webp',      zones: true },
   { id: 'framan',   label: 'Framhlið',     img: 'assets/renders/foto-fram.webp', zones: 'framan' },
@@ -241,4 +265,5 @@ const SKILALYSING = null;
   } catch (e) {}
 });
 
-window.VB = { APARTMENTS, FACADE, FLOOR_SHAPES, FS_VERSION, PLAN_ADJ, SKILALYSING, VIEW_CONES, VIEWS };
+window.VB = {
+  KJALLARI, APARTMENTS, FACADE, FLOOR_SHAPES, FS_VERSION, PLAN_ADJ, SKILALYSING, VIEW_CONES, VIEWS };

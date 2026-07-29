@@ -798,6 +798,44 @@
     // smella á teikningu -> myndin ein opnast í fullri upplausn (nýr flipi)
     plan.onclick = () => window.open('assets/plans/' + a.plan + PLANV, '_blank', 'noopener');
 
+    // ---- bílakjallari: stæði og geymsla þessarar íbúðar merkt á uppdrættinum ----
+    (function kjallari() {
+      const K = window.VB.KJALLARI;
+      const boxEl = $('#avKjallari'), imgEl = $('#avKjPlan'), svgEl = $('#avKjSvg');
+      const flipar = $$('.aptview__flipi', avEl);
+      if (!K || !boxEl || !flipar.length) return;
+      const k = K.ibudir[a.id] || {};
+      imgEl.src = K.mynd + PLANV;
+      imgEl.alt = (lang === 'is' ? 'Bílakjallari — íbúð ' : 'Parking garage — apartment ') + a.id;
+      svgEl.setAttribute('viewBox', '0 0 ' + K.w + ' ' + K.h);
+      const reitur = (r, cls) =>
+        '<rect class="' + cls + '" x="' + r[0] + '" y="' + r[1] +
+        '" width="' + (r[2] - r[0]) + '" height="' + (r[3] - r[1]) + '" rx="4"/>';
+      let mm = '';
+      (k.reitir || []).forEach((r) => { mm += reitur(r, 'kj-staedi'); });
+      if (k.geymsla) mm += reitur(k.geymsla, 'kj-geymsla');
+      svgEl.innerHTML = mm;
+      const st = k.staedi || [];
+      $('#avKjTxt').innerHTML =
+        (st.length
+          ? '<b class="kj-p kj-p--staedi">' + t('av.kjStaedi') + '</b> ' + st.join(' · ')
+          : '<span class="kj-ekkert">' + t('av.kjEkkert') + '</span>') +
+        (k.geymsla ? ' <b class="kj-p kj-p--geymsla">' + t('av.kjGeymsla') + '</b> ' + a.id : '');
+      const synaFlipa = (hvad) => {
+        flipar.forEach((b) => {
+          const on = b.dataset.flipi === hvad;
+          b.classList.toggle('is-on', on);
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        plan.hidden = hvad !== 'ibud';
+        boxEl.hidden = hvad !== 'kjallari';
+        const cap = $('.aptview__cap', avEl);
+        if (cap) cap.hidden = hvad !== 'ibud';
+      };
+      flipar.forEach((b) => { b.onclick = () => synaFlipa(b.dataset.flipi); });
+      synaFlipa('ibud');
+    })();
+
     avEl.hidden = false;
     // setTimeout (ekki rAF) — rAF keyrir ekki í földum/óvirkum flipum
     setTimeout(() => {
