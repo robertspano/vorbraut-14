@@ -217,7 +217,10 @@
       poly.setAttribute('role', 'button');
       const apt = aptById[id];
       if (apt) {
-        if (apt.status !== 'available') poly.style.fill = statusFill(apt.status);
+        if (apt.status !== 'available') {
+          poly.style.fill = statusFill(apt.status);
+          poly.style.stroke = statusFill(apt.status);
+        }
         poly.addEventListener('mousemove', (e) => moveTip(e, id));
         poly.addEventListener('mouseenter', () => {
           showTip(id);
@@ -832,7 +835,9 @@
       APARTMENTS.forEach((a) => { if (m[a.id]) a.status = m[a.id]; });
       $$('polygon', svg).forEach((p) => {
         const a = aptById[p.dataset.id];
-        p.style.fill = (a && a.status !== 'available') ? statusFill(a.status) : '';
+        const litur = (a && a.status !== 'available') ? statusFill(a.status) : '';
+        p.style.fill = litur;
+        p.style.stroke = litur;
       });
       buildGrid(); syncZoneAria(); renderSelector(); syncFacade();
     }).catch(() => {});

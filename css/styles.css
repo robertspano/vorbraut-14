@@ -324,12 +324,17 @@ body.is-page .nav--solid,body.is-contact .nav--solid{background:rgba(11,12,13,.8
 .select__head .kicker{color:rgba(255,255,255,.82)}
 .select__sub{color:rgba(255,255,255,.82);max-width:54ch;margin:.7rem auto 0;font-size:1rem}
 /* gegnsætt highlight — ferskur grasgrænn (ekki multiply -> ekkert mosa-grænt) */
+/* Fyllingin og útlínan höfðu sama gegnsæi því element-opacity stýrði báðum.
+   Nú stýrir fill-opacity/stroke-opacity þeim sitt í hvoru lagi: gagnsærri
+   flötur, þykk og skýr útlína. non-scaling-stroke heldur þykktinni jafnri
+   óháð því hvað myndin er stór á skjánum. */
 .facade__svg polygon{
-  fill:#0D710A;stroke:rgba(13,113,10,.9);stroke-width:1.2;
+  fill:#0D710A;fill-opacity:.30;
+  stroke:#0D710A;stroke-opacity:.95;stroke-width:3.4;vector-effect:non-scaling-stroke;
   opacity:0;cursor:pointer;transition:opacity .3s var(--ease);paint-order:stroke;
 }
-.facade__svg polygon:hover,.facade__svg polygon.on{opacity:.58}
-.facade.dim .facade__svg polygon.match{opacity:.34}
+.facade__svg polygon:hover,.facade__svg polygon.on{opacity:1}
+.facade.dim .facade__svg polygon.match{opacity:.55}
 .facade.dim .facade__svg polygon.match:hover{opacity:1}
 /* ?mask — handvirkur útlínu-ritill fyrir framhlið */
 body.maskedit .facade__sides,body.maskedit .select__head{display:none!important}
@@ -1022,5 +1027,8 @@ html.ritill-virkur .shero{min-height:42vh;padding-bottom:clamp(24px,4vh,48px)}
 html.ritill-virkur .shero__title{font-size:clamp(1.6rem,3.4vw,2.6rem)}
 html.ritill-virkur .shero__btn{display:none}
 /* stakt svæði (bílakjallarinn í heild) — sami stíll og íbúðasvæðin en hlutlaus */
-.facade__zone--stakt{fill:rgba(255,255,255,.14);stroke:rgba(255,255,255,.85)}
-.facade__zone--stakt:hover{fill:rgba(170,135,101,.34);cursor:pointer}
+/* Stakt svæði (bílakjallarinn) — sami græni og íbúðirnar.
+   Sérhæfni verður að vera .facade__svg polygon.<klasi>, annars vann
+   base-reglan hér að ofan og þessi hafði engin áhrif. */
+.facade__svg polygon.facade__zone--stakt{fill-opacity:.26;stroke-width:4}
+.facade__svg polygon.facade__zone--stakt:hover{fill-opacity:.38}
