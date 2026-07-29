@@ -431,6 +431,22 @@ body.is-chapter .lang{color:#262522}
 .swipe__clip{position:absolute;inset:0;overflow:hidden;width:var(--p)}
 .swipe__clip img{width:100vw;max-width:none}
 /* myndin til hægri er klippt eftir stöðu sleðans; sú vinstri liggur undir */
+/* Án merkinga veit enginn hvor helmingurinn er hvað. Þau sitja hvort í sínu
+   horni svo handfangið gangi framhjá þeim án þess að rekast á. */
+.swipe__merki{position:absolute;top:.9rem;z-index:2;pointer-events:none;
+  font:600 .6rem/1 'DM Sans',sans-serif;letter-spacing:.18em;text-transform:uppercase;
+  color:#fff;background:rgba(20,19,17,.52);border-radius:2px;padding:.42rem .62rem}
+.swipe__merki--adur{left:.9rem}
+.swipe__merki--eftir{right:.9rem}
+.swipe figcaption{display:flex;gap:.7rem;margin:.75rem auto 0;max-width:1500px;
+  padding:0 var(--gut);font:400 .76rem/1.5 'DM Sans',sans-serif;color:var(--dim)}
+.swipe figcaption em{flex:none;order:3;margin-left:auto;font-style:normal;
+  font:600 .56rem/1.9 'DM Sans',sans-serif;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--faint);border:1px solid var(--hair);border-radius:2px;padding:0 .5rem;
+  align-self:center;white-space:nowrap}
+.swipe figcaption b{flex:none;font:600 .6rem/1.9 'DM Sans',sans-serif;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--acc)}
+@media (max-width:560px){.swipe figcaption em{order:0;margin-left:0}}
 .swipe__handfang{position:absolute;top:0;bottom:0;left:var(--p);width:2px;
   background:#fff;box-shadow:0 0 0 1px rgba(38,37,34,.18);transform:translateX(-1px);
   pointer-events:none}
