@@ -377,7 +377,10 @@ body.is-chapter .lang{color:#262522}
 .chap--cover .chap__open{
   display:block;position:relative;min-height:100svh;
   padding:0;margin:0;
-  width:100vw;margin-left:calc(50% - 50vw);
+  /* Opnan er nú BEINT BARN .chap (ekki inni í .chap__wrap sem hefur
+     max-width og padding), svo hún fyllir breiddina án 100vw-brellu — sú
+     taldi lóðréttu skrunstikuna með og gaf 8 px lárétt yfirflæði. */
+  width:100%;
   overflow:hidden;background:#262522;
 }
 .chap--cover .chap__cover{position:absolute;inset:0;z-index:0}
