@@ -47,8 +47,15 @@
   // Bakgrunnur ritilsins = NÁKVÆMLEGA sama mynd og veljarinn sýnir (bakhliðin),
   // lesin úr CSS svo hún fylgi sjálfkrafa ef myndinni er skipt út.
   function facadeImageUrl() {
+    // Myndirnar eru <img class="facade__img"> hnútar (voru áður CSS-bakgrunnur).
+    // Lesum þá virku — annars féll þetta á harðkóðaða BAKHLIÐINA og ritillinn
+    // sýndi hana þótt verið væri að ritstýra framhliðinni.
+    const v = (window.VB.VIEWS || []).find((x) => x.id === virktView);
+    if (v && v.img) return v.img;
+    const on = document.querySelector('.facade__img.is-on[src]');
+    if (on) return on.getAttribute('src');
     const el = document.getElementById('facade');
-    const bg = getComputedStyle(el).backgroundImage || '';
+    const bg = el ? (getComputedStyle(el).backgroundImage || '') : '';
     const m = bg.match(/url\(["']?(.*?)["']?\)/);
     return m ? m[1] : 'assets/renders/foto-bak.webp';
   }
