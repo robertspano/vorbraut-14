@@ -32,12 +32,48 @@
   const scroller = document.scrollingElement || document.documentElement;
   const nav = $('#nav');
 
+  // Valmyndin var snert í HVERJU skrun-eventi þótt ekkert breyttist. Hún er
+  // position:fixed, svo hver stílbreyting á henni kostar endurteikningu.
+  // Nú er aðeins skrifað þegar ástandið breytist í raun.
+  // (Ekki rAF-þröttlun: rAF er sett á pásu í földum flipum og valmyndin sæti
+  //  þá eftir í röngu ástandi þegar maður kæmi til baka.)
+  let erSolid = null, erScrolled = null;
   function onScroll() {
-    nav.classList.toggle('nav--solid', scroller.scrollTop > window.innerHeight * 0.72);
-    nav.classList.toggle('nav--scrolled', scroller.scrollTop > 8);
+    const y = scroller.scrollTop;
+    const solid = y > window.innerHeight * 0.72, scrolled = y > 8;
+    if (solid !== erSolid) { nav.classList.toggle('nav--solid', solid); erSolid = solid; }
+    if (scrolled !== erScrolled) { nav.classList.toggle('nav--scrolled', scrolled); erScrolled = scrolled; }
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  /* Hero-myndbandið hélt áfram að spila eftir að það var skrunað út úr
+     glugganum. 1080p-afkóðun í bakgrunni stelur nákvæmlega þeim römmum sem
+     skrunið þarf — það var hökktið. Það heldur sér í hvíld utan gluggans.
+     IntersectionObserver er settur á pásu í földum flipum, svo skrunið
+     staðfestir stöðuna líka. */
+  (function heroHvild() {
+    const v = document.querySelector('.shero__video');
+    if (!v) return;
+    const setja = (synilegt) => {
+      if (synilegt && v.paused) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+      else if (!synilegt && !v.paused) { v.pause(); }
+    };
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((es) => { es.forEach((e) => setja(e.isIntersecting)); },
+        { rootMargin: '80px 0px' }).observe(v);
+    }
+    // Varaleið ef IntersectionObserver liggur niðri. Heroið liggur efst á
+    // síðunni, svo skrunstaðan ein dugar — engin getBoundingClientRect í
+    // miðju skruni (hún þvingar fram umbrot í hverju einasta eventi).
+    let heroHaed = 0;
+    const maela = () => { heroHaed = (v.closest('.shero') || v).offsetHeight || window.innerHeight; };
+    maela();
+    window.addEventListener('resize', maela, { passive: true });
+    const athuga = () => { setja(scroller.scrollTop < heroHaed + 80); };
+    window.addEventListener('scroll', athuga, { passive: true });
+    athuga();
+  })();
 
   // Animated section jump via rAF. Native smooth scrolling is unreliable with
   // `scroll-snap-type:mandatory` (and disabled under reduced-motion), so we

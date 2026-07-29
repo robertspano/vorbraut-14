@@ -39,23 +39,31 @@
   var film = document.querySelector('.chap__film');
   if (film) {
     var start = function () {
-      if (film.dataset.on) return;
-      film.dataset.on = '1';
-      film.preload = 'auto';
-      film.load();
+      if (!film.dataset.on) {
+        film.dataset.on = '1';
+        film.preload = 'auto';
+        film.load();
+      }
+      if (!film.paused) return;
       var p = film.play();
       if (p && p.catch) p.catch(function () {});   // browser hafnar sjálfspilun -> poster stendur
     };
+    /* Myndbandið spilar aðeins meðan það sést. Áður hélt það áfram að afkóða
+       eftir að skrunað var framhjá — það stelur römmum frá skruninu sjálfu. */
     var fio = new IntersectionObserver(function (es) {
-      es.forEach(function (en) { if (en.isIntersecting) { start(); fio.disconnect(); } });
+      es.forEach(function (en) {
+        if (en.isIntersecting) { start(); }
+        else if (film.dataset.on && !film.paused) { film.pause(); }
+      });
     }, { rootMargin: '200px 0px' });
     fio.observe(film);
     /* varaleið: sums staðar er IntersectionObserver settur á pásu (falinn flipi,
        sparnaðarhamur). Skrunhandfangið er alltaf keyrt, svo það sér um afganginn. */
     var nearby = function () {
-      if (film.dataset.on) { window.removeEventListener('scroll', nearby); return; }
       var r = film.getBoundingClientRect();
-      if (r.top < window.innerHeight + 200 && r.bottom > -200) { start(); fio.disconnect(); }
+      var naerri = r.top < window.innerHeight + 200 && r.bottom > -200;
+      if (naerri) start();
+      else if (film.dataset.on && !film.paused) film.pause();
     };
     window.addEventListener('scroll', nearby, { passive: true });
     window.addEventListener('resize', nearby, { passive: true });
