@@ -37,6 +37,13 @@
   const round = (n) => Math.round(n);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   let zones = JSON.parse(JSON.stringify(VB.FACADE[SETT]));
+  // henda öllu sem á ekki heima á þessu sjónarhorni (t.d. gamlar íbúðavistanir
+  // á bílakjallaranum) svo byrjunarreitirnir hér að neðan taki við
+  if (vSkil && vSkil.zoneList) {
+    Object.keys(zones).forEach((k) => {
+      if (vSkil.zoneList.indexOf(k) < 0) delete zones[k];
+    });
+  }
   // Nýtt sjónarhorn byrjar tómt. Búum til byrjunarreiti — fjórar raðir eftir
   // hæðum — svo það sé eitthvað til að draga í stað auðs skjás.
   if (!Object.keys(zones).length) {

@@ -222,8 +222,19 @@ const SKILALYSING = null;
     var g = localStorage.getItem('vb-facadezones-' + v);
     if (!g) return;
     var p = JSON.parse(g);
-    if (p && typeof p === 'object' && Object.keys(p).length) {
+    if (!p || typeof p !== 'object') return;
+    // Sjónarhorn með eigin svæði (t.d. bílakjallarinn) má EKKI erfa gamlar
+    // íbúðavistanir úr vafranum — henda öllu sem á ekki heima þar.
+    var skil = (VIEWS || []).find(function (x) { return x.id === v; });
+    if (skil && skil.zoneList) {
+      Object.keys(p).forEach(function (k) {
+        if (skil.zoneList.indexOf(k) < 0) delete p[k];
+      });
+    }
+    if (Object.keys(p).length) {
       FACADE['zones' + v.charAt(0).toUpperCase() + v.slice(1)] = p;
+    } else {
+      localStorage.removeItem('vb-facadezones-' + v);
     }
   } catch (e) {}
 });
