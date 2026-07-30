@@ -1003,28 +1003,31 @@
       const boxEl = $('#avKjallari');
       const flipar = $$('.aptview__flipi', avEl);
       if (!boxEl || !flipar.length) return;
-      // Kjallarinn liggur FYRIR NEÐAN grunnmyndina en er falinn þar til ýtt er
-      // á takkann — þá opnast hann og síðan skrunar mjúklega niður á hann.
-      // (CSS: .aptview__plan img hafði display:block sem sló út [hidden].)
+      // BÁÐAR teikningarnar standa alltaf — kjallarinn liggur sjálfgefið fyrir
+      // neðan íbúðargrunnmyndina. Takkarnir fela því ekkert lengur; þeir eru
+      // flýtileið sem skrunar á milli þeirra.
+      boxEl.hidden = false;
       const skrunaAd = (el) => {
         if (window.VB.stopScroll) window.VB.stopScroll();   // stöðva sjálfvirka skrunið
         const NAV = nav ? nav.offsetHeight : 84;
         const mark = scroller.scrollTop + el.getBoundingClientRect().top - NAV - 20;
         goToSection(Math.max(0, mark));
       };
-      const synaFlipa = (hvad, skruna) => {
+      const merkjaFlipa = (hvad) => {
         flipar.forEach((b) => {
           const on = b.dataset.flipi === hvad;
           b.classList.toggle('is-on', on);
           b.setAttribute('aria-selected', on ? 'true' : 'false');
         });
-        boxEl.hidden = hvad !== 'kjallari';                 // grunnmyndin stendur alltaf
-        if (!skruna) return;
-        // rendera fyrst, skruna svo — annars mælum við ranga stöðu
-        setTimeout(() => skrunaAd(hvad === 'kjallari' ? boxEl : plan), 30);
       };
-      flipar.forEach((b) => { b.onclick = () => synaFlipa(b.dataset.flipi, true); });
-      synaFlipa('ibud');
+      flipar.forEach((b) => {
+        b.onclick = () => {
+          const hvad = b.dataset.flipi;
+          merkjaFlipa(hvad);
+          skrunaAd(hvad === 'kjallari' ? boxEl : plan);
+        };
+      });
+      merkjaFlipa('ibud');
 
     })();
 
