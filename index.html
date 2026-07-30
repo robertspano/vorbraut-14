@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;600&family=Inter:wght@300;400;500;600&family=Zilla+Slab:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=314" />
+  <link rel="stylesheet" href="css/styles.css?v=315" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
 <body class="home">
@@ -65,8 +65,8 @@
     <section class="shero" id="hero">
       <div class="shero__bg" aria-hidden="true">
         <video class="shero__video" autoplay muted loop playsinline preload="metadata"
-               poster="assets/video/hero-poster.jpg?m=4">
-          <source src="assets/video/hero.mp4?m=4" type="video/mp4">
+               poster="assets/video/hero-poster.jpg?m=5">
+          <source src="assets/video/hero.mp4?m=5" type="video/mp4">
         </video>
         <span class="shero__skuggi"></span>
       </div>
@@ -321,11 +321,11 @@
     <img id="planZoomImg" decoding="async" src="" alt="" />
   </div>
 
-  <script defer src="js/data.js?v=314"></script>
-  <script defer src="js/content.js?v=314"></script>
-  <script defer src="js/supabase-config.js?v=314"></script>
-  <script defer src="js/vbsupa.js?v=314"></script>
-  <script defer src="js/app.js?v=314"></script>
+  <script defer src="js/data.js?v=315"></script>
+  <script defer src="js/content.js?v=315"></script>
+  <script defer src="js/supabase-config.js?v=315"></script>
+  <script defer src="js/vbsupa.js?v=315"></script>
+  <script defer src="js/app.js?v=315"></script>
   <script>
   /* forsíðuhnappar (áður í cine.js): „Skoða íbúðir“ → framhlið · footer-logo → toppur */
   (function(){
@@ -356,7 +356,7 @@
     [['edit','calibrate'],['planedit','planedit'],['mask','maskedit'],['conedit','conedit'],['kjedit','kjedit']].forEach(function(p){
       if(new RegExp('[?&]'+p[0]+'(?:[=&]|$)').test(location.search)){
         virkur=true;
-        var s=document.createElement('script');s.src='js/'+p[1]+'.js?v=314';document.body.appendChild(s);
+        var s=document.createElement('script');s.src='js/'+p[1]+'.js?v=315';document.body.appendChild(s);
       }
     });
     if(!virkur) return;
