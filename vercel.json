@@ -23,17 +23,17 @@
     {
       "source": "/index.html",
       "destination": "/",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/utirymi.html",
       "destination": "/utsyni.html",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/index",
       "destination": "/",
-      "permanent": true
+      "statusCode": 301
     }
   ]
 }

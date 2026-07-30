@@ -2,11 +2,10 @@
 User-agent: *
 Allow: /
 
-# Stjórnborð og innri verkfæri eiga ekkert erindi í leitarvélar.
-Disallow: /admin
-Disallow: /admin.html
-Disallow: /floorplans.html
-Disallow: /ibud-3d.html
+# ATH: stjórnborðið og innri verkfærin (admin, floorplans, ibud-3d) eru EKKI
+# lokuð hér heldur bera noindex. Disallow hefði verið verra: leitarvél sem má
+# ekki sækja síðuna SÉR ekki noindex-merkið og getur þá skráð slóðina eina og
+# sér. Skrið er leyft svo merkið sjáist og síðurnar falli örugglega út.
 Disallow: /api/
 
 Sitemap: https://vorbraut14.is/sitemap.xml
