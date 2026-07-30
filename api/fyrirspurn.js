@@ -39,7 +39,21 @@ const flotta = (s) =>
   s.replace(/[&<>"']/g, (c) =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
+/* Forskoðunarvefurinn (GitHub Pages) keyrir engin þjónustuföll og notar því
+   þetta fall yfir lénamörk. Aðeins hann fær CORS-heimild — enginn annar. */
+const LEYFDUR_UPPRUNI = 'https://robertspano.github.io';
+
 module.exports = async function handler(req, res) {
+  if (req.headers.origin === LEYFDUR_UPPRUNI) {
+    res.setHeader('Access-Control-Allow-Origin', LEYFDUR_UPPRUNI);
+    res.setHeader('Vary', 'Origin');
+  }
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Max-Age', '86400');
+    return res.status(204).end();
+  }
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ ok: false, villa: 'adferd' });

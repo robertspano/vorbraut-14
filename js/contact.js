@@ -94,7 +94,11 @@
       segja('ct.sending', 'bid');
 
       try {
-        const svar = await fetch('/api/fyrirspurn', {
+        // Forskoðunin (GitHub Pages) á sér ekkert þjónustufall — hún notar
+        // fallið á framleiðslunni, sem hleypir aðeins henni að (CORS).
+        const API = location.hostname.endsWith('github.io')
+          ? 'https://www.vorbraut14.is/api/fyrirspurn' : '/api/fyrirspurn';
+        const svar = await fetch(API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           // Íbúðin fer með sem eigið gildi. Væri hún aðeins í skilaboðatextanum
