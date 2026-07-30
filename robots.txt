@@ -1,0 +1,12 @@
+# Vorbraut 14 — https://vorbraut14.is
+User-agent: *
+Allow: /
+
+# Stjórnborð og innri verkfæri eiga ekkert erindi í leitarvélar.
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /floorplans.html
+Disallow: /ibud-3d.html
+Disallow: /api/
+
+Sitemap: https://vorbraut14.is/sitemap.xml
