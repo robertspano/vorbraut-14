@@ -1,3 +1,5 @@
+# ATH: scripts/ má EKKI útiloka — scripts/sitemap.mjs er keyrt í byggingunni
+# (package.json -> vercel-build). tools/ var útilokað og felldi bygginguna.
 tools
 serve.py
 *.py

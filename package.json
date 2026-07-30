@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Söluvefur Vorbrautar 14. Static — engin þýðing, aðeins sitemap/robots smíðuð í hverri birtingu.",
   "scripts": {
-    "vercel-build": "node tools/sitemap.mjs",
-    "build": "node tools/sitemap.mjs"
+    "vercel-build": "node scripts/sitemap.mjs",
+    "build": "node scripts/sitemap.mjs"
   }
 }
