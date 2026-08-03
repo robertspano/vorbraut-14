@@ -53,10 +53,49 @@
   (function heroHvild() {
     const v = document.querySelector('.shero__video');
     if (!v) return;
+
+    /* iOS spilar EKKI sjálfkrafa nema myndbandið sé hljóðlaust og inline —
+       og eigindin ein duga ekki alltaf, Safari les þau stundum of seint.
+       Því eru þau líka sett sem eiginleikar áður en reynt er að spila. */
+    v.muted = true;
+    v.defaultMuted = true;
+    v.playsInline = true;
+    v.setAttribute('muted', '');
+
+    let gafst = false;                 // sjálfspilun hafnað -> bíðum eftir snertingu
+    const spila = () => {
+      const p = v.play();
+      if (p && p.catch) p.catch(() => { gafst = true; bidaEftirSnertingu(); });
+    };
+    /* Hafni vafrinn sjálfspilun (t.d. iOS í orkusparnaði) þarf notanda-atburð.
+       Fyrsta snerting HVAR SEM ER á síðunni dugar — gesturinn þarf ekki að
+       hitta á myndbandið, og engum hnappi er bætt við. */
+    let bidur = false;
+    function bidaEftirSnertingu() {
+      if (bidur) return;
+      bidur = true;
+      const kveikja = () => {
+        const p = v.play();
+        if (p && p.then) p.then(() => { gafst = false; }).catch(() => {});
+        ['touchstart', 'pointerdown', 'click', 'scroll'].forEach((e) =>
+          window.removeEventListener(e, kveikja));
+        bidur = false;
+      };
+      ['touchstart', 'pointerdown', 'click', 'scroll'].forEach((e) =>
+        window.addEventListener(e, kveikja, { once: true, passive: true }));
+    }
+
     const setja = (synilegt) => {
-      if (synilegt && v.paused) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+      if (synilegt && v.paused) spila();
       else if (!synilegt && !v.paused) { v.pause(); }
     };
+    // Safari byrjar stundum fyrst þegar nóg er komið í biðminni.
+    ['loadeddata', 'canplay'].forEach((e) =>
+      v.addEventListener(e, () => { if (v.paused) spila(); }, { once: true }));
+    // Þegar komið er til baka í flipann reynum við aftur.
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && v.paused && !gafst) spila();
+    });
     if ('IntersectionObserver' in window) {
       new IntersectionObserver((es) => { es.forEach((e) => setja(e.isIntersecting)); },
         { rootMargin: '80px 0px' }).observe(v);
