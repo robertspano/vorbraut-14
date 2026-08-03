@@ -190,11 +190,17 @@ body.is-page .nav--solid{background:rgba(11,12,13,.86);
 /* iOS leggur SINN EIGIN spilunarhnapp ofan á myndband sem er ekki byrjað —
    líka þótt controls sé ekki sett. Heroið er skreyting, ekki spilari, svo
    hann og öll önnur stýring eru falin. */
-.shero__video::-webkit-media-controls,
-.shero__video::-webkit-media-controls-panel,
-.shero__video::-webkit-media-controls-play-button,
-.shero__video::-webkit-media-controls-start-playback-button{
-  display:none!important;-webkit-appearance:none;opacity:0;pointer-events:none}
+/* Veljarinn þarf að vera á VIDEO sjálfu, ekki á klasa: stýringarnar búa í
+   shadow-DOM og WebKit tengir klasaveljara ekki alltaf við þær. */
+video::-webkit-media-controls,
+video::-webkit-media-controls-enclosure,
+video::-webkit-media-controls-panel,
+video::-webkit-media-controls-panel-container,
+video::-webkit-media-controls-overlay-play-button,
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-start-playback-button{
+  display:none!important;-webkit-appearance:none!important;
+  opacity:0!important;pointer-events:none!important;width:0!important;height:0!important}
 /* hógvær halli svo hvíta letrið haldist læsilegt hvað sem myndbandið sýnir */
 .shero__skuggi{position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(20,19,17,.34) 0%,rgba(20,19,17,.10) 40%,

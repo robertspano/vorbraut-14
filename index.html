@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://xaxxpffrkmuithwmvswq.supabase.co" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;600&family=Inter:wght@300;400;500;600&family=Zilla+Slab:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=317" />
+  <link rel="stylesheet" href="css/styles.css?v=318" />
   <script>(function(){try{var u=new URL(location.href),d=0,junk=["fbclid","gclid","gbraid","wbraid","msclkid","mc_eid","mc_cid","igshid","twclid","yclid","_openstat"];junk.forEach(function(k){if(u.searchParams.has(k)){u.searchParams.delete(k);d=1}});Array.from(u.searchParams.keys()).forEach(function(k){if(/^utm_/i.test(k)){u.searchParams.delete(k);d=1}});if(d)history.replaceState(null,"",u.pathname+(u.searchParams.toString()?"?"+u.searchParams.toString():"")+u.hash)}catch(e){}})();</script>
 </head>
 <body class="home">
@@ -65,11 +65,29 @@
     <!-- ================= HERO — skipt skjámynd: texti vinstra, mynd hægra ================= -->
     <section class="shero" id="hero">
       <div class="shero__bg" aria-hidden="true">
-        <video class="shero__video" autoplay muted loop playsinline webkit-playsinline
-               disablepictureinpicture preload="metadata" tabindex="-1"
-               poster="assets/video/hero-poster.jpg?m=5">
-          <source src="assets/video/hero.mp4?m=5" type="video/mp4">
-        </video>
+        <video id="heroVideo" class="shero__video" autoplay muted loop playsinline
+               webkit-playsinline disablepictureinpicture preload="auto" tabindex="-1"></video>
+        <script>
+        /* Sími fær ÖNNUR og MUN LÉTTARI skrá (2,1 MB á móti 11,7). iOS sýnir
+           sinn eigin spilunarhnapp þegar sjálfspilun tekst ekki, og stór skrá
+           á farsímatengingu nær ekki að fara í gang í tæka tíð — þá birtist
+           hnappurinn. Létt skrá byrjar strax og hnappurinn kemur aldrei.
+           Sett hér inline, EKKI með <source media>: Chrome hunsar media-eigindið
+           og hefði valið símaskrána á tölvu. Keyrt strax á eftir hnútnum svo
+           vafrinn sæki aldrei ranga skrá. */
+        (function () {
+          var v = document.getElementById('heroVideo');
+          /* pointer:coarse nær ÖLLUM snertitækjum óháð snúningi — sími í
+             landslagi getur verið 932 px breiður og hefði annars fengið
+             stóru skrána. max-width nær líka mjóum vafraglugga á tölvu. */
+          var simi = matchMedia('(pointer:coarse)').matches ||
+                     matchMedia('(max-width:900px)').matches;
+          v.poster = simi ? 'assets/video/hero-poster-simi.jpg?m=1'
+                          : 'assets/video/hero-poster.jpg?m=5';
+          v.src    = simi ? 'assets/video/hero-simi.mp4?m=1'
+                          : 'assets/video/hero.mp4?m=5';
+        })();
+        </script>
         <span class="shero__skuggi"></span>
       </div>
       <div class="shero__text">
@@ -323,11 +341,11 @@
     <img id="planZoomImg" decoding="async" src="" alt="" />
   </div>
 
-  <script defer src="js/data.js?v=317"></script>
-  <script defer src="js/content.js?v=317"></script>
-  <script defer src="js/supabase-config.js?v=317"></script>
-  <script defer src="js/vbsupa.js?v=317"></script>
-  <script defer src="js/app.js?v=317"></script>
+  <script defer src="js/data.js?v=318"></script>
+  <script defer src="js/content.js?v=318"></script>
+  <script defer src="js/supabase-config.js?v=318"></script>
+  <script defer src="js/vbsupa.js?v=318"></script>
+  <script defer src="js/app.js?v=318"></script>
   <script>
   /* forsíðuhnappar (áður í cine.js): „Skoða íbúðir“ → framhlið · footer-logo → toppur */
   (function(){
@@ -358,7 +376,7 @@
     [['edit','calibrate'],['planedit','planedit'],['mask','maskedit'],['conedit','conedit'],['kjedit','kjedit']].forEach(function(p){
       if(new RegExp('[?&]'+p[0]+'(?:[=&]|$)').test(location.search)){
         virkur=true;
-        var s=document.createElement('script');s.src='js/'+p[1]+'.js?v=317';document.body.appendChild(s);
+        var s=document.createElement('script');s.src='js/'+p[1]+'.js?v=318';document.body.appendChild(s);
       }
     });
     if(!virkur) return;
