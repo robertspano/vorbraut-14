@@ -948,8 +948,29 @@ body.is-page{background:#4E443A}
      festur við hægri brún, svo "Bakhlið" (og "Framhlið" á mjórri símum) lenti
      utan skjás og varð ósmellanlegt. Nú spannar hópurinn breidd myndarinnar
      og brýtur sig í tvær raðir ef hann kemst ekki fyrir í einni. */
-  .facade__sides{top:.7rem;right:.7rem;left:.7rem;flex-wrap:wrap;justify-content:flex-end;gap:.4rem}
-  .facade__sidebtn{font-size:.72rem;letter-spacing:.03em;padding:.62rem .82rem;min-height:40px}
+  /* SÍMI: myndin var 16:9 — aðeins 219 px há á 390 px skjá — og takkarnir lágu
+     OFAN Á henni, beint yfir þakinu. Nú fær myndin 78vw hæð (39% hærri) og
+     takkarnir sína eigin rönd FYRIR NEÐAN hana, svo þeir hylja ekkert.
+
+     78vw er ekki tilviljun: með 'slice' klippast hliðarnar, og smellisvæðin
+     ná frá x=271 til x=1002 í 1280-breiðu kerfi. Við þessa hæð sést 924 px
+     gluggi um miðjuna (178-1102), svo öll svæði haldast innan myndar. Hærri
+     mynd myndi byrja að klippa af þeim. */
+  .facade{aspect-ratio:auto;height:calc(78vw + 3.5rem);background-image:none}
+  /* Hæðin verður að vera GEFIN. height:100% slær út 'bottom', og height:auto
+     dugar ekki heldur: <img> og <svg> eru replaced elements og falla þá á
+     eigin hlutföll (219 px í stað 304). calc er eina örugga svarið. */
+  .facade__img,.facade>img,.facade__svg{top:0;bottom:auto;height:calc(100% - 3.5rem)}
+  .facade__tip{bottom:3.5rem}
+  .facade__sides{top:auto;left:0;right:0;bottom:0;height:3.5rem;
+    display:flex;flex-wrap:nowrap;justify-content:center;align-items:stretch;
+    gap:.3rem;padding:.4rem .5rem;background:#fff}
+  .facade__sidebtn{flex:1 1 0;min-width:0;justify-content:center;text-align:center;
+    font-size:.64rem;letter-spacing:.02em;padding:.4rem .15rem;min-height:0;
+    border-radius:6px;background:#EFEDEA;border-color:#E8E7E8;color:#6b665f;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .facade__sidebtn.is-on{background:#262522;border-color:#262522;color:#fff}
+  .facade__hint{bottom:calc(3.5rem + 14px)}
   .select__fbtn{width:44px;height:44px}     /* snertimörk ≥44px */
 }
 /* ===== Story-sections á síma: stafla mynd yfir texta, styttri immersive hetjur ===== */
