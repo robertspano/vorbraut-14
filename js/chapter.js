@@ -93,15 +93,8 @@
       g.addEventListener('mouseleave', function () { lit(nr, false); });
     });
 
-    /* sími: kortið rúllar til hliðar — byrja á Vorbraut 14, ekki á jaðrinum */
-    var ramma = kort.querySelector('.kort__mynd');
-    var midja = function () {
-      if (ramma.scrollWidth > ramma.clientWidth) {
-        ramma.scrollLeft = (ramma.scrollWidth - ramma.clientWidth) / 2;
-      }
-    };
-    midja();
-    window.addEventListener('resize', midja, { passive: true });
+    /* Kortið rúllar ekki lengur til hliðar á síma — það sést allt í einu.
+       Miðjunar-kóðinn sem var hér er því óþarfur og farinn. */
   }
 
   /* --- bílakjallari: strikuðu stæðismerkin ofan á grunnmyndina -------------

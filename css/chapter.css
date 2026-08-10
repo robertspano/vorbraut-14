@@ -343,7 +343,8 @@ body.is-chapter .lang{color:#262522}
    sér ekki — punkturinn heldur r-eigindinu, 19). Stækkunin er því gerð með
    transform, sem virkar alls staðar og er auk þess samsett (engin endurmótun).
    Hringurinn situr í (0,0) — translate er á <g> — svo hann stækkar um miðju. */
-.kort__m circle{transform-box:fill-box;transform-origin:center}
+.kort__m circle,.kort__m text,.kort__heim circle,.kort__heim text,
+.kort__hringmerki rect,.kort__hringmerki text{transform-box:fill-box;transform-origin:center}
 .kort__m.is-on circle{fill:var(--acc);stroke:#fff;stroke-width:5px;paint-order:stroke;
   transform:scale(1.62)}
 .kort__m.is-on text{fill:#fff;font-size:26px;transform:translateY(2.5px)}
@@ -387,11 +388,24 @@ body.is-chapter .lang{color:#262522}
 /* Sími: kortið skreppur annars svo mikið saman að tölurnar á merkjunum
    verða ólæsilegar (4 px). Það heldur læsilegri stærð og rúllar til hliðar. */
 @media (max-width:760px){
-  .kort__mynd{overflow-x:auto;-webkit-overflow-scrolling:touch;
-    scrollbar-width:thin;scroll-snap-type:x proximity}
-  .kort__svg{min-width:740px;scroll-snap-align:center}
-  .kort__mynd::-webkit-scrollbar{height:6px}
-  .kort__mynd::-webkit-scrollbar-thumb{background:#D8D2C8;border-radius:3px}
+  /* Kortið var neytt í 740 px breidd og rúllaði til hliðar — á 390 px skjá
+     sást þá aðeins miðjan og það leit út fyrir að vera þysjað inn. Núna sést
+     ALLT kortið. Á móti eru merkin stækkuð svo þau hverfi ekki við að minnka;
+     þau eru stillt hóflega (1,5x) því landfræðileg staðsetning ræður þeim og
+     of stór merki myndu skarast. Nöfnin eru hvort eð er í skránni við hliðina
+     og snerting þar lýsir upp rétta punktinn. */
+  .kort__mynd{overflow:hidden}
+  .kort__svg{min-width:0;width:100%}
+  .kort__m circle{transform:scale(1.5)}
+  .kort__m text{font-size:30px;transform:translateY(4px)}
+  .kort__m.is-on circle{transform:scale(2.2)}
+  .kort__m.is-on text{font-size:38px;transform:translateY(6px)}
+  .kort__heim circle{transform:scale(1.5)}
+  .kort__heim text{font-size:30px;transform:translateY(-10px)}
+  .kort__hringmerki rect{transform:scale(1.45)}
+  .kort__hringmerki text{font-size:29px;transform:translateY(4px)}
+  .kort__hringur{stroke-width:5}
+  .kort__leggur{stroke-width:2.4}
 }
 @media (max-width:560px){
   .kort__skra{columns:1}
@@ -399,7 +413,7 @@ body.is-chapter .lang{color:#262522}
 }
 .kort__swipe{display:none;margin:.7rem 0 0;font:500 .74rem/1.4 'DM Sans',sans-serif;
   letter-spacing:.04em;color:var(--faint);text-align:center}
-@media (max-width:760px){.kort__swipe{display:block}}
+/* .kort__swipe er ekki lengur sýnt — kortið rúllar ekki til hliðar. */
 
 /* ==========================================================================
    HEILSKJÁS-OPNA — mynd eða myndband fyllir skjáinn, hvítur texti ofan á.
