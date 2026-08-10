@@ -93,8 +93,76 @@
       g.addEventListener('mouseleave', function () { lit(nr, false); });
     });
 
-    /* Kortið rúllar ekki lengur til hliðar á síma — það sést allt í einu.
-       Miðjunar-kóðinn sem var hér er því óþarfur og farinn. */
+    /* --- nafnamiði: smellur/snerting á doppu segir hvað hún er ------------
+       Á síma er engin sveimun, svo tölurnar einar sögðu ekkert nema maður
+       leitaði þær uppi í skránni. Nú birtist nafnið beint á kortinu. */
+    var mynd = kort.querySelector('.kort__mynd');
+    var midi = document.createElement('div');
+    midi.className = 'kort__midi';
+    midi.hidden = true;
+    if (mynd) { mynd.style.position = 'relative'; mynd.appendChild(midi); }
+
+    var virkurNr = null;
+    function feliMida() {
+      if (virkurNr === null) return;
+      lit(virkurNr, false);
+      virkurNr = null;
+      midi.hidden = true;
+    }
+    function synaMida(nr) {
+      var g = mrk[nr];
+      var li = kort.querySelector('.kort__flokkur li[data-nr="' + nr + '"]');
+      if (!g || !li || !mynd) return;
+      if (virkurNr === nr) { feliMida(); return; }      // annar smellur lokar
+      if (virkurNr !== null) lit(virkurNr, false);
+
+      var heiti = li.querySelector('span');
+      var fjarlaegd = li.querySelector('b');
+      midi.innerHTML = '';
+      var b = document.createElement('b');
+      b.textContent = heiti ? heiti.textContent : nr;
+      midi.appendChild(b);
+      if (fjarlaegd) {
+        var sm = document.createElement('small');
+        sm.textContent = fjarlaegd.textContent;
+        midi.appendChild(sm);
+      }
+      midi.hidden = false;
+
+      /* Staðsetning er reiknuð ÚT FRÁ RAUNSTÆRÐ á skjánum, ekki úr SVG-hnitum:
+         kortið er 'width:100%' og kvarðinn því breytilegur. */
+      var mr = mynd.getBoundingClientRect();
+      var gr = g.getBoundingClientRect();
+      var mid = gr.left - mr.left + gr.width / 2;
+      var ofan = gr.top - mr.top;
+      midi.style.left = '0px'; midi.style.top = '0px';       // mæla óþvingað
+      var br = midi.offsetWidth, ha = midi.offsetHeight;
+      var x = Math.max(6, Math.min(mid - br / 2, mr.width - br - 6));
+      var y = ofan - ha - 10;
+      var nedan = y < 4;                                     // ekki pláss uppi -> undir
+      if (nedan) y = ofan + gr.height + 10;
+      midi.classList.toggle('kort__midi--nedan', nedan);
+      midi.style.left = Math.round(x) + 'px';
+      midi.style.top = Math.round(y) + 'px';
+      midi.style.setProperty('--odd', Math.round(mid - x) + 'px');
+
+      lit(nr, true);
+      virkurNr = nr;
+    }
+
+    Object.keys(mrk).forEach(function (nr) {
+      var g = mrk[nr];
+      g.style.cursor = 'pointer';
+      g.addEventListener('click', function (e) { e.stopPropagation(); synaMida(nr); });
+    });
+    // smellur á lista opnar sama miða — gagnlegt á síma þar sem ekkert sveim er
+    lis.forEach(function (li) {
+      li.addEventListener('click', function (e) { e.stopPropagation(); synaMida(li.dataset.nr); });
+      li.style.cursor = 'pointer';
+    });
+    document.addEventListener('click', feliMida);
+    window.addEventListener('resize', feliMida, { passive: true });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') feliMida(); });
   }
 
   /* --- bílakjallari: strikuðu stæðismerkin ofan á grunnmyndina -------------

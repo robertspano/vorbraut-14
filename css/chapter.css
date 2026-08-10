@@ -530,3 +530,25 @@ body.is-chapter .lang{color:#262522}
 .kjkafli__svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .kjkafli__svg path{fill:none;stroke:rgba(38,37,34,.45);stroke-width:2;stroke-dasharray:10 8;
   stroke-linejoin:round;vector-effect:non-scaling-stroke}
+
+/* --- nafnamiði á kortinu -------------------------------------------------
+   Birtist við smell/snertingu á doppu og segir hvað hún er. Á síma er engin
+   sveimun, svo tölurnar einar sögðu ekkert nema maður leitaði þær uppi. */
+.kort__midi{position:absolute;z-index:4;pointer-events:none;max-width:min(74%,300px);
+  background:rgba(28,27,25,.94);color:#fff;border-radius:9px;padding:.5rem .65rem;
+  font-family:'DM Sans',sans-serif;line-height:1.3;
+  box-shadow:0 8px 24px rgba(28,27,25,.28);
+  animation:kortMidiIn .16s var(--ez) both}
+.kort__midi[hidden]{display:none}
+.kort__midi b{display:block;font-weight:600;font-size:.82rem;letter-spacing:.01em}
+.kort__midi small{display:block;margin-top:.15rem;font-size:.72rem;color:rgba(255,255,255,.66)}
+/* örin bendir á doppuna; --odd er reiknað í chapter.js */
+.kort__midi::after{content:"";position:absolute;left:var(--odd,50%);transform:translateX(-50%);
+  top:100%;border:6px solid transparent;border-top-color:rgba(28,27,25,.94)}
+.kort__midi--nedan::after{top:auto;bottom:100%;
+  border-top-color:transparent;border-bottom-color:rgba(28,27,25,.94)}
+@keyframes kortMidiIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+@media (max-width:760px){
+  .kort__midi b{font-size:.78rem}
+  .kort__midi small{font-size:.68rem}
+}
