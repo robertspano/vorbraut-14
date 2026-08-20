@@ -27,3 +27,11 @@ node_modules/
 
 # Sótt OSM-gögn fyrir þjónustukortið — sækjast aftur með tools/mkmap.py
 tools/osm-cache/
+
+# Greiningar- og prófunarskrár — mega ALDREI fara í birtingu.
+# Þetta hefur gerst tvisvar: _svy.html (c606d0e) og ellefu probe-skrár
+# (be15cb9) rötuðu út á lifandi vefinn og þurfti að fjarlægja eftir á.
+# scripts/sitemap.mjs sleppir þeim (þær hafa enga canonical), svo ekkert
+# eftirlit flaggar þær — git er eina vörnin.
+_*.html
+supabase/.temp/
