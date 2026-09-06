@@ -386,7 +386,7 @@
      til að fá nýtt sjónarhorn. Gagnvirku íbúðasvæðin virka á 'zones:true' myndinni. */
   const VIEWS = (window.VB.VIEWS && window.VB.VIEWS.length)
     ? window.VB.VIEWS
-    : [{ id: 'aftan', label: 'Bakhlið', img: 'assets/renders/foto-bak.webp', zones: true }];
+    : [{ id: 'aftan', label: 'Bakhlið', img: 'assets/renders/foto-bak-2.webp', zones: true }];
   const facadeSides = $('#facadeSides'), facadeViews = $('#facadeViews');
   const viewLabel = (v) => (t('facade.' + v.id) !== 'facade.' + v.id ? t('facade.' + v.id) : v.label);
   let curView = (VIEWS.find((v) => v.zones) || VIEWS[0]).id;

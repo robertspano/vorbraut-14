@@ -250,7 +250,7 @@ video::-webkit-media-controls-start-playback-button{
 .select__inner{max-width:none;margin:0;padding:0 0 clamp(16px,2vh,30px);display:flex;align-items:center}
 .select__grid{display:grid;grid-template-columns:minmax(0,72fr) minmax(340px,28fr);gap:0;align-items:center;width:100%}
 .facade{position:relative;width:100%;aspect-ratio:16/9;margin:0;overflow:hidden;align-self:center;
-  background:#E8E7E8 url('../assets/renders/foto-bak.webp') center/cover no-repeat}
+  background:#E8E7E8 url('../assets/renders/foto-bak-2.webp') center/cover no-repeat}
 .select__panel{display:flex;flex-direction:column;gap:0;min-width:0;
   padding:clamp(30px,3.4vw,56px) clamp(26px,3vw,54px) clamp(18px,2vh,28px)}
 .select__brand{font-family:'Zilla Slab',Georgia,serif;font-weight:700;

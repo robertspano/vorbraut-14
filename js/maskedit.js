@@ -98,7 +98,7 @@
     const el = document.getElementById('facade');
     const bg = el ? (getComputedStyle(el).backgroundImage || '') : '';
     const m = bg.match(/url\(["']?(.*?)["']?\)/);
-    return m ? m[1] : 'assets/renders/foto-bak.webp';
+    return m ? m[1] : 'assets/renders/foto-bak-2.webp';
   }
 
   function init() {
