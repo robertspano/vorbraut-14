@@ -524,6 +524,8 @@ body.maskedit .facade__sides,body.maskedit .select__head{display:none!important}
 .agent__avatar img{width:100%;height:100%;object-fit:cover;object-position:center 12%}
 .agent__name{font-family:'Zilla Slab',Georgia,serif;font-weight:600;font-size:1.02rem;
   color:#262522;margin:0 0 .3rem;line-height:1.3}
+/* names that wrap to two lines must not push title/phone/email below the other cards */
+.agent__name{min-height:2.6em;display:flex;align-items:flex-end;justify-content:center}
 .agent__title{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:#a09a92;
   margin:0 0 1rem;line-height:1.45;max-width:22ch}
 .agent__line{display:block;color:#3a3d40;font-size:.92rem;text-decoration:none;margin-top:.3rem;
@@ -536,6 +538,7 @@ body.maskedit .facade__sides,body.maskedit .select__head{display:none!important}
   .sellers__brand{text-align:left}
 }
 @media(max-width:520px){
+  .agent__name{min-height:0}
   .sellers__grid{grid-template-columns:1fr}
   .agent:nth-child(even){border-left:0}
   .agent+.agent{border-top:1px solid #EFEDEA;padding-top:2.2rem}
